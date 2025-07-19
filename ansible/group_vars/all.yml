@@ -1,0 +1,34 @@
+---
+# Domain settings
+domain_name: "example.com"
+apps_subdomain: "apps"
+
+# User settings
+admin_user: "admin"
+admin_password: "changeme"
+
+# IP settings
+k3s_vip: "192.168.1.110"
+cluster_cidr: "10.42.0.0/16"
+service_cidr: "10.43.0.0/16"
+proxmox_host_ip: "192.168.1.100"
+proxmox_host_netmask: "255.255.255.0"
+proxmox_host_gateway: "192.168.1.1"
+
+# Proxmox settings
+proxmox_node: "pve"
+proxmox_storage: "local-lvm"
+proxmox_bridge: "vmbr0"
+
+# K3s settings
+k3s_version: "v1.24.4+k3s1"
+k3s_master_count: 1
+k3s_worker_count: 2
+k3s_vm_memory: 2048
+k3s_vm_cores: 2
+k3s_vm_disk_size: "20G"
+
+# App settings
+pihole_password: "changeme"
+gitea_password: "changeme"
+coder_password: "changeme"

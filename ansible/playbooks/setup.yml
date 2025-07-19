@@ -1,0 +1,20 @@
+---
+- name: Setup Proxmox Host
+  hosts: proxmox
+  roles:
+    - proxmox_host
+
+- name: Setup K3s Cluster
+  hosts: k3s_cluster
+  roles:
+    - k3s_cluster
+
+- name: Setup Core Infrastructure
+  hosts: k3s_cluster
+  roles:
+    - core_infra
+
+- name: Setup Core Applications
+  hosts: k3s_cluster
+  roles:
+    - core_apps
