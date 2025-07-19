@@ -19,3 +19,8 @@ output "ansible_inventory" {
     }
   }
 }
+
+resource "local_file" "ansible_inventory" {
+  content  = yamlencode(output.ansible_inventory)
+  filename = "../ansible/inventory/inventory.auto.yml"
+}
