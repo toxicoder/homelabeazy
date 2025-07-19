@@ -1,0 +1,12 @@
+# Terraform state file
+*.tfstate
+*.tfstate.backup
+
+# Terraform plan file
+*.tfplan
+
+# Terraform provider plugins
+.terraform/
+
+# Terraform lock file
+.terraform.lock.hcl
