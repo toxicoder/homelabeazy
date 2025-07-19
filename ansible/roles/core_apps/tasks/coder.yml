@@ -1,0 +1,25 @@
+---
+- name: Create Coder Namespace
+  kubernetes.core.k8s:
+    name: coder
+    api_version: v1
+    kind: Namespace
+    state: present
+
+- name: Add Coder Helm repository
+  kubernetes.core.helm_repository:
+    name: coder
+    repo_url: "https://helm.coder.com"
+    state: present
+
+- name: Deploy Coder with Helm
+  kubernetes.core.helm:
+    name: coder
+    chart_ref: coder/coder
+    release_namespace: coder
+    values: "{{ lookup('template', 'coder-values.yml.j2') | from_yaml }}"
+
+- name: Create Coder IngressRoute
+  kubernetes.core.k8s:
+    state: present
+    template: 'coder-ingressroute.yml.j2'

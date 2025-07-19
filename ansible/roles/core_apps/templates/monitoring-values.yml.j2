@@ -1,0 +1,21 @@
+grafana:
+  enabled: true
+  persistence:
+    enabled: true
+    storageClassName: "longhorn"
+    size: 2Gi
+  ingress:
+    enabled: false # We will use an IngressRoute instead
+  adminPassword: "{{ grafana_admin_password }}"
+
+prometheus:
+  enabled: true
+  prometheusSpec:
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: "longhorn"
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 50Gi
