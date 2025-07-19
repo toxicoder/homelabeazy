@@ -1,0 +1,67 @@
+---
+# Defaults for Traefik
+traefik_namespace: traefik
+traefik_values:
+  ingressRoute:
+    dashboard:
+      enabled: true
+  providers:
+    kubernetesCRD:
+      enabled: true
+  # Additional middleware for Authelia
+  middlewares:
+    authelia:
+      forwardAuth:
+        address: http://authelia.authelia.svc.cluster.local/api/verify?rd=https://authelia.example.com/
+        trustForwardHeader: true
+        authResponseHeaders:
+          - "Remote-User"
+          - "Remote-Groups"
+          - "Remote-Name"
+          - "Remote-Email"
+
+# Defaults for Authelia
+authelia_namespace: authelia
+authelia_values:
+  ingress:
+    enabled: true
+    hosts:
+      - host: authelia.example.com
+        paths:
+          - path: /
+            pathType: Prefix
+
+  # Configuration for users and OIDC clients
+  authelia:
+    users:
+      - username: "admin"
+        # Bcrypt hash of "password"
+        password: "$2y$10$9.VrvP6dGpl3pz.Q8sPz.eUelL1j3h/2B/jL/j/j/j/j/j/j/j/j"
+        email: "admin@example.com"
+        groups:
+          - "admins"
+          - "dev"
+
+    oidc:
+      clients:
+        - id: "my-app"
+          secret: "my-secret"
+          redirect_uris:
+            - "https://my-app.example.com/oauth2/callback"
+
+# Defaults for Vault
+vault_namespace: vault
+vault_values:
+  ui:
+    enabled: true
+
+  # High availability configuration
+  ha:
+    enabled: true
+    replicas: 3
+
+  # Persistent storage configuration
+  # Replace with your desired storage class
+  storage:
+    size: 10Gi
+    storageClass: "longhorn"

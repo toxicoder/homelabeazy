@@ -1,0 +1,20 @@
+---
+- name: Add Authelia Helm repository
+  kubernetes.core.helm_repository:
+    name: authelia
+    repo_url: "https://charts.authelia.com"
+
+- name: Create Authelia namespace
+  kubernetes.core.k8s:
+    name: "{{ authelia_namespace }}"
+    api_version: v1
+    kind: Namespace
+    state: present
+
+- name: Deploy Authelia Helm chart
+  kubernetes.core.helm:
+    name: authelia
+    chart_ref: authelia/authelia
+    release_namespace: "{{ authelia_namespace }}"
+    create_namespace: true
+    values: "{{ authelia_values }}"
