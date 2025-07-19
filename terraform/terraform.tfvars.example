@@ -24,3 +24,4 @@ network_bridge    = "vmbr0"
 network_vlan_tag  = -1
 network_gateway   = "192.168.1.1"
 network_cidr      = "192.168.1.0/24"
+ssh_public_key  = "ssh-rsa ..."

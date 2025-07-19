@@ -2,7 +2,6 @@ resource "proxmox_vm_qemu" "template" {
   name        = var.template_name
   target_node = var.proxmox_host
   vmid        = var.template_vmid
-  clone       = var.template_name
 
   agent       = 1
   os_type     = "cloud-init"
@@ -22,9 +21,8 @@ resource "proxmox_vm_qemu" "template" {
   }
 
   # Cloud-Init
-  ipconfig0 = "ip=dhcp"
-  ciuser    = "ubuntu"
-  sshkeys   = "ssh-rsa ..."
+  ciuser  = "ubuntu"
+  sshkeys = var.ssh_public_key
 
   # Template settings
   template = true
