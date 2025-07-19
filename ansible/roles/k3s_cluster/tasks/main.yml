@@ -1,0 +1,126 @@
+---
+# tasks file for k3s_cluster
+
+- name: Create k3s master nodes
+  community.general.proxmox_kvm:
+    node: "{{ proxmox_node }}"
+    api_user: "{{ proxmox_user }}"
+    api_password: "{{ proxmox_password }}"
+    clone: "{{ k3s_vm_template }}"
+    newid: "{{ 100 + item }}"
+    name: "k3s-master-{{ item }}"
+    cores: "{{ k3s_vm_cores }}"
+    memory: "{{ k3s_vm_memory }}"
+    net:
+      net0: "virtio,bridge={{ k3s_vm_bridge }},tag={{ k3s_vm_vlan }}"
+    ipconfig:
+      ipconfig0: "ip=dhcp"
+    sshkeys: "{{ lookup('file', k3s_ssh_public_key_file) }}"
+    state: present
+  loop: "{{ range(1, k3s_master_count + 1) | list }}"
+  register: k3s_master_nodes
+
+- name: Create k3s worker nodes
+  community.general.proxmox_kvm:
+    node: "{{ proxmox_node }}"
+    api_user: "{{ proxmox_user }}"
+    api_password: "{{ proxmox_password }}"
+    clone: "{{ k3s_vm_template }}"
+    newid: "{{ 200 + item }}"
+    name: "k3s-worker-{{ item }}"
+    cores: "{{ k3s_vm_cores }}"
+    memory: "{{ k3s_vm_memory }}"
+    net:
+      net0: "virtio,bridge={{ k3s_vm_bridge }},tag={{ k3s_vm_vlan }}"
+    ipconfig:
+      ipconfig0: "ip=dhcp"
+    sshkeys: "{{ lookup('file', k3s_ssh_public_key_file) }}"
+    state: present
+  loop: "{{ range(1, k3s_worker_count + 1) | list }}"
+  register: k3s_worker_nodes
+
+- name: Wait for VMs to be ready
+  wait_for:
+    host: "{{ item.ip }}"
+    port: 22
+    delay: 10
+    timeout: 300
+  loop: "{{ k3s_master_nodes.results + k3s_worker_nodes.results }}"
+  loop_control:
+    label: "{{ item.name }}"
+  vars:
+    item:
+      name: "{{ item.item.name }}"
+      ip: "{{ item.ip_addresses[0] }}"
+
+- name: Install k3s on master node
+  delegate_to: "{{ groups['k3s_masters'][0] }}"
+  block:
+    - name: Download k3s install script
+      get_url:
+        url: "https://get.k3s.io"
+        dest: "/tmp/k3s-install.sh"
+        mode: '0755'
+
+    - name: Install k3s server
+      command: "/tmp/k3s-install.sh --write-kubeconfig-mode 644 --cluster-init"
+      environment:
+        INSTALL_K3S_VERSION: "{{ k3s_version }}"
+        K3S_KUBECONFIG_MODE: "644"
+
+    - name: Get k3s join token
+      command: "cat /var/lib/rancher/k3s/server/node-token"
+      register: k3s_join_token
+      changed_when: false
+
+- name: Install k3s on worker nodes
+  delegate_to: "{{ item }}"
+  block:
+    - name: Download k3s install script
+      get_url:
+        url: "https://get.k3s.io"
+        dest: "/tmp/k3s-install.sh"
+        mode: '0755'
+
+    - name: Install k3s agent
+      command: "/tmp/k3s-install.sh"
+      environment:
+        INSTALL_K3S_VERSION: "{{ k3s_version }}"
+        K3S_URL: "https://{{ groups['k3s_masters'][0] }}:6443"
+        K3S_TOKEN: "{{ k3s_join_token.stdout }}"
+  loop: "{{ groups['k3s_workers'] }}"
+
+- name: Retrieve kubeconfig from master
+  fetch:
+    src: "/etc/rancher/k3s/k3s.yaml"
+    dest: "./kubeconfig"
+    flat: yes
+  delegate_to: "{{ groups['k3s_masters'][0] }}"
+
+- name: Add master nodes to inventory
+  add_host:
+    name: "{{ item.ip }}"
+    groups: k3s_masters
+    ansible_user: "{{ k3s_ssh_user }}"
+    ansible_ssh_private_key_file: "{{ k3s_ssh_private_key_file }}"
+  loop: "{{ k3s_master_nodes.results }}"
+  loop_control:
+    label: "{{ item.item.name }}"
+  vars:
+    item:
+      name: "{{ item.item.name }}"
+      ip: "{{ item.ip_addresses[0] }}"
+
+- name: Add worker nodes to inventory
+  add_host:
+    name: "{{ item.ip }}"
+    groups: k3s_workers
+    ansible_user: "{{ k3s_ssh_user }}"
+    ansible_ssh_private_key_file: "{{ k3s_ssh_private_key_file }}"
+  loop: "{{ k3s_worker_nodes.results }}"
+  loop_control:
+    label: "{{ item.item.name }}"
+  vars:
+    item:
+      name: "{{ item.item.name }}"
+      ip: "{{ item.ip_addresses[0] }}"
