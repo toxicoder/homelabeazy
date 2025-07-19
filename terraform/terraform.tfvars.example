@@ -1,0 +1,26 @@
+pm_api_url = "https://192.168.1.100:8006/api2/json"
+pm_api_user = "root@pam"
+pm_api_pass = "password"
+
+proxmox_host = "pve"
+
+template_name = "ubuntu-2204-cloud-init"
+template_vmid = 9000
+os_image_url  = "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img"
+
+k3s_master_count      = 1
+k3s_master_prefix     = "k3s-master"
+k3s_master_cpu        = 2
+k3s_master_memory     = 2048
+k3s_master_disk_size  = "20G"
+
+k3s_worker_count      = 2
+k3s_worker_prefix     = "k3s-worker"
+k3s_worker_cpu        = 2
+k3s_worker_memory     = 2048
+k3s_worker_disk_size  = "20G"
+
+network_bridge    = "vmbr0"
+network_vlan_tag  = -1
+network_gateway   = "192.168.1.1"
+network_cidr      = "192.168.1.0/24"
