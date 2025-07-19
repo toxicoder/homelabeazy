@@ -1,0 +1,13 @@
+persistentVolumeClaim:
+  enabled: true
+  storageClassName: "longhorn"
+  size: 2Gi
+serviceTCP:
+  type: LoadBalancer
+  loadBalancerIP: "{{ pihole_lb_ip }}"
+serviceUDP:
+  type: LoadBalancer
+  loadBalancerIP: "{{ pihole_lb_ip }}"
+adminPassword: "{{ pihole_admin_password }}"
+ingress:
+  enabled: false # We will use an IngressRoute instead

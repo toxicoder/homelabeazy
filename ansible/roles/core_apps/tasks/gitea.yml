@@ -1,0 +1,25 @@
+---
+- name: Create Gitea Namespace
+  kubernetes.core.k8s:
+    name: gitea
+    api_version: v1
+    kind: Namespace
+    state: present
+
+- name: Add Gitea Helm repository
+  kubernetes.core.helm_repository:
+    name: gitea-charts
+    repo_url: "https://dl.gitea.io/charts/"
+    state: present
+
+- name: Deploy Gitea with Helm
+  kubernetes.core.helm:
+    name: gitea
+    chart_ref: gitea-charts/gitea
+    release_namespace: gitea
+    values: "{{ lookup('template', 'gitea-values.yml.j2') | from_yaml }}"
+
+- name: Create Gitea IngressRoute
+  kubernetes.core.k8s:
+    state: present
+    template: 'gitea-ingressroute.yml.j2'
