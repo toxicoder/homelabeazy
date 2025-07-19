@@ -1,11 +1,13 @@
 ---
 # tasks file for proxmox_host
 
-- name: Configure network interfaces
-  include_tasks: network.yml
+- name: Update and upgrade apt packages
+  apt:
+    update_cache: true
+    upgrade: dist
+    autoremove: true
+  register: apt_upgrade
 
-- name: Configure storage
-  include_tasks: storage.yml
-
-- name: Upload VM/LXC templates
-  include_tasks: templates.yml
+- name: Reboot if required
+  reboot:
+    when: apt_upgrade.reboot_required
