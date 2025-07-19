@@ -1,0 +1,9 @@
+---
+- name: Deploy Traefik
+  ansible.builtin.include_tasks: traefik.yml
+
+- name: Deploy Authelia
+  ansible.builtin.include_tasks: authelia.yml
+
+- name: Deploy Vault
+  ansible.builtin.include_tasks: vault.yml
