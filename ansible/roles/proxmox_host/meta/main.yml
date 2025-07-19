@@ -1,0 +1,17 @@
+---
+galaxy_info:
+  author: Your Name
+  description: Configures a Proxmox VE host
+  company: Your Company
+  license: MIT
+  min_ansible_version: 2.9
+  platforms:
+    - name: Proxmox
+      versions:
+        - all
+  galaxy_tags:
+    - proxmox
+    - virtualization
+    - hypervisor
+
+dependencies: []

@@ -1,0 +1,11 @@
+---
+# tasks file for proxmox_host
+
+- name: Configure network interfaces
+  include_tasks: network.yml
+
+- name: Configure storage
+  include_tasks: storage.yml
+
+- name: Upload VM/LXC templates
+  include_tasks: templates.yml

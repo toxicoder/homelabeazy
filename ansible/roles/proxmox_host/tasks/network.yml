@@ -1,0 +1,23 @@
+---
+# tasks file for proxmox_host network configuration
+
+- name: Configure Linux bridges
+  community.general.proxmox_bridge:
+    node: "{{ ansible_hostname }}"
+    name: "{{ item.name }}"
+    ipv4_address: "{{ item.ipv4 | default(omit) }}"
+    ipv4_gateway: "{{ item.gateway | default(omit) }}"
+    vlan_aware: "{{ item.vlan_aware | default(omit) }}"
+    comment: "{{ item.comment | default(omit) }}"
+  loop: "{{ proxmox_host_network_interfaces }}"
+  notify: Apply network changes
+
+- name: Configure VLANs on bridges
+  community.general.proxmox_vlan:
+    node: "{{ ansible_hostname }}"
+    bridge: "{{ item.name }}"
+    vlan: "{{ item.vlan_id }}"
+    comment: "{{ item.comment | default(omit) }}"
+  loop: "{{ proxmox_host_network_interfaces }}"
+  when: item.vlan_id is defined
+  notify: Apply network changes
