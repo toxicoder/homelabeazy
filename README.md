@@ -98,3 +98,28 @@ ansible-playbook -i ansible/inventory/inventory.auto.yml ansible/playbooks/setup
 ```
 
 This will execute all the roles in the correct order to provision your homelab environment.
+
+## Testing
+
+This project uses Molecule to lint and syntax check the Ansible roles.
+
+1.  **Install the testing dependencies:**
+
+    ```bash
+    pip install -r ansible/requirements.txt
+    ansible-galaxy collection install -r ansible/requirements.yml
+    ```
+
+2.  **Run the tests for a specific role:**
+
+    ```bash
+    cd ansible/roles/<role_name>
+    molecule test
+    ```
+
+    For example, to run the tests for the `core_infra` role:
+
+    ```bash
+    cd ansible/roles/core_infra
+    molecule test
+    ```
