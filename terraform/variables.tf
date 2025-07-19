@@ -103,3 +103,9 @@ variable "network_cidr" {
   type        = string
   description = "Network CIDR"
 }
+
+variable "ssh_public_key" {
+  type        = string
+  description = "SSH public key"
+  sensitive   = true
+}
