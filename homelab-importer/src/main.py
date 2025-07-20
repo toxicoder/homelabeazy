@@ -3,7 +3,11 @@ from dotenv import load_dotenv
 from proxmoxer import ProxmoxAPI
 from discover import get_vms, get_lxc_containers, get_docker_containers
 from mapping import map_vm_to_terraform, map_lxc_to_terraform
-from terraform import generate_terraform_config
+from terraform import (
+    generate_terraform_config,
+    generate_terraform_tfvars,
+    generate_import_script,
+)
 
 
 def main():
@@ -47,6 +51,12 @@ def main():
         all_resources = terraform_vms + terraform_lxc_containers
         generate_terraform_config(all_resources, "homelab.tf")
         print("Terraform configuration generated in homelab.tf")
+
+        generate_terraform_tfvars(all_resources, "terraform.tfvars")
+        print("Terraform variables generated in terraform.tfvars")
+
+        generate_import_script(all_resources, "import.sh")
+        print("Terraform import script generated in import.sh")
 
     except Exception as e:
         print(f"Error connecting to Proxmox: {e}")

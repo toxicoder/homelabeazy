@@ -22,3 +22,22 @@ A command-line tool to import data into a homelab environment.
    ```bash
    python src/main.py
    ```
+   This will generate the following files:
+   - `homelab.tf`: Terraform configuration for your Proxmox resources.
+   - `terraform.tfvars`: Terraform variables for your resources.
+   - `import.sh`: A script to import your existing resources into Terraform state.
+
+4. **Initialize Terraform:**
+   ```bash
+   terraform init
+   ```
+
+5. **Import existing resources:**
+   ```bash
+   ./import.sh
+   ```
+
+6. **Apply the Terraform configuration:**
+   ```bash
+   terraform apply
+   ```
