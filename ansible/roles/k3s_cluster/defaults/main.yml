@@ -1,24 +1,26 @@
 ---
 # defaults file for k3s_cluster
-proxmox_host: pve
-proxmox_node: pve
-proxmox_user: root@pam
-proxmox_password: "{{ vault_proxmox_password }}"
 
-k3s_master_count: 1
-k3s_worker_count: 2
-k3s_vm_template: "ubuntu-2204-cloud-init"
-k3s_vm_cores: 2
-k3s_vm_memory: 4096
-k3s_vm_disk: "local-lvm:20"
-k3s_vm_bridge: "vmbr0"
-k3s_vm_vlan: 10
-k3s_ssh_user: "ansible"
-k3s_ssh_private_key_file: "~/.ssh/id_rsa"
-k3s_ssh_public_key_file: "~/.ssh/id_rsa.pub"
-k3s_version: "v1.28.4+k3s1"
-k3s_cluster_name: "k3s-cluster"
-k3s_cluster_domain: "k3s.local"
-k3s_cluster_cidr: "10.42.0.0/16"
-k3s_service_cidr: "10.43.0.0/16"
-k3s_cluster_dns: "10.43.0.10"
+# The following variables are now defined in config/main.yml and config/secrets.yml
+# proxmox_host: pve
+# proxmox_node: pve
+# proxmox_user: root@pam
+# proxmox_password: "{{ vault_proxmox_password }}"
+#
+# k3s_master_count: 1
+# k3s_worker_count: 2
+# k3s_vm_template: "ubuntu-2204-cloud-init"
+# k3s_vm_cores: 2
+# k3s_vm_memory: 4096
+# k3s_vm_disk: "local-lvm:20"
+# k3s_vm_bridge: "vmbr0"
+# k3s_vm_vlan: 10
+# k3s_ssh_user: "ansible"
+# k3s_ssh_private_key_file: "~/.ssh/id_rsa"
+# k3s_ssh_public_key_file: "~/.ssh/id_rsa.pub"
+# k3s_version: "v1.28.4+k3s1"
+# k3s_cluster_name: "k3s-cluster"
+# k3s_cluster_domain: "k3s.local"
+# k3s_cluster_cidr: "10.42.0.0/16"
+# k3s_service_cidr: "10.43.0.0/16"
+# k3s_cluster_dns: "10.43.0.10"
