@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kasm
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/kasmtech/kasm-helm'
+    chart: 'kasm-single-zone'
+    targetRevision: 'release/1.17.0'
+    helm:
+      values: |
+        global:
+          hostname: "kasm.homelab.dev"
+          altHostnames:
+            - "*.kasm.homelab.dev"
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: kasm
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
