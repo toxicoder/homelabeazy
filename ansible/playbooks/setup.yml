@@ -18,3 +18,4 @@
     - role: efk_stack
     - role: velero
     - role: homepage
+    - role: redis
