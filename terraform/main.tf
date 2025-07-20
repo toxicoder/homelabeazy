@@ -9,6 +9,10 @@ terraform {
   }
 }
 
+locals {
+  env = terraform.workspace
+}
+
 provider "proxmox" {
   pm_api_url = var.proxmox_api_url
   pm_user    = var.proxmox_api_user

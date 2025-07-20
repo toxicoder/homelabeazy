@@ -10,3 +10,7 @@
 
 # Terraform lock file
 .terraform.lock.hcl
+
+# .tfvars files should be ignored since they can contain sensitive values
+*.tfvars
+*.tfvars.json
