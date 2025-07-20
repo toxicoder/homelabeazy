@@ -1,3 +1,6 @@
 ---
 - name: Deploy Vault
   include_tasks: vault.yml
+
+- name: Initialize and Unseal Vault
+  include_tasks: init.yml

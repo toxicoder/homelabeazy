@@ -1,0 +1,40 @@
+---
+- name: Wait for Vault pod to be ready
+  kubernetes.core.k8s_info:
+    kind: Pod
+    namespace: vault
+    label_selectors:
+      - app.kubernetes.io/name=vault
+    wait: yes
+    wait_condition:
+      type: Ready
+      status: "True"
+  register: vault_pod
+
+- name: Initialize Vault
+  kubernetes.core.k8s_exec:
+    namespace: vault
+    pod: "{{ vault_pod.resources[0].metadata.name }}"
+    command: >
+      /bin/sh -c "
+        vault operator init \
+          -key-shares=1 \
+          -key-threshold=1 \
+          -format=json > /tmp/vault.json
+      "
+  register: vault_init
+
+- name: Store vault credentials
+  copy:
+    content: "{{ vault_init.stdout }}"
+    dest: "{{ playbook_dir }}/vault.json"
+  delegate_to: localhost
+
+- name: Unseal Vault
+  kubernetes.core.k8s_exec:
+    namespace: vault
+    pod: "{{ vault_pod.resources[0].metadata.name }}"
+    command: >
+      /bin/sh -c "
+        vault operator unseal $(jq -r .unseal_keys_b64[0] /tmp/vault.json)
+      "
