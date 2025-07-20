@@ -6,7 +6,7 @@ grafana:
     size: 2Gi
   ingress:
     enabled: false # We will use an IngressRoute instead
-  adminPassword: "{{ grafana_admin_password }}"
+  adminPassword: "{{ lookup('community.hashi_vault.vault_read', 'secret/homelab/grafana/admin_password') }}"
 
 prometheus:
   enabled: true

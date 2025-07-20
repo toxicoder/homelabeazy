@@ -45,7 +45,7 @@ authelia_values:
     oidc:
       clients:
         - id: "my-app"
-          secret: "my-secret"
+          secret: "{{ lookup('community.hashi_vault.vault_read', 'secret/homelab/authelia/oidc_client_secret') }}"
           redirect_uris:
             - "https://my-app.example.com/oauth2/callback"
 
