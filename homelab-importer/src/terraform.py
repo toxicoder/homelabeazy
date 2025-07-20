@@ -60,6 +60,8 @@ def generate_import_script(
             # Construct the Proxmox resource ID
             node = resource["attributes"].get("target_node")
             vmid = resource["attributes"].get("vmid")
+            if not node or not vmid:
+                continue
             if resource_type == "proxmox_vm_qemu":
                 resource_id = f"{node}/qemu/{vmid}"
                 f.write(
