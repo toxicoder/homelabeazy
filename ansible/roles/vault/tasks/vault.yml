@@ -1,0 +1,25 @@
+---
+- name: Create Vault Namespace
+  kubernetes.core.k8s:
+    name: vault
+    api_version: v1
+    kind: Namespace
+    state: present
+
+- name: Add HashiCorp Helm repository
+  kubernetes.core.helm_repository:
+    name: hashicorp
+    repo_url: "https://helm.releases.hashicorp.com"
+    state: present
+
+- name: Deploy Vault with Helm
+  kubernetes.core.helm:
+    name: vault
+    chart_ref: hashicorp/vault
+    release_namespace: vault
+    values: "{{ lookup('template', 'vault-values.yml.j2') | from_yaml }}"
+
+- name: Create Vault IngressRoute
+  kubernetes.core.k8s:
+    state: present
+    template: 'vault-ingressroute.yml.j2'
