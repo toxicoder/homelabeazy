@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 from proxmoxer import ProxmoxAPI
-from discover import get_vms, get_lxc_containers, get_docker_containers
+from discover import get_vms, get_lxc_containers
 from mapping import map_vm_to_terraform, map_lxc_to_terraform
 from terraform import (
     generate_terraform_config,
@@ -11,7 +11,7 @@ from terraform import (
 
 
 def main():
-    """Connects to Proxmox and prints a list of nodes."""
+    """Connects to Proxmox and generates Terraform configuration."""
     load_dotenv()
 
     proxmox_host = os.getenv("PROXMOX_HOST")
@@ -34,32 +34,27 @@ def main():
         vms = get_vms(proxmox)
         lxc_containers = get_lxc_containers(proxmox)
 
-        for vm in vms:
-            vm["docker_containers"] = get_docker_containers(
-                proxmox, vm["node"], vm["vmid"], "qemu"
-            )
-        for container in lxc_containers:
-            container["docker_containers"] = get_docker_containers(
-                proxmox, container["node"], container["vmid"], "lxc"
-            )
-
         terraform_vms = [map_vm_to_terraform(vm) for vm in vms]
         terraform_lxc_containers = [
             map_lxc_to_terraform(container) for container in lxc_containers
         ]
 
         all_resources = terraform_vms + terraform_lxc_containers
+
+        # Generate Terraform configuration
         generate_terraform_config(all_resources, "homelab.tf")
         print("Terraform configuration generated in homelab.tf")
 
+        # Generate Terraform variables
         generate_terraform_tfvars(all_resources, "terraform.tfvars")
         print("Terraform variables generated in terraform.tfvars")
 
+        # Generate import script
         generate_import_script(all_resources, "import.sh")
         print("Terraform import script generated in import.sh")
 
     except Exception as e:
-        print(f"Error connecting to Proxmox: {e}")
+        print(f"An error occurred: {e}")
 
 
 if __name__ == "__main__":
