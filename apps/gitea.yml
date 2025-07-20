@@ -49,7 +49,7 @@ spec:
               port: 389
               userSearchBase: "ou=users,dc=homelab,dc=dev"
               userFilter: "(&(objectClass=inetOrgPerson)(uid=%s))"
-              adminFilter: "(memberOf=cn=admins,ou=groups,dc=homelab,dc=dev)"
+              adminFilter: "(memberOf=cn=homelab-admins,ou=groups,dc=homelab,dc=dev)"
               emailAttribute: "mail"
               bindDn: "cn=admin,dc=homelab,dc=dev"
               usernameAttribute: "uid"
