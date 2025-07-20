@@ -5,7 +5,6 @@ apps_subdomain: "apps"
 
 # User settings
 admin_user: "admin"
-admin_password: "changeme"
 
 # IP settings
 k3s_vip: "192.168.1.110"
@@ -29,6 +28,3 @@ k3s_vm_cores: 2
 k3s_vm_disk_size: "20G"
 
 # App settings
-pihole_password: "changeme"
-gitea_password: "changeme"
-coder_password: "changeme"
