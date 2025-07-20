@@ -14,8 +14,8 @@ spec:
     helm:
       values: |
         adminPassword:
-          name: pihole-admin-password
-          key: password
+          secretName: pihole-admin-password
+          secretKey: password
         persistence:
           enabled: true
           storageClassName: "local-path"
