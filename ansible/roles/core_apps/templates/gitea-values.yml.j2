@@ -1,6 +1,6 @@
 gitea:
   admin:
-    existingSecret: gitea-admin-secret
+    existingSecret: "{{ lookup('community.hashi_vault.vault_read', 'secret/homelab/gitea/admin') }}"
   persistence:
     enabled: true
     storageClassName: "longhorn"
@@ -35,7 +35,7 @@ gitea:
   postgresql:
     auth:
       username: gitea
-      password: "{{ gitea_db_password }}"
+      password: "{{ lookup('community.hashi_vault.vault_read', 'secret/homelab/gitea/db_password') }}"
       database: gitea
     primary:
       persistence:

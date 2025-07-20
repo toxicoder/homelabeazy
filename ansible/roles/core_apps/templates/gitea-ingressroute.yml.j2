@@ -18,4 +18,4 @@ spec:
         - name: authelia-forward-auth
           namespace: security
   tls:
-    secretName: gitea-tls
+    secretName: "{{ lookup('community.hashi_vault.vault_read', 'secret/homelab/gitea/tls') }}"

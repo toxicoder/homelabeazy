@@ -1,0 +1,6 @@
+---
+- name: Setup Core Applications
+  hosts: localhost
+  connection: local
+  roles:
+    - core_apps

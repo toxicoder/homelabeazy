@@ -18,4 +18,4 @@ spec:
         - name: authelia-forward-auth
           namespace: security
   tls:
-    secretName: grafana-tls
+    secretName: "{{ lookup('community.hashi_vault.vault_read', 'secret/homelab/grafana/tls') }}"
