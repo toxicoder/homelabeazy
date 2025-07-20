@@ -38,3 +38,12 @@
       --backup-location-config region=minio,s3ForcePathStyle="true",s3Url=http://minio.minio.svc:9000
   args:
     creates: /usr/local/bin/velero
+
+- name: Create velero schedule
+  template:
+    src: schedule.yml.j2
+    dest: "{{ velero_install_dir }}/schedule.yml"
+
+- name: Apply velero schedule
+  command: "kubectl apply -f {{ velero_install_dir }}/schedule.yml"
+  changed_when: true
