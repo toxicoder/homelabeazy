@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: grafana
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://grafana.github.io/helm-charts'
+    chart: grafana
+    targetRevision: 6.50.0
+    helm:
+      values: |
+        admin:
+          existingSecret: grafana-admin-creds
+        persistence:
+          enabled: true
+          storageClassName: "longhorn"
+          size: 10Gi
+        ingress:
+          enabled: true
+          ingressClassName: "nginx"
+          hosts:
+            - "grafana.homelab.dev"
+        service:
+          type: ClusterIP
+          port: 3000
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: grafana
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
