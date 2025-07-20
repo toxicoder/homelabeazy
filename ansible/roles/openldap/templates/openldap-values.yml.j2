@@ -1,6 +1,8 @@
 auth:
   rootPassword: {{ openldap_root_password }}
   adminPassword: {{ openldap_admin_password }}
+customLdif: |
+{{ lookup('file', '../files/bootstrap.ldif') | indent(2) }}
 persistence:
   enabled: true
   storageClassName: "longhorn"
