@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: openldap
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://charts.bitnami.com/bitnami'
+    chart: openldap
+    targetRevision: 1.2.3 # This is a placeholder, the user should replace it with a specific version
+    helm:
+      values: |
+        auth:
+          rootPassword: <path:secrets/data/openldap#root-password>
+          adminPassword: <path:secrets/data/openldap#admin-password>
+        persistence:
+          enabled: true
+          storageClassName: "longhorn"
+          size: 8Gi
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: ldap
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

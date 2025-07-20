@@ -14,3 +14,4 @@
   hosts: k3s_masters
   roles:
     - core_apps
+    - openldap

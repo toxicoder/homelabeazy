@@ -1,0 +1,7 @@
+auth:
+  rootPassword: {{ openldap_root_password }}
+  adminPassword: {{ openldap_admin_password }}
+persistence:
+  enabled: true
+  storageClassName: "longhorn"
+  size: 8Gi
