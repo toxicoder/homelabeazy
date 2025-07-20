@@ -12,4 +12,7 @@ efk_kibana_node_count: 1
 
 # Traefik
 traefik_namespace: "traefik"
-traefik_values: {}
+traefik_values:
+  providers:
+    kubernetesCRD:
+      enabled: true
