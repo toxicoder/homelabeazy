@@ -5,9 +5,10 @@ from typing import Any, Dict
 
 def to_snake_case(name: str) -> str:
     """Converts a string to snake_case."""
-    name = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", name)
-    name = re.sub("([a-z0-9])([A-Z])", r"\1_\2", name)
-    return name.lower().replace("-", "_")
+    name = re.sub(r"([A-Z])", r"_\1", name).lower()
+    if name.startswith("_"):
+        name = name[1:]
+    return name.replace("-", "_").replace("__", "_")
 
 
 def map_vm_to_terraform(vm_data: Dict[str, Any]) -> Dict[str, Any]:
