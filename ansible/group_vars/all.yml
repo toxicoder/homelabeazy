@@ -28,3 +28,12 @@ k3s_vm_cores: 2
 k3s_vm_disk_size: "20G"
 
 # App settings
+
+# EFK Stack
+efk_namespace: "efk"
+efk_elasticsearch_name: "elasticsearch"
+efk_elasticsearch_version: "8.10.2"
+efk_elasticsearch_node_count: 1
+efk_kibana_name: "kibana"
+efk_kibana_version: "8.10.2"
+efk_kibana_node_count: 1
