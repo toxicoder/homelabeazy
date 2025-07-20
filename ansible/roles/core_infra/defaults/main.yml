@@ -33,6 +33,11 @@ authelia_values:
 
   # Configuration for users and OIDC clients
   authelia:
+    access_control:
+      default_policy: "two_factor"
+      rules:
+        - domain: "authelia.example.com"
+          policy: "bypass"
     users:
       - username: "admin"
         # Bcrypt hash of "password"
@@ -41,7 +46,6 @@ authelia_values:
         groups:
           - "admins"
           - "dev"
-
     oidc:
       clients:
         - id: "my-app"
