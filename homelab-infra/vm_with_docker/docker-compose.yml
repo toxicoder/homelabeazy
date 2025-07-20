@@ -1,0 +1,7 @@
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+    - 80:80
+    restart: unless-stopped
+version: '3.8'

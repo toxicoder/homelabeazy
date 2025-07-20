@@ -23,34 +23,33 @@ def get_network_bridges(proxmox: ProxmoxAPI):
 def get_docker_containers(proxmox: ProxmoxAPI, node: str, vmid: int, vm_type: str):
     """Returns a list of Docker containers running in a VM or LXC."""
     try:
+        # Determine the guest type and prepare the command
         if vm_type == "qemu":
-            # Command to list Docker containers
+            guest = proxmox.nodes(node).qemu(vmid)
             command = "docker ps -a --format '{{json .}}'"
-            result = proxmox.nodes(node).qemu(vmid).agent.exec.post(command=command)
-
-            # Command to inspect all containers
             inspect_command = "docker inspect $(docker ps -a -q)"
-            inspect_result = proxmox.nodes(node).qemu(vmid).agent.exec.post(command=inspect_command)
         elif vm_type == "lxc":
-            # Command to list Docker containers
-            command = f"pct exec {vmid} -- docker ps -a --format '{{json .}}'"
-            result = proxmox.nodes(node).lxc(vmid).exec.post(command=command)
-
-            # Command to inspect all containers
-            inspect_command = f"pct exec {vmid} -- docker inspect $(docker ps -a -q)"
-            inspect_result = proxmox.nodes(node).lxc(vmid).exec.post(command=inspect_command)
+            guest = proxmox.nodes(node).lxc(vmid)
+            command = "docker ps -a --format '{{json .}}'"
+            inspect_command = "docker inspect $(docker ps -a -q)"
         else:
             return []
 
-        containers = []
-        if result and "stdout" in result:
-            for line in result["stdout"].strip().split("\n"):
-                containers.append(json.loads(line))
+        # Execute the command to get the list of containers
+        result = guest.agent.exec.post(command=command)
+        if not result or "stdout" not in result:
+            return []
 
-        if inspect_result and "stdout" in inspect_result:
-            inspected_data = json.loads(inspect_result["stdout"])
-            for i, container in enumerate(containers):
-                containers[i]["details"] = inspected_data[i]
+        containers = [json.loads(line) for line in result["stdout"].strip().split("\n")]
+
+        # Execute the command to inspect the containers
+        inspect_result = guest.agent.exec.post(command=inspect_command)
+        if not inspect_result or "stdout" not in inspect_result:
+            return containers
+
+        inspected_data = json.loads(inspect_result["stdout"])
+        for i, container in enumerate(containers):
+            containers[i]["details"] = inspected_data[i]
 
         return containers
     except Exception as e:
