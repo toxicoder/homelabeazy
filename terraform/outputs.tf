@@ -20,7 +20,12 @@ output "ansible_inventory" {
   }
 }
 
-resource "local_file" "ansible_inventory" {
-  content  = yamlencode(output.ansible_inventory)
-  filename = "../ansible/inventory/inventory.auto.yml"
+# resource "local_file" "ansible_inventory" {
+#   content  = yamlencode(output.ansible_inventory)
+#   filename = "../ansible/inventory/inventory.auto.yml"
+# }
+
+output "instance_name" {
+  description = "The name of the first master node"
+  value       = proxmox_vm_qemu.k3s_master[0].name
 }
