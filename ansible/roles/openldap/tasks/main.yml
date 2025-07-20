@@ -18,3 +18,5 @@
     chart_ref: openldap/openldap
     release_namespace: ldap
     values: "{{ lookup('template', 'openldap-values.yml.j2') | from_yaml }}"
+    set_values:
+      - { name: "customLdif", value: "{{ lookup('file', '../files/bootstrap.ldif') }}" }
