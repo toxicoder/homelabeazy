@@ -42,6 +42,17 @@ spec:
                 limits:
                   cpu: 1
                   memory: 2Gi
+          ldap:
+            - name: "homelab-ldap"
+              existingSecret: gitea-ldap-secret
+              host: "openldap.openldap.svc.cluster.local"
+              port: 389
+              userSearchBase: "ou=users,dc=homelab,dc=dev"
+              userFilter: "(&(objectClass=inetOrgPerson)(uid=%s))"
+              adminFilter: "(memberOf=cn=admins,ou=groups,dc=homelab,dc=dev)"
+              emailAttribute: "mail"
+              bindDn: "cn=admin,dc=homelab,dc=dev"
+              usernameAttribute: "uid"
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: gitea
