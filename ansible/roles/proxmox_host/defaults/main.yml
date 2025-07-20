@@ -25,8 +25,8 @@ proxmox_host_storage:
     type: smb
     server: 192.168.1.101
     share: backup
-    username: "backupuser"
-    password: "backuppassword"
+    username: "{{ smb_backup_user }}"
+    password: "{{ smb_backup_password }}"
 
 # VM/LXC templates
 proxmox_host_templates:
