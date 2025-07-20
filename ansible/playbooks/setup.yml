@@ -16,3 +16,4 @@
     - core_apps
     - openldap
     - role: efk_stack
+    - role: velero
