@@ -1,4 +1,4 @@
 #!/bin/bash
 
-terraform import proxmox_vm_qemu.vm1 pve/qemu/100
-terraform import proxmox_lxc.lxc1 pve/lxc/101
+terraform import proxmox_vm_qemu.test_vm pve/qemu/100
+terraform import proxmox_lxc.test_lxc pve/lxc/101
