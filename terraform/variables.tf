@@ -8,12 +8,6 @@ variable "pm_api_user" {
   description = "Proxmox API user"
 }
 
-variable "pm_api_pass" {
-  type        = string
-  description = "Proxmox API password"
-  sensitive   = true
-}
-
 variable "proxmox_host" {
   type        = string
   description = "Proxmox target node"
