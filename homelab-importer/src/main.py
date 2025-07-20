@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 from proxmoxer import ProxmoxAPI
-from discover import get_vms, get_lxc_containers
+from discover import get_vms, get_lxc_containers, get_docker_containers
 from mapping import map_vm_to_terraform, map_lxc_to_terraform
 from terraform import generate_terraform_config
 
@@ -29,6 +29,15 @@ def main():
 
         vms = get_vms(proxmox)
         lxc_containers = get_lxc_containers(proxmox)
+
+        for vm in vms:
+            vm["docker_containers"] = get_docker_containers(
+                proxmox, vm["node"], vm["vmid"], "qemu"
+            )
+        for container in lxc_containers:
+            container["docker_containers"] = get_docker_containers(
+                proxmox, container["node"], container["vmid"], "lxc"
+            )
 
         terraform_vms = [map_vm_to_terraform(vm) for vm in vms]
         terraform_lxc_containers = [
