@@ -1,12 +1,25 @@
-test_vm_name = "test-vm"
-test_vm_target_node = "pve"
-test_vm_vmid = "100"
-test_vm_memory = "2048"
-test_vm_sockets = "1"
-test_vm_cores = "2"
-test_vm_os_type = "cloud-init"
-test_lxc_hostname = "test-lxc"
-test_lxc_target_node = "pve"
-test_lxc_vmid = "101"
-test_lxc_memory = "1024"
-test_lxc_cores = "1"
+vm1 = {
+  name = "vm1"
+  target_node = "pve"
+  vmid = "100"
+  memory = "4096"
+  sockets = "1"
+  cores = "2"
+  os_type = "cloud-init"
+}
+
+vm1_container1 = {
+  image = "ubuntu"
+  restart = "unless-stopped"
+  ports = ["80:80"]
+  volumes = ["/data:/data"]
+  environment = ["FOO=bar"]
+}
+
+lxc1 = {
+  hostname = "lxc1"
+  target_node = "pve"
+  vmid = "101"
+  memory = "1024"
+  cores = "1"
+}
