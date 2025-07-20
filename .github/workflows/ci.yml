@@ -62,3 +62,19 @@ jobs:
               repo: context.repo.repo,
               body: output
             })
+
+  apply-dev:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform workspace select
+        run: terraform workspace select dev
+
+      - name: Terraform apply
+        run: terraform apply -auto-approve
