@@ -1,0 +1,3 @@
+---
+openldap_root_password: "{{ lookup('env', 'OPENLDAP_ROOT_PASSWORD') }}"
+openldap_admin_password: "{{ lookup('env', 'OPENLDAP_ADMIN_PASSWORD') }}"

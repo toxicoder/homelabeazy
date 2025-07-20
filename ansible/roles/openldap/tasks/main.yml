@@ -1,0 +1,20 @@
+---
+- name: Create LDAP Namespace
+  kubernetes.core.k8s:
+    name: ldap
+    api_version: v1
+    kind: Namespace
+    state: present
+
+- name: Add OpenLDAP Helm repository
+  kubernetes.core.helm_repository:
+    name: openldap
+    repo_url: "https://charts.bitnami.com/bitnami"
+    state: present
+
+- name: Deploy OpenLDAP with Helm
+  kubernetes.core.helm:
+    name: openldap
+    chart_ref: openldap/openldap
+    release_namespace: ldap
+    values: "{{ lookup('template', 'openldap-values.yml.j2') | from_yaml }}"

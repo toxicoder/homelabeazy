@@ -124,6 +124,30 @@ This project uses Molecule to lint and syntax check the Ansible roles.
     molecule test
     ```
 
+## OpenLDAP
+
+This repository includes an Ansible role for deploying OpenLDAP to the Kubernetes cluster. The role can be found in `ansible/roles/openldap`.
+
+### Configuration
+
+The OpenLDAP role uses the following variables for configuration:
+
+- `openldap_root_password`: The password for the OpenLDAP root user.
+- `openldap_admin_password`: The password for the OpenLDAP admin user.
+
+These variables should be set as environment variables before running the Ansible playbook:
+
+```bash
+export OPENLDAP_ROOT_PASSWORD="your-root-password"
+export OPENLDAP_ADMIN_PASSWORD="your-admin-password"
+```
+
+The OpenLDAP application is deployed using the `apps/openldap.yml` manifest. The passwords for the OpenLDAP users are managed by Vault. You will need to add the following secrets to Vault:
+
+- `secrets/data/openldap`
+  - `root-password`
+  - `admin-password`
+
 ## GitHub Actions
 
 This project uses GitHub Actions to automate the CI/CD process.
