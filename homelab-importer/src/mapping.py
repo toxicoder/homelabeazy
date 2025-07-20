@@ -27,22 +27,28 @@ def map_vm_to_terraform(vm_data: dict) -> dict:
     }
     if "docker_containers" in vm_data:
         vm_resource["docker_containers"] = [
-            map_docker_container_to_terraform(c) for c in vm_data["docker_containers"]
+            map_docker_container_to_compose(c) for c in vm_data["docker_containers"]
         ]
     return vm_resource
 
 
-def map_docker_container_to_terraform(container_data: dict) -> dict:
-    """Maps a Docker container to a Terraform resource."""
-    resource_name = to_snake_case(container_data.get("Names", "container"))
+def map_docker_container_to_compose(container_data: dict) -> dict:
+    """Maps a Docker container to a docker-compose service."""
+    details = container_data.get("details", {})
     return {
-        "resource": "docker_container",
-        "name": resource_name,
+        "name": to_snake_case(container_data.get("Names", "container")),
         "attributes": {
-            "name": container_data.get("Names"),
             "image": container_data.get("Image"),
-            "ports": container_data.get("Ports"),
             "restart": "unless-stopped",
+            "ports": [
+                f'{p.get("PublicPort", "")}:{p.get("PrivatePort", "")}'
+                for p in container_data.get("Ports", [])
+            ],
+            "volumes": [
+                f'{m["Source"]}:{m["Destination"]}'
+                for m in details.get("Mounts", [])
+            ],
+            "environment": details.get("Config", {}).get("Env", []),
         },
     }
 
@@ -63,6 +69,6 @@ def map_lxc_to_terraform(lxc_data: dict) -> dict:
     }
     if "docker_containers" in lxc_data:
         lxc_resource["docker_containers"] = [
-            map_docker_container_to_terraform(c) for c in lxc_data["docker_containers"]
+            map_docker_container_to_compose(c) for c in lxc_data["docker_containers"]
         ]
     return lxc_resource
