@@ -32,3 +32,19 @@ jobs:
         run: terraform -chdir=terraform init -backend=false
       - name: Terraform Validate
         run: terraform -chdir=terraform validate
+  terraform-plan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the codebase.
+        uses: actions/checkout@v2
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+      - name: Terraform Init
+        run: terraform -chdir=terraform init -backend=false
+      - name: Terraform Plan
+        run: terraform -chdir=terraform plan -out=tfplan
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: tfplan
+          path: terraform/tfplan
