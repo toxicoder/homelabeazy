@@ -41,3 +41,22 @@ A command-line tool to import data into a homelab environment.
    ```bash
    terraform apply
    ```
+
+## Migration Strategy
+
+The recommended migration strategy for importing your existing homelab resources is as follows:
+
+1. **Run the importer:**
+   - Execute the `homelab-importer` tool to generate Terraform code for your existing VMs/LXCs and `docker-compose.yml` files for your containers.
+
+2. **Import Proxmox infrastructure:**
+   - Use the generated `import.sh` script to bring your Proxmox infrastructure under Terraform control. This will import your VMs and LXCs into the Terraform state.
+
+3. **Review Docker Compose files:**
+   - Carefully review the generated `docker-compose.yml` files. These files define the services, networks, and volumes for your containerized applications.
+
+4. **Provision a new host for containers (Optional but Recommended):**
+   - For a cleaner setup, it's recommended to provision a new, dedicated VM or LXC for running your containers. You can do this using the Terraform code generated in the previous steps.
+
+5. **Redeploy containerized applications:**
+   - Apply the `docker-compose.yml` files on the new host to redeploy your containerized applications. This effectively migrates them out of their original, unmanaged locations and brings them under the management of Docker Compose.
