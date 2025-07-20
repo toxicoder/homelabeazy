@@ -1,10 +1,11 @@
 """Discovery logic for Proxmox resources."""
 
 import json
+from typing import Any, Dict, List
 from proxmoxer import ProxmoxAPI
 
 
-def get_vms(proxmox: ProxmoxAPI):
+def get_vms(proxmox: ProxmoxAPI) -> List[Dict[str, Any]]:
     """Returns a list of all VMs, including their Docker containers."""
     vms = proxmox.cluster.resources.get(type="vm")
     for vm in vms:
@@ -14,7 +15,7 @@ def get_vms(proxmox: ProxmoxAPI):
     return vms
 
 
-def get_lxc_containers(proxmox: ProxmoxAPI):
+def get_lxc_containers(proxmox: ProxmoxAPI) -> List[Dict[str, Any]]:
     """Returns a list of all LXC containers, including their Docker containers."""
     containers = proxmox.cluster.resources.get(type="lxc")
     for container in containers:
@@ -24,17 +25,19 @@ def get_lxc_containers(proxmox: ProxmoxAPI):
     return containers
 
 
-def get_storage_pools(proxmox: ProxmoxAPI):
+def get_storage_pools(proxmox: ProxmoxAPI) -> List[Dict[str, Any]]:
     """Returns a list of all storage pools."""
     return proxmox.storage.get()
 
 
-def get_network_bridges(proxmox: ProxmoxAPI):
+def get_network_bridges(proxmox: ProxmoxAPI) -> List[Dict[str, Any]]:
     """Returns a list of all network bridges."""
     return proxmox.cluster.resources.get(type="sdn")
 
 
-def get_docker_containers(proxmox: ProxmoxAPI, node: str, vmid: int, vm_type: str):
+def get_docker_containers(
+    proxmox: ProxmoxAPI, node: str, vmid: int, vm_type: str
+) -> List[Dict[str, Any]]:
     """Returns a list of Docker containers running in a VM or LXC."""
     try:
         guest = None

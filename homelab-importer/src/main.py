@@ -10,7 +10,7 @@ from terraform import (
 )
 
 
-def main():
+def main() -> None:
     """Connects to Proxmox and generates Terraform configuration."""
     load_dotenv()
 
