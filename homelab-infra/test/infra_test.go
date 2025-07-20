@@ -1,6 +1,7 @@
 package test
 
 import (
+	"os"
 	"testing"
 
 	"github.com/gruntwork-io/terratest/modules/terraform"
@@ -16,7 +17,7 @@ func TestTerraformProxmoxExample(t *testing.T) {
 		Vars: map[string]interface{}{
 			"pm_api_url":             "https://192.168.1.100:8006/api2/json",
 			"pm_api_user":            "root@pam",
-			"pm_api_password":        "password",
+			"pm_api_password":        os.Getenv("PROXMOX_PASSWORD"),
 			"proxmox_host":           "pve",
 			"template_name":          "ubuntu-2204-cloud-init",
 			"template_vmid":          9000,

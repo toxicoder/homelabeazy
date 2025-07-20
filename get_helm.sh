@@ -193,7 +193,7 @@ installFile() {
 # verifyChecksum verifies the SHA256 checksum of the binary package.
 verifyChecksum() {
   printf "Verifying checksum... "
-  local sum=$(openssl sha1 -sha256 ${HELM_TMP_FILE} | awk '{print $2}')
+  local sum=$(openssl sha256 ${HELM_TMP_FILE} | awk '{print $2}')
   local expected_sum=$(cat ${HELM_SUM_FILE})
   if [ "$sum" != "$expected_sum" ]; then
     echo "SHA sum of ${HELM_TMP_FILE} does not match. Aborting."
