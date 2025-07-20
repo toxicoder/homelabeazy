@@ -1,0 +1,7 @@
+---
+# defaults file for minio
+
+minio_version: "RELEASE.2023-01-25T00-19-53Z"
+minio_access_key: "minio"
+minio_secret_key: "minio123"
+minio_data_dir: "/data"
