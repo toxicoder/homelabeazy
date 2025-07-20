@@ -1,0 +1,43 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: coder
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://helm.coder.com'
+    chart: coder
+    targetRevision: 0.22.0
+    helm:
+      values: |
+        coder:
+          admin:
+            existingSecret: coder-admin-creds
+          postgres:
+            enabled: true
+            auth:
+              username: coder
+              existingSecret: coder-db-creds
+              database: coder
+            primary:
+              persistence:
+                enabled: true
+                storageClass: "longhorn"
+                size: 8Gi
+              resources:
+                requests:
+                  cpu: 250m
+                  memory: 512Mi
+                limits:
+                  cpu: 1
+                  memory: 2Gi
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: coder
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
