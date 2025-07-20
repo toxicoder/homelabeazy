@@ -17,3 +17,4 @@
     - openldap
     - role: efk_stack
     - role: velero
+    - role: homepage

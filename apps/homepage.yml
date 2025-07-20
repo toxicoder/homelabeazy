@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: homepage
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://aidan-wallace.github.io/homepage-kubernetes/'
+    chart: homepage
+    targetRevision: 0.2.1
+    helm:
+      values: |
+        ingress:
+          enabled: true
+          hosts:
+            - host: "homepage.homelab.dev"
+              paths:
+                - path: /
+                  pathType: ImplementationSpecific
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: homepage
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
