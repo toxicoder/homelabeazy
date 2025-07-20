@@ -1,7 +1,10 @@
 import os
 from dotenv import load_dotenv
 from proxmoxer import ProxmoxAPI
-from discover import get_vms, get_lxc_containers, get_storage_pools, get_network_bridges
+from discover import get_vms, get_lxc_containers
+from mapping import map_vm_to_terraform, map_lxc_to_terraform
+from terraform import generate_terraform_config
+
 
 def main():
     """Connects to Proxmox and prints a list of nodes."""
@@ -25,19 +28,20 @@ def main():
         print("Successfully connected to Proxmox!")
 
         vms = get_vms(proxmox)
-        print("VMs:", vms)
-
         lxc_containers = get_lxc_containers(proxmox)
-        print("LXC Containers:", lxc_containers)
 
-        storage_pools = get_storage_pools(proxmox)
-        print("Storage Pools:", storage_pools)
+        terraform_vms = [map_vm_to_terraform(vm) for vm in vms]
+        terraform_lxc_containers = [
+            map_lxc_to_terraform(container) for container in lxc_containers
+        ]
 
-        network_bridges = get_network_bridges(proxmox)
-        print("Network Bridges:", network_bridges)
+        all_resources = terraform_vms + terraform_lxc_containers
+        generate_terraform_config(all_resources, "homelab.tf")
+        print("Terraform configuration generated in homelab.tf")
 
     except Exception as e:
         print(f"Error connecting to Proxmox: {e}")
+
 
 if __name__ == "__main__":
     main()
