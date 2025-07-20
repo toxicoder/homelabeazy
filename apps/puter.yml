@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: puter
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/HeyPuter/puter.git'
+    path: charts/puter
+    targetRevision: main
+    helm:
+      values: |
+        ingress:
+          enabled: true
+          hosts:
+            - host: puter.local
+              paths:
+                - path: /
+                  pathType: ImplementationSpecific
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: puter
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
