@@ -1,3 +1,13 @@
 ---
 - name: Deploy ArgoCD
   include_tasks: argocd.yml
+
+- name: Deploy apps
+  template:
+    src: apps.yml.j2
+    dest: /tmp/apps.yml
+  register: apps
+
+- name: Apply apps
+  shell: kubectl apply -f /tmp/apps.yml
+  when: apps.changed
