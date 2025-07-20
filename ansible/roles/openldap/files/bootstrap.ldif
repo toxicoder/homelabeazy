@@ -21,11 +21,9 @@ objectClass: inetOrgPerson
 uid: admin
 cn: Admin
 sn: User
-userPassword: password
 
 dn: uid=developer,ou=users,dc=homelab,dc=com
 objectClass: inetOrgPerson
 uid: developer
 cn: Developer
 sn: User
-userPassword: password

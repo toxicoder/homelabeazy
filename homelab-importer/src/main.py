@@ -27,7 +27,7 @@ def main():
             proxmox_host,
             user=proxmox_user,
             password=proxmox_password,
-            verify_ssl=False,
+            verify_ssl=True,
         )
         print("Successfully connected to Proxmox!")
 

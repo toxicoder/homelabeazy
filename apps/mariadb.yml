@@ -12,10 +12,10 @@ spec:
     helm:
       values: |
         auth:
-          rootPassword: "changeme"
+          rootPassword: <path:secrets/data/mariadb#root-password>
           database: "mariadb"
           username: "mariadb"
-          password: "changeme"
+          password: <path:secrets/data/mariadb#password>
         primary:
           persistence:
             enabled: true

@@ -66,5 +66,6 @@ def get_docker_containers(proxmox: ProxmoxAPI, node: str, vmid: int, vm_type: st
                 container["details"] = inspected_data[i]
 
         return containers
-    except Exception:
-        return []  # Fail silently
+    except Exception as e:
+        print(f"An error occurred while fetching Docker containers: {e}")
+        return []
