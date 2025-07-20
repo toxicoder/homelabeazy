@@ -52,10 +52,7 @@ jobs:
         with:
           script: |
             const output = `#### Terraform Plan ####
-            \`\`\`hcl
-            ${{ steps.plan.outputs.stdout }}
-            \`\`\`
-            *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+            The plan has been generated and is available for review in the workflow artifacts.`;
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,

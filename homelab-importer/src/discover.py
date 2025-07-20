@@ -53,9 +53,16 @@ def get_docker_containers(proxmox: ProxmoxAPI, node: str, vmid: int, vm_type: st
             json.loads(line) for line in result["stdout"].strip().split("\n") if line
         ]
 
+        result = guest.agent.exec.post(command="docker ps -a --format '{{.ID}}'")
+        if not result or "stdout" not in result:
+            return []
+        container_ids = result['stdout'].strip().split('\n')
+        if not container_ids:
+            return []
+
         # Fetch detailed container info
         inspect_result = guest.agent.exec.post(
-            command="docker inspect $(docker ps -a -q)"
+            command="docker inspect " + " ".join(container_ids)
         )
         if not inspect_result or "stdout" not in inspect_result:
             return containers  # Return basic info if inspect fails

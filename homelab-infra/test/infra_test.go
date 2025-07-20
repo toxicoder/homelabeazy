@@ -15,9 +15,9 @@ func TestTerraformProxmoxExample(t *testing.T) {
 		// The path to where our Terraform code is located
 		TerraformDir: "../../terraform",
 		Vars: map[string]interface{}{
-			"pm_api_url":             "https://192.168.1.100:8006/api2/json",
-			"pm_api_user":            "root@pam",
-			"pm_api_password":        os.Getenv("PROXMOX_PASSWORD"),
+			"pm_api_url":             os.Getenv("PROXMOX_API_URL"),
+			"pm_api_user":            os.Getenv("PROXMOX_API_USER"),
+			"pm_api_password":        os.Getenv("PROXMOX_API_PASSWORD"),
 			"proxmox_host":           "pve",
 			"template_name":          "ubuntu-2204-cloud-init",
 			"template_vmid":          9000,

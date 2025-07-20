@@ -22,10 +22,20 @@
     remote_src: yes
   notify: restart velero
 
-- name: Create velero credentials file for minio
-  template:
-    src: minio-credentials.j2
-    dest: "{{ velero_install_dir }}/minio-credentials"
+- name: Create Velero secret
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: velero-minio-creds
+        namespace: velero
+      stringData:
+        cloud: |
+          [default]
+          aws_access_key_id={{ minio_access_key }}
+          aws_secret_access_key={{ minio_secret_key }}
 
 - name: Install velero
   command: >
@@ -33,11 +43,9 @@
       --provider aws \
       --plugins velero/velero-plugin-for-aws:v1.5.0 \
       --bucket velero \
-      --secret-file {{ velero_install_dir }}/minio-credentials \
+      --secret-file /path/to/k8s/secret/velero-minio-creds \
       --use-restic \
       --backup-location-config region=minio,s3ForcePathStyle="true",s3Url=http://minio.minio.svc:9000
-  args:
-    creates: /usr/local/bin/velero
 
 - name: Create velero schedule
   template:
