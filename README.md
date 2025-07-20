@@ -123,3 +123,15 @@ This project uses Molecule to lint and syntax check the Ansible roles.
     cd ansible/roles/core_infra
     molecule test
     ```
+
+## GitHub Actions
+
+This project uses GitHub Actions to automate the CI/CD process.
+
+### Promote to Staging
+
+To promote the current version of the `main` branch to the staging environment, you can manually trigger the `Promote to Staging` workflow.
+
+1.  Go to the "Actions" tab of the repository.
+2.  Select the "Promote to Staging" workflow.
+3.  Click the "Run workflow" button.
