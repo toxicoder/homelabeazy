@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gluetun
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://qdm12.github.io/gluetun'
+    chart: gluetun
+    targetRevision: 'v0.1.0'
+    helm:
+      values: |
+        persistence:
+          enabled: true
+          storageClassName: "longhorn"
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: gluetun
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
