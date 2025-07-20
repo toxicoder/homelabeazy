@@ -1,0 +1,11 @@
+# This is a placeholder for the pfSense application.
+# pfSense is not deployed via Argo CD, but this file is created
+# to maintain consistency with the other applications in this repository.
+# The pfSense VM is provisioned using Terraform and configured using Ansible.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pfsense-placeholder
+  namespace: argocd
+  annotations:
+    "app.kubernetes.io/name": "pfsense"
