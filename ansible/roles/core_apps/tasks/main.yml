@@ -10,3 +10,6 @@
 
 - name: Deploy Monitoring
   include_tasks: monitoring.yml
+
+- name: Deploy ArgoCD
+  include_tasks: argocd.yml
