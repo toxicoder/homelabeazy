@@ -1,0 +1,10 @@
+- name: Create Grafana LDAP secret
+  kubernetes.core.k8s:
+    state: present
+    template:
+      - path: grafana-ldap.toml.j2
+        dest: /tmp/grafana-ldap.toml
+    dest: "{{ grafana_ldap_secret_dest }}"
+    namespace: monitoring
+  vars:
+    grafana_ldap_secret_dest: /tmp/grafana-ldap-secret.yml

@@ -1,0 +1,16 @@
+[[servers]]
+host = "openldap.openldap.svc.cluster.local"
+port = 389
+use_ssl = false
+start_tls = false
+ssl_skip_verify = true
+bind_dn = "cn=admin,dc=homelab,dc=com"
+bind_password = '{{ .lookup "vault" "secret/data/grafana" "ldap_password" }}'
+search_filter = "(uid=%s)"
+search_base_dns = ["ou=users,dc=homelab,dc=com"]
+
+[servers.group_mappings]
+group_dn = "cn=homelab-admins,ou=groups,dc=homelab,dc=com"
+org_role = "Admin"
+grafana_admin = true
+org_id = 1
