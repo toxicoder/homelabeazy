@@ -1,0 +1,12 @@
+# Gitleaks configuration file
+[allowlist]
+description = "Allowlist for this repository"
+paths = [
+    '''gitleaks.toml''',
+]
+
+[rules.proxmox-password]
+    description = "Proxmox password"
+    regex = '''(?i)(?:proxmox_password|password)s*=\s*['"]([a-zA-Z0-9!@#$%^&*()_+-=[]{};':"\\|,.<>/?~`]+)['"]'''
+    tags = ["proxmox", "password"]
+    keywords = ["proxmox_password", "password"]

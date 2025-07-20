@@ -1,0 +1,23 @@
+# Terraform files
+*.tfvars
+*.tfstate
+*.tfstate.backup
+*.tfplan
+
+# SOPS files
+*.sops.yml
+*.sops.json
+*.sops.ini
+*.sops.dotenv
+
+# Environment files
+.env
+
+# Secret files
+*secret*.yml
+*secret*.yaml
+*secrets*.yml
+*secrets*.yaml
+
+# Homelab importer
+homelab-importer/.env
