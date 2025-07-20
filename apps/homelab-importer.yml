@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: homelab-importer
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/user/homelab-importer.git'
+    path: charts/puter
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+        - values.yaml
+      parameters:
+        - name: "image.repository"
+          value: "your-dockerhub-username/homelab-importer"
+        - name: "image.tag"
+          value: "latest"
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
