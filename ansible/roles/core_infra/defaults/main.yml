@@ -38,14 +38,20 @@ authelia_values:
       rules:
         - domain: "authelia.example.com"
           policy: "bypass"
-    users:
-      - username: "admin"
-        # Bcrypt hash of "password"
-        password: "$2y$10$9.VrvP6dGpl3pz.Q8sPz.eUelL1j3h/2B/jL/j/j/j/j/j/j/j/j"
-        email: "admin@example.com"
-        groups:
-          - "admins"
-          - "dev"
+    identity_providers:
+      ldap:
+        address: "ldap://openldap.default.svc.cluster.local"
+        implementation: "custom"
+        timeout: "5s"
+        base_dn: "dc=example,dc=com"
+        users_filter: "(&({search_filter})(objectClass=inetOrgPerson))"
+        attributes:
+          username: "uid"
+          group_name: "cn"
+          mail: "mail"
+          display_name: "displayName"
+        user: "cn=admin,dc=example,dc=com"
+        password: "{{ lookup('community.hashi_vault.vault_read', 'secret/homelab/openldap/admin') }}" # This may need to be adjusted
     oidc:
       clients:
         - id: "my-app"
