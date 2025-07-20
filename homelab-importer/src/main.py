@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 from proxmoxer import ProxmoxAPI
+from discover import get_vms, get_lxc_containers, get_storage_pools, get_network_bridges
 
 def main():
     """Connects to Proxmox and prints a list of nodes."""
@@ -21,9 +22,20 @@ def main():
             password=proxmox_password,
             verify_ssl=False,
         )
-        nodes = proxmox.nodes.get()
         print("Successfully connected to Proxmox!")
-        print("Nodes:", [node["node"] for node in nodes])
+
+        vms = get_vms(proxmox)
+        print("VMs:", vms)
+
+        lxc_containers = get_lxc_containers(proxmox)
+        print("LXC Containers:", lxc_containers)
+
+        storage_pools = get_storage_pools(proxmox)
+        print("Storage Pools:", storage_pools)
+
+        network_bridges = get_network_bridges(proxmox)
+        print("Network Bridges:", network_bridges)
+
     except Exception as e:
         print(f"Error connecting to Proxmox: {e}")
 
