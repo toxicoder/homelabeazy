@@ -2,9 +2,6 @@
 - name: Deploy Gitea
   include_tasks: gitea.yml
 
-- name: Deploy Pi-hole
-  include_tasks: pihole.yml
-
 - name: Deploy Coder
   include_tasks: coder.yml
 
