@@ -2,9 +2,12 @@
 
 import os
 import json
+from typing import IO, Any, Dict, List
 
 
-def generate_terraform_config(resources: list, filename: str):
+def generate_terraform_config(
+    resources: List[Dict[str, Any]], filename: str
+) -> None:
     """Generates a Terraform configuration file."""
     with open(filename, "w") as f:
         for resource in resources:
@@ -17,7 +20,9 @@ def generate_terraform_config(resources: list, filename: str):
             f.write("}\n\n")
 
 
-def generate_terraform_tfvars(resources: list, filename: str = "terraform.tfvars"):
+def generate_terraform_tfvars(
+    resources: List[Dict[str, Any]], filename: str = "terraform.tfvars"
+) -> None:
     """Generates a terraform.tfvars file with structured variables."""
     with open(filename, "w") as f:
         for resource in resources:
@@ -26,10 +31,14 @@ def generate_terraform_tfvars(resources: list, filename: str = "terraform.tfvars
                 f.write(f'  {key} = "{value}"\n')
             f.write("}\n\n")
             if "docker_containers" in resource:
-                generate_docker_tfvars(f, resource["name"], resource["docker_containers"])
+                generate_docker_tfvars(
+                    f, resource["name"], resource["docker_containers"]
+                )
 
 
-def generate_docker_tfvars(f, resource_name: str, containers: list):
+def generate_docker_tfvars(
+    f: IO[str], resource_name: str, containers: List[Dict[str, Any]]
+) -> None:
     """Generates variables for Docker containers."""
     for i, container in enumerate(containers):
         container_name = container.get("name", f"container{i}")
@@ -39,7 +48,9 @@ def generate_docker_tfvars(f, resource_name: str, containers: list):
         f.write("}\n\n")
 
 
-def generate_import_script(resources: list, filename: str = "import.sh"):
+def generate_import_script(
+    resources: List[Dict[str, Any]], filename: str = "import.sh"
+) -> None:
     """Generates a shell script with terraform import commands."""
     with open(filename, "w") as f:
         f.write("#!/bin/bash\n\n")
