@@ -21,3 +21,14 @@ jobs:
         run: pip install ansible-lint
       - name: Run Ansible Lint.
         run: ansible-lint
+  terraform-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the codebase.
+        uses: actions/checkout@v2
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+      - name: Terraform Init
+        run: terraform -chdir=terraform init -backend=false
+      - name: Terraform Validate
+        run: terraform -chdir=terraform validate
