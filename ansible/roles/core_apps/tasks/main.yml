@@ -1,12 +1,3 @@
 ---
-- name: Deploy Gitea
-  include_tasks: gitea.yml
-
-- name: Deploy Coder
-  include_tasks: coder.yml
-
-- name: Deploy Monitoring
-  include_tasks: monitoring.yml
-
 - name: Deploy ArgoCD
   include_tasks: argocd.yml
