@@ -8,9 +8,14 @@ spec:
   source:
     repoURL: https://github.com/pi-hole/docker-pi-hole.git
     targetRevision: master
-    path: helm/pi-hole
+    path: '.'
+    directory:
+      recurse: true
     helm:
       values: |
+        adminPassword:
+          name: pihole-admin-password
+          key: password
         persistence:
           enabled: true
           storageClassName: "local-path"
