@@ -1,0 +1,12 @@
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: {{ efk_elasticsearch_name }}
+  namespace: {{ efk_namespace }}
+spec:
+  version: {{ efk_elasticsearch_version }}
+  nodeSets:
+  - name: default
+    count: {{ efk_elasticsearch_node_count }}
+    config:
+      node.store.allow_mmap: false

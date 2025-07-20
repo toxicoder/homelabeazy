@@ -1,0 +1,10 @@
+apiVersion: kibana.k8s.elastic.co/v1
+kind: Kibana
+metadata:
+  name: {{ efk_kibana_name }}
+  namespace: {{ efk_namespace }}
+spec:
+  version: {{ efk_kibana_version }}
+  count: {{ efk_kibana_node_count }}
+  elasticsearchRef:
+    name: {{ efk_elasticsearch_name }}
