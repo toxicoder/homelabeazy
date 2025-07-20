@@ -98,61 +98,34 @@ This homelab is built on a foundation of Proxmox for virtualization, with Terraf
 
 ```mermaid
 graph TD
-    subgraph User
-        A[User]
+    subgraph "User Interface"
+        A[User] --> B[Frontend]
     end
 
-    subgraph "Kubernetes Cluster"
-        subgraph "Core Infrastructure"
-            B[Traefik]
-            C[Authelia]
-            D[OpenLDAP]
-            E[Vault]
-            F[Velero]
-            G[EFK Stack]
+    subgraph "Backend Services"
+        B --> C[API Gateway]
+        C --> D[Authentication Service]
+        C --> E[Job Service]
+        E --> F[Processing Service]
+    end
+
+    subgraph "Data Stores"
+        D --> G[PostgreSQL Auth]
+        E --> H[PostgreSQL Jobs]
+        F --> I[Redis]
+    end
+
+    subgraph "Message Broker"
+        E --> J[RabbitMQ]
+        F --> J
+    end
+
+    subgraph "Deployment"
+        subgraph "CI/CD"
+            K[Jenkins] --> L[Docker build/push]
         end
-
-        subgraph "Applications"
-            H[Bitwarden]
-            I[Gitea]
-            J[Homepage]
-            K[...and many more]
-        end
+        L --> M[Kubernetes Cluster]
     end
-
-    subgraph "External Services"
-        L[Proxmox]
-        M[pfSense]
-        N[Cloudflare]
-    end
-
-    A -- "Accesses applications via" --> B
-    B -- "Authenticates users with" --> C
-    C -- "Uses as an identity source" --> D
-    B -- "Manages SSL certificates with" --> N
-    B -- "Routes traffic to" --> H
-    B -- "Routes traffic to" --> I
-    B -- "Routes traffic to" --> J
-    B -- "Routes traffic to" --> K
-    E -- "Stores secrets for" --> H
-    E -- "Stores secrets for" --> I
-    E -- "Stores secrets for" --> J
-    E -- "Stores secrets for" --> K
-    F -- "Backs up and restores" --> H
-    F -- "Backs up and restores" --> I
-    F -- "Backs up and restores" --> J
-    F -- "Backs up and restores" --> K
-    G -- "Collects logs from" --> B
-    G -- "Collects logs from" --> C
-    G -- "Collects logs from" --> D
-    G -- "Collects logs from" --> E
-    G -- "Collects logs from" --> F
-    G -- "Collects logs from" --> H
-    G -- "Collects logs from" --> I
-    G -- "Collects logs from" --> J
-    G -- "Collects logs from" --> K
-    L -- "Provides virtualization for" --> "Kubernetes Cluster"
-    M -- "Provides firewall and routing for" --> "Kubernetes Cluster"
 ```
 
 ## Default Services
