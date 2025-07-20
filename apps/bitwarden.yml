@@ -1,0 +1,48 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: bitwarden
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/k8s-at-home/charts-incubator
+    targetRevision: 1.2.0
+    chart: bitwarden
+    helm:
+      values: |
+        image:
+          repository: bitwarden/server
+          tag: 1.40.0
+        ingress:
+          enabled: true
+          annotations:
+            kubernetes.io/ingress.class: "traefik"
+            cert-manager.io/cluster-issuer: "letsencrypt-production"
+          hosts:
+            - host: bitwarden.example.com
+              paths:
+                - path: /
+                  pathType: Prefix
+          tls:
+           - secretName: bitwarden-tls
+             hosts:
+               - bitwarden.example.com
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: bitwarden
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+    - CreateNamespace=true
