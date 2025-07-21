@@ -13,6 +13,8 @@ def generate_docker_compose(containers: List[Dict[str, Any]], filename: str) -> 
             "image": container["attributes"]["image"],
             "restart": container["attributes"]["restart"],
             "ports": container["attributes"]["ports"],
+            "volumes": container["attributes"]["volumes"],
+            "environment": container["attributes"]["environment"],
         }
 
     compose_data = {"version": "3.8", "services": services}
