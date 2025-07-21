@@ -2,12 +2,18 @@ import unittest
 from unittest.mock import patch, MagicMock
 import sys
 import os
+import tempfile
+import shutil
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
 from main import main
 
-import os
-
 class TestMain(unittest.TestCase):
+    def setUp(self):
+        self.test_dir = tempfile.mkdtemp()
+
+    def tearDown(self):
+        shutil.rmtree(self.test_dir)
+
     @patch("main.ProxmoxAPI")
     def test_main_success(self, mock_proxmox_api):
         # Set environment variables
@@ -42,16 +48,13 @@ class TestMain(unittest.TestCase):
         ]
 
         # Run the main function
-        main()
+        main(self.test_dir)
 
         # Assert that the Terraform file was created
-        with open("homelab.tf", "r") as f:
+        with open(os.path.join(self.test_dir, "homelab.tf"), "r") as f:
             content = f.read()
             self.assertIn('resource "proxmox_vm_qemu" "test_vm"', content)
             self.assertIn('resource "proxmox_lxc" "test_lxc"', content)
-
-        # Clean up the generated file
-        os.remove("homelab.tf")
 
 if __name__ == "__main__":
     unittest.main()
