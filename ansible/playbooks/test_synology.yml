@@ -1,0 +1,115 @@
+---
+- name: Test Synology Module
+  hosts: localhost
+  gather_facts: false
+  vars:
+    synology_nas_ip: "192.168.1.100"
+    synology_nas_username: "admin"
+    synology_nas_password: "password"
+    test_user: "testuser"
+    test_group: "testgroup"
+    test_folder: "testfolder"
+
+  tasks:
+    - name: Create test user
+      synology:
+        host: "{{ synology_nas_ip }}"
+        username: "{{ synology_nas_username }}"
+        password: "{{ synology_nas_password }}"
+        resource: user
+        name: "{{ test_user }}"
+        state: present
+        config:
+          password: "password"
+          email: "testuser@example.com"
+      register: create_user_result
+
+    - name: Verify user creation
+      assert:
+        that:
+          - create_user_result.changed
+
+    - name: Create test group
+      synology:
+        host: "{{ synology_nas_ip }}"
+        username: "{{ synology_nas_username }}"
+        password: "{{ synology_nas_password }}"
+        resource: group
+        name: "{{ test_group }}"
+        state: present
+        config:
+          description: "Test group"
+      register: create_group_result
+
+    - name: Verify group creation
+      assert:
+        that:
+          - create_group_result.changed
+
+    - name: Create test shared folder
+      synology:
+        host: "{{ synology_nas_ip }}"
+        username: "{{ synology_nas_username }}"
+        password: "{{ synology_nas_password }}"
+        resource: shared_folder
+        name: "{{ test_folder }}"
+        state: present
+        config:
+          permissions:
+            - name: "{{ test_user }}"
+              type: "user"
+              permission: "rw"
+            - name: "{{ test_group }}"
+              type: "group"
+              permission: "ro"
+      register: create_folder_result
+
+    - name: Verify folder creation
+      assert:
+        that:
+          - create_folder_result.changed
+
+    - name: Delete test user
+      synology:
+        host: "{{ synology_nas_ip }}"
+        username: "{{ synology_nas_username }}"
+        password: "{{ synology_nas_password }}"
+        resource: user
+        name: "{{ test_user }}"
+        state: absent
+      register: delete_user_result
+
+    - name: Verify user deletion
+      assert:
+        that:
+          - delete_user_result.changed
+
+    - name: Delete test group
+      synology:
+        host: "{{ synology_nas_ip }}"
+        username: "{{ synology_nas_username }}"
+        password: "{{ synology_nas_password }}"
+        resource: group
+        name: "{{ test_group }}"
+        state: absent
+      register: delete_group_result
+
+    - name: Verify group deletion
+      assert:
+        that:
+          - delete_group_result.changed
+
+    - name: Delete test shared folder
+      synology:
+        host: "{{ synology_nas_ip }}"
+        username: "{{ synology_nas_username }}"
+        password: "{{ synology_nas_password }}"
+        resource: shared_folder
+        name: "{{ test_folder }}"
+        state: absent
+      register: delete_folder_result
+
+    - name: Verify folder deletion
+      assert:
+        that:
+          - delete_folder_result.changed
