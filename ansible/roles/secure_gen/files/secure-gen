@@ -1,0 +1,256 @@
+#!/usr/bin/env python3
+
+import argparse
+import os
+import hvac
+
+def main():
+    parser = argparse.ArgumentParser(description="Secure Credential Generation and Management Tool")
+    subparsers = parser.add_subparsers(dest="command")
+
+    # SSH key generation
+    ssh_parser = subparsers.add_parser("ssh-key", help="Generate an SSH key pair")
+    ssh_parser.add_argument("--user-alias", required=True, help="User alias for the SSH key")
+
+    # GPG key generation
+    gpg_parser = subparsers.add_parser("gpg-key", help="Generate a GPG key")
+    gpg_parser.add_argument("--user-alias", required=True, help="User alias for the GPG key")
+
+    # Private key generation
+    private_key_parser = subparsers.add_parser("private-key", help="Generate a private key")
+    private_key_parser.add_argument("--alias", required=True, help="Alias for the private key")
+
+    # Self-signed certificate generation
+    cert_parser = subparsers.add_parser("self-signed-cert", help="Generate a self-signed X.509 certificate")
+    cert_parser.add_argument("--cn", required=True, help="Common Name for the certificate")
+
+    # Password and API key generation
+    password_parser = subparsers.add_parser("password", help="Generate a password")
+    password_parser.add_argument("--alias", required=True, help="Alias for the password")
+
+    args = parser.parse_args()
+
+    if args.command == "ssh-key":
+        generate_ssh_key(args.user_alias)
+    elif args.command == "gpg-key":
+        generate_gpg_key(args.user_alias)
+    elif args.command == "private-key":
+        generate_private_key(args.alias)
+    elif args.command == "self-signed-cert":
+        generate_self_signed_cert(args.cn)
+    elif args.command == "password":
+        generate_password(args.alias)
+    else:
+        parser.print_help()
+
+def get_vault_client():
+    # It's recommended to use environment variables for Vault address and token
+    vault_addr = os.environ.get("VAULT_ADDR", "http://127.0.0.1:8200")
+    vault_token = os.environ.get("VAULT_TOKEN")
+
+    if not vault_token:
+        raise ValueError("VAULT_TOKEN environment variable is not set")
+
+    return hvac.Client(url=vault_addr, token=vault_token)
+
+from cryptography.hazmat.primitives import serialization as crypto_serialization
+from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.hazmat.backends import default_backend as crypto_default_backend
+
+def generate_ssh_key(user_alias):
+    """
+    Generates a new SSH key pair and stores it in Vault.
+    """
+    print(f"Generating SSH key for {user_alias}...")
+
+    # Generate the SSH key
+    key = rsa.generate_private_key(
+        backend=crypto_default_backend(),
+        public_exponent=65537,
+        key_size=4096
+    )
+    private_key = key.private_bytes(
+        crypto_serialization.Encoding.PEM,
+        crypto_serialization.PrivateFormat.OpenSSH,
+        crypto_serialization.NoEncryption()
+    )
+    public_key = key.public_key().public_bytes(
+        crypto_serialization.Encoding.OpenSSH,
+        crypto_serialization.PublicFormat.OpenSSH
+    )
+
+    # Store the key in Vault
+    client = get_vault_client()
+    secret_path = f"secret/ssh/{user_alias}"
+    client.secrets.kv.v2.create_or_update_secret(
+        path=secret_path,
+        secret=dict(private_key=private_key.decode('utf-8'), public_key=public_key.decode('utf-8')),
+    )
+
+    print(f"SSH key for {user_alias} stored in Vault at {secret_path}")
+
+    # Update SSH config
+    update_ssh_config(user_alias)
+
+def update_ssh_config(user_alias):
+    """
+    Updates the ~/.ssh/config file to use the generated key from Vault.
+    """
+    ssh_config_path = os.path.expanduser("~/.ssh/config")
+    command = f"vault read -field=private_key secret/ssh/{user_alias}"
+    config_entry = f"""
+Host {user_alias}
+    IdentityFile ~/.ssh/{user_alias}_key
+    ProxyCommand sh -c "{command} > ~/.ssh/{user_alias}_key && ssh -W %h:%p {user_alias}"
+"""
+
+    if not os.path.exists(os.path.dirname(ssh_config_path)):
+        os.makedirs(os.path.dirname(ssh_config_path))
+
+    with open(ssh_config_path, "a") as f:
+        f.write(config_entry)
+
+    print(f"SSH config updated for {user_alias}")
+
+import gnupg
+
+def generate_gpg_key(user_alias):
+    """
+    Generates a new GPG key and stores it in Vault.
+    """
+    print(f"Generating GPG key for {user_alias}...")
+
+    gpg = gnupg.GPG()
+    input_data = gpg.gen_key_input(
+        key_type="RSA",
+        key_length=4096,
+        name_real=user_alias,
+        name_email=f"{user_alias}@example.com",
+        expire_date=0,
+    )
+    key = gpg.gen_key(input_data)
+    private_key = gpg.export_keys(key.fingerprint, True)
+    public_key = gpg.export_keys(key.fingerprint)
+
+    # Store the key in Vault
+    client = get_vault_client()
+    secret_path = f"secret/gpg/{user_alias}"
+    client.secrets.kv.v2.create_or_update_secret(
+        path=secret_path,
+        secret=dict(private_key=private_key, public_key=public_key),
+    )
+
+    print(f"GPG key for {user_alias} stored in Vault at {secret_path}")
+
+def generate_private_key(alias):
+    """
+    Generates a new private key and stores it in Vault.
+    """
+    print(f"Generating private key with alias {alias}...")
+
+    # Generate the private key
+    key = rsa.generate_private_key(
+        backend=crypto_default_backend(),
+        public_exponent=65537,
+        key_size=4096
+    )
+    private_key = key.private_bytes(
+        crypto_serialization.Encoding.PEM,
+        crypto_serialization.PrivateFormat.PKCS8,
+        crypto_serialization.NoEncryption()
+    )
+
+    # Store the key in Vault
+    client = get_vault_client()
+    secret_path = f"secret/private_keys/{alias}"
+    client.secrets.kv.v2.create_or_update_secret(
+        path=secret_path,
+        secret=dict(private_key=private_key.decode('utf-8')),
+    )
+
+    print(f"Private key with alias {alias} stored in Vault at {secret_path}")
+
+from cryptography import x509
+from cryptography.x509.oid import NameOID
+import datetime
+
+def generate_self_signed_cert(cn):
+    """
+    Generates a new self-signed X.509 certificate and stores it in Vault.
+    """
+    print(f"Generating self-signed certificate for {cn}...")
+
+    # Generate a private key
+    key = rsa.generate_private_key(
+        public_exponent=65537,
+        key_size=2048,
+        backend=crypto_default_backend()
+    )
+
+    # Generate a self-signed certificate
+    subject = issuer = x509.Name([
+        x509.NameAttribute(NameOID.COUNTRY_NAME, u"US"),
+        x509.NameAttribute(NameOID.STATE_OR_PROVINCE_NAME, u"California"),
+        x509.NameAttribute(NameOID.LOCALITY_NAME, u"San Francisco"),
+        x509.NameAttribute(NameOID.ORGANIZATION_NAME, u"My Company"),
+        x509.NameAttribute(NameOID.COMMON_NAME, cn),
+    ])
+    cert = x509.CertificateBuilder().subject_name(
+        subject
+    ).issuer_name(
+        issuer
+    ).public_key(
+        key.public_key()
+    ).serial_number(
+        x509.random_serial_number()
+    ).not_valid_before(
+        datetime.datetime.utcnow()
+    ).not_valid_after(
+        datetime.datetime.utcnow() + datetime.timedelta(days=365)
+    ).add_extension(
+        x509.SubjectAlternativeName([x509.DNSName(cn)]),
+        critical=False,
+    ).sign(key, crypto_serialization.NoEncryption())
+
+    private_key = key.private_bytes(
+        crypto_serialization.Encoding.PEM,
+        crypto_serialization.PrivateFormat.PKCS8,
+        crypto_serialization.NoEncryption()
+    )
+    certificate = cert.public_bytes(crypto_serialization.Encoding.PEM)
+
+    # Store the certificate and private key in Vault
+    client = get_vault_client()
+    secret_path = f"secret/certs/{cn}"
+    client.secrets.kv.v2.create_or_update_secret(
+        path=secret_path,
+        secret=dict(private_key=private_key.decode('utf-8'), certificate=certificate.decode('utf-8')),
+    )
+
+    print(f"Self-signed certificate for {cn} stored in Vault at {secret_path}")
+
+import secrets
+import string
+
+def generate_password(alias):
+    """
+    Generates a new password and stores it in Vault.
+    """
+    print(f"Generating password with alias {alias}...")
+
+    # Generate a random password
+    alphabet = string.ascii_letters + string.digits
+    password = ''.join(secrets.choice(alphabet) for i in range(20))
+
+    # Store the password in Vault
+    client = get_vault_client()
+    secret_path = f"secret/passwords/{alias}"
+    client.secrets.kv.v2.create_or_update_secret(
+        path=secret_path,
+        secret=dict(password=password),
+    )
+
+    print(f"Password with alias {alias} stored in Vault at {secret_path}")
+
+if __name__ == "__main__":
+    main()

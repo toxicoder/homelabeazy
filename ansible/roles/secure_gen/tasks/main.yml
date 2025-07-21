@@ -1,0 +1,3 @@
+---
+- name: Install secure-gen tool
+  include_tasks: install.yml
