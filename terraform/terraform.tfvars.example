@@ -1,6 +1,0 @@
-# This file has been deprecated.
-# Please see the files in the `config` directory for the actual configuration.
-#
-# You can generate a new terraform.tfvars file by running the following command:
-#
-# yq eval '... a yq query to transform the yaml to tfvars ...' ../config/main.yml ../config/secrets.yml > terraform.tfvars

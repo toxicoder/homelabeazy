@@ -1,7 +1,1 @@
----
-# This file imports the main configuration, application configuration, and secrets.
-# Please see the files in the `config` directory for the actual configuration.
-
-- import_playbook: ../../config/main.yml
-- import_playbook: ../../config/applications.yml
-- import_playbook: ../../config/secrets.yml
+domain_name: example.com

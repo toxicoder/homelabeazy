@@ -2,39 +2,34 @@
 
 # This script will set up the homelab environment.
 
-# Ask for the user's Proxmox API URL.
-read -p "Enter your Proxmox API URL: " pm_api_url
+export PATH=$PATH:/home/jules/.local/bin:/usr/local/bin
 
-# Ask for the user's Proxmox API token ID.
-read -p "Enter your Proxmox API token ID: " pm_token_id
-
-# Ask for the user's Proxmox API token secret.
-read -sp "Enter your Proxmox API token secret: " pm_token_secret
-echo
-
-# Ask for the user's domain name.
-read -p "Enter your domain name: " domain_name
+# Export the variables from the config/main.yml file.
+python3 config/export_vars.py
+source .env
 
 # Create the terraform.tfvars file.
 cat > terraform/terraform.tfvars <<EOF
-pm_api_url = "$pm_api_url"
-pm_token_id = "$pm_token_id"
-pm_token_secret = "$pm_token_secret"
+pm_api_url = "$PM_API_URL"
+pm_token_id = "$PM_TOKEN_ID"
+pm_token_secret = "$PM_TOKEN_SECRET"
 EOF
+
+cp *.tf terraform/
 
 # Create the group_vars/all.yml file.
 cat > ansible/group_vars/all.yml <<EOF
-domain_name: $domain_name
+domain_name: $DOMAIN_NAME
 EOF
 
 # Run terraform init.
-terraform -chdir=terraform init
+(cd terraform && terraform init)
 
 # Run terraform plan.
-terraform -chdir=terraform plan
+(cd terraform && terraform plan)
 
 # Run terraform apply.
-terraform -chdir=terraform apply -auto-approve
+(cd terraform && terraform apply -auto-approve)
 
 # Run the ansible playbook.
 ansible-playbook -i ansible/inventory/inventory.auto.yml ansible/playbooks/setup.yml
