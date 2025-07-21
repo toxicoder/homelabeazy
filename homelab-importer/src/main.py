@@ -8,6 +8,7 @@ from terraform import (
     generate_terraform_tfvars,
     generate_import_script,
 )
+from docker import generate_docker_compose
 
 
 def main() -> None:
@@ -52,6 +53,13 @@ def main() -> None:
         # Generate import script
         generate_import_script(all_resources, "import.sh")
         print("Terraform import script generated in import.sh")
+
+        # Generate docker-compose files
+        for resource in all_resources:
+            if "docker_containers" in resource and resource["docker_containers"]:
+                filename = f'{resource["name"]}_docker-compose.yml'
+                generate_docker_compose(resource["docker_containers"], filename)
+                print(f"Docker Compose file generated in {filename}")
 
     except Exception as e:
         print(f"An error occurred: {e}")

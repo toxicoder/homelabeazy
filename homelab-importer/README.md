@@ -26,6 +26,7 @@ A command-line tool to import data into a homelab environment.
    - `homelab.tf`: Terraform configuration for your Proxmox resources.
    - `terraform.tfvars`: Terraform variables for your resources.
    - `import.sh`: A script to import your existing resources into Terraform state.
+   - `*_docker-compose.yml`: Docker Compose files for any discovered containers.
 
 4. **Initialize Terraform:**
    ```bash
@@ -41,6 +42,14 @@ A command-line tool to import data into a homelab environment.
    ```bash
    terraform apply
    ```
+
+7. **Deploy Docker Containers:**
+   - If `*_docker-compose.yml` files were generated, you can use them to deploy your Docker containers.
+   - Copy the relevant `docker-compose.yml` file to the target machine (e.g., a new VM created by Terraform).
+   - Run the following command to start the containers:
+     ```bash
+     docker-compose up -d
+     ```
 
 ## Migration Strategy
 
