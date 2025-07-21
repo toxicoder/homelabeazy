@@ -26,17 +26,27 @@ proxmox_node: "pve"
 proxmox_storage: "local-lvm"
 proxmox_bridge: "vmbr0"
 pm_api_url: "https://192.168.1.100:8006/api2/json"
+pm_token_id: "your_token_id"
+pm_token_secret: "your_token_secret"
 
 # K3s settings
 # These settings are used to configure the K3s cluster.
-k3s_version: "v1.24.4+k3s1"
+k3s_version: "v1.28.4+k3s1"
 k3s_master_count: 1
 k3s_worker_count: 2
-k3s_vm_memory: 2048
+k3s_vm_memory: 4096
 k3s_vm_cores: 2
-k3s_vm_disk_size: "20G"
+k3s_vm_disk: "local-lvm:20"
+k3s_vm_vlan: 10
+k3s_ssh_user: "ansible"
+k3s_ssh_private_key_file: "~/.ssh/id_rsa"
+k3s_ssh_public_key_file: "~/.ssh/id_rsa.pub"
+k3s_cluster_name: "k3s-cluster"
+k3s_cluster_domain: "k3s.local"
+k3s_cluster_dns: "10.43.0.10"
 k3s_master_prefix: "k3s-master"
 k3s_worker_prefix: "k3s-worker"
+
 
 # VM template settings
 # These settings are used to configure the VM template.
@@ -48,3 +58,8 @@ os_image_url: "https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudi
 # These settings are used to configure the network.
 network_vlan_tag: -1
 network_cidr: "192.168.1.0/24"
+
+# Terraform test configuration
+terraform_test_ssh_public_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC/8yv... user@host"
+terraform_test_k3s_master_disk_size: "20G"
+terraform_test_k3s_worker_disk_size: "20G"
