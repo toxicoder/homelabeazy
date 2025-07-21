@@ -2,6 +2,15 @@
 
 This project uses Ansible to automate the setup of a homelab environment on a Proxmox server. It will provision a K3s cluster and deploy a set of core infrastructure and applications.
 
+## Prerequisites
+
+Before you begin, you will need the following:
+
+-   A **Proxmox server** with a cloud-init template for your desired operating system.
+-   **Ansible** and **Terraform** installed on your local machine.
+-   A **password manager** such as Bitwarden or 1Password to store your secrets.
+-   An **API token** for your Proxmox server.
+
 ## Getting Started
 
 There are two ways to get started with this project:
@@ -10,6 +19,8 @@ There are two ways to get started with this project:
 - **Manual Setup:** This is for advanced users who want to customize the installation.
 
 ### One-Click Setup
+
+The `setup.sh` script is the easiest way to get started. It will automatically provision the infrastructure and deploy the applications with minimal user interaction.
 
 1.  **Clone the repository:**
 
@@ -24,17 +35,29 @@ There are two ways to get started with this project:
     ./setup.sh
     ```
 
-    This script will:
+    This script will prompt you for the following information:
 
-    - Ask you for your Proxmox API URL, API token, and other details.
-    - Create a `terraform.tfvars` file with the information you provided.
-    - Run `terraform init`, `terraform plan`, and `terraform apply` to provision the infrastructure.
-    - Create an `ansible/group_vars/all.yml` file with the information you provided.
-    - Run the Ansible playbook to deploy the applications.
+    -   **Proxmox API URL:** The URL of your Proxmox API.
+    -   **Proxmox API Token ID:** Your Proxmox API token ID.
+    -   **Proxmox API Token Secret:** Your Proxmox API token secret.
+    -   **Domain Name:** The domain name for your homelab.
+
+    The script will then perform the following actions:
+
+    -   Create a `terraform.tfvars` file with your Proxmox credentials.
+    -   Run `terraform init`, `terraform plan`, and `terraform apply` to provision the infrastructure.
+    -   Create an `ansible/group_vars/all.yml` file with your domain name.
+    -   Run the Ansible playbook to deploy the applications.
+
+    **Note:** If you want to manage your secrets manually, you can run the script with the `--no-vault` flag. This will skip the Vault setup and allow you to enter your secrets manually.
+
+    ```bash
+    ./setup.sh --no-vault
+    ```
 
 ### Manual Setup
 
-If you want to customize the installation, you can follow these steps:
+The manual setup process is for advanced users who want to customize the installation. This process gives you more control over the configuration of the infrastructure and applications.
 
 1.  **Clone the repository:**
 
@@ -71,7 +94,20 @@ If you want to customize the installation, you can follow these steps:
 
     - Edit `ansible/group_vars/all.yml` to set your domain name, user passwords, and other application-specific configurations.
 
-5.  **Run the Ansible playbook:**
+5.  **Manage Secrets:**
+
+    This project uses Vault to manage secrets by default. However, you can choose to manage your secrets manually.
+
+    -   **With Vault (Default):** If you are using Vault, you will need to add your secrets to the appropriate path in Vault. The Ansible playbook will automatically retrieve the secrets from Vault during the deployment process.
+    -   **Without Vault:** If you are not using Vault, you will need to create a `secrets.yml` file in the `ansible/group_vars` directory. This file should contain all of your secrets in the following format:
+
+        ```yaml
+        secret_key: "secret_value"
+        ```
+
+        You will also need to update the Ansible playbook to retrieve the secrets from this file instead of Vault.
+
+6.  **Run the Ansible playbook:**
 
     ```bash
     ansible-playbook -i ansible/inventory/inventory.auto.yml ansible/playbooks/setup.yml
@@ -305,30 +341,111 @@ The OpenLDAP application is deployed using the `apps/openldap.yml` manifest. The
   - `root-password`
   - `admin-password`
 
+## Post-Installation
+
+After the setup is complete, you will need to perform the following steps to access your new homelab environment:
+
+1.  **Access Proxmox:** You can access the Proxmox web interface by navigating to the IP address of your Proxmox server in your web browser.
+
+2.  **Access the Kubernetes Cluster:** The K3s cluster is now running on your Proxmox server. You can access it by SSHing into one of the master nodes and using the `kubectl` command-line tool.
+
+3.  **Configure DNS:** You will need to configure DNS for your applications to be accessible at their respective domain names. This can be done by adding DNS records to your DNS provider or by using a local DNS server such as Pi-hole.
+
+4.  **Access Applications:** Once DNS is configured, you can access the applications by navigating to their respective domain names in your web browser.
+
 ## Troubleshooting
 
-### Terraform fails to apply changes
+This section provides solutions to common problems you may encounter during the setup process.
+
+### Terraform Fails to Apply Changes
 
 If Terraform fails to apply the changes, it may be due to a problem with your Proxmox environment. Check the following:
 
-- **Proxmox API token:** Make sure your Proxmox API token has the correct permissions.
-- **Proxmox host:** Make sure the Proxmox host is running and accessible.
-- **Cloud-init template:** Make sure the cloud-init template exists and is configured correctly.
+-   **Proxmox API Token:** Make sure your Proxmox API token has the correct permissions.
+-   **Proxmox Host:** Make sure the Proxmox host is running and accessible.
+-   **Cloud-init Template:** Make sure the cloud-init template exists and is configured correctly.
 
-### Ansible playbook fails to run
+### Ansible Playbook Fails to Run
 
 If the Ansible playbook fails to run, it may be due to a problem with your SSH connection. Check the following:
 
-- **SSH key:** Make sure your SSH key is added to your SSH agent.
-- **SSH connection:** Make sure you can connect to the nodes using SSH.
+-   **SSH Key:** Make sure your SSH key is added to your SSH agent.
+-   **SSH Connection:** Make sure you can connect to the nodes using SSH.
 
-### Application is not accessible
+### Application Is Not Accessible
 
 If an application is not accessible, it may be due to a problem with the Traefik Ingress controller. Check the following:
 
-- **Traefik dashboard:** Check the Traefik dashboard to see if there are any errors.
-- **Ingress route:** Make sure the Ingress route for the application is configured correctly.
-- **DNS:** Make sure the DNS record for the application is pointing to the correct IP address.
+-   **Traefik Dashboard:** Check the Traefik dashboard to see if there are any errors.
+-   **Ingress Route:** Make sure the Ingress route for the application is configured correctly.
+-   **DNS:** Make sure the DNS record for the application is pointing to the correct IP address.
+
+### Restarting the Setup Process
+
+If you encounter an issue that you cannot resolve, you can restart the setup process from the beginning.
+
+1.  **Destroy the infrastructure:**
+
+    ```bash
+    terraform destroy
+    ```
+
+2.  **Delete the `terraform.tfvars` file:**
+
+    ```bash
+    rm terraform/terraform.tfvars
+    ```
+
+3.  **Delete the `ansible/group_vars/all.yml` file:**
+
+    ```bash
+    rm ansible/group_vars/all.yml
+    ```
+
+4.  **Run the setup script again:**
+
+    ```bash
+    ./setup.sh
+    ```
+
+## Customization
+
+This project is highly customizable. You can add new applications, manage secrets, and configure network settings to fit your needs.
+
+### Adding New Applications
+
+To add a new application, you will need to create a new Ansible role for it. The role should include the following:
+
+-   A `tasks/main.yml` file that defines the tasks for deploying the application.
+-   A `templates` directory that contains any necessary configuration files.
+-   A `defaults/main.yml` file that defines the default variables for the application.
+
+Once you have created the role, you can add it to the `ansible/playbooks/setup.yml` file to have it deployed with the rest of the applications.
+
+### Managing Secrets
+
+This project uses Vault to manage secrets by default. However, you can choose to manage your secrets manually.
+
+-   **With Vault (Default):** If you are using Vault, you will need to add your secrets to the appropriate path in Vault. The Ansible playbook will automatically retrieve the secrets from Vault during the deployment process.
+-   **Without Vault:** If you are not using Vault, you will need to create a `secrets.yml` file in the `ansible/group_vars` directory. This file should contain all of your secrets in the following format:
+
+    ```yaml
+    secret_key: "secret_value"
+    ```
+
+    You will also need to update the Ansible playbook to retrieve the secrets from this file instead of Vault.
+
+### Configuring Network Settings
+
+The network settings for the virtual machines are defined in the `terraform/variables.tf` file. You can modify this file to change the following:
+
+-   The IP address range for the virtual machines.
+-   The gateway and DNS servers for the virtual machines.
+-   The VLAN tag for the virtual machines.
+
+### Using Different Cloud-Init Templates
+
+This project uses a cloud-init template to configure the virtual machines. You can use a different cloud-init template by modifying the `template_name` variable in the `terraform/terraform.tfvars` file.
 
 ## Contributing
 
