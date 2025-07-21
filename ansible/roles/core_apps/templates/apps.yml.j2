@@ -30,3 +30,73 @@ items:
       destination:
         server: '{{ server_url }}'
         namespace: supabase
+  - apiVersion: argoproj.io/v1alpha1
+    kind: Application
+    metadata:
+      name: coder
+      namespace: argocd
+    spec:
+      project: default
+      source:
+        repoURL: '{{ coder_repo_url }}'
+        targetRevision: '{{ coder_repo_revision }}'
+        path: coder
+      destination:
+        server: '{{ server_url }}'
+        namespace: coder
+  - apiVersion: argoproj.io/v1alpha1
+    kind: Application
+    metadata:
+      name: kasm
+      namespace: argocd
+    spec:
+      project: default
+      source:
+        repoURL: '{{ kasm_repo_url }}'
+        targetRevision: '{{ kasm_repo_revision }}'
+        path: kasm
+      destination:
+        server: '{{ server_url }}'
+        namespace: kasm
+  - apiVersion: argoproj.io/v1alpha1
+    kind: Application
+    metadata:
+      name: pihole
+      namespace: argocd
+    spec:
+      project: default
+      source:
+        repoURL: '{{ pihole_repo_url }}'
+        targetRevision: '{{ pihole_repo_revision }}'
+        path: pihole
+      destination:
+        server: '{{ server_url }}'
+        namespace: pihole
+  - apiVersion: argoproj.io/v1alpha1
+    kind: Application
+    metadata:
+      name: puter
+      namespace: argocd
+    spec:
+      project: default
+      source:
+        repoURL: '{{ puter_repo_url }}'
+        targetRevision: '{{ puter_repo_revision }}'
+        path: puter
+      destination:
+        server: '{{ server_url }}'
+        namespace: puter
+  - apiVersion: argoproj.io/v1alpha1
+    kind: Application
+    metadata:
+      name: searxng
+      namespace: argocd
+    spec:
+      project: default
+      source:
+        repoURL: '{{ searxng_repo_url }}'
+        targetRevision: '{{ searxng_repo_revision }}'
+        path: searxng
+      destination:
+        server: '{{ server_url }}'
+        namespace: searxng
