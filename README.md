@@ -2,6 +2,8 @@
 
 This project uses Ansible to automate the setup of a homelab environment on a Proxmox server. It will provision a K3s cluster and deploy a set of core infrastructure and applications.
 
+The project is designed to be idempotent, meaning it can be run multiple times without causing any unintended side effects. It is also designed to be modular, so you can easily add or remove applications to fit your needs.
+
 ## Prerequisites
 
 Before you begin, you will need the following:
@@ -117,6 +119,8 @@ The manual setup process is for advanced users who want to customize the install
 
 This homelab is built on a foundation of Proxmox for virtualization, with Terraform and Ansible for infrastructure as code. The core of the homelab is a K3s cluster, which is a lightweight, certified Kubernetes distribution.
 
+The architecture is designed to be highly available and scalable. The K3s cluster is deployed in a high-availability configuration with multiple master and worker nodes. This ensures that the cluster will remain operational even if one of the nodes fails. The applications are deployed as microservices, which allows them to be scaled independently of each other.
+
 ### Core Components
 
 - **Proxmox:** A powerful open-source virtualization platform that provides the foundation for the homelab.
@@ -206,8 +210,11 @@ The following services are included in this homelab. Some are enabled by default
 
 This project uses a two-step process to deploy the homelab environment:
 
-1.  **Provision Infrastructure:** Use Terraform to create the virtual machines for the K3s cluster on Proxmox.
-2.  **Configure Cluster and Applications:** Use Ansible to configure the K3s cluster, install core infrastructure components, and deploy applications.
+1.  **Provision Infrastructure:** Use Terraform to create the virtual machines for the K3s cluster on Proxmox. This step is automated by the `setup.sh` script, which will create a `terraform.tfvars` file with your Proxmox credentials and then run `terraform init`, `terraform plan`, and `terraform apply`.
+
+2.  **Configure Cluster and Applications:** Use Ansible to configure the K3s cluster, install core infrastructure components, and deploy applications. This step is also automated by the `setup.sh` script, which will create an `ansible/group_vars/all.yml` file with your domain name and then run the Ansible playbook.
+
+The deployment process is designed to be as automated as possible. However, you can also run the Terraform and Ansible commands manually if you want more control over the deployment process.
 
 ## Configuration
 

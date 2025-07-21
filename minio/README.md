@@ -2,6 +2,8 @@
 
 This role deploys MinIO, a high-performance, S3-compatible object storage server.
 
+The role is designed to be idempotent, meaning it can be run multiple times without causing any unintended side effects. It is also designed to be modular, so you can easily customize the MinIO installation to fit your needs.
+
 ## Requirements
 
 - Ansible 2.9 or higher

@@ -2,6 +2,8 @@
 
 This role automates the deployment of a high-availability k3s cluster onto VMs within Proxmox. This role will first create the necessary VMs from a template and then install and configure k3s on them.
 
+The role is designed to be idempotent, meaning it can be run multiple times without causing any unintended side effects. It is also designed to be modular, so you can easily customize the k3s cluster to fit your needs.
+
 ## Requirements
 
 - Ansible 2.9+
