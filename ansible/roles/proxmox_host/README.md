@@ -2,6 +2,8 @@
 
 This role automates the initial configuration of a Proxmox VE server.
 
+The role is designed to be idempotent, meaning it can be run multiple times without causing any unintended side effects. It is also designed to be modular, so you can easily customize the Proxmox host to fit your needs.
+
 ## Requirements
 
 - Ansible 2.9 or higher
