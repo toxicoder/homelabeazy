@@ -138,34 +138,44 @@ The architecture is designed to be highly available and scalable. The K3s cluste
 
 ```mermaid
 graph TD
-    subgraph "User Interface"
-        A[User] --> B[Frontend]
+    subgraph "Infrastructure"
+        A[Proxmox]
     end
 
-    subgraph "Backend Services"
-        B --> C[API Gateway]
-        C --> D[Authentication Service]
-        C --> E[Job Service]
-        E --> F[Processing Service]
+    subgraph "Infrastructure as Code"
+        B[Terraform] --> A
+        C[Ansible] --> D
     end
 
-    subgraph "Data Stores"
-        D --> G[PostgreSQL Auth]
-        E --> H[PostgreSQL Jobs]
-        F --> I[Redis]
+    subgraph "Kubernetes Cluster"
+        D[K3s]
     end
 
-    subgraph "Message Broker"
-        E --> J[RabbitMQ]
-        F --> J
+    subgraph "Core Services"
+        E[Traefik]
+        F[Authelia]
+        G[OpenLDAP]
+        H[Vault]
+        I[Velero]
+        J[EFK Stack]
     end
 
-    subgraph "Deployment"
-        subgraph "CI/CD"
-            K[Jenkins] --> L[Docker build/push]
-        end
-        L --> M[Kubernetes Cluster]
+    subgraph "Applications"
+        K[Bitwarden]
+        L[Gitea]
+        M[Homepage]
     end
+
+    A --> D
+    D --> E
+    D --> F
+    D --> G
+    D --> H
+    D --> I
+    D --> J
+    D --> K
+    D --> L
+    D --> M
 ```
 
 ## Default Services
