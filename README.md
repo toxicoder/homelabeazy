@@ -370,6 +370,25 @@ After the setup is complete, you will need to perform the following steps to acc
 
 4.  **Access Applications:** Once DNS is configured, you can access the applications by navigating to their respective domain names in your web browser.
 
+## Stealth VM
+
+This project includes an optional "stealth" Windows VM on Proxmox for anti-cheat evasion in game streaming. This feature is experimental and should be used with caution.
+
+### Prerequisites
+
+- Proxmox 8.x+
+- A Windows ISO file
+- The PCI ID of the GPU you want to pass through
+- The MAC address of your physical network card
+
+### Usage
+
+To enable the stealth VM, run the `setup.sh` script and answer "y" when prompted to enable the stealth VM. You will then be prompted for the Windows ISO path, GPU PCI ID, and real MAC address.
+
+### Disclaimer
+
+This feature is intended for educational purposes only. The use of this feature to circumvent anti-cheat mechanisms may be against the terms of service of some games and could result in a ban. The author of this project is not responsible for any consequences that may arise from the use of this feature.
+
 ## Troubleshooting
 
 This section provides solutions to common problems you may encounter during the setup process.

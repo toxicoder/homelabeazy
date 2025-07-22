@@ -1,0 +1,36 @@
+---
+- name: Enable Hyper-V
+  win_feature:
+    name: Hyper-V
+    state: present
+  register: hyperv_install
+
+- name: Reboot after Hyper-V installation
+  win_reboot:
+  when: hyperv_install.reboot_required
+
+- name: Set registry key to hide virtualization
+  win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Virtualization
+    name: IsVirtualMachine
+    data: 0
+    type: dword
+
+- name: Disable Memory Integrity
+  win_shell: |
+    reg add "HKLM\SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity" /v "Enabled" /t REG_DWORD /d 0 /f
+
+- name: Install Chocolatey
+  win_chocolatey:
+    name: all
+    state: present
+
+- name: Install Sunshine
+  win_chocolatey:
+    name: sunshine
+    state: present
+
+- name: Install VirtIO drivers
+  win_chocolatey:
+    name: virtio-drivers
+    state: present
