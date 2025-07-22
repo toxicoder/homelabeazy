@@ -5,5 +5,12 @@ rules:
     max: 120
   document-start:
     present: false
-  new-line-at-end-of-file:
-    disable: true
+  new-line-at-end-of-file: disable
+  comments:
+    min-spaces-from-content: 1
+  comments-indentation: false
+  braces:
+    max-spaces-inside: 1
+  octal-values:
+    forbid-implicit-octal: true
+    forbid-explicit-octal: true
