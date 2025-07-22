@@ -2,5 +2,4 @@
 - name: Deploy secure-gen tool
   hosts: localhost
   connection: local
-  roles:
-    - secure_gen
+  roles: []

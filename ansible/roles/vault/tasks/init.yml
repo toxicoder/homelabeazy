@@ -25,10 +25,17 @@
   register: vault_init
 
 - name: Store vault credentials
-  copy:
-    content: "{{ vault_init.stdout }}"
-    dest: "{{ playbook_dir }}/vault.json"
+  ansible.builtin.copy:
+    content: "{{ vault_init.stdout | from_json | to_nice_yaml }}"
+    dest: "{{ playbook_dir }}/.vault_keys.yml"
   delegate_to: localhost
+  no_log: true
+
+- name: Encrypt vault keys
+  ansible.builtin.command:
+    cmd: "ansible-vault encrypt {{ playbook_dir }}/.vault_keys.yml"
+  delegate_to: localhost
+  no_log: true
 
 - name: Unseal Vault
   kubernetes.core.k8s_exec:
@@ -36,5 +43,5 @@
     pod: "{{ vault_pod.resources[0].metadata.name }}"
     command: >
       /bin/sh -c "
-        vault operator unseal $(jq -r .unseal_keys_b64[0] /tmp/vault.json)
+        vault operator unseal {{ (lookup('file', '{{ playbook_dir }}/.vault_keys.yml') | from_yaml).unseal_keys_b64[0] }}
       "

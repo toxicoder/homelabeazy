@@ -1,0 +1,8 @@
+---
+- name: Generate secrets
+  command: "python3 {{ role_path }}/../secure_gen/files/secure-gen"
+  args:
+    chdir: "{{ role_path }}/../secure_gen/files"
+  vars:
+    secrets_config: "{{ lookup('file', '{{ role_path }}/../vars/main.yml') | from_yaml }}"
+  no_log: true

@@ -3,11 +3,6 @@ variable "pm_api_url" {
   type        = string
 }
 
-variable "pm_api_user" {
-  description = "Proxmox API user"
-  type        = string
-}
-
 variable "enable_stealth_vm" {
   description = "Enable the stealth VM"
   type        = bool
