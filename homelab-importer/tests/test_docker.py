@@ -1,10 +1,13 @@
-import unittest
-from unittest.mock import mock_open, patch
 import os
 import sys
+import unittest
+from unittest.mock import mock_open, patch
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
+sys.path.insert(
+    0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src"))
+)
 from docker import generate_docker_compose
+
 
 class TestDocker(unittest.TestCase):
     def test_generate_docker_compose(self):
@@ -36,7 +39,6 @@ class TestDocker(unittest.TestCase):
             generate_docker_compose(containers, "docker-compose.yml")
 
             m.assert_called_once_with("docker-compose.yml", "w")
-            handle = m()
 
             # Get the actual data passed to yaml.dump
             args, kwargs = mock_dump.call_args
@@ -45,10 +47,21 @@ class TestDocker(unittest.TestCase):
             # Assertions on the generated data
             self.assertIn("services", compose_data)
             self.assertIn("test-container-1", compose_data["services"])
-            self.assertIn("volumes", compose_data["services"]["test-container-1"])
-            self.assertIn("environment", compose_data["services"]["test-container-1"])
-            self.assertEqual(compose_data["services"]["test-container-1"]["volumes"], ["/data:/data"])
-            self.assertEqual(compose_data["services"]["test-container-1"]["environment"], ["FOO=bar"])
+            self.assertIn(
+                "volumes", compose_data["services"]["test-container-1"]
+            )
+            self.assertIn(
+                "environment", compose_data["services"]["test-container-1"]
+            )
+            self.assertEqual(
+                compose_data["services"]["test-container-1"]["volumes"],
+                ["/data:/data"],
+            )
+            self.assertEqual(
+                compose_data["services"]["test-container-1"]["environment"],
+                ["FOO=bar"],
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

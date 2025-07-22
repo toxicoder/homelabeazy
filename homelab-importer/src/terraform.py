@@ -1,6 +1,5 @@
 """Functions for generating Terraform configuration."""
 
-import os
 import json
 from typing import IO, Any, Dict, List
 
@@ -11,7 +10,9 @@ def generate_terraform_config(
     """Generates a Terraform configuration file."""
     with open(filename, "w") as f:
         for resource in resources:
-            f.write(f'resource "{resource["resource"]}" "{resource["name"]}" {{\n')
+            f.write(
+                f'resource "{resource["resource"]}" "{resource["name"]}" {{\n'
+            )
             for key, value in resource["attributes"].items():
                 if isinstance(value, str):
                     f.write(f'  {key} = "{value}"\n')
@@ -65,10 +66,12 @@ def generate_import_script(
             if resource_type == "proxmox_vm_qemu":
                 resource_id = f"{node}/qemu/{vmid}"
                 f.write(
-                    f"terraform import {resource_type}.{resource_name} {resource_id}\n"
+                    f"terraform import {resource_type}.{resource_name} "
+                    f"{resource_id}\n"
                 )
             elif resource_type == "proxmox_lxc":
                 resource_id = f"{node}/lxc/{vmid}"
                 f.write(
-                    f"terraform import {resource_type}.{resource_name} {resource_id}\n"
+                    f"terraform import {resource_type}.{resource_name} "
+                    f"{resource_id}\n"
                 )

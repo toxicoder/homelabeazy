@@ -32,12 +32,15 @@ def map_vm_to_terraform(vm_data: Dict[str, Any]) -> Dict[str, Any]:
     }
     if "docker_containers" in vm_data:
         vm_resource["docker_containers"] = [
-            map_docker_container_to_compose(c) for c in vm_data["docker_containers"]
+            map_docker_container_to_compose(c)
+            for c in vm_data["docker_containers"]
         ]
     return vm_resource
 
 
-def map_docker_container_to_compose(container_data: Dict[str, Any]) -> Dict[str, Any]:
+def map_docker_container_to_compose(
+    container_data: Dict[str, Any]
+) -> Dict[str, Any]:
     """Maps a Docker container to a docker-compose service."""
     details = container_data.get("details", {})
     return {
@@ -77,6 +80,7 @@ def map_lxc_to_terraform(lxc_data: Dict[str, Any]) -> Dict[str, Any]:
     }
     if "docker_containers" in lxc_data:
         lxc_resource["docker_containers"] = [
-            map_docker_container_to_compose(c) for c in lxc_data["docker_containers"]
+            map_docker_container_to_compose(c)
+            for c in lxc_data["docker_containers"]
         ]
     return lxc_resource
