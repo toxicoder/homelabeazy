@@ -83,12 +83,7 @@ class TestMapping(unittest.TestCase):
         self.assertEqual(map_vm_to_terraform(vm_data), expected)
 
     def test_map_lxc_to_terraform_no_memory(self):
-        lxc_data = {
-            "name": "test-lxc",
-            "node": "pve",
-            "vmid": 101,
-            "maxcpu": 1,
-        }
+        lxc_data = {"name": "test-lxc", "node": "pve", "vmid": 101, "maxcpu": 1}
         expected = {
             "resource": "proxmox_lxc",
             "name": "test_lxc",

@@ -81,7 +81,13 @@ class TestMain(unittest.TestCase):
     @patch("main.get_lxc_containers")
     @patch("main.get_vms")
     @patch("main.ProxmoxAPI")
-    def test_main_with_docker_containers(self, mock_proxmox_api, mock_get_vms, mock_get_lxc_containers, mock_generate_docker_compose):
+    def test_main_with_docker_containers(
+        self,
+        mock_proxmox_api,
+        mock_get_vms,
+        mock_get_lxc_containers,
+        mock_generate_docker_compose,
+    ):
         # Set environment variables
         os.environ["PROXMOX_HOST"] = "dummy_host"
         os.environ["PROXMOX_USER"] = "dummy_user"
@@ -114,7 +120,6 @@ class TestMain(unittest.TestCase):
             }
         ]
         mock_get_lxc_containers.return_value = []
-
 
         # Run the main function
         main(self.test_dir)
