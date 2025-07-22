@@ -163,6 +163,55 @@ The architecture is designed to be highly available and scalable. The K3s cluste
 - **Velero:** A tool for backing up and restoring your Kubernetes cluster resources and persistent volumes.
 - **EFK Stack:** A centralized logging solution consisting of Elasticsearch, Fluentd, and Kibana.
 
+### Tool Layers
+
+```mermaid
+graph TD
+    subgraph "Physical Layer"
+        A[Physical Server]
+    end
+
+    subgraph "Virtualization Layer"
+        B(Proxmox VE)
+    end
+
+    subgraph "Infrastructure as Code Layer"
+        C(Terraform) -- Provisions --> B
+    end
+
+    subgraph "Configuration Management Layer"
+        D(Ansible) -- Configures --> E & F & G
+    end
+
+    subgraph "Orchestration Layer"
+        E(K3s Kubernetes)
+    end
+
+    subgraph "Application Layer"
+        F[Core Infrastructure Services]
+        G[User-Facing Applications]
+    end
+
+    subgraph "Security Layer"
+        H(Vault) -- Manages Secrets --> D & E & F & G
+        I(Authelia) -- Provides SSO --> G
+        J(Traefik) -- Acts as Reverse Proxy --> G
+    end
+
+    subgraph "Backup and Recovery Layer"
+        K(Velero) -- Backs up --> E & F & G
+    end
+
+    subgraph "Logging and Monitoring Layer"
+        L(EFK Stack) -- Collects Logs --> E & F & G
+    end
+
+    A --> B
+    B -- Hosts --> E
+    E -- Runs --> F
+    E -- Runs --> G
+```
+
 ### Architecture Diagram
 
 ```mermaid
