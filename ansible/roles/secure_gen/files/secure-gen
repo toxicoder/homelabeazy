@@ -4,44 +4,22 @@ import argparse
 import os
 import hvac
 
-def main():
-    parser = argparse.ArgumentParser(description="Secure Credential Generation and Management Tool")
-    subparsers = parser.add_subparsers(dest="command")
-
-    # SSH key generation
-    ssh_parser = subparsers.add_parser("ssh-key", help="Generate an SSH key pair")
-    ssh_parser.add_argument("--user-alias", required=True, help="User alias for the SSH key")
-
-    # GPG key generation
-    gpg_parser = subparsers.add_parser("gpg-key", help="Generate a GPG key")
-    gpg_parser.add_argument("--user-alias", required=True, help="User alias for the GPG key")
-
-    # Private key generation
-    private_key_parser = subparsers.add_parser("private-key", help="Generate a private key")
-    private_key_parser.add_argument("--alias", required=True, help="Alias for the private key")
-
-    # Self-signed certificate generation
-    cert_parser = subparsers.add_parser("self-signed-cert", help="Generate a self-signed X.509 certificate")
-    cert_parser.add_argument("--cn", required=True, help="Common Name for the certificate")
-
-    # Password and API key generation
-    password_parser = subparsers.add_parser("password", help="Generate a password")
-    password_parser.add_argument("--alias", required=True, help="Alias for the password")
-
-    args = parser.parse_args()
-
-    if args.command == "ssh-key":
-        generate_ssh_key(args.user_alias)
-    elif args.command == "gpg-key":
-        generate_gpg_key(args.user_alias)
-    elif args.command == "private-key":
-        generate_private_key(args.alias)
-    elif args.command == "self-signed-cert":
-        generate_self_signed_cert(args.cn)
-    elif args.command == "password":
-        generate_password(args.alias)
-    else:
-        parser.print_help()
+def generate_secrets(config):
+    """
+    Generates secrets based on the provided configuration.
+    """
+    for secret_type, secrets in config.items():
+        for secret in secrets:
+            if secret_type == "ssh_keys":
+                generate_ssh_key(secret["user_alias"])
+            elif secret_type == "gpg_keys":
+                generate_gpg_key(secret["user_alias"])
+            elif secret_type == "private_keys":
+                generate_private_key(secret["alias"])
+            elif secret_type == "self_signed_certs":
+                generate_self_signed_cert(secret["cn"])
+            elif secret_type == "passwords":
+                generate_password(secret["alias"])
 
 def get_vault_client():
     # It's recommended to use environment variables for Vault address and token
@@ -88,29 +66,6 @@ def generate_ssh_key(user_alias):
     )
 
     print(f"SSH key for {user_alias} stored in Vault at {secret_path}")
-
-    # Update SSH config
-    update_ssh_config(user_alias)
-
-def update_ssh_config(user_alias):
-    """
-    Updates the ~/.ssh/config file to use the generated key from Vault.
-    """
-    ssh_config_path = os.path.expanduser("~/.ssh/config")
-    command = f"vault read -field=private_key secret/ssh/{user_alias}"
-    config_entry = f"""
-Host {user_alias}
-    IdentityFile ~/.ssh/{user_alias}_key
-    ProxyCommand sh -c "{command} > ~/.ssh/{user_alias}_key && ssh -W %h:%p {user_alias}"
-"""
-
-    if not os.path.exists(os.path.dirname(ssh_config_path)):
-        os.makedirs(os.path.dirname(ssh_config_path))
-
-    with open(ssh_config_path, "a") as f:
-        f.write(config_entry)
-
-    print(f"SSH config updated for {user_alias}")
 
 import gnupg
 
@@ -253,4 +208,7 @@ def generate_password(alias):
     print(f"Password with alias {alias} stored in Vault at {secret_path}")
 
 if __name__ == "__main__":
-    main()
+    import yaml
+    with open("secrets.yml", "r") as f:
+        config = yaml.safe_load(f)
+    generate_secrets(config)

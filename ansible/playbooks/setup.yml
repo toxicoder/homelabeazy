@@ -9,6 +9,7 @@
   roles:
     - core_infra
     - vault
+    - vault_secrets
 
 - name: Setup pfSense
   hosts: pfsense
