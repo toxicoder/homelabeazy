@@ -167,65 +167,53 @@ The architecture is designed to be highly available and scalable. The K3s cluste
 
 ```mermaid
 graph TD
-    subgraph "Infrastructure"
-        A[Proxmox]
+    subgraph "Hardware Layer"
+        A[Physical Server]
     end
 
-    subgraph "Infrastructure as Code"
-        B[Terraform] --> A
-        C[Ansible] --> D
+    subgraph "Virtualization Layer"
+        B(Proxmox VE)
     end
 
-    subgraph "Kubernetes Cluster"
-        D[K3s]
+    subgraph "Automation Layer (Infrastructure as Code)"
+        C(Terraform) -- Provisions --> B
+        D(Ansible) -- Configures --> E
     end
 
-    subgraph "Core Services"
-        E[Traefik]
-        F[Authelia]
-        G[OpenLDAP]
-        H[Vault]
-        I[Velero]
-        J[EFK Stack]
+    subgraph "Orchestration Layer"
+        E(K3s Kubernetes)
     end
 
-    subgraph "Applications"
-        K[Bitwarden]
-        L[Gitea]
-        M[Homepage]
+    subgraph "Application Layer"
+        F[Core Services]
+        G[User Applications]
     end
 
-    A --> D
-    D --> E
-    D --> F
-    D --> G
-    D --> H
-    D --> I
-    D --> J
-    D --> K
-    D --> L
-    D --> M
+    A --> B
+    B -- Hosts --> E
+    E -- Runs --> F
+    E -- Runs --> G
 ```
 
 ### Network Architecture
 
 ```mermaid
 graph TD
-    subgraph "Internet"
-        A[Internet]
+    subgraph "External Network"
+        A[Public Internet]
     end
 
-    subgraph "Homelab"
-        B[pfSense]
-        C[Traefik]
-        D[K3s Cluster]
-        E[Applications]
+    subgraph "Homelab Network"
+        B(Edge Firewall)
+        C(Reverse Proxy)
+        D(Containerized Services)
+        E(Application Endpoints)
     end
 
-    A --> B
-    B --> C
-    C --> D
-    D --> E
+    A -- Unfiltered Traffic --> B
+    B -- Filtered Traffic --> C
+    C -- Routes Traffic to --> D
+    D -- Hosts --> E
 ```
 
 ## Default Services
