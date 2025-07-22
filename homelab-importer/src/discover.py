@@ -16,7 +16,9 @@ def get_vms(proxmox: ProxmoxAPI) -> List[Dict[str, Any]]:
 
 
 def get_lxc_containers(proxmox: ProxmoxAPI) -> List[Dict[str, Any]]:
-    """Returns a list of all LXC containers, including their Docker containers."""
+    """
+    Returns a list of all LXC containers, including their Docker containers.
+    """
     containers = proxmox.cluster.resources.get(type="lxc")
     for container in containers:
         container["docker_containers"] = get_docker_containers(
@@ -49,23 +51,29 @@ def get_docker_containers(
             return []
 
         # Fetch container list
-        result = guest.agent.exec.post(command="docker ps -a --format '{{json .}}'")
+        result = guest.agent.exec.post(
+            command="docker ps -a --format '{{json .}}'"
+        )
         if not result or "stdout" not in result:
             return []
         containers = [
-            json.loads(line) for line in result["stdout"].strip().split("\n") if line
+            json.loads(line)
+            for line in result["stdout"].strip().split("\n")
+            if line
         ]
 
-        result = guest.agent.exec.post(command="docker ps -a --format '{{.ID}}'")
+        result = guest.agent.exec.post(
+            command="docker ps -a --format '{{.ID}}'"
+        )
         if not result or "stdout" not in result:
             return []
-        container_ids = result['stdout'].strip().split('\n')
+        container_ids = result["stdout"].strip().split("\n")
         if not container_ids:
             return []
 
         # Fetch detailed container info
         inspect_result = guest.agent.exec.post(
-            command="docker inspect " + " ".join(container_ids)
+            command=f"docker inspect {' '.join(container_ids)}"
         )
         if not inspect_result or "stdout" not in inspect_result:
             return containers  # Return basic info if inspect fails
