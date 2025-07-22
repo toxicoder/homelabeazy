@@ -4,6 +4,47 @@ This project uses Ansible to automate the setup of a homelab environment on a Pr
 
 The project is designed to be idempotent, meaning it can be run multiple times without causing any unintended side effects. It is also designed to be modular, so you can easily add or remove applications to fit your needs.
 
+## Table of Contents
+
+- [Homelab as Code](#homelab-as-code)
+  - [Prerequisites](#prerequisites)
+  - [Getting Started](#getting-started)
+    - [One-Click Setup](#one-click-setup)
+    - [Manual Setup](#manual-setup)
+  - [System Architecture](#system-architecture)
+    - [Core Components](#core-components)
+    - [Architecture Diagram](#architecture-diagram)
+  - [Default Services](#default-services)
+    - [Core Infrastructure](#core-infrastructure)
+    - [Applications](#applications)
+  - [Deployment Workflow](#deployment-workflow)
+  - [Configuration](#configuration)
+    - [Terraform](#terraform)
+    - [Terraform Commands](#terraform-commands)
+    - [Ansible](#ansible)
+  - [Usage](#usage)
+  - [Testing](#testing)
+  - [OpenLDAP](#openldap)
+    - [Configuration](#configuration-1)
+  - [Post-Installation](#post-installation)
+  - [Stealth VM](#stealth-vm)
+    - [Prerequisites](#prerequisites-1)
+    - [Usage](#usage-1)
+    - [Disclaimer](#disclaimer)
+  - [Troubleshooting](#troubleshooting)
+    - [Terraform Fails to Apply Changes](#terraform-fails-to-apply-changes)
+    - [Ansible Playbook Fails to Run](#ansible-playbook-fails-to-run)
+    - [Application Is Not Accessible](#application-is-not-accessible)
+    - [Restarting the Setup Process](#restarting-the-setup-process)
+  - [Customization](#customization)
+    - [Adding New Applications](#adding-new-applications)
+    - [Managing Secrets](#managing-secrets)
+    - [Configuring Network Settings](#configuring-network-settings)
+    - [Using Different Cloud-Init Templates](#using-different-cloud-init-templates)
+  - [Contributing](#contributing)
+  - [GitHub Actions](#github-actions)
+    - [Promote to Staging](#promote-to-staging)
+
 ## Prerequisites
 
 Before you begin, you will need the following:
@@ -15,60 +56,48 @@ Before you begin, you will need the following:
 
 ## Getting Started
 
-There are two ways to get started with this project:
+These instructions will guide you through setting up the homelab environment on your Proxmox server.
 
-- **One-Click Setup:** This is the easiest way to get started. It will automatically provision the infrastructure and deploy the applications.
-- **Manual Setup:** This is for advanced users who want to customize the installation.
+### 1. Clone the Repository
 
-### One-Click Setup
+```bash
+git clone https://github.com/your-username/homelab-as-code.git
+cd homelab-as-code
+```
+
+### 2. Automated Setup (Recommended)
 
 The `setup.sh` script is the easiest way to get started. It will automatically provision the infrastructure and deploy the applications with minimal user interaction.
 
-1.  **Clone the repository:**
+```bash
+./setup.sh
+```
 
-    ```bash
-    git clone https://github.com/your-username/homelab-as-code.git
-    cd homelab-as-code
-    ```
+This script will prompt you for the following information:
 
-2.  **Run the setup script:**
+-   **Proxmox API URL:** The URL of your Proxmox API.
+-   **Proxmox API Token ID:** Your Proxmox API token ID.
+-   **Proxmox API Token Secret:** Your Proxmox API token secret.
+-   **Domain Name:** The domain name for your homelab.
 
-    ```bash
-    ./setup.sh
-    ```
+The script will then perform the following actions:
 
-    This script will prompt you for the following information:
+-   Create a `terraform.tfvars` file with your Proxmox credentials.
+-   Run `terraform init`, `terraform plan`, and `terraform apply` to provision the infrastructure.
+-   Create an `ansible/group_vars/all.yml` file with your domain name.
+-   Run the Ansible playbook to deploy the applications.
 
-    -   **Proxmox API URL:** The URL of your Proxmox API.
-    -   **Proxmox API Token ID:** Your Proxmox API token ID.
-    -   **Proxmox API Token Secret:** Your Proxmox API token secret.
-    -   **Domain Name:** The domain name for your homelab.
+**Note:** If you want to manage your secrets manually, you can run the script with the `--no-vault` flag. This will skip the Vault setup and allow you to enter your secrets manually.
 
-    The script will then perform the following actions:
+```bash
+./setup.sh --no-vault
+```
 
-    -   Create a `terraform.tfvars` file with your Proxmox credentials.
-    -   Run `terraform init`, `terraform plan`, and `terraform apply` to provision the infrastructure.
-    -   Create an `ansible/group_vars/all.yml` file with your domain name.
-    -   Run the Ansible playbook to deploy the applications.
-
-    **Note:** If you want to manage your secrets manually, you can run the script with the `--no-vault` flag. This will skip the Vault setup and allow you to enter your secrets manually.
-
-    ```bash
-    ./setup.sh --no-vault
-    ```
-
-### Manual Setup
+### 3. Manual Setup
 
 The manual setup process is for advanced users who want to customize the installation. This process gives you more control over the configuration of the infrastructure and applications.
 
-1.  **Clone the repository:**
-
-    ```bash
-    git clone https://github.com/your-username/homelab-as-code.git
-    cd homelab-as-code
-    ```
-
-2.  **Configure Terraform:**
+1.  **Configure Terraform:**
 
     - Navigate to the `terraform` directory.
     - Create a `terraform.tfvars` file by copying the example:
@@ -77,7 +106,7 @@ The manual setup process is for advanced users who want to customize the install
       ```
     - Edit `terraform.tfvars` to match your environment.
 
-3.  **Provision the infrastructure:**
+2.  **Provision the infrastructure:**
 
     - Initialize Terraform:
       ```bash
@@ -92,11 +121,11 @@ The manual setup process is for advanced users who want to customize the install
       terraform apply
       ```
 
-4.  **Configure Ansible:**
+3.  **Configure Ansible:**
 
     - Edit `ansible/group_vars/all.yml` to set your domain name, user passwords, and other application-specific configurations.
 
-5.  **Manage Secrets:**
+4.  **Manage Secrets:**
 
     This project uses Vault to manage secrets by default. However, you can choose to manage your secrets manually.
 
@@ -109,7 +138,7 @@ The manual setup process is for advanced users who want to customize the install
 
         You will also need to update the Ansible playbook to retrieve the secrets from this file instead of Vault.
 
-6.  **Run the Ansible playbook:**
+5.  **Run the Ansible playbook:**
 
     ```bash
     ansible-playbook -i ansible/inventory/inventory.auto.yml ansible/playbooks/setup.yml
@@ -176,6 +205,27 @@ graph TD
     D --> K
     D --> L
     D --> M
+```
+
+### Network Architecture
+
+```mermaid
+graph TD
+    subgraph "Internet"
+        A[Internet]
+    end
+
+    subgraph "Homelab"
+        B[pfSense]
+        C[Traefik]
+        D[K3s Cluster]
+        E[Applications]
+    end
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
 ```
 
 ## Default Services
@@ -362,13 +412,40 @@ The OpenLDAP application is deployed using the `apps/openldap.yml` manifest. The
 
 After the setup is complete, you will need to perform the following steps to access your new homelab environment:
 
-1.  **Access Proxmox:** You can access the Proxmox web interface by navigating to the IP address of your Proxmox server in your web browser.
+### 1. Access Proxmox
 
-2.  **Access the Kubernetes Cluster:** The K3s cluster is now running on your Proxmox server. You can access it by SSHing into one of the master nodes and using the `kubectl` command-line tool.
+You can access the Proxmox web interface by navigating to the IP address of your Proxmox server in your web browser.
 
-3.  **Configure DNS:** You will need to configure DNS for your applications to be accessible at their respective domain names. This can be done by adding DNS records to your DNS provider or by using a local DNS server such as Pi-hole.
+### 2. Access the Kubernetes Cluster
 
-4.  **Access Applications:** Once DNS is configured, you can access the applications by navigating to their respective domain names in your web browser.
+The K3s cluster is now running on your Proxmox server. You can access it by SSHing into one of the master nodes and using the `kubectl` command-line tool. The kubeconfig file is located at `~/.kube/config` on the master node.
+
+### 3. Configure DNS
+
+You will need to configure DNS for your applications to be accessible at their respective domain names. This can be done by adding DNS records to your DNS provider or by using a local DNS server such as Pi-hole.
+
+**Example: Using Pi-hole for Local DNS**
+
+1.  Log in to your Pi-hole admin interface.
+2.  Navigate to "Local DNS" -> "DNS Records".
+3.  Add a new A record for your domain, pointing to the IP address of your Traefik load balancer. For example:
+
+| Domain      | IP Address      |
+| ----------- | --------------- |
+| `*.example.com` | `192.168.1.100` |
+
+This will resolve all subdomains of `example.com` to the IP address of your Traefik load balancer.
+
+### 4. Access Applications
+
+Once DNS is configured, you can access the applications by navigating to their respective domain names in your web browser.
+
+**Example: Accessing Grafana**
+
+1.  Open your web browser and navigate to `https://grafana.example.com`.
+2.  You will be redirected to the Authelia login page.
+3.  Log in with your credentials.
+4.  You will then be redirected to the Grafana dashboard.
 
 ## Stealth VM
 
@@ -393,6 +470,23 @@ This feature is intended for educational purposes only. The use of this feature 
 
 This section provides solutions to common problems you may encounter during the setup process.
 
+### `setup.sh` Script Fails
+
+If the `setup.sh` script fails, it is most likely due to an issue with the Terraform or Ansible commands that it is running. To debug the issue, you can run the commands manually and inspect the output.
+
+1.  **Run Terraform manually:**
+    ```bash
+    cd terraform
+    terraform init
+    terraform plan
+    terraform apply
+    ```
+2.  **Run Ansible manually:**
+    ```bash
+    cd ansible
+    ansible-playbook -i inventory/inventory.auto.yml playbooks/setup.yml
+    ```
+
 ### Terraform Fails to Apply Changes
 
 If Terraform fails to apply the changes, it may be due to a problem with your Proxmox environment. Check the following:
@@ -410,11 +504,18 @@ If the Ansible playbook fails to run, it may be due to a problem with your SSH c
 
 ### Application Is Not Accessible
 
-If an application is not accessible, it may be due to a problem with the Traefik Ingress controller. Check the following:
+If an application is not accessible, it may be due to a problem with the Traefik Ingress controller or the application itself.
 
--   **Traefik Dashboard:** Check the Traefik dashboard to see if there are any errors.
--   **Ingress Route:** Make sure the Ingress route for the application is configured correctly.
--   **DNS:** Make sure the DNS record for the application is pointing to the correct IP address.
+-   **Check the Traefik Dashboard:** The Traefik dashboard will show you the status of your Ingress routes and whether there are any errors.
+-   **Check the Application Logs:** Use `kubectl logs` to check the logs of the application's pods. This will often give you a clue as to what is wrong.
+    ```bash
+    kubectl logs -l app=<app-name>
+    ```
+-   **Check the Ingress Route:** Make sure the Ingress route for the application is configured correctly.
+    ```bash
+    kubectl get ingressroute -n <namespace>
+    ```
+-   **Check DNS:** Make sure the DNS record for the application is pointing to the correct IP address.
 
 ### Restarting the Setup Process
 
@@ -487,11 +588,12 @@ This project uses a cloud-init template to configure the virtual machines. You c
 
 Contributions are welcome! If you would like to contribute to this project, please follow these steps:
 
-1.  Fork the repository.
-2.  Create a new branch for your changes.
-3.  Make your changes and commit them.
-4.  Push your changes to your fork.
-5.  Create a pull request.
+1.  **Open an issue:** Before you start working on a new feature or bug fix, please open an issue to discuss it with the project maintainers. This will help to ensure that your contribution is in line with the project's goals.
+2.  **Fork the repository:** Fork the repository to your own GitHub account.
+3.  **Create a new branch:** Create a new branch for your changes.
+4.  **Make your changes:** Make your changes and commit them with a clear and concise commit message.
+5.  **Push your changes:** Push your changes to your fork.
+6.  **Create a pull request:** Create a pull request to merge your changes into the `main` branch.
 
 ## GitHub Actions
 
@@ -504,3 +606,7 @@ To promote the current version of the `main` branch to the staging environment, 
 1.  Go to the "Actions" tab of the repository.
 2.  Select the "Promote to Staging" workflow.
 3.  Click the "Run workflow" button.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
