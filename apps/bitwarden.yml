@@ -8,13 +8,13 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/k8s-at-home/charts-incubator
-    targetRevision: 1.2.0
-    chart: bitwarden
+    repoURL: https://guerzon.github.io/vaultwarden
+    targetRevision: 0.32.1
+    chart: vaultwarden
     helm:
       values: |
         image:
-          repository: bitwarden/server
+          repository: vaultwarden/server
           tag: 1.40.0
         ingress:
           enabled: true
