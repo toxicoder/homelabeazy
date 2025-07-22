@@ -43,6 +43,27 @@ jobs:
         working-directory: ./homelab-infra
         run: go test -v ./test/...
 
+  python-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+      - name: Install dependencies
+        run: |
+          pip install -r homelab-importer/requirements.txt
+          pip install flake8 pytest coverage
+      - name: Run flake8
+        run: flake8 homelab-importer/
+      - name: Run tests with coverage
+        run: |
+          cd homelab-importer
+          coverage run -m unittest discover tests/
+          coverage report
+
   test-synology:
     runs-on: ubuntu-latest
     steps:
@@ -59,9 +80,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install ansible requests
 
+      - name: Start mock Synology API server
+        run: python ansible/playbooks/mock_synology_api.py &
+
       - name: Run Synology playbook
-        env:
-          SYNOLOGY_NAS_IP: "127.0.0.1"
-          SYNOLOGY_NAS_USERNAME: "admin"
-          SYNOLOGY_NAS_PASSWORD: ${{ secrets.SYNOLOGY_NAS_PASSWORD }}
-        run: ansible-playbook ansible/playbooks/test_synology.yml
+        run: ansible-playbook ansible/playbooks/test_synology_mock.yml

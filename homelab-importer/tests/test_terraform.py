@@ -48,10 +48,7 @@ class TestTerraform(unittest.TestCase):
             {
                 "resource": "proxmox_vm_qemu",
                 "name": "test-vm",
-                "attributes": {
-                    "name": "test-vm",
-                    "target_node": "pve",
-                },
+                "attributes": {"name": "test-vm", "target_node": "pve"},
             }
         ]
 
@@ -99,7 +96,7 @@ class TestTerraform(unittest.TestCase):
                 "resource": "proxmox_vm_qemu",
                 "name": "test-vm",
                 "attributes": {"vmid": 100},
-            },
+            }
         ]
 
         m = mock_open()

@@ -1,0 +1,87 @@
+---
+- name: Test Synology Module
+  hosts: localhost
+  gather_facts: false
+  collections:
+    - community.general
+  vars:
+    mock_api_url: "http://localhost:8000"
+    test_user: "testuser"
+    test_group: "testgroup"
+    test_folder: "testfolder"
+
+  tasks:
+    - name: Create test user
+      uri:
+        url: "{{ mock_api_url }}/webapi/entry.cgi?api=SYNO.Core.User&method=create&version=1&name={{ test_user }}&password=password&email=testuser@example.com"
+        method: POST
+        status_code: 200
+      register: create_user_result
+
+    - name: Verify user creation
+      assert:
+        that:
+          - create_user_result.json.success
+          - create_user_result.json.data.name == test_user
+
+    - name: Create test group
+      uri:
+        url: "{{ mock_api_url }}/webapi/entry.cgi?api=SYNO.Core.Group&method=create&version=1&name={{ test_group }}&desc=Test%20group"
+        method: POST
+        status_code: 200
+      register: create_group_result
+
+    - name: Verify group creation
+      assert:
+        that:
+          - create_group_result.json.success
+          - create_group_result.json.data.name == test_group
+
+    - name: Create test shared folder
+      uri:
+        url: "{{ mock_api_url }}/webapi/entry.cgi?api=SYNO.FileStation.CreateFolder&method=create&version=2&folder_path=/&name={{ test_folder }}"
+        method: POST
+        status_code: 200
+      register: create_folder_result
+
+    - name: Verify folder creation
+      assert:
+        that:
+          - create_folder_result.json.success
+          - create_folder_result.json.data.folders[0].name == test_folder
+
+    - name: Delete test user
+      uri:
+        url: "{{ mock_api_url }}/webapi/entry.cgi?api=SYNO.Core.User&method=delete&version=1&name={{ test_user }}"
+        method: POST
+        status_code: 200
+      register: delete_user_result
+
+    - name: Verify user deletion
+      assert:
+        that:
+          - delete_user_result.json.success
+
+    - name: Delete test group
+      uri:
+        url: "{{ mock_api_url }}/webapi/entry.cgi?api=SYNO.Core.Group&method=delete&version=1&name={{ test_group }}"
+        method: POST
+        status_code: 200
+      register: delete_group_result
+
+    - name: Verify group deletion
+      assert:
+        that:
+          - delete_group_result.json.success
+
+    - name: Delete test shared folder
+      uri:
+        url: "{{ mock_api_url }}/webapi/entry.cgi?api=SYNO.FileStation.Delete&method=start&version=2&path=/{{ test_folder }}"
+        method: POST
+        status_code: 200
+      register: delete_folder_result
+
+    - name: Verify folder deletion
+      assert:
+        that:
+          - delete_folder_result.json.success
