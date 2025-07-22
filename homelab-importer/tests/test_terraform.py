@@ -1,10 +1,17 @@
-import unittest
-from unittest.mock import mock_open, patch, call
 import os
 import sys
+import unittest
+from unittest.mock import mock_open, patch, call
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
-from terraform import generate_terraform_config, generate_terraform_tfvars, generate_import_script
+sys.path.insert(
+    0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src"))
+)
+from terraform import (
+    generate_terraform_config,
+    generate_terraform_tfvars,
+    generate_import_script,
+)
+
 
 class TestTerraform(unittest.TestCase):
     def test_generate_terraform_config(self):
@@ -27,7 +34,9 @@ class TestTerraform(unittest.TestCase):
 
         m.assert_called_once_with("homelab.tf", "w")
         handle = m()
-        handle.write.assert_any_call('resource "proxmox_vm_qemu" "test-vm" {\n')
+        handle.write.assert_any_call(
+            'resource "proxmox_vm_qemu" "test-vm" {\n'
+        )
         handle.write.assert_any_call('  name = "test-vm"\n')
         handle.write.assert_any_call('  target_node = "pve"\n')
         handle.write.assert_any_call("  vmid = 100\n")
@@ -62,18 +71,12 @@ class TestTerraform(unittest.TestCase):
             {
                 "resource": "proxmox_vm_qemu",
                 "name": "test-vm",
-                "attributes": {
-                    "target_node": "pve",
-                    "vmid": 100,
-                },
+                "attributes": {"target_node": "pve", "vmid": 100},
             },
             {
                 "resource": "proxmox_lxc",
                 "name": "test-lxc",
-                "attributes": {
-                    "target_node": "pve",
-                    "vmid": 101,
-                },
+                "attributes": {"target_node": "pve", "vmid": 101},
             },
         ]
 
@@ -89,6 +92,25 @@ class TestTerraform(unittest.TestCase):
             call("terraform import proxmox_lxc.test-lxc pve/lxc/101\n"),
         ]
         handle.write.assert_has_calls(calls, any_order=True)
+
+    def test_generate_import_script_no_node(self):
+        resources = [
+            {
+                "resource": "proxmox_vm_qemu",
+                "name": "test-vm",
+                "attributes": {"vmid": 100},
+            },
+        ]
+
+        m = mock_open()
+        with patch("builtins.open", m):
+            generate_import_script(resources, "import.sh")
+
+        m.assert_called_once_with("import.sh", "w")
+        handle = m()
+        handle.write.assert_any_call("#!/bin/bash\n\n")
+        self.assertEqual(handle.write.call_count, 1)
+
 
 if __name__ == "__main__":
     unittest.main()
