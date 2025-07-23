@@ -1,5 +1,0 @@
----
-# defaults file for core_infra
-
-# The following variables are now defined in config/applications.yml
-# traefik_namespace: traefik
