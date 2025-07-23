@@ -13,11 +13,12 @@ else:
     HAS_REQUESTS = True
 
 class SynologyClient:
-    def __init__(self, host, port, username, password):
-        self.host = host
-        self.port = port
-        self.username = username
-        self.password = password
+    def __init__(self, module):
+        self.module = module
+        self.host = module.params['host']
+        self.port = module.params['port']
+        self.username = module.params['username']
+        self.password = module.params['password']
         self.sid = None
         self.session = requests.Session()
 
@@ -32,9 +33,14 @@ class SynologyClient:
             'session': 'Ansible',
             'format': 'sid'
         }
-        response = self.session.get(url, params=params, verify=False)
-        response.raise_for_status()
-        self.sid = response.json()['data']['sid']
+        try:
+            response = self.session.get(url, params=params, verify=False)
+            response.raise_for_status()
+            self.sid = response.json()['data']['sid']
+        except requests.exceptions.RequestException as e:
+            self.module.fail_json(msg=f"Failed to connect to Synology API: {e}")
+        except KeyError:
+            self.module.fail_json(msg="Authentication failed. Please check your credentials.")
 
     def request(self, api, method, params=None):
         if not self.sid:
@@ -50,11 +56,17 @@ class SynologyClient:
         if params:
             base_params.update(params)
 
-        response = self.session.get(url, params=base_params, verify=False)
-        response.raise_for_status()
-        return response.json()
+        try:
+            response = self.session.get(url, params=base_params, verify=False)
+            response.raise_for_status()
+            self.module.log(f"Synology API request: {response.url}")
+            self.module.log(f"Synology API response: {response.text}")
+            return response.json()
+        except requests.exceptions.RequestException as e:
+            self.module.fail_json(msg=f"Failed to execute API request: {e}")
 
-def manage_shared_folder(client, name, state, config):
+def manage_shared_folder(module, client, name, state, config):
+    module.log(f"Managing shared folder: {name}")
     current_state = _get_current_shared_folder_state(client, name)
     desired_state = {'name': name, 'state': state, **config}
 
@@ -64,10 +76,12 @@ def manage_shared_folder(client, name, state, config):
             diff = _compare_states(current_state, desired_state)
             if diff:
                 # Apply changes
+                module.log(f"Updating shared folder: {name}")
                 return {'changed': True, 'diff': diff}
             return {'changed': False}
         else:
             # Folder does not exist, create it
+            module.log(f"Creating shared folder: {name}")
             create_params = {
                 'folder_path': f'/homes/{name}',
                 'name': name,
@@ -80,6 +94,7 @@ def manage_shared_folder(client, name, state, config):
     elif state == 'absent':
         if current_state:
             # Folder exists, delete it
+            module.log(f"Deleting shared folder: {name}")
             delete_params = {
                 'path': f'/homes/{name}',
             }
@@ -121,7 +136,8 @@ def _compare_states(current_state, desired_state):
             }
     return diff
 
-def manage_user(client, name, state, config):
+def manage_user(module, client, name, state, config):
+    module.log(f"Managing user: {name}")
     current_state = _get_current_user_state(client, name)
     desired_state = {'name': name, 'state': state, **config}
 
@@ -131,10 +147,12 @@ def manage_user(client, name, state, config):
             diff = _compare_states(current_state, desired_state)
             if diff:
                 # Apply changes
+                module.log(f"Updating user: {name}")
                 return {'changed': True, 'diff': diff}
             return {'changed': False}
         else:
             # User does not exist, create it
+            module.log(f"Creating user: {name}")
             create_params = {
                 'name': name,
                 'password': config.get('password'),
@@ -145,6 +163,7 @@ def manage_user(client, name, state, config):
     elif state == 'absent':
         if current_state:
             # User exists, delete it
+            module.log(f"Deleting user: {name}")
             delete_params = {
                 'name': name,
             }
@@ -167,7 +186,8 @@ def _get_current_user_state(client, name):
         'email': user.get('email')
     }
 
-def manage_group(client, name, state, config):
+def manage_group(module, client, name, state, config):
+    module.log(f"Managing group: {name}")
     current_state = _get_current_group_state(client, name)
     desired_state = {'name': name, 'state': state, **config}
 
@@ -177,10 +197,12 @@ def manage_group(client, name, state, config):
             diff = _compare_states(current_state, desired_state)
             if diff:
                 # Apply changes
+                module.log(f"Updating group: {name}")
                 return {'changed': True, 'diff': diff}
             return {'changed': False}
         else:
             # Group does not exist, create it
+            module.log(f"Creating group: {name}")
             create_params = {
                 'name': name,
                 'description': config.get('description')
@@ -190,6 +212,7 @@ def manage_group(client, name, state, config):
     elif state == 'absent':
         if current_state:
             # Group exists, delete it
+            module.log(f"Deleting group: {name}")
             delete_params = {
                 'name': name,
             }
@@ -224,7 +247,8 @@ def _get_current_backup_task_state(client, name):
         'state': 'present',
     }
 
-def manage_backup_task(client, name, state, config):
+def manage_backup_task(module, client, name, state, config):
+    module.log(f"Managing backup task: {name}")
     current_state = _get_current_backup_task_state(client, name)
     desired_state = {'name': name, 'state': state, **config}
 
@@ -234,10 +258,12 @@ def manage_backup_task(client, name, state, config):
             diff = _compare_states(current_state, desired_state)
             if diff:
                 # Apply changes
+                module.log(f"Updating backup task: {name}")
                 return {'changed': True, 'diff': diff}
             return {'changed': False}
         else:
             # Task does not exist, create it
+            module.log(f"Creating backup task: {name}")
             create_params = {
                 'name': name,
                 **config
@@ -247,6 +273,7 @@ def manage_backup_task(client, name, state, config):
     elif state == 'absent':
         if current_state:
             # Task exists, delete it
+            module.log(f"Deleting backup task: {name}")
             delete_params = {
                 'name': name,
             }
@@ -279,7 +306,7 @@ def main():
             username=dict(type='str', required=True),
             password=dict(type='str', required=True, no_log=True),
             state=dict(type='str', default='present', choices=['present', 'absent']),
-            resource=dict(type='str', required=True, choices=['shared_folder', 'user', 'group']),
+            resource=dict(type='str', required=True, choices=['shared_folder', 'user', 'group', 'backup_task']),
             name=dict(type='str', required=True),
             config=dict(type='dict', default={})
         ),
@@ -289,19 +316,19 @@ def main():
     if not HAS_REQUESTS:
         module.fail_json(msg='requests library is required for this module')
 
-    client = SynologyClient(module.params['host'], module.params['port'], module.params['username'], module.params['password'])
+    client = SynologyClient(module)
 
     if module.params['resource'] == 'shared_folder':
-        result = manage_shared_folder(client, module.params['name'], module.params['state'], module.params['config'])
+        result = manage_shared_folder(module, client, module.params['name'], module.params['state'], module.params['config'])
         module.exit_json(**result)
     elif module.params['resource'] == 'user':
-        result = manage_user(client, module.params['name'], module.params['state'], module.params['config'])
+        result = manage_user(module, client, module.params['name'], module.params['state'], module.params['config'])
         module.exit_json(**result)
     elif module.params['resource'] == 'group':
-        result = manage_group(client, module.params['name'], module.params['state'], module.params['config'])
+        result = manage_group(module, client, module.params['name'], module.params['state'], module.params['config'])
         module.exit_json(**result)
     elif module.params['resource'] == 'backup_task':
-        result = manage_backup_task(client, module.params['name'], module.params['state'], module.params['config'])
+        result = manage_backup_task(module, client, module.params['name'], module.params['state'], module.params['config'])
         module.exit_json(**result)
 
     module.exit_json(changed=False)
