@@ -1,4 +1,13 @@
 ---
+- name: Deploy Traefik
+  ansible.builtin.include_tasks: traefik.yml
+
+- name: Deploy Authelia
+  ansible.builtin.include_tasks: authelia.yml
+
+- name: Configure Grafana
+  ansible.builtin.include_tasks: grafana.yml
+
 - name: Deploy ArgoCD
   include_tasks: argocd.yml
 
