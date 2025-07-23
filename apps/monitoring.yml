@@ -12,9 +12,7 @@ spec:
     helm:
       values: |
         grafana:
-          adminPassword:
-            existingSecret: grafana-admin-creds
-            key: password
+          adminPassword: <path:secrets/data/grafana#admin-password>
           grafana.ini:
             auth.ldap:
               enabled: true
