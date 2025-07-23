@@ -163,106 +163,55 @@ The architecture is designed to be highly available and scalable. The K3s cluste
 - **Velero:** A tool for backing up and restoring your Kubernetes cluster resources and persistent volumes.
 - **EFK Stack:** A centralized logging solution consisting of Elasticsearch, Fluentd, and Kibana.
 
-### Tool Layers
+### System Architecture Diagram
 
 ```mermaid
 graph TD
-    subgraph "Physical Layer"
+    subgraph "Hardware"
         A[Physical Server]
     end
 
-    subgraph "Virtualization Layer"
+    subgraph "Virtualization"
         B(Proxmox VE)
     end
 
-    subgraph "Infrastructure as Code Layer"
-        C(Terraform) -- Provisions --> B
-    end
-
-    subgraph "Configuration Management Layer"
-        D(Ansible) -- Configures --> E & F & G
-    end
-
-    subgraph "Orchestration Layer"
-        E(K3s Kubernetes)
-    end
-
-    subgraph "Application Layer"
-        F[Core Infrastructure Services]
-        G[User-Facing Applications]
-    end
-
-    subgraph "Security Layer"
-        H(Vault) -- Manages Secrets --> D & E & F & G
-        I(Authelia) -- Provides SSO --> G
-        J(Traefik) -- Acts as Reverse Proxy --> G
-    end
-
-    subgraph "Backup and Recovery Layer"
-        K(Velero) -- Backs up --> E & F & G
-    end
-
-    subgraph "Logging and Monitoring Layer"
-        L(EFK Stack) -- Collects Logs --> E & F & G
-    end
-
-    A --> B
-    B -- Hosts --> E
-    E -- Runs --> F
-    E -- Runs --> G
-```
-
-### Architecture Diagram
-
-```mermaid
-graph TD
-    subgraph "Hardware Layer"
-        A[Physical Server]
-    end
-
-    subgraph "Virtualization Layer"
-        B(Proxmox VE)
-    end
-
-    subgraph "Automation Layer (Infrastructure as Code)"
-        C(Terraform) -- Provisions --> B
+    subgraph "Automation"
+        C(Terraform) -- Provisions VMs on --> B
         D(Ansible) -- Configures --> E
     end
 
-    subgraph "Orchestration Layer"
-        E(K3s Kubernetes)
+    subgraph "Container Orchestration"
+        E(K3s Kubernetes Cluster)
     end
 
-    subgraph "Application Layer"
+    subgraph "Applications"
         F[Core Services]
         G[User Applications]
     end
 
+    subgraph "Supporting Services"
+        H(Traefik Ingress)
+        I(Authelia SSO)
+        J(Vault Secrets)
+    end
+
     A --> B
-    B -- Hosts --> E
+    B --> E
     E -- Runs --> F
     E -- Runs --> G
+    F -- Exposed by --> H
+    G -- Exposed by --> H
+    G -- Authenticated by --> I
+    E -- Uses --> J
 ```
 
 ### Network Architecture
 
 ```mermaid
 graph TD
-    subgraph "External Network"
-        A[Public Internet]
-    end
-
-    subgraph "Homelab Network"
-        B(Edge Firewall)
-        C(Reverse Proxy)
-        D(Containerized Services)
-        E(Application Endpoints)
-    end
-
-    A -- Unfiltered Traffic --> B
-    B -- Filtered Traffic --> C
-    C -- Routes Traffic to --> D
-    D -- Hosts --> E
+    A[Public Internet] --> B(Firewall)
+    B --> C(Traefik Reverse Proxy)
+    C --> D{Applications}
 ```
 
 ## Default Services
