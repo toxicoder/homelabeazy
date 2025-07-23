@@ -600,14 +600,14 @@ Once you have created the role, you can add it to the `ansible/playbooks/setup.y
 
 This project uses Vault to manage secrets by default. However, you can choose to manage your secrets manually.
 
--   **With Vault (Default):** If you are using Vault, you will need to add your secrets to the appropriate path in Vault. The Ansible playbook will automatically retrieve the secrets from Vault during the deployment process.
+-   **With Vault (Default):** If you are using Vault, you will need to add your secrets to the appropriate path in Vault. The Ansible playbook will automatically retrieve the secrets from Vault during the deployment process. To use this method, you will need to have a Vault server running and have the `VAULT_ADDR` and `VAULT_TOKEN` environment variables set.
+
 -   **Without Vault:** If you are not using Vault, you will need to create a `secrets.yml` file in the `ansible/group_vars` directory. This file should contain all of your secrets in the following format:
 
     ```yaml
     secret_key: "secret_value"
     ```
-
-    You will also need to update the Ansible playbook to retrieve the secrets from this file instead of Vault.
+    To use this method, you will need to run the `setup.sh` script with the `--no-vault` flag. This will skip the Vault setup and allow you to enter your secrets manually.
 
 ### Configuring Network Settings
 
