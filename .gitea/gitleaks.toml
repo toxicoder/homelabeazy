@@ -3,10 +3,61 @@
 description = "Allowlist for this repository"
 paths = [
     '''gitleaks.toml''',
+    '''minio/README.md''',
+    '''gitleaks-report.json''',
 ]
 
-[rules.proxmox-password]
-    description = "Proxmox password"
-    regex = '''(?i)(?:proxmox_password|password)s*=\s*['"]([a-zA-Z0-9!@#$%^&*()_+-=[]{};':"\\|,.<>/?~`]+)['"]'''
-    tags = ["proxmox", "password"]
-    keywords = ["proxmox_password", "password"]
+[[rules]]
+id = "generic-api-key"
+description = "Generic API Key"
+regex = '''(?i)(?:api|secret|access|private|consumer|bearer|session|auth|key|token)\s*[:=]\s*['"]([a-zA-Z0-9\-_]{16,})['"]'''
+tags = ["api", "key"]
+
+[[rules]]
+id = "aws-access-key-id"
+description = "AWS Access Key ID"
+regex = '''(A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z0-9]{16}'''
+tags = ["aws", "key"]
+
+[[rules]]
+id = "aws-secret-access-key"
+description = "AWS Secret Access Key"
+regex = '''(?i)aws(.{0,20})?(?-i)['\"][0-9a-zA-Z\/+]{40}['\"]'''
+tags = ["aws", "secret"]
+
+[[rules]]
+id = "github-access-token"
+description = "GitHub Access Token"
+regex = '''(?i)github_pat_[0-9a-zA-Z]{22}_[0-9a-zA-Z]{58}'''
+tags = ["github", "token"]
+
+[[rules]]
+id = "google-api-key"
+description = "Google API Key"
+regex = '''AIza[0-9A-Za-z\\-_]{35}'''
+tags = ["google", "api", "key"]
+
+[[rules]]
+id = "google-oauth-client-id"
+description = "Google OAuth Client ID"
+regex = '''[0-9]+-[0-9A-Za-z_]{32}\.apps\.googleusercontent\.com'''
+tags = ["google", "oauth"]
+
+[[rules]]
+id = "google-oauth-client-secret"
+description = "Google OAuth Client Secret"
+regex = '''GOCSPX-[0-9A-Za-z-]{22}'''
+tags = ["google", "oauth", "secret"]
+
+[[rules]]
+id = "ssh-private-key"
+description = "SSH Private Key"
+regex = '''-----BEGIN ((EC|PGP|DSA|RSA|OPENSSH) )?PRIVATE KEY( BLOCK)?-----'''
+tags = ["ssh", "private", "key"]
+
+[[rules]]
+id = "proxmox-password"
+description = "Proxmox password"
+regex = '''(?i)(?:proxmox_password|password)s*=\s*['"]([a-zA-Z0-9!@#$%^&*()_+-=[]{};':"\\|,.<>/?~`]+)['"]'''
+tags = ["proxmox", "password"]
+keywords = ["proxmox_password", "password"]
