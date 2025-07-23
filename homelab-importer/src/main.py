@@ -8,7 +8,7 @@ from docker import generate_docker_compose
 from dotenv import load_dotenv
 from mapping import map_lxc_to_terraform, map_vm_to_terraform
 from proxmoxer import ProxmoxAPI
-from proxmoxer.core import ProxmoxAuthenticationError
+from proxmoxer.core import AuthenticationError as ProxmoxAuthenticationError
 from terraform import (
     generate_import_script,
     generate_terraform_config,

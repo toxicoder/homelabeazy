@@ -5,7 +5,7 @@ import logging
 from typing import Any, Dict, List
 
 from proxmoxer import ProxmoxAPI
-from proxmoxer.core import ProxmoxResourceError
+from proxmoxer.core import ResourceException
 
 
 def get_vms(proxmox: ProxmoxAPI) -> List[Dict[str, Any]]:
@@ -17,7 +17,7 @@ def get_vms(proxmox: ProxmoxAPI) -> List[Dict[str, Any]]:
                 proxmox, vm["node"], vm["vmid"], "qemu"
             )
         return vms
-    except ProxmoxResourceError as e:
+    except ResourceException as e:
         logging.error(f"Error fetching VMs: {e}")
         return []
 
@@ -33,7 +33,7 @@ def get_lxc_containers(proxmox: ProxmoxAPI) -> List[Dict[str, Any]]:
                 proxmox, container["node"], container["vmid"], "lxc"
             )
         return containers
-    except ProxmoxResourceError as e:
+    except ResourceException as e:
         logging.error(f"Error fetching LXC containers: {e}")
         return []
 
@@ -42,7 +42,7 @@ def get_storage_pools(proxmox: ProxmoxAPI) -> List[Dict[str, Any]]:
     """Returns a list of all storage pools."""
     try:
         return proxmox.storage.get()
-    except ProxmoxResourceError as e:
+    except ResourceException as e:
         logging.error(f"Error fetching storage pools: {e}")
         return []
 
@@ -51,7 +51,7 @@ def get_network_bridges(proxmox: ProxmoxAPI) -> List[Dict[str, Any]]:
     """Returns a list of all network bridges."""
     try:
         return proxmox.cluster.resources.get(type="sdn")
-    except ProxmoxResourceError as e:
+    except ResourceException as e:
         logging.error(f"Error fetching network bridges: {e}")
         return []
 
@@ -97,7 +97,7 @@ def get_docker_containers(
                 container["details"] = inspected_data[i]
 
         return containers
-    except ProxmoxResourceError as e:
+    except (ResourceException, StopIteration, Exception) as e:
         logging.error(
             f"Error fetching Docker containers for {vm_type}/{vmid} on "
             f"node {node}: {e}"

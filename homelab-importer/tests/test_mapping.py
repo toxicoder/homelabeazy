@@ -97,6 +97,38 @@ class TestMapping(unittest.TestCase):
         }
         self.assertEqual(map_lxc_to_terraform(lxc_data), expected)
 
+    def test_map_vm_to_terraform_missing_attributes(self):
+        vm_data = {"vmid": 100}
+        expected = {
+            "resource": "proxmox_vm_qemu",
+            "name": "vm_100",
+            "attributes": {
+                "name": "vm-100",
+                "target_node": None,
+                "vmid": 100,
+                "memory": 0,
+                "sockets": 1,
+                "cores": 1,
+                "os_type": "cloud-init",
+            },
+        }
+        self.assertEqual(map_vm_to_terraform(vm_data), expected)
+
+    def test_map_lxc_to_terraform_missing_attributes(self):
+        lxc_data = {"vmid": 101}
+        expected = {
+            "resource": "proxmox_lxc",
+            "name": "lxc_101",
+            "attributes": {
+                "hostname": "lxc-101",
+                "target_node": None,
+                "vmid": 101,
+                "memory": 0,
+                "cores": 1,
+            },
+        }
+        self.assertEqual(map_lxc_to_terraform(lxc_data), expected)
+
 
 if __name__ == "__main__":
     unittest.main()
