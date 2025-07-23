@@ -6,6 +6,8 @@ from typing import Any, Dict
 
 def to_snake_case(name: str) -> str:
     """Converts a string to snake_case."""
+    if name is None:
+        return ""
     name = re.sub(r"([A-Z])", r"_\1", name).lower()
     if name.startswith("_"):
         name = name[1:]
@@ -14,7 +16,10 @@ def to_snake_case(name: str) -> str:
 
 def map_vm_to_terraform(vm_data: Dict[str, Any]) -> Dict[str, Any]:
     """Maps a Proxmox VM to a Terraform resource."""
-    resource_name = to_snake_case(vm_data.get("name", "vm"))
+    name = vm_data.get("name")
+    if name is None:
+        name = f"vm-{vm_data.get('vmid')}"
+    resource_name = to_snake_case(name)
     memory = vm_data.get("maxmem")
     if memory is None:
         memory = 0
@@ -22,7 +27,7 @@ def map_vm_to_terraform(vm_data: Dict[str, Any]) -> Dict[str, Any]:
         "resource": "proxmox_vm_qemu",
         "name": resource_name,
         "attributes": {
-            "name": vm_data.get("name"),
+            "name": name,
             "target_node": vm_data.get("node"),
             "vmid": vm_data.get("vmid"),
             "memory": memory // 1024 // 1024,
@@ -60,7 +65,10 @@ def map_docker_container_to_compose(container_data: Dict[str, Any]) -> Dict[str,
 
 def map_lxc_to_terraform(lxc_data: Dict[str, Any]) -> Dict[str, Any]:
     """Maps a Proxmox LXC container to a Terraform resource."""
-    resource_name = to_snake_case(lxc_data.get("name", "lxc"))
+    name = lxc_data.get("name")
+    if name is None:
+        name = f"lxc-{lxc_data.get('vmid')}"
+    resource_name = to_snake_case(name)
     memory = lxc_data.get("maxmem")
     if memory is None:
         memory = 0
@@ -68,7 +76,7 @@ def map_lxc_to_terraform(lxc_data: Dict[str, Any]) -> Dict[str, Any]:
         "resource": "proxmox_lxc",
         "name": resource_name,
         "attributes": {
-            "hostname": lxc_data.get("name"),
+            "hostname": name,
             "target_node": lxc_data.get("node"),
             "vmid": lxc_data.get("vmid"),
             "memory": memory // 1024 // 1024,

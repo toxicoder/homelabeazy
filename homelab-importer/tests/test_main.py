@@ -66,7 +66,9 @@ class TestMain(unittest.TestCase):
         os.environ.pop("PROXMOX_USER", None)
         os.environ.pop("PROXMOX_PASSWORD", None)
 
-        main(self.test_dir)
+        with self.assertRaises(SystemExit) as cm:
+            main(self.test_dir)
+        self.assertEqual(cm.exception.code, 1)
 
     @patch("main.ProxmoxAPI", side_effect=Exception("Connection Error"))
     def test_main_connection_error(self, mock_proxmox_api):
@@ -75,7 +77,9 @@ class TestMain(unittest.TestCase):
         os.environ["PROXMOX_USER"] = "dummy_user"
         os.environ["PROXMOX_PASSWORD"] = "dummy_password"
 
-        main(self.test_dir)
+        with self.assertRaises(SystemExit) as cm:
+            main(self.test_dir)
+        self.assertEqual(cm.exception.code, 1)
 
     @patch("main.generate_docker_compose")
     @patch("main.get_lxc_containers")
