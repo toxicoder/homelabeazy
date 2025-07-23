@@ -61,8 +61,8 @@ These instructions will guide you through setting up the homelab environment on 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/homelab-as-code.git
-cd homelab-as-code
+git clone https://github.com/toxicoder/homelabeazy.git
+cd homelabeazy
 ```
 
 ### 2. Automated Setup (Recommended)
