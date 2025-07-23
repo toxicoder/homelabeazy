@@ -1,37 +1,41 @@
 variable "enable_stealth_vm" {
-  description = "Enable the stealth VM"
+  description = "If set to true, the stealth VM will be created."
   type        = bool
   default     = false
 }
 
 variable "windows_iso" {
-  description = "Path to the Windows ISO file"
+  description = "The path to the Windows ISO file. This is required for the stealth VM."
   type        = string
+  default     = ""
 }
 
 variable "gpu_pci_id" {
-  description = "PCI ID of the GPU to pass through"
+  description = "The PCI ID of the GPU to pass through to the stealth VM."
   type        = string
+  default     = ""
 }
 
 variable "hv_vendor_id" {
-  description = "Hyper-V vendor ID (amd or intel)"
+  description = "The Hyper-V vendor ID to use for the stealth VM. Can be either 'amd' or 'intel'."
   type        = string
   default     = "amd"
 }
 
 variable "real_mac" {
-  description = "MAC address of the physical network card"
+  description = "The MAC address of the physical network card to use for the stealth VM."
   type        = string
+  default     = ""
 }
 
 variable "smbios_uuid" {
-  description = "SMBIOS UUID"
+  description = "The SMBIOS UUID to use for the stealth VM."
   type        = string
   default     = ""
 }
 
 variable "proxmox_host" {
-  description = "Proxmox host to deploy the VM on"
+  description = "The Proxmox host to deploy the stealth VM on."
   type        = string
+  default     = ""
 }
