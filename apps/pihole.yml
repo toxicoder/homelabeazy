@@ -13,9 +13,7 @@ spec:
       recurse: true
     helm:
       values: |
-        adminPassword:
-          secretName: pihole-admin-password
-          secretKey: password
+        adminPassword: <path:secrets/data/pihole#admin-password>
         persistence:
           enabled: true
           storageClassName: "local-path"

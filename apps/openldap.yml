@@ -12,10 +12,8 @@ spec:
     helm:
       values: |
         auth:
-          rootPasswordSecret: openldap-creds
-          rootPasswordKey: root-password
-          adminPasswordSecret: openldap-creds
-          adminPasswordKey: admin-password
+          rootPassword: <path:secrets/data/openldap#root-password>
+          adminPassword: <path:secrets/data/openldap#admin-password>
         persistence:
           enabled: true
           storageClassName: "longhorn"
