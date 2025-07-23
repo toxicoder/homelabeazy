@@ -34,3 +34,17 @@
   win_chocolatey:
     name: virtio-drivers
     state: present
+
+- name: Copy test script to guest
+  win_copy:
+    src: run_tests.ps1
+    dest: C:\Users\Administrator\Desktop\run_tests.ps1
+
+- name: Run tests
+  win_shell: C:\Users\Administrator\Desktop\run_tests.ps1
+
+- name: Fetch test results
+  fetch:
+    src: C:\Users\Administrator\Desktop\results.xml
+    dest: /tmp/results.xml
+    flat: yes
