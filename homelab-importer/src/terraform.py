@@ -4,15 +4,11 @@ import json
 from typing import IO, Any, Dict, List
 
 
-def generate_terraform_config(
-    resources: List[Dict[str, Any]], filename: str
-) -> None:
+def generate_terraform_config(resources: List[Dict[str, Any]], filename: str) -> None:
     """Generates a Terraform configuration file."""
     with open(filename, "w") as f:
         for resource in resources:
-            f.write(
-                f'resource "{resource["resource"]}" "{resource["name"]}" {{\n'
-            )
+            f.write(f'resource "{resource["resource"]}" "{resource["name"]}" {{\n')
             for key, value in resource["attributes"].items():
                 if isinstance(value, str):
                     f.write(f'  {key} = "{value}"\n')
@@ -43,9 +39,9 @@ def generate_docker_tfvars(
     """Generates variables for Docker containers."""
     for i, container in enumerate(containers):
         container_name = container.get("name", f"container{i}")
-        f.write(f'{resource_name}_{container_name} = {{\n')
+        f.write(f"{resource_name}_{container_name} = {{\n")
         for key, value in container["attributes"].items():
-            f.write(f'  {key} = {json.dumps(value)}\n')
+            f.write(f"  {key} = {json.dumps(value)}\n")
         f.write("}\n\n")
 
 

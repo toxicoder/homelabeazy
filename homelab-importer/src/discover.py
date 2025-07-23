@@ -1,40 +1,59 @@
 """Discovery logic for Proxmox resources."""
 
 import json
+import logging
 from typing import Any, Dict, List
+
 from proxmoxer import ProxmoxAPI
+from proxmoxer.core import ProxmoxResourceError
 
 
 def get_vms(proxmox: ProxmoxAPI) -> List[Dict[str, Any]]:
     """Returns a list of all VMs, including their Docker containers."""
-    vms = proxmox.cluster.resources.get(type="vm")
-    for vm in vms:
-        vm["docker_containers"] = get_docker_containers(
-            proxmox, vm["node"], vm["vmid"], "qemu"
-        )
-    return vms
+    try:
+        vms = proxmox.cluster.resources.get(type="vm")
+        for vm in vms:
+            vm["docker_containers"] = get_docker_containers(
+                proxmox, vm["node"], vm["vmid"], "qemu"
+            )
+        return vms
+    except ProxmoxResourceError as e:
+        logging.error(f"Error fetching VMs: {e}")
+        return []
 
 
 def get_lxc_containers(proxmox: ProxmoxAPI) -> List[Dict[str, Any]]:
     """
     Returns a list of all LXC containers, including their Docker containers.
     """
-    containers = proxmox.cluster.resources.get(type="lxc")
-    for container in containers:
-        container["docker_containers"] = get_docker_containers(
-            proxmox, container["node"], container["vmid"], "lxc"
-        )
-    return containers
+    try:
+        containers = proxmox.cluster.resources.get(type="lxc")
+        for container in containers:
+            container["docker_containers"] = get_docker_containers(
+                proxmox, container["node"], container["vmid"], "lxc"
+            )
+        return containers
+    except ProxmoxResourceError as e:
+        logging.error(f"Error fetching LXC containers: {e}")
+        return []
 
 
 def get_storage_pools(proxmox: ProxmoxAPI) -> List[Dict[str, Any]]:
     """Returns a list of all storage pools."""
-    return proxmox.storage.get()
+    try:
+        return proxmox.storage.get()
+    except ProxmoxResourceError as e:
+        logging.error(f"Error fetching storage pools: {e}")
+        return []
 
 
 def get_network_bridges(proxmox: ProxmoxAPI) -> List[Dict[str, Any]]:
     """Returns a list of all network bridges."""
-    return proxmox.cluster.resources.get(type="sdn")
+    try:
+        return proxmox.cluster.resources.get(type="sdn")
+    except ProxmoxResourceError as e:
+        logging.error(f"Error fetching network bridges: {e}")
+        return []
 
 
 def get_docker_containers(
@@ -51,20 +70,14 @@ def get_docker_containers(
             return []
 
         # Fetch container list
-        result = guest.agent.exec.post(
-            command="docker ps -a --format '{{json .}}'"
-        )
+        result = guest.agent.exec.post(command="docker ps -a --format '{{json .}}'")
         if not result or "stdout" not in result:
             return []
         containers = [
-            json.loads(line)
-            for line in result["stdout"].strip().split("\n")
-            if line
+            json.loads(line) for line in result["stdout"].strip().split("\n") if line
         ]
 
-        result = guest.agent.exec.post(
-            command="docker ps -a --format '{{.ID}}'"
-        )
+        result = guest.agent.exec.post(command="docker ps -a --format '{{.ID}}'")
         if not result or "stdout" not in result:
             return []
         container_ids = result["stdout"].strip().split("\n")
@@ -84,6 +97,15 @@ def get_docker_containers(
                 container["details"] = inspected_data[i]
 
         return containers
-    except Exception as e:
-        print(f"An error occurred while fetching Docker containers: {e}")
+    except ProxmoxResourceError as e:
+        logging.error(
+            f"Error fetching Docker containers for {vm_type}/{vmid} on "
+            f"node {node}: {e}"
+        )
+        return []
+    except json.JSONDecodeError as e:
+        logging.error(
+            f"Error decoding JSON from docker command for {vm_type}/{vmid} "
+            f"on node {node}: {e}"
+        )
         return []
