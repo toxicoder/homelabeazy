@@ -100,3 +100,115 @@ items:
       destination:
         server: '{{ server_url }}'
         namespace: searxng
+  - apiVersion: argoproj.io/v1alpha1
+    kind: Application
+    metadata:
+      name: gitea
+      namespace: argocd
+    spec:
+      project: default
+      source:
+        repoURL: '{{ gitea_repo_url }}'
+        targetRevision: '{{ gitea_repo_revision }}'
+        path: gitea
+      destination:
+        server: '{{ server_url }}'
+        namespace: gitea
+  - apiVersion: argoproj.io/v1alpha1
+    kind: Application
+    metadata:
+      name: homepage
+      namespace: argocd
+    spec:
+      project: default
+      source:
+        repoURL: '{{ homepage_repo_url }}'
+        targetRevision: '{{ homepage_repo_revision }}'
+        path: homepage
+      destination:
+        server: '{{ server_url }}'
+        namespace: homepage
+  - apiVersion: argoproj.io/v1alpha1
+    kind: Application
+    metadata:
+      name: gluetun
+      namespace: argocd
+    spec:
+      project: default
+      source:
+        repoURL: '{{ gluetun_repo_url }}'
+        targetRevision: '{{ gluetun_repo_revision }}'
+        path: gluetun
+      destination:
+        server: '{{ server_url }}'
+        namespace: gluetun
+  - apiVersion: argoproj.io/v1alpha1
+    kind: Application
+    metadata:
+      name: home-assistant
+      namespace: argocd
+    spec:
+      project: default
+      source:
+        repoURL: '{{ home_assistant_repo_url }}'
+        targetRevision: '{{ home_assistant_repo_revision }}'
+        path: home-assistant
+      destination:
+        server: '{{ server_url }}'
+        namespace: home-assistant
+  - apiVersion: argoproj.io/v1alpha1
+    kind: Application
+    metadata:
+      name: mariadb
+      namespace: argocd
+    spec:
+      project: default
+      source:
+        repoURL: '{{ mariadb_repo_url }}'
+        targetRevision: '{{ mariadb_repo_revision }}'
+        path: mariadb
+      destination:
+        server: '{{ server_url }}'
+        namespace: mariadb
+  - apiVersion: argoproj.io/v1alpha1
+    kind: Application
+    metadata:
+      name: monitoring
+      namespace: argocd
+    spec:
+      project: default
+      source:
+        repoURL: '{{ monitoring_repo_url }}'
+        targetRevision: '{{ monitoring_repo_revision }}'
+        path: monitoring
+      destination:
+        server: '{{ server_url }}'
+        namespace: monitoring
+  - apiVersion: argoproj.io/v1alpha1
+    kind: Application
+    metadata:
+      name: tailscale
+      namespace: argocd
+    spec:
+      project: default
+      source:
+        repoURL: '{{ tailscale_repo_url }}'
+        targetRevision: '{{ tailscale_repo_revision }}'
+        path: tailscale
+      destination:
+        server: '{{ server_url }}'
+        namespace: tailscale
+  - apiVersion: argoproj.io/v1alpha1
+    kind: Application
+    metadata:
+      name: wireguard
+      namespace: argocd
+    spec:
+      project: default
+      source:
+        repoURL: '{{ wireguard_repo_url }}'
+        targetRevision: '{{ wireguard_repo_revision }}'
+        path: wireguard
+      destination:
+        server: '{{ server_url }}'
+        namespace: wireguard

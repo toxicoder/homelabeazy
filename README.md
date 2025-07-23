@@ -236,21 +236,21 @@ The following services are included in this homelab. Some are enabled by default
 | **Bitwarden**     | A self-hosted password manager.                                                                         | Yes                |
 | **Gitea**         | A self-hosted Git service.                                                                              | Yes                |
 | **Homepage**      | A simple, static homepage for your homelab.                                                             | Yes                |
-| **Coder**         | A remote development environment that runs on your own infrastructure.                                  | No                 |
-| **Gluetun**       | A VPN client in a container to secure other services.                                                   | No                 |
+| **Coder**         | A remote development environment that runs on your own infrastructure.                                  | Yes                |
+| **Gluetun**       | A VPN client in a container to secure other services.                                                   | Yes                |
 | **Grafana**       | A monitoring and observability platform.                                                                | Yes                |
-| **Home Assistant**| An open-source home automation platform.                                                                | No                 |
-| **Kasm**          | A container streaming platform for running desktops and applications in a browser.                      | No                 |
+| **Home Assistant**| An open-source home automation platform.                                                                | Yes                |
+| **Kasm**          | A container streaming platform for running desktops and applications in a browser.                      | Yes                |
 | **MariaDB**       | A popular open-source relational database.                                                              | Yes                |
 | **Monitoring**    | A full monitoring stack including Prometheus, Grafana, and Alertmanager.                                | Yes                |
-| **pfSense**       | A powerful open-source firewall and router.                                                             | No                 |
-| **Pi-hole**       | A network-wide ad blocker.                                                                              | No                 |
-| **Puter**         | A self-hosted cloud desktop.                                                                            | No                 |
+| **pfSense**       | A powerful open-source firewall and router.                                                             | Yes                |
+| **Pi-hole**       | A network-wide ad blocker.                                                                              | Yes                |
+| **Puter**         | A self-hosted cloud desktop.                                                                            | Yes                |
 | **Redis**         | An in-memory data structure store.                                                                      | Yes                |
-| **SearXNG**       | A privacy-respecting, hackable metasearch engine.                                                       | No                 |
-| **Supabase**      | An open-source Firebase alternative.                                                                    | No                 |
-| **Tailscale**     | A zero-config VPN for building secure networks.                                                         | No                 |
-| **WireGuard**     | A fast, modern, and secure VPN tunnel.                                                                  | No                 |
+| **SearXNG**       | A privacy-respecting, hackable metasearch engine.                                                       | Yes                |
+| **Supabase**      | An open-source Firebase alternative.                                                                    | Yes                |
+| **Tailscale**     | A zero-config VPN for building secure networks.                                                         | Yes                |
+| **WireGuard**     | A fast, modern, and secure VPN tunnel.                                                                  | Yes                |
 
 ## Deployment Workflow
 
