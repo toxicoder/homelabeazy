@@ -1,12 +1,11 @@
 """Functions for generating docker-compose files."""
 
 from typing import Any, Dict, List
+
 import yaml
 
 
-def generate_docker_compose(
-    containers: List[Dict[str, Any]], filename: str
-) -> None:
+def generate_docker_compose(containers: List[Dict[str, Any]], filename: str) -> None:
     """Generates a docker-compose.yml file."""
     services = {}
     for container in containers:

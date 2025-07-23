@@ -1,15 +1,19 @@
-import os
 import argparse
+import logging
+import os
+import sys
+
+from discover import get_lxc_containers, get_vms
+from docker import generate_docker_compose
 from dotenv import load_dotenv
+from mapping import map_lxc_to_terraform, map_vm_to_terraform
 from proxmoxer import ProxmoxAPI
-from discover import get_vms, get_lxc_containers
-from mapping import map_vm_to_terraform, map_lxc_to_terraform
+from proxmoxer.core import ProxmoxAuthenticationError
 from terraform import (
+    generate_import_script,
     generate_terraform_config,
     generate_terraform_tfvars,
-    generate_import_script,
 )
-from docker import generate_docker_compose
 
 
 def main(output_dir: str) -> None:
@@ -21,11 +25,11 @@ def main(output_dir: str) -> None:
     proxmox_password = os.getenv("PROXMOX_PASSWORD")
 
     if not all([proxmox_host, proxmox_user, proxmox_password]):
-        print(
-            "Error: PROXMOX_HOST, PROXMOX_USER, "
-            "and PROXMOX_PASSWORD must be set."
+        logging.error(
+            "Error: PROXMOX_HOST, PROXMOX_USER, and PROXMOX_PASSWORD must be "
+            "set as environment variables or in a .env file."
         )
-        return
+        sys.exit(1)
 
     try:
         proxmox = ProxmoxAPI(
@@ -34,7 +38,7 @@ def main(output_dir: str) -> None:
             password=proxmox_password,
             verify_ssl=True,
         )
-        print("Successfully connected to Proxmox!")
+        logging.info("Successfully connected to Proxmox!")
 
         vms = get_vms(proxmox)
         lxc_containers = get_lxc_containers(proxmox)
@@ -47,19 +51,22 @@ def main(output_dir: str) -> None:
         all_resources = terraform_vms + terraform_lxc_containers
 
         # Generate Terraform configuration
+        os.makedirs(output_dir, exist_ok=True)
         tf_config_path = os.path.join(output_dir, "homelab.tf")
         generate_terraform_config(all_resources, tf_config_path)
-        print(f"Terraform configuration generated in {tf_config_path}")
+        logging.info(f"Terraform configuration generated in {tf_config_path}")
 
         # Generate Terraform variables
         tfvars_path = os.path.join(output_dir, "terraform.tfvars")
         generate_terraform_tfvars(all_resources, tfvars_path)
-        print(f"Terraform variables generated in {tfvars_path}")
+        logging.info(f"Terraform variables generated in {tfvars_path}")
 
         # Generate import script
         import_script_path = os.path.join(output_dir, "import.sh")
         generate_import_script(all_resources, import_script_path)
-        print(f"Terraform import script generated in {import_script_path}")
+        logging.info(
+            f"Terraform import script generated in {import_script_path}"
+        )
 
         # Generate docker-compose files
         for resource in all_resources:
@@ -69,10 +76,19 @@ def main(output_dir: str) -> None:
                 generate_docker_compose(
                     resource["docker_containers"], compose_path
                 )
-                print(f"Docker Compose file generated in {compose_path}")
+                logging.info(
+                    f"Docker Compose file generated in {compose_path}"
+                )
 
+    except ProxmoxAuthenticationError as e:
+        logging.error(f"Authentication error with Proxmox API: {e}")
+        sys.exit(1)
+    except ConnectionError as e:
+        logging.error(f"Connection error with Proxmox API: {e}")
+        sys.exit(1)
     except Exception as e:
-        print(f"An error occurred: {e}")
+        logging.error(f"An unexpected error occurred: {e}")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
@@ -83,5 +99,16 @@ if __name__ == "__main__":
         default=".",
         help="The directory to output the generated files to.",
     )
+    parser.add_argument(
+        "--verbose",
+        action="store_true",
+        help="Enable verbose logging.",
+    )
     args = parser.parse_args()
+
+    log_level = logging.INFO
+    if args.verbose:
+        log_level = logging.DEBUG
+    logging.basicConfig(level=log_level, format="%(levelname)s: %(message)s")
+
     main(args.output_dir)
