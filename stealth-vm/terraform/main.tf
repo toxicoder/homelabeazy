@@ -8,19 +8,19 @@ resource "proxmox_vm_qemu" "stealth_vm" {
   agent       = 1
 
   # VM Configuration
-  bios     = "ovmf"
-  machine  = "q35"
-  cpu      = "host"
-  cores    = 4
+  bios     = var.bios
+  machine  = var.machine
+  cpu      = var.cpu
+  cores    = var.cores
   sockets  = 1
-  memory   = 8192
-  scsihw   = "lsi"
-  bootdisk = "scsi0"
+  memory   = var.memory
+  scsihw   = var.scsihw
+  bootdisk = var.bootdisk
 
   # Network
   network {
-    model  = "virtio"
-    bridge = "vmbr0"
+    model  = var.network_model
+    bridge = var.network_bridge
     macaddr = var.real_mac
   }
 
