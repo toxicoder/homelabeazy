@@ -43,7 +43,7 @@
       --provider aws \
       --plugins velero/velero-plugin-for-aws:v1.5.0 \
       --bucket velero \
-      --secret-file /path/to/k8s/secret/velero-minio-creds \
+      --secret-file velero-minio-creds \
       --use-restic \
       --backup-location-config region=minio,s3ForcePathStyle="true",s3Url=http://minio.minio.svc:9000
 
