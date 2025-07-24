@@ -29,18 +29,6 @@ fi
 # --- TERRAFORM --
 # ----------------
 
-# Create the terraform.tfvars file.
-cat > homelab-infra/terraform.tfvars <<EOF
-pm_api_url = "$PM_API_URL"
-pm_token_id = "$PM_TOKEN_ID"
-pm_token_secret = "$PM_TOKEN_SECRET"
-enable_stealth_vm = ${enable_stealth_vm:-false}
-windows_iso = "${windows_iso:-}"
-gpu_pci_id = "${gpu_pci_id:-}"
-real_mac = "${real_mac:-}"
-proxmox_host = "${proxmox_host:-}"
-EOF
-
 # Create the group_vars/all.yml file.
 cat > ansible/group_vars/all.yml <<EOF
 domain_name: $DOMAIN_NAME
@@ -50,10 +38,10 @@ EOF
 (cd homelab-infra && terraform init)
 
 # Run terraform plan.
-(cd homelab-infra && terraform plan)
+(cd homelab-infra && export PM_API_TOKEN_ID=$PM_TOKEN_ID && export PM_API_TOKEN_SECRET=$PM_TOKEN_SECRET && terraform plan)
 
 # Run terraform apply.
-(cd homelab-infra && terraform apply -auto-approve)
+(cd homelab-infra && export PM_API_TOKEN_ID=$PM_TOKEN_ID && export PM_API_TOKEN_SECRET=$PM_TOKEN_SECRET && terraform apply -auto-approve)
 
 # ----------------
 # --- ANSIBLE ----
