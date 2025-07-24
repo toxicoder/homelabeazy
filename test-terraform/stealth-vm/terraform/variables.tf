@@ -1,11 +1,3 @@
-variable "pm_api_url" {
-  description = "The URL of the Proxmox API."
-  type        = string
-  default     = "https://localhost:8006/api2/json"
-}
-
-
-
 variable "enable_stealth_vm" {
   description = "If set to true, the stealth VM will be created."
   type        = bool
