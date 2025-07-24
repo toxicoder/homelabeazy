@@ -3,5 +3,5 @@
 
 velero_version: "1.9.0"
 velero_install_dir: "/opt/velero"
-minio_access_key: "{{ minio_access_key_var }}"
-minio_secret_key: "{{ minio_secret_key_var }}"
+minio_access_key: "{{ vault_minio_access_key }}"
+minio_secret_key: "{{ vault_minio_secret_key }}"
