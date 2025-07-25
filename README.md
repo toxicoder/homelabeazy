@@ -67,13 +67,13 @@ cd homelabeazy
 
 ### 2. Automated Setup (Recommended)
 
-The `scripts/setup.sh` script is the easiest way to get started. It will automatically provision the infrastructure and deploy the applications with minimal user interaction.
+The `make setup` command is the easiest way to get started. It will automatically provision the infrastructure and deploy the applications with minimal user interaction.
 
 ```bash
-./scripts/setup.sh
+make setup
 ```
 
-This script will prompt you for the following information:
+This will run the `scripts/setup.sh` script, which will prompt you for the following information:
 
 -   **Proxmox API URL:** The URL of your Proxmox API.
 -   **Proxmox API Token ID:** Your Proxmox API token ID.
@@ -110,15 +110,15 @@ The manual setup process is for advanced users who want to customize the install
 
     - Initialize Terraform:
       ```bash
-      terraform init
+      make terraform-init
       ```
     - Plan the deployment:
       ```bash
-      terraform plan
+      make terraform-plan
       ```
     - Apply the changes:
       ```bash
-      terraform apply
+      make terraform-apply
       ```
 
 3.  **Configure Ansible:**
@@ -141,7 +141,7 @@ The manual setup process is for advanced users who want to customize the install
 5.  **Run the Ansible playbook:**
 
     ```bash
-    ansible-playbook -i ansible/inventory/inventory.auto.yml ansible/playbooks/setup.yml
+    make ansible-playbook-setup
     ```
 
 ## System Architecture
@@ -388,13 +388,16 @@ The deployment process is designed to be as automated as possible. However, you 
 
 ## Usage
 
-Once you have provisioned the infrastructure with Terraform and configured the Ansible variables, you can run the main playbook to set up your homelab:
+This project includes a `Makefile` that provides a convenient way to run common tasks.
 
-```bash
-ansible-playbook -i ansible/inventory/inventory.auto.yml ansible/playbooks/setup.yml
-```
+### Makefile Commands
 
-This will execute all the roles in the correct order to provision your homelab environment.
+-   **`make help`**: Display a list of available commands.
+-   **`make setup`**: Run the automated setup script.
+-   **`make configure-proxmox`**: Run the Proxmox configuration script.
+-   **`make import`**: Run the import script.
+-   **`make terraform-apply`**: Apply the Terraform configuration.
+-   **`make ansible-playbook-setup`**: Run the Ansible setup playbook.
 
 ## Testing
 
