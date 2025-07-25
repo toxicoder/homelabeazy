@@ -33,6 +33,12 @@ resource "proxmox_vm_qemu" "test_vm" {
   sockets     = 1
   cores       = 2
   os_type     = "cloud-init"
+
+  network {
+    model  = "virtio"
+    bridge = var.service_bridge
+    tag    = var.service_vlan_tag
+  }
 }
 
 resource "proxmox_lxc" "test_lxc" {

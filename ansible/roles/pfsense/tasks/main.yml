@@ -1,0 +1,12 @@
+- name: Allow traffic from service network to the internet
+  community.general.pfsense_rule:
+    config_file: "/cf/conf/config.xml"
+    rule:
+      action: "pass"
+      interface: "opt1"
+      protocol: "tcp"
+      source:
+        network: "opt1"
+      destination:
+        any: true
+    state: "present"
