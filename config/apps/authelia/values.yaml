@@ -1,0 +1,67 @@
+ingress:
+  enabled: true
+  className: traefik
+  hosts:
+    - host: auth.homelab.dev
+  paths:
+    - path: /
+      pathType: Prefix
+
+pod:
+  extraEnv:
+    - name: AUTHELIA_JWT_SECRET_FILE
+      value: /etc/authelia/secrets/jwt_secret
+    - name: AUTHELIA_SESSION_SECRET_FILE
+      value: /etc/authelia/secrets/session_secret
+    - name: AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE
+      value: /etc/authelia/secrets/storage_encryption_key
+  extraVolumes:
+    - name: authelia-secrets
+      secret:
+        secretName: authelia-secrets
+  extraVolumeMounts:
+    - name: authelia-secrets
+      mountPath: /etc/authelia/secrets
+      readOnly: true
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 250m
+      memory: 256Mi
+
+authelia:
+  jwt_secret: "vault:secret/data/authelia#jwt_secret"
+  default_redirection_url: https://homepage.homelab.dev
+  authentication_backend:
+    ldap:
+      url: 'ldap://openldap.openldap.svc.cluster.local:389'
+      base_dn: dc=homelab,dc=com
+      username_attribute: uid
+      additional_users_dn: ou=users
+      users_filter: (&(objectClass=inetOrgPerson)(uid={username}))
+      additional_groups_dn: ou=groups
+      groups_filter: (member={dn})
+      group_name_attribute: cn
+      mail_attribute: mail
+      display_name_attribute: displayName
+      user: cn=admin,dc=homelab,dc=com
+              password: "vault:secret/data/openldap#admin_password"
+  access_control:
+    default_policy: deny
+    rules:
+      - domain: "*.homelab.dev"
+        policy: bypass
+  session:
+    name: authelia_session
+            secret: "vault:secret/data/authelia#session_secret"
+    expiration: 1h
+    inactivity: 5m
+  storage:
+            encryption_key: "vault:secret/data/authelia#storage_encryption_key"
+    local:
+      path: /var/lib/authelia/db.sqlite3
+  notifier:
+    filesystem:
+      filename: /tmp/authelia/notification.txt

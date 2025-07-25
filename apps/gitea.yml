@@ -10,49 +10,8 @@ spec:
     chart: gitea
     targetRevision: 9.0.0
     helm:
-      values: |
-        gitea:
-          admin:
-            existingSecret: gitea-admin-creds
-          persistence:
-            enabled: true
-            storageClassName: "longhorn"
-            size: 10Gi
-          ingress:
-            enabled: false
-          service:
-            http:
-              port: 3000
-            ssh:
-              port: 22
-          postgresql:
-            auth:
-              username: gitea
-              existingSecret: gitea-db-creds
-              database: gitea
-            primary:
-              persistence:
-                enabled: true
-                storageClass: "longhorn"
-                size: 8Gi
-              resources:
-                requests:
-                  cpu: 250m
-                  memory: 512Mi
-                limits:
-                  cpu: 1
-                  memory: 2Gi
-          ldap:
-            - name: "homelab-ldap"
-              existingSecret: gitea-ldap-secret
-              host: "openldap.openldap.svc.cluster.local"
-              port: 389
-              userSearchBase: "ou=users,dc=homelab,dc=com"
-              userFilter: "(&(objectClass=inetOrgPerson)(uid=%s))"
-              adminFilter: "(memberOf=cn=homelab-admins,ou=groups,dc=homelab,dc=com)"
-              emailAttribute: "mail"
-              bindDn: "cn=admin,dc=homelab,dc=com"
-              usernameAttribute: "uid"
+      valueFiles:
+        - "config/apps/gitea/values.yaml"
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: gitea

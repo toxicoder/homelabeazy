@@ -1,0 +1,55 @@
+gitea:
+  admin:
+    existingSecret: "vault:secret/data/gitea#admin_creds"
+  persistence:
+    enabled: true
+    storageClassName: "longhorn"
+    size: 10Gi
+  ingress:
+    enabled: true
+    className: traefik
+    hosts:
+      - host: gitea.homelab.dev
+        paths:
+          - path: /
+            pathType: Prefix
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: 1
+      memory: 2Gi
+  service:
+    http:
+      port: 3000
+    ssh:
+      port: 22
+  postgresql:
+    auth:
+      username: gitea
+      existingSecret: "vault:secret/data/gitea#db_creds"
+      database: gitea
+    primary:
+      persistence:
+        enabled: true
+        storageClass: "longhorn"
+        size: 8Gi
+      resources:
+        requests:
+          cpu: 250m
+          memory: 512Mi
+        limits:
+          cpu: 1
+          memory: 2Gi
+  ldap:
+    - name: "homelab-ldap"
+      existingSecret: "vault:secret/data/gitea#ldap_secret"
+      host: "openldap.openldap.svc.cluster.local"
+      port: 389
+      userSearchBase: "ou=users,dc=homelab,dc=com"
+      userFilter: "(&(objectClass=inetOrgPerson)(uid=%s))"
+      adminFilter: "(memberOf=cn=homelab-admins,ou=groups,dc=homelab,dc=com)"
+      emailAttribute: "mail"
+      bindDn: "cn=admin,dc=homelab,dc=com"
+      usernameAttribute: "uid"
