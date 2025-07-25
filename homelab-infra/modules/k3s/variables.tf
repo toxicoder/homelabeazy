@@ -31,6 +31,30 @@ variable "master_cores" {
   default     = 2
 }
 
+variable "network_bridge" {
+  description = "The network bridge to use for the VMs."
+  type        = string
+  default     = "vmbr0"
+}
+
+variable "agent" {
+  description = "Enable/disable the QEMU agent."
+  type        = number
+  default     = 0
+}
+
+variable "mac" {
+  description = "The MAC address of the VMs."
+  type        = string
+  default     = ""
+}
+
+variable "vlan" {
+  description = "The VLAN tag for the VMs' network interface."
+  type        = number
+  default     = -1
+}
+
 variable "worker_count" {
   description = "The number of worker nodes to create."
   type        = number
