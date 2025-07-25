@@ -1,8 +1,17 @@
 ---
-- name: Generate secrets
-  command: "python3 {{ role_path }}/../secure_gen/files/secure-gen"
-  args:
-    chdir: "{{ role_path }}/../secure_gen/files"
-  vars:
-    secrets_config: "{{ lookup('file', '{{ role_path }}/../vars/main.yml') | from_yaml }}"
-  no_log: true
+- name: Find all application values files
+  find:
+    paths: "{{ playbook_dir }}/../../config/apps"
+    patterns: "values.yaml"
+    recurse: yes
+  register: values_files
+
+- name: Debug values_files
+  debug:
+    var: values_files
+
+- name: Create secrets from values files
+  include_tasks: create_secrets.yml
+  loop: "{{ values_files.files }}"
+  loop_control:
+    loop_var: values_file

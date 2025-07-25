@@ -67,31 +67,47 @@ cd homelabeazy
 
 ### 2. Automated Setup (Recommended)
 
-The `make setup` command is the easiest way to get started. It will automatically provision the infrastructure and deploy the applications with minimal user interaction.
+The `make setup` command is the easiest way to get started. It will automatically provision the infrastructure, configure secrets, and deploy the applications with minimal user interaction.
 
 ```bash
 make setup
 ```
 
-This will run the `scripts/setup.sh` script, which will prompt you for the following information:
+This will run the `scripts/setup.sh` script, which will guide you through the following steps:
 
--   **Proxmox API URL:** The URL of your Proxmox API.
--   **Proxmox API Token ID:** Your Proxmox API token ID.
--   **Proxmox API Token Secret:** Your Proxmox API token secret.
--   **Domain Name:** The domain name for your homelab.
+1.  **Proxmox Credentials:** You will be prompted to enter your Proxmox API URL, Token ID, and Token Secret. These are used by Terraform to provision the virtual machines.
 
-The script will then perform the following actions:
+2.  **Domain Name:** You will be prompted to enter the domain name for your homelab. This will be used to configure DNS and access your applications.
 
--   Create a `terraform.tfvars` file with your Proxmox credentials.
--   Run `terraform init`, `terraform plan`, and `terraform apply` to provision the infrastructure.
--   Create an `ansible/group_vars/all.yml` file with your domain name.
--   Run the Ansible playbook to deploy the applications.
+3.  **Secret Management:** You will be asked if you want to use Vault for secret management.
+    *   **Using Vault (Recommended):** If you choose to use Vault, the script will:
+        *   Install the Vault client on your local machine if it is not already installed.
+        *   Prompt you for your Vault address and token.
+        *   Automatically generate and store all the necessary secrets in Vault. This includes passwords, API keys, and certificates.
+        *   Configure the applications to securely retrieve their secrets from Vault.
+    *   **Manual Secret Management:** If you choose not to use Vault, you will be prompted to enter each secret manually. This is less secure and not recommended for production environments.
 
-**Note:** If you want to manage your secrets manually, you can run the script with the `--no-vault` flag. This will skip the Vault setup and allow you to enter your secrets manually.
+4.  **Infrastructure Provisioning:** The script will run Terraform to provision the virtual machines for the K3s cluster.
 
-```bash
-./scripts/setup.sh --no-vault
-```
+5.  **Application Deployment:** The script will run Ansible to deploy the applications and configure them with the secrets you provided.
+
+**Detailed Explanation of the Automated Setup Process:**
+
+The automated setup process is designed to be both user-friendly and educational. Here's a detailed breakdown of what happens under the hood:
+
+*   **`scripts/setup.sh`:** This is the main script that orchestrates the entire setup process. It uses a series of helper scripts and Ansible playbooks to perform the necessary tasks.
+
+*   **Terraform for Infrastructure:** The script uses Terraform to create the virtual machines on Proxmox. The Terraform configuration is located in the `infrastructure/proxmox` directory. The `main.tf` file defines the resources to be created, and the `variables.tf` file defines the variables that can be customized.
+
+*   **Ansible for Configuration:** Once the infrastructure is provisioned, the script uses Ansible to configure the K3s cluster and deploy the applications. The Ansible playbooks are located in the `ansible/playbooks` directory.
+
+*   **Vault for Secret Management:** The script uses the `ansible/roles/vault_secrets` role to manage secrets. This role will:
+    *   Find all the `values.yaml` files in the `config/apps` directory.
+    *   Parse the `values.yaml` files and identify any values that start with `vault:`.
+    *   Use the `community.hashi_vault.vault_kv2_get` module to fetch the secrets from Vault.
+    *   Create Kubernetes secrets with the fetched values.
+
+*   **Application Configuration:** The configuration for each application is defined in a `values.yaml` file located in the `config/apps/<app-name>` directory. These files are used by Helm to deploy the applications with the correct configuration.
 
 ### 3. Manual Setup
 
@@ -127,16 +143,63 @@ The manual setup process is for advanced users who want to customize the install
 
 4.  **Manage Secrets:**
 
-    This project uses Vault to manage secrets by default. However, you can choose to manage your secrets manually.
+This project uses HashiCorp Vault to manage secrets. The `ansible/roles/vault_secrets` role is responsible for reading the application configurations, fetching secrets from Vault, and creating the necessary Kubernetes secrets.
 
-    -   **With Vault (Default):** If you are using Vault, you will need to add your secrets to the appropriate path in Vault. The Ansible playbook will automatically retrieve the secrets from Vault during the deployment process.
-    -   **Without Vault:** If you are not using Vault, you will need to create a `secrets.yml` file in the `ansible/group_vars` directory. This file should contain all of your secrets in the following format:
+**How it Works:**
 
+1.  **Configuration:** The configuration for each application is defined in a `values.yaml` file located in the `config/apps/<app-name>` directory.
+2.  **Secret Declaration:** Within these `values.yaml` files, secrets are declared using the following format:
         ```yaml
-        secret_key: "secret_value"
+    some_secret: "vault:secret/data/path/to/secret#key"
         ```
+    *   `vault:`: This prefix indicates that the value is a secret to be fetched from Vault.
+    *   `secret/data/path/to/secret`: This is the path to the secret in Vault's KVv2 secrets engine.
+    *   `key`: This is the key of the secret to retrieve.
+3.  **Ansible Role:** The `ansible/roles/vault_secrets` Ansible role performs the following actions:
+    *   It recursively finds all `values.yaml` files within the `config/apps` directory.
+    *   For each file, it reads the content and identifies all values that start with the `vault:` prefix.
+    *   It uses the `community.hashi_vault.vault_kv2_get` module to fetch the specified secret from Vault.
+    *   It creates a Kubernetes secret with the fetched value. The name of the secret is derived from the application name (the directory name).
 
-        You will also need to update the Ansible playbook to retrieve the secrets from this file instead of Vault.
+**Example:**
+
+Let's say you have the following configuration in `config/apps/gitea/values.yaml`:
+
+```yaml
+gitea:
+  admin:
+    existingSecret: "vault:secret/data/gitea#admin_creds"
+```
+
+The `vault_secrets` role will:
+
+1.  Identify that `gitea.admin.existingSecret` is a Vault secret.
+2.  Fetch the value of the `admin_creds` key from the `secret/data/gitea` path in Vault.
+3.  Create a Kubernetes secret named `gitea-secrets` with the fetched value.
+
+**Adding New Secrets:**
+
+To add a new secret, you need to:
+
+1.  Add the secret to Vault at the desired path.
+2.  Update the corresponding `values.yaml` file to reference the new secret using the `vault:` prefix.
+3.  Run the `make ansible-playbook-setup` command to apply the changes.
+
+### Application Configuration
+
+The configuration for each application is defined in a `values.yaml` file located in the `config/apps/<app-name>` directory. These files are standard Helm values files, so you can use any valid Helm syntax.
+
+**Customizing Application Configuration:**
+
+To customize the configuration of an application, you can edit its `values.yaml` file. For example, to change the number of replicas for Gitea, you would edit `config/apps/gitea/values.yaml` and modify the `replicaCount` value.
+
+After making your changes, you can apply them by running the following command:
+
+```bash
+make ansible-playbook-setup
+```
+
+This will re-run the Ansible playbook and update the application with the new configuration.
 
 5.  **Run the Ansible playbook:**
 
