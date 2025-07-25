@@ -185,6 +185,27 @@ To add a new secret, you need to:
 2.  Update the corresponding `values.yaml` file to reference the new secret using the `vault:` prefix.
 3.  Run the `make ansible-playbook-setup` command to apply the changes.
 
+**Keeping Your Configuration Private:**
+
+If you are using this repository to manage your own homelab, it is recommended to keep your configuration private. This can be done by creating a new private Git repository and using it to store your sensitive configuration files.
+
+1.  **Create a new private Git repository:**
+    -   Create a new private repository on GitHub or another Git provider.
+    -   Clone the repository to your local machine.
+
+2.  **Move sensitive files to the private repository:**
+    -   Move the `config` directory to the private repository.
+    -   Move the `terraform.tfvars` file to the private repository.
+    -   Move the `ansible/group_vars/all.yml` file to the private repository.
+
+3.  **Create symbolic links:**
+    -   Create symbolic links from the original locations to the new locations in the private repository.
+    ```bash
+    ln -s /path/to/private/repo/config config
+    ln -s /path/to/private/repo/terraform.tfvars terraform.tfvars
+    ln -s /path/to/private/repo/all.yml ansible/group_vars/all.yml
+    ```
+
 ### Application Configuration
 
 The configuration for each application is defined in a `values.yaml` file located in the `config/apps/<app-name>` directory. These files are standard Helm values files, so you can use any valid Helm syntax.
