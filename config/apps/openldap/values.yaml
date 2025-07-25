@@ -1,0 +1,4 @@
+vault_path: "openldap"
+secrets:
+  root-password: "changeme"
+  admin-password: "changeme"
