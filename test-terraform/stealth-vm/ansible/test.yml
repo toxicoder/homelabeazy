@@ -1,5 +1,0 @@
----
-- name: Test Stealth VM
-  hosts: stealth-vm
-  roles:
-    - role: guest-config

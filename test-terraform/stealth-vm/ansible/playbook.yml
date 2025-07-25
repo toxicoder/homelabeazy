@@ -1,8 +1,0 @@
----
-- hosts: proxmox
-  roles:
-    - host-patch
-
-- hosts: stealth_vm
-  roles:
-    - guest-config
