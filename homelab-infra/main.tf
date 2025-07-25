@@ -11,12 +11,16 @@ terraform {
   }
 }
 
-
 provider "proxmox" {
   pm_api_url = var.pm_api_url
   pm_tls_insecure = false
 }
 
-module "stealth_vm" {
-  source = "../stealth-vm/terraform"
+module "k3s" {
+  source = "./modules/k3s"
+
+  target_node = var.target_node
+  clone       = var.clone
+  master_vmid = var.master_vmid
+  worker_vmid_start = var.worker_vmid_start
 }

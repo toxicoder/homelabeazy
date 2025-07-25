@@ -7,9 +7,12 @@ resource "proxmox_vm_qemu" "vm" {
   sockets     = var.sockets
   cores       = var.cores
   os_type     = var.os_type
+  agent       = var.agent
 
   network {
-    model  = "virtio"
-    bridge = "vmbr0"
+    model   = "virtio"
+    bridge  = var.network_bridge
+    macaddr = var.mac
+    tag     = var.vlan
   }
 }

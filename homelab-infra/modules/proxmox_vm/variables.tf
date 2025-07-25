@@ -37,3 +37,27 @@ variable "os_type" {
   description = "The OS type of the VM."
   type        = string
 }
+
+variable "network_bridge" {
+  description = "The network bridge to use for the VM."
+  type        = string
+  default     = "vmbr0"
+}
+
+variable "agent" {
+  description = "Enable/disable the QEMU agent."
+  type        = number
+  default     = 0
+}
+
+variable "mac" {
+  description = "The MAC address of the VM."
+  type        = string
+  default     = ""
+}
+
+variable "vlan" {
+  description = "The VLAN tag for the VM's network interface."
+  type        = number
+  default     = -1
+}
