@@ -29,9 +29,13 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
       - name: Terraform Init
-        run: terraform -chdir=terraform init -backend=false
+        run: |
+          terraform -chdir=infrastructure/proxmox init -backend=false
+          terraform -chdir=infrastructure/stealth-vm init -backend=false
       - name: Terraform Validate
-        run: terraform -chdir=terraform validate
+        run: |
+          terraform -chdir=infrastructure/proxmox validate
+          terraform -chdir=infrastructure/stealth-vm validate
   python-test:
     runs-on: ubuntu-latest
     steps:
