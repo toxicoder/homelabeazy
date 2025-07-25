@@ -40,7 +40,7 @@ jobs:
           go-version: '1.20'
 
       - name: Run tests
-        working-directory: ./homelab-infra
+        working-directory: ./infrastructure/proxmox
         run: go test -v ./test/...
 
   python-test:
@@ -86,23 +86,3 @@ jobs:
       - name: Run Synology playbook
         run: ansible-playbook ansible/playbooks/test_synology_mock.yml
 
-  test-stealth-vm:
-    runs-on: ubuntu-latest
-    needs: [lint, test, python-test]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup Ansible
-        run: |
-          pip install ansible
-          ansible-galaxy collection install community.windows
-
-      - name: Run Ansible playbook
-        run: ansible-playbook stealth-vm/ansible/test.yml -i stealth-vm/ansible/inventory/inventory.auto.yml
-
-      - name: Publish Test Results
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-results
-          path: /tmp/results.xml
