@@ -1,0 +1,21 @@
+name: Promote to Production
+
+on:
+  workflow_dispatch:
+
+jobs:
+  promote-prod:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform workspace select
+        run: terraform workspace select prod
+
+      - name: Terraform apply
+        run: terraform apply -auto-approve
