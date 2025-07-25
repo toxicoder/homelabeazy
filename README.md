@@ -226,6 +226,22 @@ The architecture is designed to be highly available and scalable. The K3s cluste
 - **Velero:** A tool for backing up and restoring your Kubernetes cluster resources and persistent volumes.
 - **EFK Stack:** A centralized logging solution consisting of Elasticsearch, Fluentd, and Kibana.
 
+### Networking
+
+This homelab uses a VLAN-based network segmentation strategy to isolate different types of traffic. This is a fundamental security best practice that helps to prevent lateral movement in the event of a security breach.
+
+The following VLANs are defined:
+
+*   **VLAN 10 (Service Network):** This network is used for the services running in the homelab, such as the K3s cluster and other applications.
+*   **VLAN 20 (Guest Network):** This network is used for guest devices and is isolated from the rest of the network.
+*   **VLAN 30 (Management Network):** This network is used for managing the Proxmox host and other infrastructure components.
+
+Service discovery is provided by Consul. All services are automatically registered with Consul, which allows them to discover each other and communicate securely.
+
+Firewall rules are managed by pfSense. The firewall is configured to allow traffic between the VLANs according to a set of predefined rules.
+
+For more detailed information about the networking setup, please see the [networking documentation](infrastructure/proxmox/networking/README.md).
+
 ### System Architecture Diagram
 
 ```mermaid

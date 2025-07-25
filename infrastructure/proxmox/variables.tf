@@ -22,3 +22,15 @@ variable "worker_vmid_start" {
   description = "The starting ID of the worker VMs."
   type        = number
 }
+
+variable "service_vlan_tag" {
+  description = "The VLAN tag for the service network."
+  type        = number
+  default     = 10
+}
+
+variable "service_bridge" {
+  description = "The bridge for the service network."
+  type        = string
+  default     = "vmbr2"
+}

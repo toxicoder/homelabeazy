@@ -17,4 +17,10 @@ resource "proxmox_vm_qemu" "pfsense_vm" {
     model  = "virtio"
     bridge = "vmbr1"
   }
+
+  network {
+    model  = "virtio"
+    bridge = var.service_bridge
+    tag    = var.service_vlan_tag
+  }
 }

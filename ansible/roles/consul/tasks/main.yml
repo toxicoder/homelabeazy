@@ -1,0 +1,15 @@
+- name: Install Consul
+  apt:
+    name: consul
+    state: present
+
+- name: Configure Consul
+  template:
+    src: consul.hcl.j2
+    dest: /etc/consul.d/consul.hcl
+
+- name: Start Consul service
+  systemd:
+    name: consul
+    state: started
+    enabled: yes
