@@ -1,46 +1,55 @@
 """Mapping functions for Proxmox to Terraform."""
 
-import re
 from typing import Any, Dict
 
+from utils import to_snake_case
 
-def to_snake_case(name: str) -> str:
-    """Converts a string to snake_case."""
+
+def _map_resource_to_terraform(
+    resource_data: Dict[str, Any], resource_type: str
+) -> Dict[str, Any]:
+    """Maps a Proxmox resource to a Terraform resource."""
+    name = resource_data.get("name")
     if name is None:
-        return ""
-    name = re.sub(r"([A-Z])", r"_\1", name).lower()
-    if name.startswith("_"):
-        name = name[1:]
-    return name.replace("-", "_").replace("__", "_")
+        name = f"{resource_type}-{resource_data.get('vmid')}"
+    resource_name = to_snake_case(name)
+    memory = resource_data.get("maxmem")
+    if memory is None:
+        memory = 0
+
+    attributes: Dict[str, Any] = {
+        "target_node": resource_data.get("node"),
+        "vmid": resource_data.get("vmid"),
+        "memory": memory // 1024 // 1024,
+        "cores": resource_data.get("maxcpu", 1),
+    }
+
+    if resource_type == "vm":
+        attributes["name"] = name
+        attributes["sockets"] = resource_data.get("sockets", 1)
+        attributes["os_type"] = "cloud-init"
+        resource_key = "proxmox_vm_qemu"
+    else:
+        attributes["hostname"] = name
+        resource_key = "proxmox_lxc"
+
+    resource: Dict[str, Any] = {
+        "resource": resource_key,
+        "name": resource_name,
+        "attributes": attributes,
+    }
+
+    if "docker_containers" in resource_data:
+        resource["docker_containers"] = [
+            map_docker_container_to_compose(c)
+            for c in resource_data["docker_containers"]
+        ]
+    return resource
 
 
 def map_vm_to_terraform(vm_data: Dict[str, Any]) -> Dict[str, Any]:
     """Maps a Proxmox VM to a Terraform resource."""
-    name = vm_data.get("name")
-    if name is None:
-        name = f"vm-{vm_data.get('vmid')}"
-    resource_name = to_snake_case(name)
-    memory = vm_data.get("maxmem")
-    if memory is None:
-        memory = 0
-    vm_resource: Dict[str, Any] = {
-        "resource": "proxmox_vm_qemu",
-        "name": resource_name,
-        "attributes": {
-            "name": name,
-            "target_node": vm_data.get("node"),
-            "vmid": vm_data.get("vmid"),
-            "memory": memory // 1024 // 1024,
-            "sockets": vm_data.get("sockets", 1),
-            "cores": vm_data.get("maxcpu", 1),
-            "os_type": "cloud-init",
-        },
-    }
-    if "docker_containers" in vm_data:
-        vm_resource["docker_containers"] = [
-            map_docker_container_to_compose(c) for c in vm_data["docker_containers"]
-        ]
-    return vm_resource
+    return _map_resource_to_terraform(vm_data, "vm")
 
 
 def map_docker_container_to_compose(container_data: Dict[str, Any]) -> Dict[str, Any]:
@@ -65,26 +74,4 @@ def map_docker_container_to_compose(container_data: Dict[str, Any]) -> Dict[str,
 
 def map_lxc_to_terraform(lxc_data: Dict[str, Any]) -> Dict[str, Any]:
     """Maps a Proxmox LXC container to a Terraform resource."""
-    name = lxc_data.get("name")
-    if name is None:
-        name = f"lxc-{lxc_data.get('vmid')}"
-    resource_name = to_snake_case(name)
-    memory = lxc_data.get("maxmem")
-    if memory is None:
-        memory = 0
-    lxc_resource: Dict[str, Any] = {
-        "resource": "proxmox_lxc",
-        "name": resource_name,
-        "attributes": {
-            "hostname": name,
-            "target_node": lxc_data.get("node"),
-            "vmid": lxc_data.get("vmid"),
-            "memory": memory // 1024 // 1024,
-            "cores": lxc_data.get("maxcpu", 1),
-        },
-    }
-    if "docker_containers" in lxc_data:
-        lxc_resource["docker_containers"] = [
-            map_docker_container_to_compose(c) for c in lxc_data["docker_containers"]
-        ]
-    return lxc_resource
+    return _map_resource_to_terraform(lxc_data, "lxc")
