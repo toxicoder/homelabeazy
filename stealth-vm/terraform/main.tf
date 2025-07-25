@@ -1,3 +1,10 @@
+provider "proxmox" {
+  pm_api_url = "https://mock-proxmox-url:8006/api2/json"
+  pm_user    = "mockuser@pve"
+  pm_password = "mockpassword"
+  pm_tls_insecure = true
+}
+
 resource "proxmox_vm_qemu" "stealth_vm" {
   count = var.enable_stealth_vm ? 1 : 0
 
