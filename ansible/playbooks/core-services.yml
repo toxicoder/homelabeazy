@@ -1,0 +1,17 @@
+---
+- name: Setup Core Services
+  hosts: k3s_masters
+  roles:
+    - role: homelab
+    - vault
+    - vault_secrets
+    - openldap
+    - role: efk_stack
+    - role: velero
+    - role: homepage
+    - role: redis
+
+- name: Setup pfSense
+  hosts: pfsense
+  roles:
+    - role: pfsense
