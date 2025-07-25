@@ -43,12 +43,12 @@ jobs:
           python-version: "3.x"
       - name: Install test dependencies.
         run: |
-          pip install -r homelab-importer/requirements.txt
+          pip install -r tools/homelab-importer/requirements.txt
           pip install flake8 pytest coverage
       - name: Run flake8
-        run: flake8 homelab-importer/
+        run: flake8 tools/homelab-importer/
       - name: Run tests with coverage
         run: |
-          cd homelab-importer
+          cd tools/homelab-importer
           coverage run -m unittest discover tests/
           coverage report

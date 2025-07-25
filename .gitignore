@@ -22,7 +22,7 @@
 *secrets*.yaml
 
 # Homelab importer
-homelab-importer/.env
+tools/homelab-importer/.env
 terraform_1.5.7_linux_amd64.zip
 
 # Python artifacts

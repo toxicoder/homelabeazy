@@ -6,8 +6,8 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/user/homelab-importer.git'
-    path: charts/puter
+    repoURL: 'https://github.com/toxicoder/homelabeazy'
+    path: tools/homelab-importer
     targetRevision: HEAD
     helm:
       valueFiles:

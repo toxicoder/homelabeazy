@@ -67,10 +67,10 @@ cd homelabeazy
 
 ### 2. Automated Setup (Recommended)
 
-The `setup.sh` script is the easiest way to get started. It will automatically provision the infrastructure and deploy the applications with minimal user interaction.
+The `scripts/setup.sh` script is the easiest way to get started. It will automatically provision the infrastructure and deploy the applications with minimal user interaction.
 
 ```bash
-./setup.sh
+./scripts/setup.sh
 ```
 
 This script will prompt you for the following information:
@@ -90,7 +90,7 @@ The script will then perform the following actions:
 **Note:** If you want to manage your secrets manually, you can run the script with the `--no-vault` flag. This will skip the Vault setup and allow you to enter your secrets manually.
 
 ```bash
-./setup.sh --no-vault
+./scripts/setup.sh --no-vault
 ```
 
 ### 3. Manual Setup
@@ -307,9 +307,9 @@ The following services are included in this homelab. Some are enabled by default
 
 This project uses a two-step process to deploy the homelab environment:
 
-1.  **Provision Infrastructure:** Use Terraform to create the virtual machines for the K3s cluster on Proxmox. This step is automated by the `setup.sh` script, which will create a `terraform.tfvars` file with your Proxmox credentials and then run `terraform init`, `terraform plan`, and `terraform apply`.
+1.  **Provision Infrastructure:** Use Terraform to create the virtual machines for the K3s cluster on Proxmox. This step is automated by the `scripts/setup.sh` script, which will create a `terraform.tfvars` file with your Proxmox credentials and then run `terraform init`, `terraform plan`, and `terraform apply`.
 
-2.  **Configure Cluster and Applications:** Use Ansible to configure the K3s cluster, install core infrastructure components, and deploy applications. This step is also automated by the `setup.sh` script, which will create an `ansible/group_vars/all.yml` file with your domain name and then run the Ansible playbook.
+2.  **Configure Cluster and Applications:** Use Ansible to configure the K3s cluster, install core infrastructure components, and deploy applications. This step is also automated by the `scripts/setup.sh` script, which will create an `ansible/group_vars/all.yml` file with your domain name and then run the Ansible playbook.
 
 The deployment process is designed to be as automated as possible. However, you can also run the Terraform and Ansible commands manually if you want more control over the deployment process.
 
@@ -497,7 +497,7 @@ This project includes an optional "stealth" Windows VM on Proxmox for anti-cheat
 
 ### Usage
 
-To enable the stealth VM, run the `setup.sh` script and answer "y" when prompted to enable the stealth VM. You will then be prompted for the Windows ISO path, GPU PCI ID, and real MAC address.
+To enable the stealth VM, run the `scripts/setup.sh` script and answer "y" when prompted to enable the stealth VM. You will then be prompted for the Windows ISO path, GPU PCI ID, and real MAC address.
 
 ### Disclaimer
 
@@ -507,9 +507,9 @@ This feature is intended for educational purposes only. The use of this feature 
 
 This section provides solutions to common problems you may encounter during the setup process.
 
-### `setup.sh` Script Fails
+### `scripts/setup.sh` Script Fails
 
-If the `setup.sh` script fails, it is most likely due to an issue with the Terraform or Ansible commands that it is running. To debug the issue, you can run the commands manually and inspect the output.
+If the `scripts/setup.sh` script fails, it is most likely due to an issue with the Terraform or Ansible commands that it is running. To debug the issue, you can run the commands manually and inspect the output.
 
 1.  **Run Terraform manually:**
     ```bash
@@ -579,7 +579,7 @@ If you encounter an issue that you cannot resolve, you can restart the setup pro
 4.  **Run the setup script again:**
 
     ```bash
-    ./setup.sh
+    ./scripts/setup.sh
     ```
 
 ## Customization
