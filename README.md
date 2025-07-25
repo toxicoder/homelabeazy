@@ -366,6 +366,46 @@ The following services are included in this homelab. Some are enabled by default
 | **Tailscale**     | A zero-config VPN for building secure networks.                                                         | Yes                |
 | **WireGuard**     | A fast, modern, and secure VPN tunnel.                                                                  | Yes                |
 
+## Deployment
+
+This project uses Terraform workspaces to manage multiple environments. Each workspace represents a different environment (e.g., `dev`, `staging`, `prod`). The current workspace is determined by the `TF_WORKSPACE` environment variable.
+
+### Environments
+
+*   **dev:** The development environment. This is the default workspace. It is used for testing new features and changes.
+*   **staging:** The staging environment. This workspace is used for testing changes before they are deployed to production.
+*   **prod:** The production environment. This workspace is used for the live application.
+
+### Managing Environments
+
+You can switch between workspaces using the `terraform workspace select` command.
+
+```bash
+terraform workspace select <workspace-name>
+```
+
+For example, to switch to the `staging` workspace, you would run the following command:
+
+```bash
+terraform workspace select staging
+```
+
+### Promoting to Staging
+
+To promote the current version of the `main` branch to the staging environment, you can manually trigger the `Promote to Staging` workflow.
+
+1.  Go to the "Actions" tab of the repository.
+2.  Select the "Promote to Staging" workflow.
+3.  Click the "Run workflow" button.
+
+### Promoting to Production
+
+To promote the current version of the `staging` branch to the production environment, you can manually trigger the `Promote to Production` workflow. This workflow will merge the `staging` branch into the `main` branch and then deploy the changes to the production environment.
+
+1.  Go to the "Actions" tab of the repository.
+2.  Select the "Promote to Production" workflow.
+3.  Click the "Run workflow" button.
+
 ## Deployment Workflow
 
 This project uses a two-step process to deploy the homelab environment:
