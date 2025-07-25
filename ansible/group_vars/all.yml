@@ -1,1 +1,3 @@
-domain_name: example.com
+---
+# This file is intentionally left empty.
+# All configuration is now managed through ConfigMaps.

@@ -1,0 +1,17 @@
+- name: Create configmaps directory
+  file:
+    path: "{{ config_maps_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: Create ConfigMap from template
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ config_maps_dir }}/{{ item.dest }}"
+  with_items:
+    - { src: 'main.yml.j2', dest: 'main-configmap.yml' }
+    - { src: 'all.yml.j2', dest: 'all-configmap.yml' }
+
+- name: Apply configmaps
+  command: kubectl apply -f {{ config_maps_dir }}
+  changed_when: true
