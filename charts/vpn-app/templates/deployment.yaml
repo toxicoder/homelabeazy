@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.application.name }}
+  labels:
+    app: {{ .Values.application.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.application.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.application.name }}
+    spec:
+      containers:
+        - name: gluetun
+          image: "{{ .Values.gluetun.image.repository }}:{{ .Values.gluetun.image.tag }}"
+          imagePullPolicy: {{ .Values.gluetun.image.pullPolicy }}
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+          env:
+            - name: VPN_TYPE
+              value: {{ .Values.gluetun.vpn.type }}
+            - name: VPN_SERVICE_PROVIDER
+              value: {{ .Values.gluetun.vpn.provider }}
+            - name: VPN_REGION
+              value: {{ .Values.gluetun.vpn.region }}
+            - name: OPENVPN_USER
+              value: {{ .Values.gluetun.vpn.credentials.user }}
+            - name: OPENVPN_PASSWORD
+              value: {{ .Values.gluetun.vpn.credentials.password }}
+          readinessProbe:
+            httpGet:
+              path: /v1/openvpn/status
+              port: 8888
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3
+        - name: {{ .Values.application.name }}
+          image: "{{ .Values.application.image.repository }}:{{ .Values.application.image.tag }}"
+          imagePullPolicy: {{ .Values.application.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.application.port }}
+          command:
+            - /bin/sh
+            - -c
+            - |
+              # Wait for gluetun to be ready
+              while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:8888/v1/openvpn/status)" != "200" ]]; do sleep 1; done
+              # Replace this with the actual command to start your application
+              /bin/sh

@@ -20,3 +20,8 @@
 - name: Apply apps
   shell: kubectl apply -f /tmp/apps.yml
   when: apps.changed
+
+- name: Deploy sabnzbd
+  kubernetes.core.k8s:
+    state: present
+    src: "{{ role_path }}/../../../apps/sabnzbd.yml"
