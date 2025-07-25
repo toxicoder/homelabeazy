@@ -3,4 +3,7 @@
   hosts: localhost
   connection: local
   roles:
+    - role: config
+      vars:
+        config_maps_dir: "{{ inventory_dir }}/../configmaps"
     - core_apps

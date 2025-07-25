@@ -52,6 +52,11 @@ spec:
                 - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305
                 - TLS_AES_256_GCM_SHA384
                 - TLS_CHACHA20_POLY1305_SHA256
+        volumes:
+          - name: main-config
+            mountPath: /config
+            configMap:
+              name: main-config
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: traefik
