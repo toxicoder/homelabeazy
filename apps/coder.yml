@@ -15,23 +15,13 @@ spec:
           admin:
             existingSecret: coder-admin-creds
           postgres:
-            enabled: true
-            auth:
-              username: coder
-              existingSecret: coder-db-creds
-              database: coder
-            primary:
-              persistence:
-                enabled: true
-                storageClass: "longhorn"
-                size: 8Gi
-              resources:
-                requests:
-                  cpu: 250m
-                  memory: 512Mi
-                limits:
-                  cpu: 1
-                  memory: 2Gi
+            enabled: false
+          database:
+            type: mysql
+            host: mariadb.mariadb.svc.cluster.local
+            user: coder
+            passwordSecret: "vault:secret/data/coder#db_creds"
+            name: coder
           ldap:
             enabled: true
             url: "ldap://openldap.ldap.svc.cluster.local:389"
