@@ -6,25 +6,41 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://searxng.github.io/searxng-helm-chart'
-    chart: searxng
-    targetRevision: 1.0.1
+    repoURL: 'https://github.com/Jules-Recruiter/homelab-SRE-challenge' # This will be replaced by the actual repo URL
+    path: charts/vpn-app
+    targetRevision: HEAD
     helm:
       values: |
+        application:
+          image:
+            repository: "searxng/searxng"
+            tag: "latest"
+          name: "searxng"
+          port: 8080
+
+        gluetun:
+          vpn:
+            type: "openvpn"
+            provider: "private internet access"
+            region: "ca montreal"
+            credentials:
+              user: "<path:secret/data/searxng#pia_username>"
+              password: "<path:secret/data/searxng#pia_password>"
+
+        service:
+          type: ClusterIP
+          port: 8080
+
         ingressRoute:
           enabled: true
           entryPoints:
             - websecure
           routes:
-            - match: Host(`searxng.homelab.dev`)
+            - match: Host(`searxng.your-domain.com`)
               kind: Rule
               services:
                 - name: searxng
                   port: 8080
-        searxng:
-          settings:
-            server:
-              secret_key: "{{ .Values.searxng.secretkey }}"
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: searxng
