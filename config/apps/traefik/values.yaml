@@ -7,7 +7,7 @@ providers:
   kubernetesCRD:
     enabled: true
   kubernetesIngress:
-    enabled: true
+    enabled: false
 ingressClass:
   enabled: true
   isDefaultClass: true

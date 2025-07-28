@@ -1,11 +1,13 @@
-ingress:
+ingressRoute:
   enabled: true
-  className: traefik
-  hosts:
-    - host: auth.homelab.dev
-  paths:
-    - path: /
-      pathType: Prefix
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`auth.homelab.dev`)
+      kind: Rule
+      services:
+        - name: authelia
+          port: 9091
 
 pod:
   extraEnv:

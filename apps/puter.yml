@@ -11,13 +11,16 @@ spec:
     targetRevision: v2.5.1
     helm:
       values: |
-        ingress:
+        ingressRoute:
           enabled: true
-          hosts:
-            - host: puter.local
-              paths:
-                - path: /
-                  pathType: ImplementationSpecific
+          entryPoints:
+            - websecure
+          routes:
+            - match: Host(`puter.local`)
+              kind: Rule
+              services:
+                - name: puter
+                  port: 4100
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: puter
