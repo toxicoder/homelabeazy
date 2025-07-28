@@ -1,5 +1,6 @@
 discover
 docker
+exceptions
 main
 mapping
 terraform

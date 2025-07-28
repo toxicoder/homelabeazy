@@ -2,6 +2,7 @@ README.md
 pyproject.toml
 src/discover.py
 src/docker.py
+src/exceptions.py
 src/main.py
 src/mapping.py
 src/terraform.py

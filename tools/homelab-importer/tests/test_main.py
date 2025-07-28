@@ -9,6 +9,11 @@ sys.path.insert(
     0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src"))
 )
 from main import main
+from exceptions import (
+    MissingEnvironmentVariableError,
+    ProxmoxConnectionError,
+    ProxmoxAuthenticationError,
+)
 
 
 class TestMain(unittest.TestCase):
@@ -66,20 +71,21 @@ class TestMain(unittest.TestCase):
         os.environ.pop("PROXMOX_USER", None)
         os.environ.pop("PROXMOX_PASSWORD", None)
 
-        with self.assertRaises(SystemExit) as cm:
+        with self.assertRaises(MissingEnvironmentVariableError):
             main(self.test_dir)
-        self.assertEqual(cm.exception.code, 1)
 
-    @patch("main.ProxmoxAPI", side_effect=Exception("Connection Error"))
+    @patch(
+        "main.ProxmoxAPI",
+        side_effect=ProxmoxConnectionError("Connection Error"),
+    )
     def test_main_connection_error(self, mock_proxmox_api):
         # Set environment variables
         os.environ["PROXMOX_HOST"] = "dummy_host"
         os.environ["PROXMOX_USER"] = "dummy_user"
         os.environ["PROXMOX_PASSWORD"] = "dummy_password"
 
-        with self.assertRaises(SystemExit) as cm:
+        with self.assertRaises(ProxmoxConnectionError):
             main(self.test_dir)
-        self.assertEqual(cm.exception.code, 1)
 
     @patch("main.generate_docker_compose")
     @patch("main.get_lxc_containers")

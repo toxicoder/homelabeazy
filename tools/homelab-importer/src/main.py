@@ -1,14 +1,18 @@
 import argparse
 import logging
 import os
-import sys
-
 from discover import get_lxc_containers, get_vms
 from docker import generate_docker_compose
 from dotenv import load_dotenv
+from exceptions import (
+    HomelabImporterError,
+    MissingEnvironmentVariableError,
+    ProxmoxAuthenticationError,
+    ProxmoxConnectionError,
+)
 from mapping import map_lxc_to_terraform, map_vm_to_terraform
 from proxmoxer import ProxmoxAPI
-from proxmoxer.core import AuthenticationError as ProxmoxAuthenticationError
+from proxmoxer.core import AuthenticationError as ProxmoxerAuthenticationError
 from terraform import (
     generate_import_script,
     generate_terraform_config,
@@ -25,11 +29,10 @@ def main(output_dir: str) -> None:
     proxmox_password = os.getenv("PROXMOX_PASSWORD")
 
     if not all([proxmox_host, proxmox_user, proxmox_password]):
-        logging.error(
-            "Error: PROXMOX_HOST, PROXMOX_USER, and PROXMOX_PASSWORD must be "
-            "set as environment variables or in a .env file."
+        raise MissingEnvironmentVariableError(
+            "PROXMOX_HOST, PROXMOX_USER, and PROXMOX_PASSWORD must be set as "
+            "environment variables or in a .env file."
         )
-        sys.exit(1)
 
     try:
         proxmox = ProxmoxAPI(
@@ -80,15 +83,12 @@ def main(output_dir: str) -> None:
                     f"Docker Compose file generated in {compose_path}"
                 )
 
-    except ProxmoxAuthenticationError as e:
-        logging.error(f"Authentication error with Proxmox API: {e}")
-        sys.exit(1)
+    except ProxmoxerAuthenticationError as e:
+        raise ProxmoxAuthenticationError(
+            f"Authentication error with Proxmox API: {e}"
+        )
     except ConnectionError as e:
-        logging.error(f"Connection error with Proxmox API: {e}")
-        sys.exit(1)
-    except Exception as e:
-        logging.error(f"An unexpected error occurred: {e}")
-        sys.exit(1)
+        raise ProxmoxConnectionError(f"Connection error with Proxmox API: {e}")
 
 
 if __name__ == "__main__":
@@ -111,4 +111,11 @@ if __name__ == "__main__":
         log_level = logging.DEBUG
     logging.basicConfig(level=log_level, format="%(levelname)s: %(message)s")
 
-    main(args.output_dir)
+    try:
+        main(args.output_dir)
+    except HomelabImporterError as e:
+        logging.error(e)
+        exit(1)
+    except Exception as e:
+        logging.error(f"An unexpected error occurred: {e}")
+        exit(1)
