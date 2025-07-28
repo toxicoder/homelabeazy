@@ -43,3 +43,24 @@ resource "proxmox_lxc" "test_lxc" {
   memory      = 1024
   cores       = 1
 }
+
+module "stealth-vm" {
+  source = "../stealth-vm"
+
+  enable_stealth_vm = var.enable_stealth_vm
+  proxmox_host      = var.target_node
+  windows_iso       = var.windows_iso
+  bios              = var.bios
+  machine           = var.machine
+  cpu               = var.cpu
+  cores             = var.cores
+  memory            = var.memory
+  scsihw            = var.scsihw
+  bootdisk          = var.bootdisk
+  network_model     = var.network_model
+  network_bridge    = var.service_bridge
+  real_mac          = var.real_mac
+  gpu_pci_id        = var.gpu_pci_id
+  hv_vendor_id      = var.hv_vendor_id
+  smbios_uuid       = var.smbios_uuid
+}
