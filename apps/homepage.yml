@@ -21,6 +21,9 @@ spec:
               services:
                 - name: homepage
                   port: 3000
+              middlewares:
+                - name: authelia
+                  namespace: traefik
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: homepage

@@ -56,6 +56,17 @@ tls:
         - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305
         - TLS_AES_256_GCM_SHA384
         - TLS_CHACHA20_POLY1305_SHA256
+middleware:
+  authelia:
+    forwardAuth:
+      address: "http://authelia.authelia.svc.cluster.local:9091/api/verify?rd=https://auth.homelab.dev"
+      trustForwardHeader: true
+      authResponseHeaders:
+        - "Remote-User"
+        - "Remote-Groups"
+        - "Remote-Name"
+        - "Remote-Email"
+
 volumes:
   - name: main-config
     mountPath: /config
