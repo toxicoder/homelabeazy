@@ -32,6 +32,21 @@ spec:
                 limits:
                   cpu: 1
                   memory: 2Gi
+          ldap:
+            enabled: true
+            url: "ldap://openldap.ldap.svc.cluster.local:389"
+            bindDN: "cn=admin,dc=homelab,dc=com"
+            bindPassword: "<path:secrets/data/openldap#admin-password>"
+            userSearch:
+              baseDN: "ou=users,dc=homelab,dc=com"
+              filter: "(uid=%s)"
+              username: "uid"
+              email: "mail"
+              name: "displayName"
+            groupSearch:
+              baseDN: "ou=groups,dc=homelab,dc=com"
+              filter: "(member=%s)"
+              name: "cn"
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: coder
