@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    proxmox = {
+      source  = "telmate/proxmox"
+      version = ">= 2.9.14, < 4.0.0"
+    }
+  }
+}
+
 resource "proxmox_vm_qemu" "vm" {
   name        = var.name
   target_node = var.target_node
