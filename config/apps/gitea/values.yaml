@@ -28,22 +28,14 @@ gitea:
     ssh:
       port: 22
   postgresql:
-    auth:
-      username: gitea
-      existingSecret: "vault:secret/data/gitea#db_creds"
-      database: gitea
-    primary:
-      persistence:
-        enabled: true
-        storageClass: "longhorn"
-        size: 8Gi
-      resources:
-        requests:
-          cpu: 250m
-          memory: 512Mi
-        limits:
-          cpu: 1
-          memory: 2Gi
+    enabled: false
+  gitea:
+    database:
+      type: mysql
+      host: mariadb.mariadb.svc.cluster.local
+      name: gitea
+      user: gitea
+      existing_secret: "vault:secret/data/gitea#db_creds"
   ldap:
     - name: "homelab-ldap"
       existingSecret: "vault:secret/data/gitea#ldap"
