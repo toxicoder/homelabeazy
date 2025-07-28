@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minio-exporter
+  namespace: {{ minio_namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minio-exporter
+  template:
+    metadata:
+      labels:
+        app: minio-exporter
+    spec:
+      containers:
+      - name: minio-exporter
+        image: prom/minio-exporter:latest
+        args:
+        - --minio.server={{ minio_url }}
+        - --minio.access-key={{ minio_access_key }}
+        - --minio.secret-key={{ minio_secret_key }}
+        ports:
+        - containerPort: 9100
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: minio-exporter
+  namespace: {{ minio_namespace }}
+  labels:
+    app: minio-exporter
+spec:
+  ports:
+  - name: http
+    port: 9100
+    protocol: TCP
+  selector:
+    app: minio-exporter

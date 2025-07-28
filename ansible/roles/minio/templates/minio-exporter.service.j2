@@ -1,0 +1,16 @@
+[Unit]
+Description=MinIO Exporter
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=minio
+Group=minio
+ExecStart=/usr/local/bin/minio-exporter \
+  --minio.server={{ minio_url }} \
+  --minio.access-key={{ minio_access_key }} \
+  --minio.secret-key={{ minio_secret_key }}
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

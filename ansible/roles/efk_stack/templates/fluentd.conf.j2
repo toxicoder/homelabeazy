@@ -1,0 +1,44 @@
+<source>
+  @type tail
+  path /var/log/containers/traefik-*.log
+  pos_file /var/log/fluentd-traefik.pos
+  tag traefik.*
+  <parse>
+    @type json
+    time_key time
+    time_format %Y-%m-%dT%H:%M:%S.%NZ
+  </parse>
+</source>
+
+<filter traefik.**>
+  @type parser
+  key_name log
+  <parse>
+    @type json
+  </parse>
+</filter>
+
+<source>
+  @type forward
+  port 24224
+  bind 0.0.0.0
+</source>
+
+<match *.**>
+  @type copy
+  <store>
+    @type elasticsearch
+    host {{ efk_elasticsearch_name }}.{{ efk_namespace }}.svc.cluster.local
+    port 9200
+    logstash_format true
+    logstash_prefix fluentd
+    logstash_dateformat %Y%m%d
+    include_tag_key true
+    type_name access_log
+    tag_key @log_name
+    flush_interval 1s
+  </store>
+  <store>
+    @type stdout
+  </store>
+</match>

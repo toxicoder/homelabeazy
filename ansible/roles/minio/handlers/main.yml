@@ -5,3 +5,7 @@
   systemd:
     name: minio
     state: restarted
+- name: restart minio-exporter
+  systemd:
+    name: minio-exporter
+    state: restarted

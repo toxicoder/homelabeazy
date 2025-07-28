@@ -25,3 +25,8 @@
   kubernetes.core.k8s:
     state: present
     src: "{{ role_path }}/../../../apps/sabnzbd.yml"
+
+- name: Deploy MinIO ServiceMonitor
+  k8s:
+    template: minio-servicemonitor.yml.j2
+    state: present
