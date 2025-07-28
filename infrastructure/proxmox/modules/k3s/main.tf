@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    proxmox = {
+      source  = "telmate/proxmox"
+      version = ">= 2.9.14, < 4.0.0"
+    }
+  }
+}
+
 module "k3s_master" {
   source = "../proxmox_vm"
 
