@@ -5,6 +5,7 @@ metadata:
   namespace: argocd
   annotations:
     kubernetes.io/ingress.class: traefik-external
+    traefik.ingress.kubernetes.io/router.middlewares: authelia@kubernetescrd
 spec:
   entryPoints:
     - websecure

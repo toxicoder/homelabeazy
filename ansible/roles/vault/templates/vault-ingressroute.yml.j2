@@ -3,6 +3,8 @@ kind: IngressRoute
 metadata:
   name: vault
   namespace: vault
+  annotations:
+    traefik.ingress.kubernetes.io/router.middlewares: authelia@kubernetescrd
 spec:
   entryPoints:
     - websecure
