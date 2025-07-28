@@ -362,6 +362,37 @@ graph TD
     C --> D{Applications}
 ```
 
+### Code Execution Flow
+
+```mermaid
+graph TD
+    subgraph "User"
+        A(make setup)
+    end
+
+    subgraph "Automation"
+        B(scripts/setup.sh)
+        C(Terraform)
+        D(Ansible)
+    end
+
+    subgraph "Infrastructure"
+        E(Proxmox)
+        F(K3s Cluster)
+    end
+
+    subgraph "Configuration"
+        G(Ansible Roles)
+    end
+
+    A --> B
+    B --> C
+    C -- Provisions VMs on --> E
+    B --> D
+    D -- Configures --> F
+    D -- Executes --> G
+```
+
 ## Default Services
 
 The following services are included in this homelab. Some are enabled by default, while others are optional and can be enabled by modifying the `ansible/group_vars/all.yml` file.
