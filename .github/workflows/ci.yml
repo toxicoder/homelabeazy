@@ -121,10 +121,6 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
       - name: Terraform Init
-        run: |
-          terraform -chdir=infrastructure/proxmox init -backend=false
-          terraform -chdir=infrastructure/stealth-vm init -backend=false
+        run: terraform -chdir=infrastructure/proxmox init -backend=false
       - name: Terraform Validate
-        run: |
-          terraform -chdir=infrastructure/proxmox validate
-          terraform -chdir=infrastructure/stealth-vm validate
+        run: terraform -chdir=infrastructure/proxmox validate
