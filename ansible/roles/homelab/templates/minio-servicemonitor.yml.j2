@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: minio-exporter
+  namespace: {{ minio_namespace }}
+  labels:
+    app: minio-exporter
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: minio-exporter
+  endpoints:
+  - port: http
+    interval: 15s

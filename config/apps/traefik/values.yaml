@@ -18,6 +18,8 @@ logs:
     level: INFO
   access:
     enabled: true
+    format: json
+    filePath: "/data/access.log"
 ports:
   web:
     port: 80
@@ -59,3 +61,6 @@ volumes:
     mountPath: /config
     configMap:
       name: main-config
+  - name: access-logs
+    mountPath: /data
+    emptyDir: {}
