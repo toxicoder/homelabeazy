@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/pi-hole/docker-pi-hole.git
-    targetRevision: master
+    targetRevision: '2025.07.1'
     path: '.'
     directory:
       recurse: true

@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: 'https://github.com/HeyPuter/puter.git'
     path: charts/puter
-    targetRevision: main
+    targetRevision: v2.5.1
     helm:
       values: |
         ingress:
