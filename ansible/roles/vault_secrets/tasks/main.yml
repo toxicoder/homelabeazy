@@ -11,7 +11,13 @@
     var: values_files
 
 - name: Create secrets from values files
-  include_tasks: create_secrets.yml
-  loop: "{{ values_files.files }}"
-  loop_control:
-    loop_var: values_file
+  block:
+    - name: Create secrets
+      include_tasks: create_secrets.yml
+      loop: "{{ values_files.files }}"
+      loop_control:
+        loop_var: values_file
+  rescue:
+    - name: Fail
+      fail:
+        msg: "Failed to create secrets for {{ values_file.path }}"
