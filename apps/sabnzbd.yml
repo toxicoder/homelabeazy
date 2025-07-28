@@ -41,8 +41,6 @@ spec:
               services:
                 - name: sabnzbd
                   port: 8080
-          tls:
-            secretName: sabnzbd-tls
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: sabnzbd
