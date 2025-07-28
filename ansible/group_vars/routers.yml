@@ -1,0 +1,37 @@
+---
+asuswrt_hostname: "zenwifi-et9"
+asuswrt_ssh_enabled: true
+asuswrt_ssh_port: 22
+asuswrt_allow_ssh_wan: false
+
+asuswrt_wifi_config:
+  - band: "2.4GHz"
+    nvram_prefix: "wl0"
+    ssid: "MyHomeNetwork"
+    password: "{{ vault_asus_wifi_2ghz_password }}"
+    channel: "auto"
+  - band: "5GHz"
+    nvram_prefix: "wl1"
+    ssid: "MyHomeNetwork_5G"
+    password: "{{ vault_asus_wifi_5ghz_password }}"
+    channel: 149
+  - band: "6GHz"
+    nvram_prefix: "wl2"
+    ssid: "MyHomeNetwork_6G"
+    password: "{{ vault_asus_wifi_6ghz_password }}"
+    channel: "auto"
+
+asuswrt_dhcp_static_leases:
+  - mac: "AA:BB:CC:DD:EE:01"
+    ip: "192.168.50.101"
+    hostname: "proxmox-host"
+  - mac: "AA:BB:CC:DD:EE:02"
+    ip: "192.168.50.102"
+    hostname: "k3s-master-1"
+
+asuswrt_port_forwards:
+  - description: "Web Server"
+    external_port: 443
+    internal_port: 443
+    internal_ip: "192.168.50.200"
+    protocol: "tcp"
