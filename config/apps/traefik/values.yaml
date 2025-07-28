@@ -66,6 +66,20 @@ middleware:
         - "Remote-Groups"
         - "Remote-Name"
         - "Remote-Email"
+  headers:
+    headers:
+      customRequestHeaders:
+        X-Forwarded-Proto: "https"
+      sslRedirect: true
+      stsSeconds: 31536000
+      stsIncludeSubdomains: true
+      stsPreload: true
+      forceSTSHeader: true
+      customFrameOptionsValue: "SAMEORIGIN"
+      contentTypeNosniff: true
+      browserXssFilter: true
+      featurePolicy: "camera 'none'; geolocation 'none'; microphone 'none'; payment 'none'; usb 'none'; vr 'none';"
+      permissionsPolicy: "camera=(), geolocation=(), microphone=(), payment=(), usb=(), vr=()"
 
 volumes:
   - name: main-config
