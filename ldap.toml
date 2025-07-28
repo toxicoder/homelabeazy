@@ -5,7 +5,7 @@ use_ssl = false
 start_tls = false
 ssl_skip_verify = true
 bind_dn = "cn=admin,dc=homelab,dc=com"
-bind_password = "REPLACE_WITH_PASSWORD"
+bind_password = "<path:secret/data/openldap#admin-password>"
 search_filter = "(uid=%s)"
 search_base_dns = ["ou=users,dc=homelab,dc=com"]
 

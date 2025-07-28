@@ -24,8 +24,8 @@ spec:
             provider: "private internet access"
             region: "ca montreal"
             credentials:
-              user: "YOUR_PIA_USERNAME"
-              password: "YOUR_PIA_PASSWORD"
+              user: "<path:secret/data/sabnzbd#pia_username>"
+              password: "<path:secret/data/sabnzbd#pia_password>"
 
         service:
           type: ClusterIP

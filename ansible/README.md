@@ -75,7 +75,7 @@ The variables that can be passed to this role and a brief description about them
 - hosts: localhost
   roles:
     - role: k3s_cluster
-      proxmox_password: "your_proxmox_password"
+      proxmox_password: "{{ vault_proxmox_password }}"
 ```
 
 ### Proxmox Host Role
@@ -154,7 +154,7 @@ To use this module, you need to add it to your Ansible playbook. Here is an exam
   vars:
     synology_nas_ip: "192.168.1.100"
     synology_nas_username: "admin"
-    synology_nas_password: "password"
+    synology_nas_password: "{{ vault_synology_password }}"
     test_user: "testuser"
     test_group: "testgroup"
     test_folder: "testfolder"
@@ -169,7 +169,7 @@ To use this module, you need to add it to your Ansible playbook. Here is an exam
         name: "{{ test_user }}"
         state: present
         config:
-          password: "password"
+          password: "{{ vault_synology_user_password }}"
           email: "testuser@example.com"
 
     - name: Create test group
