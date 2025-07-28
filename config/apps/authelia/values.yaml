@@ -32,7 +32,6 @@ pod:
       memory: 256Mi
 
 authelia:
-  jwt_secret: "vault:secret/data/authelia#jwt_secret"
   default_redirection_url: https://homepage.homelab.dev
   authentication_backend:
     ldap:
@@ -47,7 +46,6 @@ authelia:
       mail_attribute: mail
       display_name_attribute: displayName
       user: cn=admin,dc=homelab,dc=com
-              password: "vault:secret/data/openldap#admin_password"
   access_control:
     default_policy: deny
     rules:
@@ -55,11 +53,9 @@ authelia:
         policy: bypass
   session:
     name: authelia_session
-            secret: "vault:secret/data/authelia#session_secret"
     expiration: 1h
     inactivity: 5m
   storage:
-            encryption_key: "vault:secret/data/authelia#storage_encryption_key"
     local:
       path: /var/lib/authelia/db.sqlite3
   notifier:
