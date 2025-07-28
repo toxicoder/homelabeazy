@@ -16,11 +16,16 @@ spec:
           enabled: true
           storageClassName: "longhorn"
           size: 10Gi
-        ingress:
+        ingressRoute:
           enabled: true
-          ingressClassName: "nginx"
-          hosts:
-            - "grafana.homelab.dev"
+          entryPoints:
+            - websecure
+          routes:
+            - match: Host(`grafana.homelab.dev`)
+              kind: Rule
+              services:
+                - name: grafana
+                  port: 3000
         service:
           type: ClusterIP
           port: 3000

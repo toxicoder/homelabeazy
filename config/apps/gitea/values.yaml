@@ -5,14 +5,16 @@ gitea:
     enabled: true
     storageClassName: "longhorn"
     size: 10Gi
-  ingress:
+  ingressRoute:
     enabled: true
-    className: traefik
-    hosts:
-      - host: gitea.homelab.dev
-        paths:
-          - path: /
-            pathType: Prefix
+    entryPoints:
+      - websecure
+    routes:
+      - match: Host(`gitea.homelab.dev`)
+        kind: Rule
+        services:
+          - name: gitea
+            port: 3000
   resources:
     requests:
       cpu: 250m

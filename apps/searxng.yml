@@ -11,13 +11,16 @@ spec:
     targetRevision: 1.0.1
     helm:
       values: |
-        ingress:
+        ingressRoute:
           enabled: true
-          hosts:
-            - host: "searxng.homelab.dev"
-              paths:
-                - path: /
-                  pathType: ImplementationSpecific
+          entryPoints:
+            - websecure
+          routes:
+            - match: Host(`searxng.homelab.dev`)
+              kind: Rule
+              services:
+                - name: searxng
+                  port: 8080
         searxng:
           settings:
             server:

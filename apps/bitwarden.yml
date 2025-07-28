@@ -16,20 +16,18 @@ spec:
         image:
           repository: vaultwarden/server
           tag: 1.40.0
-        ingress:
+        ingressRoute:
           enabled: true
-          annotations:
-            kubernetes.io/ingress.class: "traefik"
-            cert-manager.io/cluster-issuer: "letsencrypt-production"
-          hosts:
-            - host: bitwarden.example.com
-              paths:
-                - path: /
-                  pathType: Prefix
+          entryPoints:
+            - websecure
+          routes:
+            - match: Host(`bitwarden.example.com`)
+              kind: Rule
+              services:
+                - name: bitwarden
+                  port: 80
           tls:
-           - secretName: bitwarden-tls
-             hosts:
-               - bitwarden.example.com
+            secretName: bitwarden-tls
         resources:
           requests:
             cpu: 100m

@@ -11,13 +11,16 @@ spec:
     targetRevision: 0.2.1
     helm:
       values: |
-        ingress:
+        ingressRoute:
           enabled: true
-          hosts:
-            - host: "homepage.homelab.dev"
-              paths:
-                - path: /
-                  pathType: ImplementationSpecific
+          entryPoints:
+            - websecure
+          routes:
+            - match: Host(`homepage.homelab.dev`)
+              kind: Rule
+              services:
+                - name: homepage
+                  port: 3000
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: homepage
