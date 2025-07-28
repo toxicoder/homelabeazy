@@ -40,6 +40,11 @@ terraform-apply:
 	@echo "Applying terraform configuration..."
 	$(TERRAFORM) -chdir=infrastructure/proxmox apply
 
+.PHONY: terraform-destroy
+terraform-destroy:
+	@echo "Destroying terraform configuration..."
+	$(TERRAFORM) -chdir=infrastructure/proxmox destroy
+
 .PHONY: ansible-playbook-setup
 ansible-playbook-setup:
 	@echo "Running ansible setup playbook..."
