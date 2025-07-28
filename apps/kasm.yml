@@ -15,6 +15,21 @@ spec:
           hostname: "kasm.homelab.dev"
           altHostnames:
             - "*.kasm.homelab.dev"
+        ldap:
+          enabled: true
+          host: "openldap.ldap.svc.cluster.local"
+          port: 389
+          bindDN: "cn=admin,dc=homelab,dc=com"
+          bindPassword: "<path:secrets/data/openldap#admin-password>"
+          userSearchBase: "ou=users,dc=homelab,dc=com"
+          userSearchFilter: "(&(objectClass=inetOrgPerson)(uid=%s))"
+          groupSearchBase: "ou=groups,dc=homelab,dc=com"
+          groupSearchFilter: "(member=%s)"
+          groupNameAttribute: "cn"
+          userNameAttribute: "uid"
+          userEmailAttribute: "mail"
+          userFirstNameAttribute: "givenName"
+          userLastNameAttribute: "sn"
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: kasm
