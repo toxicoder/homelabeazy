@@ -9,4 +9,4 @@
   connection: local
   roles:
     - role: vault_pki
-    - role: vault_secrets
+    - role: vault-secrets-operator

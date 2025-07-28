@@ -4,7 +4,7 @@
   roles:
     - role: homelab
     - vault
-    - vault_secrets
+    - vault-secrets-operator
     - openldap
     - role: efk_stack
     - role: velero
