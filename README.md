@@ -101,7 +101,7 @@ The automated setup process is designed to be both user-friendly and educational
 
 *   **Ansible for Configuration:** Once the infrastructure is provisioned, the script uses Ansible to configure the K3s cluster and deploy the applications. The Ansible playbooks are located in the `ansible/playbooks` directory.
 
-*   **Vault for Secret Management:** The script uses the `ansible/roles/vault_secrets` role to manage secrets. This role will:
+*   **Vault for Secret Management:** The script uses the `ansible/roles/vault-secrets-operator` role to manage secrets. This role will:
     *   Find all the `values.yaml` files in the `config/apps` directory.
     *   Parse the `values.yaml` files and identify any values that start with `vault:`.
     *   Use the `community.hashi_vault.vault_kv2_get` module to fetch the secrets from Vault.
@@ -143,7 +143,7 @@ The manual setup process is for advanced users who want to customize the install
 
 4.  **Manage Secrets:**
 
-This project uses HashiCorp Vault to manage secrets. The `ansible/roles/vault_secrets` role is responsible for reading the application configurations, fetching secrets from Vault, and creating the necessary Kubernetes secrets.
+This project uses HashiCorp Vault to manage secrets. The `ansible/roles/vault-secrets-operator` role is responsible for deploying the [HashiCorp Vault Secrets Operator](https://www.vaultproject.io/docs/platform/k8s/vso), which in turn is responsible for reading the application configurations, fetching secrets from Vault, and creating the necessary Kubernetes secrets.
 
 **How it Works:**
 
@@ -155,11 +155,8 @@ This project uses HashiCorp Vault to manage secrets. The `ansible/roles/vault_se
     *   `vault:`: This prefix indicates that the value is a secret to be fetched from Vault.
     *   `secret/data/path/to/secret`: This is the path to the secret in Vault's KVv2 secrets engine.
     *   `key`: This is the key of the secret to retrieve.
-3.  **Ansible Role:** The `ansible/roles/vault_secrets` Ansible role performs the following actions:
-    *   It recursively finds all `values.yaml` files within the `config/apps` directory.
-    *   For each file, it reads the content and identifies all values that start with the `vault:` prefix.
-    *   It uses the `community.hashi_vault.vault_kv2_get` module to fetch the specified secret from Vault.
-    *   It creates a Kubernetes secret with the fetched value. The name of the secret is derived from the application name (the directory name).
+3.  **Ansible Role:** The `ansible/roles/vault-secrets-operator` Ansible role performs the following actions:
+    *   Deploys the [HashiCorp Vault Secrets Operator](https://www.vaultproject.io/docs/platform/k8s/vso) to the Kubernetes cluster.
 
 **Example:**
 
@@ -171,7 +168,7 @@ gitea:
     existingSecret: "vault:secret/data/gitea#admin_creds"
 ```
 
-The `vault_secrets` role will:
+The `vault-secrets-operator` will:
 
 1.  Identify that `gitea.admin.existingSecret` is a Vault secret.
 2.  Fetch the value of the `admin_creds` key from the `secret/data/gitea` path in Vault.

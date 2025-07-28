@@ -26,7 +26,7 @@ The following roles are available:
 - `traefik`: Deploys and configures Traefik.
 - `vault`: Deploys and configures HashiCorp Vault.
 - `vault-secrets-operator`: Deploys and configures the Vault Secrets Operator.
-- `vault_secrets`: Manages secrets in HashiCorp Vault.
+- `vault-secrets-operator`: Deploys the [HashiCorp Vault Secrets Operator](https://www.vaultproject.io/docs/platform/k8s/vso).
 - `velero`: Deploys and configures Velero.
 
 ### k3s_cluster Role
