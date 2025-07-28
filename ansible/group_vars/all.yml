@@ -1,3 +1,2 @@
 ---
-# This file is intentionally left empty.
-# All configuration is now managed through ConfigMaps.
+domain_root: "example.com"
