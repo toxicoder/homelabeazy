@@ -13,7 +13,7 @@
   tasks:
     - name: Create test user
       uri:
-        url: "{{ mock_api_url }}/webapi/entry.cgi?api=SYNO.Core.User&method=create&version=1&name={{ test_user }}&password=password&email=testuser@example.com"
+        url: "{{ mock_api_url }}/webapi/entry.cgi?api=SYNO.Core.User&method=create&version=1&name={{ test_user }}&password={{ vault_synology_password }}&email=testuser@example.com"
         method: POST
         status_code: 200
       register: create_user_result

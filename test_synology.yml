@@ -6,7 +6,7 @@
       synology.nas.synology:
         host: "localhost"
         username: "admin"
-        password: "password"
+        password: "{{ vault_synology_password }}"
         resource: "user"
         name: "testuser"
         state: "present"

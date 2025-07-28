@@ -20,8 +20,8 @@ gluetun:
     provider: "" # e.g. "private internet access"
     region: "" # e.g. "ca montreal"
     credentials:
-      user: ""
-      password: ""
+      user: "<path:secret/data/sabnzbd#pia_username>"
+      password: "<path:secret/data/sabnzbd#pia_password>"
   # For wireguard, you need to provide a private key and a server public key
   # wireguard:
   #   private_key: ""
