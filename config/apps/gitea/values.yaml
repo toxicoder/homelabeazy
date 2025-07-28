@@ -15,6 +15,9 @@ gitea:
         services:
           - name: gitea
             port: 3000
+        middlewares:
+          - name: authelia
+            namespace: traefik
   resources:
     requests:
       cpu: 250m

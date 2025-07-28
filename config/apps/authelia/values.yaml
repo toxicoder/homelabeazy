@@ -49,9 +49,9 @@ authelia:
       display_name_attribute: displayName
       user: cn=admin,dc=homelab,dc=com
   access_control:
-    default_policy: deny
+    default_policy: two_factor
     rules:
-      - domain: "*.homelab.dev"
+      - domain: "auth.homelab.dev"
         policy: bypass
   session:
     name: authelia_session
