@@ -36,7 +36,7 @@ spec:
           entryPoints:
             - websecure
           routes:
-            - match: Host(`searxng.your-domain.com`)
+            - match: Host(`searxng.{{ domain_root }}`)
               kind: Rule
               services:
                 - name: searxng

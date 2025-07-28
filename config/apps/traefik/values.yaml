@@ -40,7 +40,7 @@ ports:
 certificatesResolvers:
   vault:
     acme:
-      email: "user@example.com"
+      email: "user@{{ domain_root }}"
       storage: "/data/acme.json"
       vault:
         addr: "http://vault.vault.svc.cluster.local:8200"

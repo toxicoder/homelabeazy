@@ -10,7 +10,7 @@
 - name: Generate root CA
   community.hashi_vault.vault_pki_root_generate:
     engine_mount_point: pki
-    common_name: "homelab.dev"
+    common_name: "{{ domain_root }}"
     ttl: "87600h"
   register: root_ca
 
@@ -19,6 +19,6 @@
     engine_mount_point: pki
     name: traefik
     allowed_domains:
-      - homelab.dev
+      - "{{ domain_root }}"
     allow_subdomains: yes
     max_ttl: "8760h"

@@ -21,7 +21,7 @@ spec:
           entryPoints:
             - websecure
           routes:
-            - match: Host(`bitwarden.example.com`)
+            - match: Host(`bitwarden.{{ domain_root }}`)
               kind: Rule
               services:
                 - name: bitwarden

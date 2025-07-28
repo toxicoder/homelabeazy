@@ -1,28 +1,28 @@
-dn: ou=groups,dc=homelab,dc=com
+dn: ou=groups,dc={{ domain_root.split('.')[0] }},dc={{ domain_root.split('.')[1] }}
 objectClass: organizationalUnit
 ou: groups
 
-dn: ou=users,dc=homelab,dc=com
+dn: ou=users,dc={{ domain_root.split('.')[0] }},dc={{ domain_root.split('.')[1] }}
 objectClass: organizationalUnit
 ou: users
 
-dn: cn=homelab-admins,ou=groups,dc=homelab,dc=com
+dn: cn=homelab-admins,ou=groups,dc={{ domain_root.split('.')[0] }},dc={{ domain_root.split('.')[1] }}
 objectClass: groupOfNames
 cn: homelab-admins
-member: uid=admin,ou=users,dc=homelab,dc=com
+member: uid=admin,ou=users,dc={{ domain_root.split('.')[0] }},dc={{ domain_root.split('.')[1] }}
 
-dn: cn=homelab-developers,ou=groups,dc=homelab,dc=com
+dn: cn=homelab-developers,ou=groups,dc={{ domain_root.split('.')[0] }},dc={{ domain_root.split('.')[1] }}
 objectClass: groupOfNames
 cn: homelab-developers
-member: uid=developer,ou=users,dc=homelab,dc=com
+member: uid=developer,ou=users,dc={{ domain_root.split('.')[0] }},dc={{ domain_root.split('.')[1] }}
 
-dn: uid=admin,ou=users,dc=homelab,dc=com
+dn: uid=admin,ou=users,dc={{ domain_root.split('.')[0] }},dc={{ domain_root.split('.')[1] }}
 objectClass: inetOrgPerson
 uid: admin
 cn: Admin
 sn: User
 
-dn: uid=developer,ou=users,dc=homelab,dc=com
+dn: uid=developer,ou=users,dc={{ domain_root.split('.')[0] }},dc={{ domain_root.split('.')[1] }}
 objectClass: inetOrgPerson
 uid: developer
 cn: Developer

@@ -36,7 +36,7 @@ spec:
           entryPoints:
             - websecure
           routes:
-            - match: Host(`sabnzbd.your-domain.com`)
+            - match: Host(`sabnzbd.{{ domain_root }}`)
               kind: Rule
               services:
                 - name: sabnzbd
