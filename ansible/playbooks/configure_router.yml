@@ -1,0 +1,6 @@
+---
+- name: Configure ASUS Router
+  hosts: routers
+  gather_facts: false
+  roles:
+    - role: asuswrt
