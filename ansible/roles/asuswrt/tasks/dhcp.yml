@@ -1,0 +1,18 @@
+- name: Get current DHCP static list
+  ansible.builtin.raw: "nvram get dhcp_staticlist"
+  register: dhcp_staticlist_raw
+  changed_when: false
+  check_mode: false
+
+- name: Set desired DHCP static list
+  ansible.builtin.set_fact:
+    desired_dhcp_staticlist: >-
+      {{ asuswrt_dhcp_static_leases | map(attribute='mac') |
+      zip(asuswrt_dhcp_static_leases | map(attribute='ip')) |
+      zip(asuswrt_dhcp_static_leases | map(attribute='name')) |
+      map('flatten') | map('join', '>') | join(' ') }}
+
+- name: Manage DHCP static list
+  ansible.builtin.raw: "nvram set dhcp_staticlist='{{ desired_dhcp_staticlist }}'"
+  when: dhcp_staticlist_raw.stdout != desired_dhcp_staticlist
+  notify: commit_nvram_changes
