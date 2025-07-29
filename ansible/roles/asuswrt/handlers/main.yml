@@ -1,0 +1,8 @@
+---
+- name: Commit NVRAM changes
+  ansible.builtin.raw: nvram commit
+  listen: "commit_nvram_changes"
+
+- name: Restart wireless service
+  ansible.builtin.raw: service restart_wireless
+  listen: "restart_wireless"
