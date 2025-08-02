@@ -3,8 +3,7 @@
 description = "Allowlist for this repository"
 paths = [
     '''gitleaks.toml''',
-    '''minio/README.md''',
-    '''gitleaks-report.json''',
+    '''ansible/roles/minio/README.md''',
 ]
 
 [[rules]]
