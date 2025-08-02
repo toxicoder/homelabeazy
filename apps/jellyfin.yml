@@ -1,0 +1,42 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: jellyfin
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://jellyfin.github.io/helm-charts'
+    chart: jellyfin
+    targetRevision: 0.1.0 # This is a placeholder
+    helm:
+      values: |
+        image:
+          repository: jellyfin/jellyfin
+          tag: latest
+        ingress:
+          main:
+            enabled: true
+            hosts:
+              - host: jellyfin.homelab.dev
+                paths:
+                  - path: /
+                    pathType: Prefix
+        persistence:
+          config:
+            enabled: true
+            mountPath: /config
+          media:
+            enabled: true
+            type: hostPath
+            hostPath: /mnt/media
+            mountPath: /media
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: jellyfin
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
