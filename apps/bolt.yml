@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: bolt
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/toxicoder/homelabeazy.git'
+    path: charts/bolt
+    targetRevision: HEAD
+    helm:
+      values: |
+        ingress:
+          hosts: bolt.homelab.dev
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: bolt
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
