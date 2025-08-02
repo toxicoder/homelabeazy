@@ -1,1 +1,4 @@
 # This playbook will deploy user-facing applications.
+- hosts: localhost
+  roles:
+    - rreading-glasses
