@@ -41,6 +41,69 @@ jobs:
       - name: Lint Helm charts
         run: helm lint ./charts
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Prettier
+        run: npm install -g prettier
+      - name: Run Prettier
+        run: prettier --check .
+
+      - name: Install Biome
+        run: |
+          curl -fsSL https://biomejs.dev/install.sh | bash
+          mv biome /usr/local/bin/
+      - name: Run Biome
+        run: biome check .
+
+      - name: Install Unibeautify CLI
+        run: npm install -g @unibeautify/cli
+      - name: Run Unibeautify
+        run: unibeautify --check
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Black
+        run: pip install black
+      - name: Run Black
+        run: black --check .
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+
+      - name: Run gofmt
+        run: |
+          go fmt $(go list ./... | grep -v /vendor/)
+          git diff --exit-code
+
+      - name: Install clang-format
+        run: sudo apt-get install -y clang-format
+      - name: Run clang-format
+        run: |
+          find . -name "*.h" -o -name "*.cpp" -print0 | xargs -0 clang-format -i
+          git diff --exit-code
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Download google-java-format
+        run: |
+          wget https://github.com/google/google-java-format/releases/download/google-java-format-1.15.0/google-java-format-1.15.0-all-deps.jar -O /tmp/google-java-format.jar
+      - name: Run google-java-format
+        run: |
+          find . -name "*.java" -print0 | xargs -0 java -jar /tmp/google-java-format.jar --replace
+          git diff --exit-code
+
   test:
     runs-on: ubuntu-latest
     steps:

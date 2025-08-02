@@ -829,6 +829,61 @@ This project uses a cloud-init template to configure the virtual machines. You c
 
 ## Contributing
 
+### Code Formatting
+
+This project uses several open-source code formatters to ensure a consistent code style. Before submitting a pull request, please make sure to run the appropriate formatters on your changes. The CI pipeline will check for formatting, and your pull request will not be merged if it is not correctly formatted.
+
+You can install the formatters using the provided Ansible roles or install them manually.
+
+#### Prettier
+
+Used for formatting web development files like YAML, JSON, and Markdown.
+
+-   **Install:** `npm install -g prettier`
+-   **Run:** `prettier --write .`
+
+#### Biome
+
+Used for formatting and linting web development files.
+
+-   **Install:** `curl -fsSL https://biomejs.dev/install.sh | bash` then move the `biome` binary to a directory in your `$PATH`.
+-   **Run:** `biome format --write .`
+
+#### Unibeautify
+
+A universal code beautifier.
+
+-   **Install:** `npm install -g @unibeautify/cli`
+-   **Run:** `unibeautify`
+
+#### Black
+
+The uncompromising Python code formatter.
+
+-   **Install:** `pip install black`
+-   **Run:** `black .`
+
+#### gofmt
+
+The official Go code formatter. It is included with the Go distribution.
+
+-   **Install:** Install Go.
+-   **Run:** `go fmt ./...`
+
+#### clang-format
+
+Used for formatting C, C++, and Objective-C code.
+
+-   **Install:** `sudo apt-get install -y clang-format` (or equivalent for your OS)
+-   **Run:** `find . -name "*.h" -o -name "*.cpp" | xargs clang-format -i`
+
+#### google-java-format
+
+A Java code formatter that follows Google's style guide.
+
+-   **Install:** Download the formatter jar from the [releases page](https://github.com/google/google-java-format/releases).
+-   **Run:** `java -jar /path/to/google-java-format.jar --replace $(find . -name "*.java")`
+
 Contributions are welcome! If you would like to contribute to this project, please follow these steps:
 
 1.  **Open an issue:** Before you start working on a new feature or bug fix, please open an issue to discuss it with the project maintainers. This will help to ensure that your contribution is in line with the project's goals.
