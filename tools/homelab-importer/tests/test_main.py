@@ -1,15 +1,19 @@
 import os
+import shutil
 import sys
 import tempfile
-import shutil
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src")))  # noqa: E501
+
+sys.path.insert(
+    0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src"))
+)  # noqa: E501
 import unittest  # noqa: E402
-from unittest.mock import patch, MagicMock  # noqa: E402
-from main import main  # noqa: E402
+from unittest.mock import MagicMock, patch  # noqa: E402
+
 from exceptions import (  # noqa: E402
     MissingEnvironmentVariableError,
     ProxmoxConnectionError,
 )
+from main import main  # noqa: E402
 
 
 class TestMain(unittest.TestCase):
@@ -50,15 +54,20 @@ class TestMain(unittest.TestCase):
                     "maxcpu": 1,
                 }
             ],
+            [],  # for get_network_bridges
         ]
+        mock_proxmox_instance.storage.get.return_value = []  # for get_storage_pools
 
         # Run the main function
         main(self.test_dir)
 
-        # Assert that the Terraform file was created
-        with open(os.path.join(self.test_dir, "homelab.tf"), "r") as f:
+        # Assert that the Terraform files were created
+        with open(os.path.join(self.test_dir, "vms.tf"), "r") as f:
             content = f.read()
             self.assertIn('resource "proxmox_vm_qemu" "test_vm"', content)
+
+        with open(os.path.join(self.test_dir, "lxc.tf"), "r") as f:
+            content = f.read()
             self.assertIn('resource "proxmox_lxc" "test_lxc"', content)
 
     def test_main_missing_env_vars(self):

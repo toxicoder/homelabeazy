@@ -52,9 +52,7 @@ def map_vm_to_terraform(vm_data: Dict[str, Any]) -> Dict[str, Any]:
     return _map_resource_to_terraform(vm_data, "vm")
 
 
-def map_docker_container_to_compose(
-    container_data: Dict[str, Any]
-) -> Dict[str, Any]:
+def map_docker_container_to_compose(container_data: Dict[str, Any]) -> Dict[str, Any]:
     """Maps a Docker container to a docker-compose service."""
     details = container_data.get("details", {})
     return {
@@ -67,8 +65,7 @@ def map_docker_container_to_compose(
                 for p in container_data.get("Ports", [])
             ],
             "volumes": [
-                f'{m["Source"]}:{m["Destination"]}'
-                for m in details.get("Mounts", [])
+                f'{m["Source"]}:{m["Destination"]}' for m in details.get("Mounts", [])
             ],
             "environment": details.get("Config", {}).get("Env", []),
         },

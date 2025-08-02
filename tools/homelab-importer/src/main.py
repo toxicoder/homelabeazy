@@ -1,18 +1,25 @@
 import argparse
 import logging
 import os
-from discover import get_lxc_containers, get_vms, get_storage_pools, get_network_bridges
-from docker import generate_docker_compose
+
 from dotenv import load_dotenv
+from proxmoxer import ProxmoxAPI
+from proxmoxer.core import AuthenticationError as ProxmoxerAuthenticationError
+
+from discover import get_lxc_containers, get_network_bridges, get_storage_pools, get_vms
+from docker import generate_docker_compose
 from exceptions import (
     HomelabImporterError,
     MissingEnvironmentVariableError,
     ProxmoxAuthenticationError,
     ProxmoxConnectionError,
 )
-from mapping import map_lxc_to_terraform, map_vm_to_terraform, map_storage_pool_to_terraform, map_network_bridge_to_terraform
-from proxmoxer import ProxmoxAPI
-from proxmoxer.core import AuthenticationError as ProxmoxerAuthenticationError
+from mapping import (
+    map_lxc_to_terraform,
+    map_network_bridge_to_terraform,
+    map_storage_pool_to_terraform,
+    map_vm_to_terraform,
+)
 from terraform import (
     generate_import_script,
     generate_terraform_config,
@@ -49,9 +56,7 @@ def main(output_dir: str) -> None:
         network_bridges = get_network_bridges(proxmox)
 
         terraform_vms = [map_vm_to_terraform(vm) for vm in vms]
-        terraform_lxc_containers = [
-            map_lxc_to_terraform(c) for c in lxc_containers
-        ]
+        terraform_lxc_containers = [map_lxc_to_terraform(c) for c in lxc_containers]
         terraform_storage_pools = [
             map_storage_pool_to_terraform(s) for s in storage_pools
         ]
@@ -79,28 +84,18 @@ def main(output_dir: str) -> None:
         # Generate import script
         import_script_path = os.path.join(output_dir, "import.sh")
         generate_import_script(all_resources, import_script_path)
-        logging.info(
-            f"Terraform import script generated in {import_script_path}"
-        )
+        logging.info(f"Terraform import script generated in {import_script_path}")
 
         # Generate docker-compose files
         for resource in all_resources:
             if "docker_containers" in resource and resource["docker_containers"]:
-                filename = (
-                    f'{resource["name"]}_docker-compose.yml'
-                )
+                filename = f'{resource["name"]}_docker-compose.yml'
                 compose_path = os.path.join(output_dir, filename)
-                generate_docker_compose(
-                    resource["docker_containers"], compose_path
-                )
-                logging.info(
-                    f"Docker Compose file generated in {compose_path}"
-                )
+                generate_docker_compose(resource["docker_containers"], compose_path)
+                logging.info(f"Docker Compose file generated in {compose_path}")
 
     except ProxmoxerAuthenticationError as e:
-        raise ProxmoxAuthenticationError(
-            f"Authentication error with Proxmox API: {e}"
-        )
+        raise ProxmoxAuthenticationError(f"Authentication error with Proxmox API: {e}")
     except ConnectionError as e:
         raise ProxmoxConnectionError(f"Connection error with Proxmox API: {e}")
 

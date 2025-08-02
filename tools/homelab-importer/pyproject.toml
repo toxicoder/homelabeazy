@@ -17,6 +17,34 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 
+dependencies = [
+    "proxmoxer",
+    "python-dotenv",
+    "python-hcl2",
+    "requests",
+    "PyYAML"
+]
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "isort",
+    "ruff",
+    "pytest"
+]
+
 [project.urls]
 "Homepage" = "https://github.com/user/homelab-importer"
 "Bug Tracker" = "https://github.com/user/homelab-importer/issues"
+
+[tool.black]
+line-length = 88
+
+[tool.isort]
+profile = "black"
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]

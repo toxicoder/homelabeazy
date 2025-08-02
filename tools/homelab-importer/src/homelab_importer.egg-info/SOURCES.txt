@@ -10,6 +10,7 @@ src/utils.py
 src/homelab_importer.egg-info/PKG-INFO
 src/homelab_importer.egg-info/SOURCES.txt
 src/homelab_importer.egg-info/dependency_links.txt
+src/homelab_importer.egg-info/requires.txt
 src/homelab_importer.egg-info/top_level.txt
 tests/test_discover.py
 tests/test_docker.py
