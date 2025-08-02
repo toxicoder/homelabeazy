@@ -1,18 +1,23 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: app-of-apps
+  name: ollama
   namespace: argocd
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/toxicoder/homelabeazy.git'
-    path: apps
-    targetRevision: HEAD
+    repoURL: 'https://helm.otwld.com/'
+    chart: ollama
+    targetRevision: 1.25.0
+    helm:
+      valueFiles:
+        - "config/apps/ollama/values.yaml"
   destination:
     server: 'https://kubernetes.default.svc'
-    namespace: argocd
+    namespace: ollama
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,6 @@
+- name: Create ollama namespace
+  kubernetes.core.k8s:
+    name: ollama
+    api_version: v1
+    kind: Namespace
+    state: present
