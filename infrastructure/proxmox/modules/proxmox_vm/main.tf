@@ -8,6 +8,8 @@ terraform {
 }
 
 resource "proxmox_vm_qemu" "vm" {
+  count = var.resource_type == "qemu" ? 1 : 0
+
   name        = var.name
   target_node = var.target_node
   clone       = var.clone
@@ -17,11 +19,41 @@ resource "proxmox_vm_qemu" "vm" {
   cores       = var.cores
   os_type     = var.os_type
   agent       = var.agent
+  bios        = var.bios
+  machine     = var.machine
+  cpu         = var.cpu
+  scsihw      = var.scsihw
+  bootdisk    = var.bootdisk
 
   network {
     model   = "virtio"
     bridge  = var.network_bridge
     macaddr = var.mac
     tag     = var.vlan
+  }
+}
+
+resource "proxmox_lxc" "lxc" {
+  count = var.resource_type == "lxc" ? 1 : 0
+
+  hostname     = var.hostname
+  target_node  = var.target_node
+  vmid         = var.vmid
+  memory       = var.memory
+  cores        = var.cores
+  ostemplate   = var.ostemplate
+  password     = var.password
+  unprivileged = var.unprivileged
+
+  rootfs {
+    storage = var.storage
+    size    = "8G"
+  }
+
+  network {
+    name   = "eth0"
+    bridge = var.network_bridge
+    ip     = "dhcp"
+    tag    = var.vlan
   }
 }

@@ -1,4 +1,5 @@
 terraform {
+  required_version = ">= 1.0"
   required_providers {
     proxmox = {
       source  = "telmate/proxmox"
@@ -20,28 +21,32 @@ module "k3s" {
   worker_vmid_start = var.worker_vmid_start
 }
 
-resource "proxmox_vm_qemu" "test_vm" {
-  name        = "test-vm"
-  target_node = "pve"
-  vmid        = 100
-  memory      = 2048
-  sockets     = 1
-  cores       = 2
-  os_type     = "cloud-init"
+module "test_vm" {
+  source = "./modules/proxmox_vm"
 
-  network {
-    model  = "virtio"
-    bridge = var.service_bridge
-    tag    = var.service_vlan_tag
-  }
+  resource_type  = "qemu"
+  name           = "test-vm"
+  target_node    = "pve"
+  vmid           = 100
+  memory         = 2048
+  sockets        = 1
+  cores          = 2
+  os_type        = "cloud-init"
+  network_bridge = var.service_bridge
+  vlan           = var.service_vlan_tag
 }
 
-resource "proxmox_lxc" "test_lxc" {
-  hostname    = "test-lxc"
-  target_node = "pve"
-  vmid        = 101
-  memory      = 1024
-  cores       = 1
+module "test_lxc" {
+  source = "./modules/proxmox_vm"
+
+  resource_type = "lxc"
+  hostname      = "test-lxc"
+  target_node   = "pve"
+  vmid          = 101
+  memory        = 1024
+  cores         = 1
+  ostemplate    = var.lxc_template
+  vlan          = var.service_vlan_tag
 }
 
 module "stealth-vm" {

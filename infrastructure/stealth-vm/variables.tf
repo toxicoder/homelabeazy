@@ -10,6 +10,18 @@ variable "windows_iso" {
   default     = ""
 }
 
+variable "smbios_manufacturer" {
+  description = "The SMBIOS manufacturer to use for the stealth VM."
+  type        = string
+  default     = "ASUS"
+}
+
+variable "smbios_product" {
+  description = "The SMBIOS product to use for the stealth VM."
+  type        = string
+  default     = "ROG Strix"
+}
+
 variable "gpu_pci_id" {
   description = "The PCI ID of the GPU to pass through to the stealth VM."
   type        = string

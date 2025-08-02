@@ -1,12 +1,9 @@
 import os
 import sys
-import unittest
-from unittest.mock import mock_open, patch, call
-
-sys.path.insert(
-    0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src"))
-)
-from terraform import (
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src")))  # noqa: E501
+import unittest  # noqa: E402
+from unittest.mock import mock_open, patch, call  # noqa: E402
+from terraform import (  # noqa: E402
     generate_terraform_config,
     generate_terraform_tfvars,
     generate_import_script,
@@ -63,7 +60,8 @@ class TestTerraform(unittest.TestCase):
         handle.write.assert_any_call('  target_node = "pve"\n')
         handle.write.assert_any_call("}\n\n")
 
-    def test_generate_import_script(self):
+    @patch("os.chmod")
+    def test_generate_import_script(self, mock_chmod):
         resources = [
             {
                 "resource": "proxmox_vm_qemu",
@@ -89,8 +87,10 @@ class TestTerraform(unittest.TestCase):
             call("terraform import proxmox_lxc.test-lxc pve/lxc/101\n"),
         ]
         handle.write.assert_has_calls(calls, any_order=True)
+        mock_chmod.assert_called_once_with("import.sh", 0o755)
 
-    def test_generate_import_script_no_node(self):
+    @patch("os.chmod")
+    def test_generate_import_script_no_node(self, mock_chmod):
         resources = [
             {
                 "resource": "proxmox_vm_qemu",
@@ -107,6 +107,7 @@ class TestTerraform(unittest.TestCase):
         handle = m()
         handle.write.assert_any_call("#!/bin/bash\n\n")
         self.assertEqual(handle.write.call_count, 1)
+        mock_chmod.assert_called_once_with("import.sh", 0o755)
 
 
 if __name__ == "__main__":

@@ -5,5 +5,5 @@ output "master_ip" {
 
 output "worker_ips" {
   description = "The IP addresses of the worker nodes."
-  value       = module.k3s_worker.*.ip
+  value       = module.k3s_worker[*].ip
 }

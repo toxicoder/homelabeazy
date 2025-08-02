@@ -2,17 +2,13 @@ import os
 import sys
 import tempfile
 import shutil
-import unittest
-from unittest.mock import patch, MagicMock
-
-sys.path.insert(
-    0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src"))
-)
-from main import main
-from exceptions import (
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src")))  # noqa: E501
+import unittest  # noqa: E402
+from unittest.mock import patch, MagicMock  # noqa: E402
+from main import main  # noqa: E402
+from exceptions import (  # noqa: E402
     MissingEnvironmentVariableError,
     ProxmoxConnectionError,
-    ProxmoxAuthenticationError,
 )
 
 

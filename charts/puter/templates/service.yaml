@@ -4,11 +4,6 @@ metadata:
   name: {{ include "puter.fullname" . }}
   labels:
     {{- include "puter.labels" . | nindent 4 }}
-    traefik.enable: "true"
-    traefik.http.routers.puter.rule: "Host(`{{ .Values.ingress.hosts }}`)"
-    traefik.http.routers.puter.entrypoints: "websecure"
-    traefik.http.routers.puter.tls.certresolver: "letsencrypt"
-    traefik.http.services.puter.loadbalancer.server.port: "{{ .Values.service.port }}"
 spec:
   type: {{ .Values.service.type }}
   ports:

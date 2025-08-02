@@ -74,7 +74,9 @@ def main(output_dir: str) -> None:
         # Generate docker-compose files
         for resource in all_resources:
             if "docker_containers" in resource and resource["docker_containers"]:
-                filename = f'{resource["name"]}_docker-compose.yml'
+                filename = (
+                    f'{resource["name"]}_docker-compose.yml'
+                )
                 compose_path = os.path.join(output_dir, filename)
                 generate_docker_compose(
                     resource["docker_containers"], compose_path
