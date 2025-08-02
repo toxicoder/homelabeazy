@@ -1,10 +1,10 @@
 ---
 galaxy_info:
-  author: your_name
-  description: your_description
-  company: your_company
-  license: license (GPL-2.0-or-later, MIT, etc)
-  min_ansible_version: 2.1
+  author: HomelabEazy
+  description: Installs and configures Authelia.
+  company: HomelabEazy
+  license: MIT
+  min_ansible_version: 2.9
   galaxy_tags: []
 
 dependencies: []

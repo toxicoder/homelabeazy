@@ -8,17 +8,23 @@ The role is designed to be idempotent, meaning it can be run multiple times with
 
 - Ansible 2.9 or higher
 - A Debian/Ubuntu or RedHat/CentOS based system
+- The `community.hashi_vault` collection must be installed.
 
 ## Role Variables
 
 Available variables are listed below, along with default values (see `defaults/main.yml`):
 
-| Variable           | Default Value                    | Description                            |
-| ------------------ | -------------------------------- | -------------------------------------- |
-| `minio_version`    | `RELEASE.2023-01-25T00-19-53Z`   | The version of MinIO to install.       |
-| `minio_access_key` | `minio`                          | The access key for the MinIO server.   |
-| `minio_secret_key` | `minio123`                       | The secret key for the MinIO server.   |
-| `minio_data_dir`   | `/data`                          | The directory to store MinIO data in.  |
+| Variable                      | Default Value                    | Description                                       |
+| ----------------------------- | -------------------------------- | ------------------------------------------------- |
+| `minio_version`               | `RELEASE.2023-01-25T00-19-53Z`   | The version of MinIO to install.                  |
+| `minio_data_dir`              | `/data`                          | The directory to store MinIO data in.             |
+| `minio_vault_path`            | `secret/data/minio`              | The path to the MinIO credentials in Vault.       |
+| `minio_vault_access_key_name` | `access_key`                     | The name of the access key in the Vault secret.   |
+| `minio_vault_secret_key_name` | `secret_key`                     | The name of the secret key in the Vault secret.   |
+
+The role fetches the MinIO access key and secret key from HashiCorp Vault. You need to have a Vault server running and the necessary environment variables (`VAULT_ADDR`, `VAULT_TOKEN`) configured for the Ansible user.
+
+The secrets in Vault should be stored in a KVv2 engine at the path specified by `minio_vault_path`. The secret should have two keys: one for the access key and one for the secret key, with the names specified by `minio_vault_access_key_name` and `minio_vault_secret_key_name`.
 
 ## Dependencies
 
@@ -31,8 +37,7 @@ None.
   roles:
     - role: minio
       vars:
-        minio_access_key: "my-access-key"
-        minio_secret_key: "my-super-secret-key"
+        minio_vault_path: "secret/data/production/minio"
 ```
 
 ## License

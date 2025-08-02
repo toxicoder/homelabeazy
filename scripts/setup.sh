@@ -1,10 +1,18 @@
 #!/bin/bash
 
-set -eu
+set -euo pipefail
+
+# --- Cleanup function ---
+cleanup() {
+    echo "An error occurred. Cleaning up..."
+    # Add cleanup commands here if needed
+}
+
+trap cleanup ERR EXIT
 
 # Check for required commands
 if ! command -v terraform &> /dev/null; then
-    echo "terraform could not be found"
+    echo "Error: terraform could not be found"
     exit 1
 fi
 
@@ -35,27 +43,36 @@ if [ "$enable_stealth_vm" == "y" ]; then
 fi
 
 # ----------------
-# --- TERRAFORM --
+# --- FUNCTIONS --
 # ----------------
 
-# Run terraform init.
-(cd homelab-infra && terraform init)
+run_terraform() {
+    echo "Running Terraform..."
+    (cd homelab-infra && terraform init && terraform plan && terraform apply -auto-approve)
+    if [ $? -ne 0 ]; then
+        echo "Error: Terraform command failed."
+        exit 1
+    fi
+    echo "Terraform run successful."
+}
 
-# Run terraform plan.
-(cd homelab-infra && terraform plan)
-
-# Run terraform apply.
-(cd homelab-infra && terraform apply -auto-approve)
+run_ansible() {
+    echo "Running Ansible..."
+    if [ "$enable_stealth_vm" == "y" ]; then
+        stealth_vm_ip=$(cd homelab-infra && terraform output -raw stealth_vm_ip)
+        ansible-playbook -i ansible/inventory/inventory.auto.yml stealth-vm/ansible/playbook.yml --extra-vars "stealth_vm_ip=$stealth_vm_ip"
+    fi
+    ansible-playbook -i ansible/inventory/inventory.auto.yml ansible/playbooks/setup.yml
+    if [ $? -ne 0 ]; then
+        echo "Error: Ansible command failed."
+        exit 1
+    fi
+    echo "Ansible run successful."
+}
 
 # ----------------
-# --- ANSIBLE ----
+# --- MAIN -------
 # ----------------
 
-# Get the stealth VM IP
-if [ "$enable_stealth_vm" == "y" ]; then
-  stealth_vm_ip=$(cd homelab-infra && terraform output -raw stealth_vm_ip)
-  ansible-playbook -i ansible/inventory/inventory.auto.yml stealth-vm/ansible/playbook.yml --extra-vars "stealth_vm_ip=$stealth_vm_ip"
-fi
-
-# Run the ansible playbook.
-ansible-playbook -i ansible/inventory/inventory.auto.yml ansible/playbooks/setup.yml
+run_terraform
+run_ansible

@@ -1,7 +1,7 @@
 import argparse
 import logging
 import os
-from discover import get_lxc_containers, get_vms
+from discover import get_lxc_containers, get_vms, get_storage_pools, get_network_bridges
 from docker import generate_docker_compose
 from dotenv import load_dotenv
 from exceptions import (
@@ -10,7 +10,7 @@ from exceptions import (
     ProxmoxAuthenticationError,
     ProxmoxConnectionError,
 )
-from mapping import map_lxc_to_terraform, map_vm_to_terraform
+from mapping import map_lxc_to_terraform, map_vm_to_terraform, map_storage_pool_to_terraform, map_network_bridge_to_terraform
 from proxmoxer import ProxmoxAPI
 from proxmoxer.core import AuthenticationError as ProxmoxerAuthenticationError
 from terraform import (
@@ -45,19 +45,31 @@ def main(output_dir: str) -> None:
 
         vms = get_vms(proxmox)
         lxc_containers = get_lxc_containers(proxmox)
+        storage_pools = get_storage_pools(proxmox)
+        network_bridges = get_network_bridges(proxmox)
 
         terraform_vms = [map_vm_to_terraform(vm) for vm in vms]
         terraform_lxc_containers = [
             map_lxc_to_terraform(c) for c in lxc_containers
         ]
+        terraform_storage_pools = [
+            map_storage_pool_to_terraform(s) for s in storage_pools
+        ]
+        terraform_network_bridges = [
+            map_network_bridge_to_terraform(b) for b in network_bridges
+        ]
 
-        all_resources = terraform_vms + terraform_lxc_containers
+        all_resources = (
+            terraform_vms
+            + terraform_lxc_containers
+            + terraform_storage_pools
+            + terraform_network_bridges
+        )
 
         # Generate Terraform configuration
         os.makedirs(output_dir, exist_ok=True)
-        tf_config_path = os.path.join(output_dir, "homelab.tf")
-        generate_terraform_config(all_resources, tf_config_path)
-        logging.info(f"Terraform configuration generated in {tf_config_path}")
+        generate_terraform_config(all_resources, output_dir)
+        logging.info(f"Terraform configuration generated in {output_dir}")
 
         # Generate Terraform variables
         tfvars_path = os.path.join(output_dir, "terraform.tfvars")

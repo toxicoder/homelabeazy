@@ -2,6 +2,7 @@
 # defaults file for minio
 
 minio_version: "RELEASE.2023-01-25T00-19-53Z"
-minio_access_key: "{{ vault_minio_access_key }}"
-minio_secret_key: "{{ vault_minio_secret_key }}"
 minio_data_dir: "/data"
+minio_vault_path: "secret/data/minio"
+minio_vault_access_key_name: "access_key"
+minio_vault_secret_key_name: "secret_key"
