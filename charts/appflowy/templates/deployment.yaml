@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "appflowy.fullname" . }}
+  labels:
+    {{- include "appflowy.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "appflowy.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "appflowy.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "appflowy.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      volumes:
+        - name: appflowy-bin
+          emptyDir: {}
+      initContainers:
+        - name: download-appflowy
+          image: "{{ .Values.initContainer.image.repository }}:{{ .Values.initContainer.image.tag }}"
+          command:
+            - /bin/sh
+            - -c
+            - |
+              VERSION={{ .Values.initContainer.appflowy.version }}
+              OS="unknown-linux-gnu"
+              ARCH="x86_64"
+              DISTRO="ubuntu-20.04"
+              TARBALL="AppFlowy_${ARCH}-${OS}_${DISTRO}.tar.gz"
+              DOWNLOAD_URL="https://github.com/AppFlowy-IO/AppFlowy/releases/download/${VERSION}/${TARBALL}"
+              echo "Downloading AppFlowy from ${DOWNLOAD_URL}"
+              wget -O /tmp/appflowy.tar.gz ${DOWNLOAD_URL}
+              echo "Extracting AppFlowy"
+              tar -xzvf /tmp/appflowy.tar.gz -C /appflowy-bin/
+              echo "AppFlowy extracted"
+          volumeMounts:
+            - name: appflowy-bin
+              mountPath: /appflowy-bin
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/appflowy-bin/AppFlowy"]
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: appflowy-bin
+              mountPath: /appflowy-bin
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
