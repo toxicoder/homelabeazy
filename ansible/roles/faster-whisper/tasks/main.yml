@@ -1,0 +1,6 @@
+- name: Create faster-whisper namespace
+  kubernetes.core.k8s:
+    name: faster-whisper
+    api_version: v1
+    kind: Namespace
+    state: present
