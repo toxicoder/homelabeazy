@@ -1,8 +1,12 @@
 import os
 import sys
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src")))  # noqa: E501
+
+sys.path.insert(
+    0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src"))
+)  # noqa: E501
 import unittest  # noqa: E402
 from unittest.mock import mock_open, patch  # noqa: E402
+
 from docker import generate_docker_compose  # noqa: E402
 
 
@@ -44,12 +48,8 @@ class TestDocker(unittest.TestCase):
             # Assertions on the generated data
             self.assertIn("services", compose_data)
             self.assertIn("test-container-1", compose_data["services"])
-            self.assertIn(
-                "volumes", compose_data["services"]["test-container-1"]
-            )
-            self.assertIn(
-                "environment", compose_data["services"]["test-container-1"]
-            )
+            self.assertIn("volumes", compose_data["services"]["test-container-1"])
+            self.assertIn("environment", compose_data["services"]["test-container-1"])
             self.assertEqual(
                 compose_data["services"]["test-container-1"]["volumes"],
                 ["/data:/data"],

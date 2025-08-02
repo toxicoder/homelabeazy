@@ -3,3 +3,9 @@ python-dotenv
 python-hcl2
 requests
 PyYAML
+
+[dev]
+black
+isort
+ruff
+pytest

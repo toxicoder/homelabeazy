@@ -1,9 +1,18 @@
 import os
 import sys
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src")))  # noqa: E501
+
+sys.path.insert(
+    0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src"))
+)  # noqa: E501
 import unittest  # noqa: E402
 from unittest.mock import MagicMock  # noqa: E402
-from discover import get_vms, get_lxc_containers, get_docker_containers  # noqa: E402, E501
+
+from discover import (  # noqa: E402, E501
+    get_docker_containers,
+    get_lxc_containers,
+    get_vms,
+)
+from proxmoxer.core import ResourceException  # noqa: E402
 
 
 class TestDiscover(unittest.TestCase):
@@ -43,15 +52,19 @@ class TestDiscover(unittest.TestCase):
 
     def test_get_vms_error(self):
         mock_proxmox = MagicMock()
-        mock_proxmox.cluster.resources.get.side_effect = Exception("API Error")
-        with self.assertRaises(Exception):
-            get_vms(mock_proxmox)
+        mock_proxmox.cluster.resources.get.side_effect = ResourceException(
+            "API Error", "Internal Server Error", 500
+        )
+        vms = get_vms(mock_proxmox)
+        self.assertEqual(len(vms), 0)
 
     def test_get_lxc_containers_error(self):
         mock_proxmox = MagicMock()
-        mock_proxmox.cluster.resources.get.side_effect = Exception("API Error")
-        with self.assertRaises(Exception):
-            get_lxc_containers(mock_proxmox)
+        mock_proxmox.cluster.resources.get.side_effect = ResourceException(
+            "API Error", "Internal Server Error", 500
+        )
+        containers = get_lxc_containers(mock_proxmox)
+        self.assertEqual(len(containers), 0)
 
     def test_get_docker_containers(self):
         mock_proxmox = MagicMock()
@@ -59,7 +72,7 @@ class TestDiscover(unittest.TestCase):
         # Mock the three calls to guest.agent.exec.post
         mock_guest.agent.exec.post.side_effect = [
             {"stdout": '{"ID":"123","Names":"test-container"}\n'},
-            {"stdout": '123\n'},
+            {"stdout": "123\n"},
             {"stdout": '[{"Id": "123", "Config": {"Env": [], "Mounts": []}}]'},
         ]
         mock_proxmox.nodes.return_value.qemu.return_value = mock_guest
@@ -82,7 +95,8 @@ class TestDiscover(unittest.TestCase):
         mock_guest = MagicMock()
         mock_guest.agent.exec.post.side_effect = [
             {"stdout": '{"ID":"123","Names":"test-container"}\n'},
-            {"stdout": ''},
+            {"stdout": ""},
+            {"stdout": "[]"},  # for inspect call
         ]
         mock_proxmox.nodes.return_value.qemu.return_value = mock_guest
 
@@ -94,8 +108,8 @@ class TestDiscover(unittest.TestCase):
         mock_guest = MagicMock()
         mock_guest.agent.exec.post.side_effect = [
             {"stdout": '{"ID":"123","Names":"test-container"}\n'},
-            {"stdout": '123\n'},
-            Exception("Inspect failed"),
+            {"stdout": "123\n"},
+            ResourceException("Inspect failed", "Internal Server Error", 500),
         ]
         mock_proxmox.nodes.return_value.qemu.return_value = mock_guest
 
@@ -108,7 +122,7 @@ class TestDiscover(unittest.TestCase):
         # Mock the three calls to guest.agent.exec.post
         mock_guest.agent.exec.post.side_effect = [
             {"stdout": '{"ID":"123","Names":"test-container"}\n'},
-            {"stdout": '123\n'},
+            {"stdout": "123\n"},
             {"stdout": '[{"Id": "123", "Config": {"Env": [], "Mounts": []}}]'},
         ]
         mock_proxmox.nodes.return_value.lxc.return_value = mock_guest
@@ -130,7 +144,7 @@ class TestDiscover(unittest.TestCase):
         mock_guest = MagicMock()
         mock_guest.agent.exec.post.side_effect = [
             {"stdout": '{"ID":"123","Names":"test-container"}\n'},
-            {"stdout": '123\n'},
+            {"stdout": "123\n"},
             {"stdout": '[{"Id": "123", "Config": {"Env": [], "Mounts": []}}]'},
         ]
         mock_proxmox.nodes.return_value.qemu.return_value = mock_guest
@@ -146,7 +160,7 @@ class TestDiscover(unittest.TestCase):
         mock_guest = MagicMock()
         mock_guest.agent.exec.post.side_effect = [
             {"stdout": '{"ID":"123","Names":"test-container"}\n'},
-            {"stdout": '123\n'},
+            {"stdout": "123\n"},
             {"stdout": '[{"Id": "123", "Config": {"Env": [], "Mounts": []}}]'},
         ]
         mock_proxmox.nodes.return_value.lxc.return_value = mock_guest
@@ -160,7 +174,9 @@ class TestDiscover(unittest.TestCase):
             {"vmid": 100, "name": "test-vm", "node": "pve"}
         ]
         mock_guest = MagicMock()
-        mock_guest.agent.exec.post.side_effect = Exception("Docker error")
+        mock_guest.agent.exec.post.side_effect = ResourceException(
+            "Docker error", "Internal Server Error", 500
+        )
         mock_proxmox.nodes.return_value.qemu.return_value = mock_guest
         vms = get_vms(mock_proxmox)
         self.assertEqual(len(vms), 1)
@@ -172,7 +188,9 @@ class TestDiscover(unittest.TestCase):
             {"vmid": 101, "name": "test-lxc", "node": "pve"}
         ]
         mock_guest = MagicMock()
-        mock_guest.agent.exec.post.side_effect = Exception("Docker error")
+        mock_guest.agent.exec.post.side_effect = ResourceException(
+            "Docker error", "Internal Server Error", 500
+        )
         mock_proxmox.nodes.return_value.lxc.return_value = mock_guest
         containers = get_lxc_containers(mock_proxmox)
         self.assertEqual(len(containers), 1)
@@ -183,15 +201,9 @@ class TestDiscover(unittest.TestCase):
         mock_guest = MagicMock()
         mock_exec = MagicMock()
         mock_exec.post.side_effect = [
-            {
-                "stdout": '{"ID":"123","Names":"test-container"}\n'
-            },
-            {
-                "stdout": '123\n'
-            },
-            {
-                "stdout": "[]"
-            }
+            {"stdout": '{"ID":"123","Names":"test-container"}\n'},
+            {"stdout": "123\n"},
+            {"stdout": "[]"},
         ]
         mock_guest.agent.exec = mock_exec
         mock_proxmox.nodes.return_value.qemu.return_value = mock_guest

@@ -70,23 +70,19 @@ def get_docker_containers(
             return []
 
         # Fetch container list
-        result = guest.agent.exec.post(
-            command="docker ps -a --format '{{json .}}'"
-        )
+        result = guest.agent.exec.post(command="docker ps -a --format '{{json .}}'")
         if not result or "stdout" not in result:
             return []
         containers = [
-            json.loads(line)
-            for line in result["stdout"].strip().split("\n")
-            if line
+            json.loads(line) for line in result["stdout"].strip().split("\n") if line
         ]
 
-        result = guest.agent.exec.post(
-            command="docker ps -a --format '{{.ID}}'"
-        )
+        result = guest.agent.exec.post(command="docker ps -a --format '{{.ID}}'")
         if not result or "stdout" not in result:
             return []
-        container_ids = result["stdout"].strip().split("\n")
+        container_ids = [
+            line for line in result["stdout"].strip().split("\n") if line
+        ]
         if not container_ids:
             return []
 
@@ -102,7 +98,7 @@ def get_docker_containers(
                 container["details"] = inspected_data[i]
 
         return containers
-    except (ResourceException, StopIteration, Exception) as e:
+    except ResourceException as e:
         logging.error(
             f"Error fetching Docker containers for {vm_type}/{vmid} on "
             f"node {node}: {e}"
