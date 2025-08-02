@@ -1,4 +1,4 @@
-- name: Allow traffic from service network to the internet
+- name: Allow HTTP/HTTPS traffic from service network to the internet
   community.general.pfsense_rule:
     config_file: "/cf/conf/config.xml"
     rule:
@@ -9,4 +9,5 @@
         network: "opt1"
       destination:
         any: true
+        port: "http,https"
     state: "present"

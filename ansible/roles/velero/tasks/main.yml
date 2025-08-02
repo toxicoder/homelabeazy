@@ -22,6 +22,11 @@
     remote_src: yes
   notify: restart velero
 
+- name: Get Minio credentials from vault
+  ansible.builtin.set_fact:
+    velero_minio_credentials: "{{ lookup('community.hashi_vault.vault_kv2_get', velero_minio_vault_path, engine_mount_point='secret') }}"
+  no_log: true
+
 - name: Create Velero secret
   kubernetes.core.k8s:
     state: present
@@ -34,8 +39,8 @@
       stringData:
         cloud: |
           [default]
-          aws_access_key_id={{ minio_access_key }}
-          aws_secret_access_key={{ minio_secret_key }}
+          aws_access_key_id={{ velero_minio_credentials[velero_minio_vault_access_key_name] }}
+          aws_secret_access_key={{ velero_minio_credentials[velero_minio_vault_secret_key_name] }}
 
 - name: Install velero
   command: >
