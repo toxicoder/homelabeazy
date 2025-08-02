@@ -1,7 +1,16 @@
-- name: Install Consul
-  apt:
-    name: consul
-    state: present
+---
+- name: Download Consul
+  ansible.builtin.get_url:
+    url: "https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_linux_amd64.zip"
+    dest: "/tmp/consul_{{ consul_version }}_linux_amd64.zip"
+    mode: '0644'
+
+- name: Unarchive Consul
+  ansible.builtin.unarchive:
+    src: "/tmp/consul_{{ consul_version }}_linux_amd64.zip"
+    dest: "/usr/local/bin"
+    remote_src: yes
+    creates: /usr/local/bin/consul
 
 - name: Configure Consul
   template:

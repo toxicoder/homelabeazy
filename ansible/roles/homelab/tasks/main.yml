@@ -18,7 +18,10 @@
   register: apps
 
 - name: Apply apps
-  shell: kubectl apply -f /tmp/apps.yml
+  kubernetes.core.k8s:
+    state: present
+    apply: yes
+    src: /tmp/apps.yml
   when: apps.changed
 
 - name: Deploy sabnzbd
@@ -39,4 +42,5 @@
 - name: Deploy MinIO ServiceMonitor
   kubernetes.core.k8s:
     state: present
+    apply: yes
     definition: "{{ lookup('template', 'minio-servicemonitor.yml.j2') | from_yaml }}"

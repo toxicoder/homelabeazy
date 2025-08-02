@@ -1,3 +1,10 @@
 ---
-dependencies:
-  - role: minio
+galaxy_info:
+  author: HomelabEazy
+  description: Installs and configures Velero.
+  company: HomelabEazy
+  license: MIT
+  min_ansible_version: 2.9
+  galaxy_tags: []
+
+dependencies: []

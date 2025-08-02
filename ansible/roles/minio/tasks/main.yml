@@ -1,6 +1,11 @@
 ---
 # tasks file for minio
 
+- name: Fetch MinIO credentials from Vault
+  community.hashi_vault.vault_kv2_get:
+    path: "{{ minio_vault_path }}"
+  register: minio_credentials
+
 - name: Create minio group
   group:
     name: minio
@@ -33,6 +38,9 @@
   template:
     src: minio.service.j2
     dest: /etc/systemd/system/minio.service
+  vars:
+    minio_root_user: "{{ minio_credentials.data[minio_vault_access_key_name] }}"
+    minio_root_password: "{{ minio_credentials.data[minio_vault_secret_key_name] }}"
   notify: restart minio
 
 - name: Start and enable minio service

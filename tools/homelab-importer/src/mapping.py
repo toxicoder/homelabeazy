@@ -78,3 +78,31 @@ def map_docker_container_to_compose(
 def map_lxc_to_terraform(lxc_data: Dict[str, Any]) -> Dict[str, Any]:
     """Maps a Proxmox LXC container to a Terraform resource."""
     return _map_resource_to_terraform(lxc_data, "lxc")
+
+
+def map_storage_pool_to_terraform(storage_data: Dict[str, Any]) -> Dict[str, Any]:
+    """Maps a Proxmox storage pool to a Terraform resource."""
+    resource_name = to_snake_case(storage_data.get("storage"))
+    return {
+        "resource": "proxmox_storage",
+        "name": resource_name,
+        "attributes": {
+            "id": storage_data.get("storage"),
+            "type": storage_data.get("type"),
+            "content": storage_data.get("content"),
+        },
+    }
+
+
+def map_network_bridge_to_terraform(bridge_data: Dict[str, Any]) -> Dict[str, Any]:
+    """Maps a Proxmox network bridge to a Terraform resource."""
+    resource_name = to_snake_case(bridge_data.get("iface"))
+    return {
+        "resource": "proxmox_network_bridge",
+        "name": resource_name,
+        "attributes": {
+            "id": bridge_data.get("iface"),
+            "active": bridge_data.get("active"),
+            "comment": bridge_data.get("comment"),
+        },
+    }

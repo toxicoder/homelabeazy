@@ -21,33 +21,6 @@ module "k3s" {
   worker_vmid_start = var.worker_vmid_start
 }
 
-module "test_vm" {
-  source = "./modules/proxmox_vm"
-
-  resource_type  = "qemu"
-  name           = "test-vm"
-  target_node    = "pve"
-  vmid           = 100
-  memory         = 2048
-  sockets        = 1
-  cores          = 2
-  os_type        = "cloud-init"
-  network_bridge = var.service_bridge
-  vlan           = var.service_vlan_tag
-}
-
-module "test_lxc" {
-  source = "./modules/proxmox_vm"
-
-  resource_type = "lxc"
-  hostname      = "test-lxc"
-  target_node   = "pve"
-  vmid          = 101
-  memory        = 1024
-  cores         = 1
-  ostemplate    = var.lxc_template
-  vlan          = var.service_vlan_tag
-}
 
 module "stealth-vm" {
   source = "../stealth-vm"

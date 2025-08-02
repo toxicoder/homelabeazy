@@ -3,23 +3,45 @@
 import json
 import os
 from typing import IO, Any, Dict, List
+from collections import defaultdict
+
+
+def get_resource_type_filename(resource_type: str) -> str:
+    """Returns the filename for a given resource type."""
+    if resource_type == "proxmox_vm_qemu":
+        return "vms.tf"
+    elif resource_type == "proxmox_lxc":
+        return "lxc.tf"
+    elif resource_type == "proxmox_storage":
+        return "storage.tf"
+    elif resource_type == "proxmox_network_bridge":
+        return "network.tf"
+    else:
+        return "resources.tf"
 
 
 def generate_terraform_config(
-    resources: List[Dict[str, Any]], filename: str
+    resources: List[Dict[str, Any]], output_dir: str
 ) -> None:
-    """Generates a Terraform configuration file."""
-    with open(filename, "w") as f:
-        for resource in resources:
-            f.write(
-                f'resource "{resource["resource"]}" "{resource["name"]}" {{\n'
-            )
-            for key, value in resource["attributes"].items():
-                if isinstance(value, str):
-                    f.write(f'  {key} = "{value}"\n')
-                else:
-                    f.write(f"  {key} = {value}\n")
-            f.write("}\n\n")
+    """Generates Terraform configuration files."""
+    resources_by_file = defaultdict(list)
+    for resource in resources:
+        filename = get_resource_type_filename(resource["resource"])
+        resources_by_file[filename].append(resource)
+
+    for filename, file_resources in resources_by_file.items():
+        filepath = os.path.join(output_dir, filename)
+        with open(filepath, "w") as f:
+            for resource in file_resources:
+                f.write(
+                    f'resource "{resource["resource"]}" "{resource["name"]}" {{\n'
+                )
+                for key, value in resource["attributes"].items():
+                    if isinstance(value, str):
+                        f.write(f'  {key} = "{value}"\n')
+                    else:
+                        f.write(f"  {key} = {value}\n")
+                f.write("}\n\n")
 
 
 def generate_terraform_tfvars(
@@ -71,6 +93,22 @@ def generate_import_script(
                     f"terraform import {resource_type}.{resource_name} "
                     f"{resource_id}\n"
                 )
+            elif resource_type == "proxmox_storage":
+                resource_id = resource["attributes"].get("id")
+                if resource_id:
+                    f.write(
+                        f"terraform import {resource_type}.{resource_name} "
+                        f"{resource_id}\n"
+                    )
+            elif resource_type == "proxmox_network_bridge":
+                node = resource["attributes"].get("node")
+                bridge_id = resource["attributes"].get("id")
+                if node and bridge_id:
+                    resource_id = f"{node}/{bridge_id}"
+                    f.write(
+                        f"terraform import {resource_type}.{resource_name} "
+                        f"{resource_id}\n"
+                    )
             elif resource_type == "proxmox_lxc":
                 resource_id = f"{node}/lxc/{vmid}"
                 f.write(
