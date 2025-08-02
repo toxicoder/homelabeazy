@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgres
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://charts.bitnami.com/bitnami'
+    chart: postgresql
+    targetRevision: 12.1.6 # Using a specific version for stability
+    helm:
+      values: |
+        auth:
+          database: rreading-glasses
+          username: rreading-glasses
+          password: "a-very-secret-password" # This should be changed or managed by a secret management system
+        primary:
+          persistence:
+            enabled: true
+            size: 1Gi
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: postgres
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

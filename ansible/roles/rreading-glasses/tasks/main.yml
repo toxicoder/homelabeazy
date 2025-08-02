@@ -1,0 +1,19 @@
+- name: Create rreading-glasses namespace
+  kubernetes.core.k8s:
+    name: rreading-glasses
+    api_version: v1
+    kind: Namespace
+    state: present
+
+- name: Create rreading-glasses postgres secret
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: rreading-glasses-secret
+        namespace: rreading-glasses
+      type: Opaque
+      stringData:
+        POSTGRES_PASSWORD: "a-very-secret-password" # This should be changed or managed by a secret management system
