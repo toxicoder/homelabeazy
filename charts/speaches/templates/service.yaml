@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "speaches.fullname" . }}
+  labels:
+    {{- include "speaches.labels" . | nindent 4 }}
+    traefik.enable: "true"
+    traefik.http.routers.speaches.rule: "Host(`{{ .Values.ingress.hosts }}`)"
+    traefik.http.routers.speaches.entrypoints: "websecure"
+    traefik.http.routers.speaches.tls.certresolver: "letsencrypt"
+    traefik.http.services.speaches.loadbalancer.server.port: "{{ .Values.service.port }}"
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "speaches.selectorLabels" . | nindent 4 }}
