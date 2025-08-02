@@ -1,0 +1,58 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: overseerr
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://bjw-s-labs.github.io/helm-charts'
+    chart: app-template
+    targetRevision: 4.2.0
+    helm:
+      values: |
+        controllers:
+          main:
+            strategy: Recreate
+
+            containers:
+              main:
+                image:
+                  repository: "sctx/overseerr"
+                  tag: "latest"
+                  pullPolicy: IfNotPresent
+
+        service:
+          main:
+            controller: main
+            ports:
+              http:
+                port: 5055
+
+        ingress:
+          main:
+            hosts:
+              - host: "overseerr.{{ domain_root }}"
+                paths:
+                  - path: /
+                    pathType: Prefix
+                    service:
+                      identifier: main
+                      port: http
+
+        persistence:
+          config:
+            type: persistentVolumeClaim
+            accessMode: ReadWriteOnce
+            size: 1Gi
+            globalMounts:
+              - path: /app/config
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: overseerr
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
