@@ -1,0 +1,46 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: plex
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://k8s-at-home.com/charts/'
+    chart: plex
+    targetRevision: 5.2.0
+    helm:
+      values: |
+        image:
+          repository: linuxserver/plex
+          tag: latest
+        env:
+          # Add your Plex Claim Token here.
+          # You can get one from https://www.plex.tv/claim/
+          PLEX_CLAIM: ""
+        ingress:
+          main:
+            enabled: true
+            hosts:
+              - host: plex.homelab.dev
+                paths:
+                  - path: /
+                    pathType: Prefix
+        persistence:
+          config:
+            enabled: true
+            mountPath: /config
+          media:
+            enabled: true
+            type: hostPath
+            hostPath: /mnt/media
+            mountPath: /media
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: plex
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
