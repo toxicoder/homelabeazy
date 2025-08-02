@@ -48,4 +48,4 @@ terraform-destroy:
 .PHONY: ansible-playbook-setup
 ansible-playbook-setup:
 	@echo "Running ansible setup playbook..."
-	$(ANSIBLE_PLAYBOOK) ansible/playbooks/test.yml
+	$(ANSIBLE_PLAYBOOK) ansible/playbooks/setup.yml
