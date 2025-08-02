@@ -79,16 +79,12 @@ jobs:
           go-version: '1.21'
 
       - name: Run gofmt
-        run: |
-          go fmt $(go list ./... | grep -v /vendor/)
-          git diff --exit-code
+        run: test -z "$(gofmt -l .)"
 
       - name: Install clang-format
         run: sudo apt-get install -y clang-format
       - name: Run clang-format
-        run: |
-          find . -name "*.h" -o -name "*.cpp" -print0 | xargs -0 clang-format -i
-          git diff --exit-code
+        run: find . -name "*.h" -o -name "*.cpp" -print0 | xargs -0 clang-format --dry-run -Werror
 
       - name: Set up Java
         uses: actions/setup-java@v3
@@ -100,9 +96,7 @@ jobs:
         run: |
           wget https://github.com/google/google-java-format/releases/download/google-java-format-1.15.0/google-java-format-1.15.0-all-deps.jar -O /tmp/google-java-format.jar
       - name: Run google-java-format
-        run: |
-          find . -name "*.java" -print0 | xargs -0 java -jar /tmp/google-java-format.jar --replace
-          git diff --exit-code
+        run: find . -name "*.java" -print0 | xargs -0 java -jar /tmp/google-java-format.jar --dry-run --set-exit-if-changed
 
   test:
     runs-on: ubuntu-latest
@@ -127,7 +121,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.x"
+          python-version: '3.11'
       - name: Install dependencies
         run: |
           pip install -r tools/homelab-importer/requirements.txt
@@ -155,7 +149,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
+          python-version: '3.11'
 
       - name: Install dependencies
         run: |
@@ -173,7 +167,7 @@ jobs:
       - name: Set up Python 3.
         uses: actions/setup-python@v5
         with:
-          python-version: "3.x"
+          python-version: '3.11'
       - name: Install test dependencies.
         run: pip install ansible-lint
       - name: Run Ansible Lint.

@@ -23,12 +23,6 @@ fi
 
 # This script will set up the homelab environment.
 
-# -----------------
-# --- VARIABLES ---
-# -----------------
-
-export PATH=$PATH:/home/jules/.local/bin:/usr/local/bin
-
 # ------------------
 # --- STEALTH VM ---
 # ------------------
@@ -48,25 +42,17 @@ fi
 
 run_terraform() {
     echo "Running Terraform..."
-    (cd homelab-infra && terraform init && terraform plan && terraform apply -auto-approve)
-    if [ $? -ne 0 ]; then
-        echo "Error: Terraform command failed."
-        exit 1
-    fi
+    (cd infrastructure/proxmox && terraform init && terraform plan && terraform apply -auto-approve)
     echo "Terraform run successful."
 }
 
 run_ansible() {
     echo "Running Ansible..."
     if [ "$enable_stealth_vm" == "y" ]; then
-        stealth_vm_ip=$(cd homelab-infra && terraform output -raw stealth_vm_ip)
+        stealth_vm_ip=$(cd infrastructure/proxmox && terraform output -raw stealth_vm_ip)
         ansible-playbook -i ansible/inventory/inventory.auto.yml stealth-vm/ansible/playbook.yml --extra-vars "stealth_vm_ip=$stealth_vm_ip"
     fi
     ansible-playbook -i ansible/inventory/inventory.auto.yml ansible/playbooks/setup.yml
-    if [ $? -ne 0 ]; then
-        echo "Error: Ansible command failed."
-        exit 1
-    fi
     echo "Ansible run successful."
 }
 
