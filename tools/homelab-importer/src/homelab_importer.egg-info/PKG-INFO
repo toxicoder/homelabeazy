@@ -65,20 +65,24 @@ PROXMOX_PASSWORD=your_proxmox_password
 
 ### 3. Run the Importer
 
+From the `tools/homelab-importer` directory, run the following command:
+
 ```bash
-python src/main.py
+python src/main.py --output-dir ./output
 ```
 
 This will generate the following files in the `output` directory:
 
-- `homelab.tf`: Terraform configuration for your Proxmox resources.
-- `terraform.tfvars`: Terraform variables for your resources.
 - `import.sh`: A script to import your existing resources into Terraform state.
-- `*_docker-compose.yml`: Docker Compose files for any discovered containers.
+- `terraform/`: A directory containing the Terraform configuration (`.tf`) and variables (`.tfvars`) files.
+- `docker/`: A directory containing `docker-compose.yml` files for any discovered containers.
 
 ### 4. Initialize Terraform
 
+Navigate to the generated Terraform directory and initialize it:
+
 ```bash
+cd output/terraform
 terraform init
 ```
 
@@ -108,34 +112,47 @@ The recommended migration strategy is to gradually bring your existing infrastru
 
 ### Step 1: Generate a Terraform Configuration
 
-First, run the importer to generate the Terraform configuration files for your existing Proxmox resources.
+First, run the importer to generate the Terraform configuration files for your existing Proxmox resources. From the `tools/homelab-importer` directory:
 
 ```bash
-python src/main.py
+python src/main.py --output-dir ./output
 ```
 
-This will create `homelab.tf`, `terraform.tfvars`, and `import.sh`.
+This will create an `output` directory with the generated files.
 
 ### Step 2: Initialize Terraform and Import
 
-Next, initialize Terraform and use the generated `import.sh` script to import your existing resources into the Terraform state. This tells Terraform that it now "owns" these resources, so it won't try to recreate them.
+Next, navigate to the Terraform directory and initialize it. Then, run the generated `import.sh` script from the parent `output` directory to import your existing resources into the Terraform state. This tells Terraform that it now "owns" these resources, so it won't try to recreate them.
 
 ```bash
+cd output/terraform
 terraform init
+cd ..
 ./import.sh
 ```
 
-After running the import, you can run `terraform plan` to verify that Terraform does not intend to make any changes to your existing infrastructure.
+After running the import, you can run `terraform plan` (from within the `terraform` directory) to verify that Terraform does not intend to make any changes to your existing infrastructure.
 
 ### Step 3: Review and Deploy Docker Compose Files
 
-The importer also generates `*_docker-compose.yml` files for any discovered Docker containers. You have two options for how to manage these:
+The importer also generates `docker-compose.yml` files in the `output/docker` directory for any discovered Docker containers. You have two options for how to manage these:
 
 **Option A: Redeploy on a New Host (Recommended)**
 
-For a cleaner, more organized setup, we recommend provisioning a new VM or LXC to run your Docker containers. You can do this by adding a new `proxmox_vm_qemu` or `proxmox_lxc` resource to your `homelab.tf` file.
+For a cleaner, more organized setup, we recommend provisioning a new VM or LXC to run your Docker containers. You can do this by adding a new resource to one of the `.tf` files in the `output/terraform` directory. For example, to create a new Debian VM, you could add:
 
-Once the new host is up and running, you can copy the `docker-compose.yml` file to it and run `docker-compose up -d` to redeploy your containers. This approach isolates your containerized applications and makes them easier to manage.
+```terraform
+resource "proxmox_vm_qemu" "docker_host" {
+  name        = "docker-host"
+  target_node = "pve" # Change to your node name
+  clone       = "debian-template" # Change to your template name
+  agent       = 1
+  os_type     = "cloud-init"
+  # ... other configuration ...
+}
+```
+
+After adding the new resource, run `terraform apply` to create the VM. Once the new host is up and running, you can copy the relevant `docker-compose.yml` file from the `output/docker` directory to it and run `docker-compose up -d` to redeploy your containers. This approach isolates your containerized applications and makes them easier to manage.
 
 **Option B: Continue Running on Existing Hosts**
 
@@ -143,13 +160,13 @@ If you prefer to continue running your containers on their existing hosts, you c
 
 ### Step 4: Decommission Old Resources (Optional)
 
-Once you've successfully migrated your containers to a new host, you can safely decommission the old VMs or LXCs that were previously running them. You can do this by running `terraform destroy` on the old resources.
+Once you've successfully migrated your containers to a new host, you can safely decommission the old VMs or LXCs that were previously running them. You can do this by removing the corresponding resource blocks from your Terraform configuration and running `terraform apply`.
 
 ## Example Usage
 
 To give you a better idea of what to expect, here are some examples of the files generated by the importer.
 
-### `homelab.tf`
+### `output/terraform/homelab.tf`
 
 This file contains the Terraform configuration for your Proxmox resources.
 
@@ -169,7 +186,7 @@ resource "proxmox_lxc" "pve_lxc_101" {
 }
 ```
 
-### `terraform.tfvars`
+### `output/terraform/terraform.tfvars`
 
 This file contains the variables for your Terraform configuration.
 
@@ -189,7 +206,7 @@ pve_lxc_101 = {
 }
 ```
 
-### `import.sh`
+### `output/import.sh`
 
 This script is used to import your existing resources into the Terraform state.
 
@@ -200,7 +217,7 @@ terraform import proxmox_vm_qemu.pve_vm_100 pve/qemu/100
 terraform import proxmox_lxc.pve_lxc_101 pve/lxc/101
 ```
 
-### `*_docker-compose.yml`
+### `output/docker/*_docker-compose.yml`
 
 This file is generated for any discovered Docker containers, making it easy to redeploy them.
 

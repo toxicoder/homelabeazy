@@ -19,11 +19,13 @@ class SynologyClient:
         self.port = module.params['port']
         self.username = module.params['username']
         self.password = module.params['password']
+        self.use_ssl = module.params['use_ssl']
         self.sid = None
         self.session = requests.Session()
 
     def login(self):
-        url = f'https://{self.host}:{self.port}/webapi/auth.cgi'
+        proto = 'https' if self.use_ssl else 'http'
+        url = f'{proto}://{self.host}:{self.port}/webapi/auth.cgi'
         params = {
             'api': 'SYNO.API.Auth',
             'version': '2',
@@ -46,7 +48,8 @@ class SynologyClient:
         if not self.sid:
             self.login()
 
-        url = f'https://{self.host}:{self.port}/webapi/entry.cgi'
+        proto = 'https' if self.use_ssl else 'http'
+        url = f'{proto}://{self.host}:{self.port}/webapi/entry.cgi'
         base_params = {
             'api': api,
             'version': '2',
@@ -305,6 +308,7 @@ def main():
             port=dict(type='int', default=5001),
             username=dict(type='str', required=True),
             password=dict(type='str', required=True, no_log=True),
+            use_ssl=dict(type='bool', default=True),
             state=dict(type='str', default='present', choices=['present', 'absent']),
             resource=dict(type='str', required=True, choices=['shared_folder', 'user', 'group', 'backup_task']),
             name=dict(type='str', required=True),

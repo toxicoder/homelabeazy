@@ -4,7 +4,6 @@
     url: "https://get.k3s.io"
     dest: "/tmp/k3s-install.sh"
     mode: '0755'
-  delegate_to: "{{ item }}"
 
 - name: Install k3s agent
   command: "/tmp/k3s-install.sh"
@@ -12,4 +11,3 @@
     INSTALL_K3S_VERSION: "{{ k3s_version }}"
     K3S_URL: "https://{{ groups['k3s_masters'][0] }}:6443"
     K3S_TOKEN: "{{ lookup('community.hashi_vault.vault_read', 'secret/k3s')['data']['join_token'] }}"
-  delegate_to: "{{ item }}"
