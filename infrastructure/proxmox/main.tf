@@ -42,3 +42,41 @@ module "stealth-vm" {
   hv_vendor_id      = var.hv_vendor_id
   smbios_uuid       = var.smbios_uuid
 }
+
+module "test_vm" {
+  source = "./modules/test_vm"
+
+  name        = "pfsense"
+  target_node = var.target_node
+  clone       = "pfsense-template"
+  vmid        = 101
+  memory      = 2048
+  sockets     = 1
+  cores       = 2
+  os_type     = "other"
+  networks = [
+    {
+      model  = "virtio"
+      bridge = "vmbr0"
+    },
+    {
+      model  = "virtio"
+      bridge = "vmbr1"
+    },
+    {
+      model  = "virtio"
+      bridge = var.service_bridge
+      tag    = var.service_vlan_tag
+    }
+  ]
+}
+
+module "test_lxc" {
+  source = "./modules/test_lxc"
+
+  hostname    = "lxc-with-docker"
+  target_node = var.target_node
+  vmid        = 102
+  memory      = 2048
+  cores       = 1
+}

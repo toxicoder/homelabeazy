@@ -42,28 +42,23 @@ variable "os_type" {
   default     = "cloud-init"
 }
 
-variable "network_bridge" {
-  description = "The network bridge to use for the resource."
-  type        = string
-  default     = "vmbr0"
+variable "networks" {
+  description = "A list of network interfaces for the VM."
+  type = list(object({
+    bridge  = string
+    model   = optional(string, "virtio")
+    macaddr = optional(string)
+    tag     = optional(number, -1)
+  }))
+  default = [{
+    bridge = "vmbr0"
+  }]
 }
 
 variable "agent" {
   description = "Enable/disable the QEMU agent."
   type        = number
   default     = 0
-}
-
-variable "mac" {
-  description = "The MAC address of the VM."
-  type        = string
-  default     = ""
-}
-
-variable "vlan" {
-  description = "The VLAN tag for the resource's network interface."
-  type        = number
-  default     = -1
 }
 
 variable "resource_type" {

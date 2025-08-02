@@ -25,11 +25,14 @@ resource "proxmox_vm_qemu" "vm" {
   scsihw      = var.scsihw
   bootdisk    = var.bootdisk
 
-  network {
-    model   = "virtio"
-    bridge  = var.network_bridge
-    macaddr = var.mac
-    tag     = var.vlan
+  dynamic "network" {
+    for_each = var.networks
+    content {
+      model   = lookup(network.value, "model", "virtio")
+      bridge  = network.value.bridge
+      macaddr = lookup(network.value, "macaddr", null)
+      tag     = lookup(network.value, "tag", -1)
+    }
   }
 }
 
