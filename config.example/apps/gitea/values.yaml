@@ -1,0 +1,51 @@
+gitea:
+  admin:
+    existingSecret: "vault:secret/data/gitea#admin_creds"
+  persistence:
+    enabled: true
+    storageClassName: "longhorn"
+    size: 10Gi
+  ingressRoute:
+    enabled: true
+    entryPoints:
+      - websecure
+    routes:
+      - match: Host(`gitea.homelab.dev`)
+        kind: Rule
+        services:
+          - name: gitea
+            port: 3000
+        middlewares:
+          - name: authelia
+            namespace: traefik
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: 1
+      memory: 2Gi
+  service:
+    http:
+      port: 3000
+    ssh:
+      port: 22
+  postgresql:
+    enabled: false
+  gitea:
+    database:
+      type: mysql
+      host: mariadb.mariadb.svc.cluster.local
+      name: gitea
+      user: gitea
+      existing_secret: "vault:secret/data/gitea#db_creds"
+  ldap:
+    - name: "homelab-ldap"
+      existingSecret: "vault:secret/data/gitea#ldap"
+      host: "openldap.ldap.svc.cluster.local"
+      port: 389
+      userSearchBase: "ou=users,dc=homelab,dc=com"
+      userFilter: "(&(objectClass=inetOrgPerson)(uid=%s))"
+      adminFilter: "(memberOf=cn=homelab-admins,ou=groups,dc=homelab,dc=com)"
+      emailAttribute: "mail"
+      usernameAttribute: "uid"

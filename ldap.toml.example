@@ -1,0 +1,18 @@
+[servers]
+host = "openldap.ldap.svc.cluster.local"
+port = 389
+use_ssl = false
+start_tls = false
+ssl_skip_verify = true
+bind_dn = "cn=admin,dc={{ domain_root.split('.')[0] }},dc={{ domain_root.split('.')[1] }}"
+bind_password = "<path:secret/data/openldap#admin-password>"
+search_filter = "(uid=%s)"
+search_base_dns = ["ou=users,dc={{ domain_root.split('.')[0] }},dc={{ domain_root.split('.')[1] }}"]
+
+[[servers.group_mappings]]
+group_dn = "cn=homelab-admins,ou=groups,dc={{ domain_root.split('.')[0] }},dc={{ domain_root.split('.')[1] }}"
+org_role = "Admin"
+
+[[servers.group_mappings]]
+group_dn = "cn=homelab-developers,ou=groups,dc={{ domain_root.split('.')[0] }},dc={{ domain_root.split('.')[1] }}"
+org_role = "Editor"
