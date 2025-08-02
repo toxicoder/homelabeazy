@@ -28,7 +28,7 @@ The secrets in Vault should be stored in a KVv2 engine at the path specified by 
 
 ## Dependencies
 
-None.
+This role has no Ansible role dependencies. However, it requires the `community.hashi_vault` collection to be installed, as listed in the requirements.
 
 ## Example Playbook
 

@@ -3,6 +3,7 @@
 
 velero_version: "1.9.0"
 velero_install_dir: "/opt/velero"
-velero_vault_path: "secret/data/minio"
-velero_vault_access_key_name: "access_key"
-velero_vault_secret_key_name: "secret_key"
+
+# The following variables should be set in a secure way, e.g. using Ansible Vault
+minio_access_key: ""
+minio_secret_key: ""

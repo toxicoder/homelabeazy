@@ -1,11 +1,6 @@
 ---
 # tasks file for velero
 
-- name: Fetch MinIO credentials from Vault
-  community.hashi_vault.vault_kv2_get:
-    path: "{{ velero_vault_path }}"
-  register: minio_credentials
-
 - name: Create the velero directory
   file:
     path: "{{ velero_install_dir }}"
@@ -39,8 +34,8 @@
       stringData:
         cloud: |
           [default]
-          aws_access_key_id={{ minio_credentials.data[velero_vault_access_key_name] }}
-          aws_secret_access_key={{ minio_credentials.data[velero_vault_secret_key_name] }}
+          aws_access_key_id={{ minio_access_key }}
+          aws_secret_access_key={{ minio_secret_key }}
 
 - name: Install velero
   command: >

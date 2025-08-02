@@ -47,6 +47,92 @@ variable "windows_iso" {
   default     = ""
 }
 
+variable "test_vm_name" {
+  description = "The name of the test VM."
+  type        = string
+  default     = "pfsense"
+}
+
+variable "test_vm_clone" {
+  description = "The name of the template to clone for the test VM."
+  type        = string
+  default     = "pfsense-template"
+}
+
+variable "test_vm_vmid" {
+  description = "The ID of the test VM."
+  type        = number
+  default     = 101
+}
+
+variable "test_vm_memory" {
+  description = "The amount of memory for the test VM."
+  type        = number
+  default     = 2048
+}
+
+variable "test_vm_sockets" {
+  description = "The number of sockets for the test VM."
+  type        = number
+  default     = 1
+}
+
+variable "test_vm_cores" {
+  description = "The number of cores for the test VM."
+  type        = number
+  default     = 2
+}
+
+variable "test_vm_os_type" {
+  description = "The OS type of the test VM."
+  type        = string
+  default     = "other"
+}
+
+variable "test_vm_networks" {
+  description = "The network configuration for the test VM."
+  type        = any
+  default = [
+    {
+      model  = "virtio"
+      bridge = "vmbr0"
+    },
+    {
+      model  = "virtio"
+      bridge = "vmbr1"
+    },
+    {
+      model  = "virtio"
+      bridge = "vmbr2"
+      tag    = 10
+    }
+  ]
+}
+
+variable "test_lxc_hostname" {
+  description = "The hostname of the test LXC."
+  type        = string
+  default     = "lxc-with-docker"
+}
+
+variable "test_lxc_vmid" {
+  description = "The ID of the test LXC."
+  type        = number
+  default     = 102
+}
+
+variable "test_lxc_memory" {
+  description = "The amount of memory for the test LXC."
+  type        = number
+  default     = 2048
+}
+
+variable "test_lxc_cores" {
+  description = "The number of cores for the test LXC."
+  type        = number
+  default     = 1
+}
+
 variable "lxc_template" {
   description = "The LXC template to use."
   type        = string

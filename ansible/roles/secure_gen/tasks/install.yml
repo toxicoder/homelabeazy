@@ -1,24 +1,14 @@
 ---
-- name: Install python3-venv
-  ansible.builtin.package:
-    name: python3-venv
-    state: present
-
-- name: Create virtual environment
-  ansible.builtin.command:
-    cmd: python3 -m venv /opt/secure-gen
-    creates: /opt/secure-gen/bin/activate
-
 - name: Install python libraries
   ansible.builtin.pip:
     name:
       - hvac
       - cryptography
       - python-gnupg
-    virtualenv: /opt/secure-gen
+    virtualenv: "{{ python_venv_path }}"
 
 - name: Copy secure-gen tool
   ansible.builtin.copy:
     src: secure-gen
-    dest: /opt/secure-gen/bin/secure-gen
+    dest: "{{ python_venv_path }}/bin/secure-gen"
     mode: '0755'

@@ -1,0 +1,3 @@
+---
+# vars file for secure_gen
+python_venv_path: /opt/secure-gen

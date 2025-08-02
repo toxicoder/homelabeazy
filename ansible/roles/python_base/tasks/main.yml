@@ -1,0 +1,10 @@
+---
+- name: Install python3-venv
+  ansible.builtin.package:
+    name: python3-venv
+    state: present
+
+- name: Create virtual environment
+  ansible.builtin.command:
+    cmd: "python3 -m venv {{ python_venv_path }}"
+    creates: "{{ python_venv_path }}/bin/activate"
