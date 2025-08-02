@@ -36,6 +36,11 @@
     state: present
     src: "{{ role_path }}/../../../apps/jellyfin.yml"
 
+- name: Deploy jellyseerr
+  kubernetes.core.k8s:
+    state: present
+    src: "{{ role_path }}/../../../apps/jellyseerr.yml"
+
 - name: Deploy MinIO ServiceMonitor
   k8s:
     template: minio-servicemonitor.yml.j2
