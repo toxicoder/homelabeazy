@@ -7,10 +7,7 @@
 *.tfplan
 
 # SOPS files
-*.sops.yml
-*.sops.json
-*.sops.ini
-*.sops.dotenv
+*.sops.*
 
 # Environment files
 .env
@@ -31,7 +28,7 @@ __pycache__/
 *$py.class
 
 # Private configurations for Gitea
-config/
+config.example/
 ansible/group_vars/
 ansible/inventory/
 ldap.toml

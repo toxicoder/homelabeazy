@@ -71,13 +71,18 @@ def main(output_dir: str) -> None:
             + terraform_network_bridges
         )
 
+        # Create output directories
+        terraform_dir = os.path.join(output_dir, "terraform")
+        docker_dir = os.path.join(output_dir, "docker")
+        os.makedirs(terraform_dir, exist_ok=True)
+        os.makedirs(docker_dir, exist_ok=True)
+
         # Generate Terraform configuration
-        os.makedirs(output_dir, exist_ok=True)
-        generate_terraform_config(all_resources, output_dir)
-        logging.info(f"Terraform configuration generated in {output_dir}")
+        generate_terraform_config(all_resources, terraform_dir)
+        logging.info(f"Terraform configuration generated in {terraform_dir}")
 
         # Generate Terraform variables
-        tfvars_path = os.path.join(output_dir, "terraform.tfvars")
+        tfvars_path = os.path.join(terraform_dir, "terraform.tfvars")
         generate_terraform_tfvars(all_resources, tfvars_path)
         logging.info(f"Terraform variables generated in {tfvars_path}")
 
@@ -90,7 +95,7 @@ def main(output_dir: str) -> None:
         for resource in all_resources:
             if "docker_containers" in resource and resource["docker_containers"]:
                 filename = f'{resource["name"]}_docker-compose.yml'
-                compose_path = os.path.join(output_dir, filename)
+                compose_path = os.path.join(docker_dir, filename)
                 generate_docker_compose(resource["docker_containers"], compose_path)
                 logging.info(f"Docker Compose file generated in {compose_path}")
 

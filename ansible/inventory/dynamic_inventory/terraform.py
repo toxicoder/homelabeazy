@@ -19,7 +19,7 @@ def get_inventory():
     outputs = tf.output(json=True)
 
     if not outputs:
-        raise Exception(f"Error running terraform output")
+        return inventory
 
     if "stealth_vm_ip" in outputs and outputs["stealth_vm_ip"]["value"]:
         inventory.setdefault("stealth_vm", {"hosts": []})["hosts"].append("stealth-vm-1")
