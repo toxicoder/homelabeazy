@@ -182,26 +182,61 @@ To add a new secret, you need to:
 2.  Update the corresponding `values.yaml` file to reference the new secret using the `vault:` prefix.
 3.  Run the `make ansible-playbook-setup` command to apply the changes.
 
-**Keeping Your Configuration Private:**
+**Private Gitea Setup**
 
-If you are using this repository to manage your own homelab, it is recommended to keep your configuration private. This can be done by creating a new private Git repository and using it to store your sensitive configuration files.
+This repository is designed to be used as a template. You can clone it from GitHub, and then push it to your own private Gitea instance to store your homelab's configuration securely.
 
-1.  **Create a new private Git repository:**
-    -   Create a new private repository on GitHub or another Git provider.
-    -   Clone the repository to your local machine.
+This repository includes two `.gitignore` files:
+- `.gitignore`: This is the default gitignore, and it's designed for the public GitHub repository. It ignores all sensitive files, such as configuration files, secrets, and terraform variables.
+- `.gitignore.gitea`: This is the gitignore for your private Gitea repository. It's less strict and will allow you to commit your configuration files to your private repository.
 
-2.  **Move sensitive files to the private repository:**
-    -   Move the `config` directory to the private repository.
-    -   Move the `terraform.tfvars` file to the private repository.
-    -   Move the `ansible/group_vars/all.yml` file to the private repository.
+**Follow these steps to set up your private repository:**
 
-3.  **Create symbolic links:**
-    -   Create symbolic links from the original locations to the new locations in the private repository.
+1.  **Clone the repository from GitHub:**
     ```bash
-    ln -s /path/to/private/repo/config config
-    ln -s /path/to/private/repo/terraform.tfvars terraform.tfvars
-    ln -s /path/to/private/repo/all.yml ansible/group_vars/all.yml
+    git clone https://github.com/toxicoder/homelabeazy.git
+    cd homelabeazy
     ```
+
+2.  **Prepare your private repository:**
+    - Rename the default `.gitignore` to `.gitignore.github`:
+      ```bash
+      mv .gitignore .gitignore.github
+      ```
+    - Rename `.gitignore.gitea` to `.gitignore`:
+      ```bash
+      mv .gitignore.gitea .gitignore
+      ```
+
+3.  **Copy and customize the example configurations:**
+    This repository comes with example configuration files. You'll need to copy them and customize them for your own environment.
+    - `config/`: This directory contains all the application configurations. Copy the `config.example/` directory to `config/` and customize the `values.yaml` files inside.
+      ```bash
+      cp -r config.example/ config/
+      ```
+    - `ansible/group_vars/all.yml`: This file contains global variables for Ansible. Copy `ansible/group_vars/all.yml.example` to `ansible/group_vars/all.yml` and edit it.
+      ```bash
+      cp ansible/group_vars/all.yml.example ansible/group_vars/all.yml
+      ```
+    - `ldap.toml`: This is the configuration file for LDAP. Copy `ldap.toml.example` to `ldap.toml` and edit it.
+      ```bash
+      cp ldap.toml.example ldap.toml
+      ```
+    - `infrastructure/proxmox/terraform.tfvars`: This file contains the variables for Terraform. Copy `infrastructure/proxmox/terraform.tfvars.example` to `infrastructure/proxmox/terraform.tfvars` and edit it.
+      ```bash
+      cp infrastructure/proxmox/terraform.tfvars.example infrastructure/proxmox/terraform.tfvars
+      ```
+
+4.  **Set up your private Gitea repository:**
+    - Create a new private repository in your Gitea instance.
+    - Add your Gitea repository as a new remote:
+      ```bash
+      git remote set-url origin <your-gitea-repo-url>
+      ```
+    - Push the code to your Gitea repository:
+      ```bash
+      git push -u origin main
+      ```
 
 ### Application Configuration
 

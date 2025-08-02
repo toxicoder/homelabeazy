@@ -1,0 +1,18 @@
+---
+# This file contains the configuration for all the applications.
+
+# EFK Stack
+efk_namespace: "efk"
+efk_elasticsearch_name: "elasticsearch"
+efk_elasticsearch_version: "8.10.2"
+efk_elasticsearch_node_count: 1
+efk_kibana_name: "kibana"
+efk_kibana_version: "8.10.2"
+efk_kibana_node_count: 1
+
+# Traefik
+traefik_namespace: "traefik"
+traefik_values:
+  providers:
+    kubernetesCRD:
+      enabled: true

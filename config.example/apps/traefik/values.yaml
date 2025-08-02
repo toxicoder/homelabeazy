@@ -1,0 +1,91 @@
+deployment:
+  kind: DaemonSet
+service:
+  spec:
+    loadBalancerIP: 192.168.1.250
+providers:
+  kubernetesCRD:
+    enabled: true
+  kubernetesIngress:
+    enabled: false
+ingressClass:
+  enabled: true
+  isDefaultClass: true
+globalArguments:
+  - "--global.checknewversion"
+logs:
+  general:
+    level: INFO
+  access:
+    enabled: true
+    format: json
+    filePath: "/data/access.log"
+ports:
+  web:
+    port: 80
+    expose: true
+    exposedPort: 80
+  websecure:
+    port: 443
+    expose: true
+    exposedPort: 443
+    tls:
+      enabled: true
+      certResolver: vault
+      domains:
+        - main: "homelab.dev"
+          sans:
+            - "*.homelab.dev"
+
+certificatesResolvers:
+  vault:
+    acme:
+      email: "user@{{ domain_root }}"
+      storage: "/data/acme.json"
+      vault:
+        addr: "http://vault.vault.svc.cluster.local:8200"
+        token: "vault:secret/data/traefik#vault_token"
+        engine: "pki"
+        role: "traefik"
+tls:
+  options:
+    default:
+      minVersion: VersionTLS12
+      cipherSuites:
+        - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305
+        - TLS_AES_256_GCM_SHA384
+        - TLS_CHACHA20_POLY1305_SHA256
+middleware:
+  authelia:
+    forwardAuth:
+      address: "http://authelia.authelia.svc.cluster.local:9091/api/verify?rd=https://auth.homelab.dev"
+      trustForwardHeader: true
+      authResponseHeaders:
+        - "Remote-User"
+        - "Remote-Groups"
+        - "Remote-Name"
+        - "Remote-Email"
+  headers:
+    headers:
+      customRequestHeaders:
+        X-Forwarded-Proto: "https"
+      sslRedirect: true
+      stsSeconds: 31536000
+      stsIncludeSubdomains: true
+      stsPreload: true
+      forceSTSHeader: true
+      customFrameOptionsValue: "SAMEORIGIN"
+      contentTypeNosniff: true
+      browserXssFilter: true
+      featurePolicy: "camera 'none'; geolocation 'none'; microphone 'none'; payment 'none'; usb 'none'; vr 'none';"
+      permissionsPolicy: "camera=(), geolocation=(), microphone=(), payment=(), usb=(), vr=()"
+
+volumes:
+  - name: main-config
+    mountPath: /config
+    configMap:
+      name: main-config
+  - name: access-logs
+    mountPath: /data
+    emptyDir: {}
