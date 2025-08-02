@@ -46,37 +46,23 @@ module "stealth-vm" {
 module "test_vm" {
   source = "./modules/test_vm"
 
-  name        = "pfsense"
+  name        = var.test_vm_name
   target_node = var.target_node
-  clone       = "pfsense-template"
-  vmid        = 101
-  memory      = 2048
-  sockets     = 1
-  cores       = 2
-  os_type     = "other"
-  networks = [
-    {
-      model  = "virtio"
-      bridge = "vmbr0"
-    },
-    {
-      model  = "virtio"
-      bridge = "vmbr1"
-    },
-    {
-      model  = "virtio"
-      bridge = var.service_bridge
-      tag    = var.service_vlan_tag
-    }
-  ]
+  clone       = var.test_vm_clone
+  vmid        = var.test_vm_vmid
+  memory      = var.test_vm_memory
+  sockets     = var.test_vm_sockets
+  cores       = var.test_vm_cores
+  os_type     = var.test_vm_os_type
+  networks    = var.test_vm_networks
 }
 
 module "test_lxc" {
   source = "./modules/test_lxc"
 
-  hostname    = "lxc-with-docker"
+  hostname    = var.test_lxc_hostname
   target_node = var.target_node
-  vmid        = 102
-  memory      = 2048
-  cores       = 1
+  vmid        = var.test_lxc_vmid
+  memory      = var.test_lxc_memory
+  cores       = var.test_lxc_cores
 }

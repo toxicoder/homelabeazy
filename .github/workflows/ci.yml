@@ -178,6 +178,27 @@ jobs:
       - name: Run Ansible Lint.
         run: ansible-lint
 
+  ansible-molecule:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the codebase.
+        uses: actions/checkout@v4
+      - name: Set up Python 3.
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install test dependencies.
+        run: pip install ansible molecule molecule-docker
+      - name: Run Molecule tests.
+        run: |
+          for role in ansible/roles/*; do
+            if [ -d "$role/molecule" ]; then
+              cd "$role"
+              molecule test -s default
+              cd -
+            fi
+          done
+
   terraform-validate:
     runs-on: ubuntu-latest
     steps:
