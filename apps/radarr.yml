@@ -1,0 +1,52 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: radarr
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/Jules-Recruiter/homelab-SRE-challenge' # This will be replaced by the actual repo URL
+    path: charts/vpn-app
+    targetRevision: HEAD
+    helm:
+      values: |
+        application:
+          image:
+            repository: "linuxserver/radarr"
+            tag: "latest"
+          name: "radarr"
+          port: 7878
+
+        gluetun:
+          vpn:
+            type: "openvpn"
+            provider: "private internet access"
+            region: "ca montreal"
+            credentials:
+              user: "<path:secret/data/radarr#pia_username>"
+              password: "<path:secret/data/radarr#pia_password>"
+
+        service:
+          type: ClusterIP
+          port: 7878
+
+        ingressRoute:
+          enabled: true
+          entryPoints:
+            - websecure
+          routes:
+            - match: Host(`radarr.{{ domain_root }}`)
+              kind: Rule
+              services:
+                - name: radarr
+                  port: 7878
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: radarr
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
