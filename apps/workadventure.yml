@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: workadventure
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://charts.workadventu.re/'
+    chart: workadventure
+    targetRevision: 1.25.12
+    helm:
+      valueFiles:
+        - "config/apps/workadventure/values.yaml"
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: workadventure
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
