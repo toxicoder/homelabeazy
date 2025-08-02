@@ -1,0 +1,4 @@
+- name: Install Black
+  ansible.builtin.pip:
+    name: black
+    state: present

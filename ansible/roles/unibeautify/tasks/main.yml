@@ -1,0 +1,5 @@
+- name: Install Unibeautify CLI
+  community.general.npm:
+    name: '@unibeautify/cli'
+    global: true
+    state: present
