@@ -1,0 +1,52 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sonarr
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/Jules-Recruiter/homelab-SRE-challenge' # This will be replaced by the actual repo URL
+    path: charts/vpn-app
+    targetRevision: HEAD
+    helm:
+      values: |
+        application:
+          image:
+            repository: "linuxserver/sonarr"
+            tag: "latest"
+          name: "sonarr"
+          port: 8989
+
+        gluetun:
+          vpn:
+            type: "openvpn"
+            provider: "private internet access"
+            region: "ca montreal"
+            credentials:
+              user: "<path:secret/data/sonarr#pia_username>"
+              password: "<path:secret/data/sonarr#pia_password>"
+
+        service:
+          type: ClusterIP
+          port: 8989
+
+        ingressRoute:
+          enabled: true
+          entryPoints:
+            - websecure
+          routes:
+            - match: Host(`sonarr.{{ domain_root }}`)
+              kind: Rule
+              services:
+                - name: sonarr
+                  port: 8989
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: sonarr
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

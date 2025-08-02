@@ -26,6 +26,11 @@
     state: present
     src: "{{ role_path }}/../../../apps/sabnzbd.yml"
 
+- name: Deploy sonarr
+  kubernetes.core.k8s:
+    state: present
+    src: "{{ role_path }}/../../../apps/sonarr.yml"
+
 - name: Deploy MinIO ServiceMonitor
   k8s:
     template: minio-servicemonitor.yml.j2
