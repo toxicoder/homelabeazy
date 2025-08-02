@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/Jules-Recruiter/homelab-SRE-challenge' # This will be replaced by the actual repo URL
+    repoURL: '<REPO_URL>'
     path: charts/vpn-app
     targetRevision: HEAD
     helm:

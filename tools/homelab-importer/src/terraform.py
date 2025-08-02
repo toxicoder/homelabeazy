@@ -1,14 +1,19 @@
 """Functions for generating Terraform configuration."""
 
 import json
+import os
 from typing import IO, Any, Dict, List
 
 
-def generate_terraform_config(resources: List[Dict[str, Any]], filename: str) -> None:
+def generate_terraform_config(
+    resources: List[Dict[str, Any]], filename: str
+) -> None:
     """Generates a Terraform configuration file."""
     with open(filename, "w") as f:
         for resource in resources:
-            f.write(f'resource "{resource["resource"]}" "{resource["name"]}" {{\n')
+            f.write(
+                f'resource "{resource["resource"]}" "{resource["name"]}" {{\n'
+            )
             for key, value in resource["attributes"].items():
                 if isinstance(value, str):
                     f.write(f'  {key} = "{value}"\n')
@@ -18,7 +23,8 @@ def generate_terraform_config(resources: List[Dict[str, Any]], filename: str) ->
 
 
 def generate_terraform_tfvars(
-    resources: List[Dict[str, Any]], filename: str = "terraform.tfvars"
+    resources: List[Dict[str, Any]],
+    filename: str = "terraform.tfvars",
 ) -> None:
     """Generates a terraform.tfvars file with structured variables."""
     with open(filename, "w") as f:
@@ -71,3 +77,4 @@ def generate_import_script(
                     f"terraform import {resource_type}.{resource_name} "
                     f"{resource_id}\n"
                 )
+    os.chmod(filename, 0o755)

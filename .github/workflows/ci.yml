@@ -142,6 +142,12 @@ jobs:
 
   test-synology:
     runs-on: ubuntu-latest
+    services:
+      mock-synology-api:
+        image: python:3-slim
+        volumes:
+          - ${{ github.workspace }}:/github/workspace
+        command: python /github/workspace/ansible/playbooks/mock_synology_api.py
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -156,11 +162,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install ansible requests
 
-      - name: Start mock Synology API server
-        run: python ansible/playbooks/mock_synology_api.py &
-
       - name: Run Synology playbook
-        run: ansible-playbook ansible/playbooks/test_synology_mock.yml
+        run: ansible-playbook ansible/playbooks/test_synology_mock.yml --extra-vars "mock_api_url=http://mock-synology-api:8000"
 
   ansible-lint:
     runs-on: ubuntu-latest

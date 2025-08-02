@@ -13,7 +13,7 @@ func TestTerraformProxmoxExample(t *testing.T) {
 
 	terraformOptions := &terraform.Options{
 		// The path to where our Terraform code is located
-		TerraformDir: "../../terraform",
+		TerraformDir: "..",
 		Vars: map[string]interface{}{
 			"pm_api_url":             os.Getenv("PROXMOX_API_URL"),
 			"pm_api_user":            os.Getenv("PROXMOX_API_USER"),

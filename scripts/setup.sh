@@ -1,5 +1,18 @@
 #!/bin/bash
 
+set -eu
+
+# Check for required commands
+if ! command -v terraform &> /dev/null; then
+    echo "terraform could not be found"
+    exit 1
+fi
+
+if ! command -v ansible-playbook &> /dev/null; then
+    echo "ansible-playbook could not be found"
+    exit 1
+fi
+
 # This script will set up the homelab environment.
 
 # -----------------

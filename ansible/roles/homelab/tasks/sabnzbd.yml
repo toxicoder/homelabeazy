@@ -1,0 +1,5 @@
+---
+- name: Deploy sabnzbd
+  kubernetes.core.k8s:
+    state: present
+    src: "{{ role_path }}/../../../apps/sabnzbd.yml"

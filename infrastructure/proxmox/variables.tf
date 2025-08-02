@@ -47,6 +47,12 @@ variable "windows_iso" {
   default     = ""
 }
 
+variable "lxc_template" {
+  description = "The LXC template to use."
+  type        = string
+  default     = "local:vztmpl/ubuntu-22.04-standard_22.04-1_amd64.tar.gz"
+}
+
 variable "bios" {
   description = "The BIOS to use for the stealth VM."
   type        = string

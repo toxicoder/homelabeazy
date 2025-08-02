@@ -22,31 +22,21 @@
   when: apps.changed
 
 - name: Deploy sabnzbd
-  kubernetes.core.k8s:
-    state: present
-    src: "{{ role_path }}/../../../apps/sabnzbd.yml"
+  ansible.builtin.include_tasks: sabnzbd.yml
 
 - name: Deploy sonarr
-  kubernetes.core.k8s:
-    state: present
-    src: "{{ role_path }}/../../../apps/sonarr.yml"
+  ansible.builtin.include_tasks: sonarr.yml
 
 - name: Deploy jellyfin
-  kubernetes.core.k8s:
-    state: present
-    src: "{{ role_path }}/../../../apps/jellyfin.yml"
+  ansible.builtin.include_tasks: jellyfin.yml
 
 - name: Deploy jellyseerr
-  kubernetes.core.k8s:
-    state: present
-    src: "{{ role_path }}/../../../apps/jellyseerr.yml"
+  ansible.builtin.include_tasks: jellyseerr.yml
 
 - name: Deploy workadventure
-  kubernetes.core.k8s:
-    state: present
-    src: "{{ role_path }}/../../../apps/workadventure.yml"
+  ansible.builtin.include_tasks: workadventure.yml
 
 - name: Deploy MinIO ServiceMonitor
-  k8s:
-    template: minio-servicemonitor.yml.j2
+  kubernetes.core.k8s:
     state: present
+    definition: "{{ lookup('template', 'minio-servicemonitor.yml.j2') | from_yaml }}"

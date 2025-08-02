@@ -1,11 +1,8 @@
 import os
 import sys
-import unittest
-
-sys.path.insert(
-    0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src"))
-)
-from mapping import to_snake_case, map_vm_to_terraform, map_lxc_to_terraform
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src")))  # noqa: E501
+import unittest  # noqa: E402
+from mapping import to_snake_case, map_vm_to_terraform, map_lxc_to_terraform  # noqa: E402, E501
 
 
 class TestMapping(unittest.TestCase):
@@ -36,7 +33,10 @@ class TestMapping(unittest.TestCase):
                 "os_type": "cloud-init",
             },
         }
-        self.assertEqual(map_vm_to_terraform(vm_data), expected)
+        self.assertEqual(
+            map_vm_to_terraform(vm_data),
+            expected
+        )
 
     def test_map_lxc_to_terraform(self):
         lxc_data = {
@@ -57,7 +57,9 @@ class TestMapping(unittest.TestCase):
                 "cores": 1,
             },
         }
-        self.assertEqual(map_lxc_to_terraform(lxc_data), expected)
+        self.assertEqual(  # noqa: E501
+            map_lxc_to_terraform(lxc_data), expected
+        )
 
     def test_map_vm_to_terraform_no_memory(self):
         vm_data = {
@@ -80,7 +82,9 @@ class TestMapping(unittest.TestCase):
                 "os_type": "cloud-init",
             },
         }
-        self.assertEqual(map_vm_to_terraform(vm_data), expected)
+        self.assertEqual(  # noqa: E501
+            map_vm_to_terraform(vm_data), expected
+        )
 
     def test_map_lxc_to_terraform_no_memory(self):
         lxc_data = {"name": "test-lxc", "node": "pve", "vmid": 101, "maxcpu": 1}
@@ -95,7 +99,9 @@ class TestMapping(unittest.TestCase):
                 "cores": 1,
             },
         }
-        self.assertEqual(map_lxc_to_terraform(lxc_data), expected)
+        self.assertEqual(  # noqa: E501
+            map_lxc_to_terraform(lxc_data), expected
+        )
 
     def test_map_vm_to_terraform_missing_attributes(self):
         vm_data = {"vmid": 100}
@@ -112,7 +118,9 @@ class TestMapping(unittest.TestCase):
                 "os_type": "cloud-init",
             },
         }
-        self.assertEqual(map_vm_to_terraform(vm_data), expected)
+        self.assertEqual(  # noqa: E501
+            map_vm_to_terraform(vm_data), expected
+        )
 
     def test_map_lxc_to_terraform_missing_attributes(self):
         lxc_data = {"vmid": 101}
@@ -127,7 +135,9 @@ class TestMapping(unittest.TestCase):
                 "cores": 1,
             },
         }
-        self.assertEqual(map_lxc_to_terraform(lxc_data), expected)
+        self.assertEqual(  # noqa: E501
+            map_lxc_to_terraform(lxc_data), expected
+        )
 
 
 if __name__ == "__main__":

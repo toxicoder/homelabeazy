@@ -35,8 +35,8 @@ resource "proxmox_vm_qemu" "stealth_vm" {
 
   # SMBIOS
   # smbios {
-  #   manufacturer = "ASUS"
-  #   product      = "ROG Strix"
+  #   manufacturer = var.smbios_manufacturer
+  #   product      = var.smbios_product
   #   uuid         = var.smbios_uuid
   # }
 }

@@ -1,0 +1,5 @@
+---
+- name: Deploy workadventure
+  kubernetes.core.k8s:
+    state: present
+    src: "{{ role_path }}/../../../apps/workadventure.yml"
