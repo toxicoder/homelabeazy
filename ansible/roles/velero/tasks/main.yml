@@ -1,25 +1,26 @@
----
 # tasks file for velero
 
 - name: Create the velero directory
-  file:
+  ansible.builtin.file:
     path: "{{ velero_install_dir }}"
     state: directory
     mode: '0755'
 
 - name: Download and unarchive the Velero client
-  unarchive:
-    src: "https://github.com/vmware-tanzu/velero/releases/download/v{{ velero_version }}/velero-v{{ velero_version }}-linux-amd64.tar.gz"
+  ansible.builtin.unarchive:
+    src: >-
+      https://github.com/vmware-tanzu/velero/releases/download/v{{ velero_version }}/velero-v{{
+      velero_version }}-linux-amd64.tar.gz
     dest: "{{ velero_install_dir }}"
-    remote_src: yes
+    remote_src: true
     creates: "{{ velero_install_dir }}/velero"
 
 - name: Move velero binary to /usr/local/bin
-  copy:
+  ansible.builtin.copy:
     src: "{{ velero_install_dir }}/velero-v{{ velero_version }}-linux-amd64/velero"
     dest: /usr/local/bin/velero
     mode: '0755'
-    remote_src: yes
+    remote_src: true
   notify: restart velero
 
 - name: Get Minio credentials from vault
@@ -42,21 +43,42 @@
           aws_access_key_id={{ velero_minio_credentials[velero_minio_vault_access_key_name] }}
           aws_secret_access_key={{ velero_minio_credentials[velero_minio_vault_secret_key_name] }}
 
-- name: Install velero
-  shell: >
-    velero install \
-      --provider aws \
-      --plugins velero/velero-plugin-for-aws:v1.5.0 \
-      --bucket velero \
-      --secret-file velero-minio-creds \
-      --use-restic \
-      --backup-location-config region=minio,s3ForcePathStyle="true",s3Url=http://minio.minio.svc:9000
+- name: Install Velero using Helm chart
+  kubernetes.core.helm:
+    name: velero
+    chart_ref: velero
+    chart_repo_url: https://vmware-tanzu.github.io/helm-charts
+    release_namespace: velero
+    create_namespace: true
+    values:
+      configuration:
+        provider: aws
+        backupStorageLocation:
+          name: default
+          bucket: velero
+          config:
+            region: minio
+            s3ForcePathStyle: "true"
+            s3Url: "http://minio.minio.svc:9000"
+      credentials:
+        useSecret: true
+        secretName: velero-minio-creds
+      deployRestic: true
+      initContainers:
+        - name: velero-plugin-for-aws
+          image: "velero/velero-plugin-for-aws:v1.5.0"
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - mountPath: /target
+              name: plugins
 
 - name: Create velero schedule
-  template:
+  ansible.builtin.template:
     src: schedule.yml.j2
     dest: "{{ velero_install_dir }}/schedule.yml"
+    mode: '0644'
 
 - name: Apply velero schedule
-  command: "kubectl apply -f {{ velero_install_dir }}/schedule.yml"
-  changed_when: true
+  kubernetes.core.k8s:
+    state: present
+    src: "{{ velero_install_dir }}/schedule.yml"

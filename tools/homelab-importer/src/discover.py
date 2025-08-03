@@ -3,6 +3,7 @@
 import json
 import logging
 from typing import Any, Dict, List
+import requests
 
 from proxmoxer import ProxmoxAPI
 from proxmoxer.core import ResourceException
@@ -99,7 +100,7 @@ def get_docker_containers(
                 container["details"] = inspected_data[i]
 
         return containers
-    except (ResourceException, StopIteration, Exception) as e:
+    except (ResourceException, StopIteration, requests.exceptions.RequestException) as e:
         logging.error(
             f"Error fetching Docker containers for {vm_type}/{vmid} on "
             f"node {node}: {e}"
