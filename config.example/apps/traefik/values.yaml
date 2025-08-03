@@ -2,7 +2,7 @@ deployment:
   kind: DaemonSet
 service:
   spec:
-    loadBalancerIP: 192.168.1.250
+    loadBalancerIP: "{{ load_balancer_ip }}"
 providers:
   kubernetesCRD:
     enabled: true
@@ -33,14 +33,14 @@ ports:
       enabled: true
       certResolver: vault
       domains:
-        - main: "homelab.dev"
+        - main: "{{ domain_name }}"
           sans:
-            - "*.homelab.dev"
+            - "*.{{ domain_name }}"
 
 certificatesResolvers:
   vault:
     acme:
-      email: "user@{{ domain_root }}"
+      email: "admin@{{ domain_name }}"
       storage: "/data/acme.json"
       vault:
         addr: "http://vault.vault.svc.cluster.local:8200"
@@ -59,7 +59,7 @@ tls:
 middleware:
   authelia:
     forwardAuth:
-      address: "http://authelia.authelia.svc.cluster.local:9091/api/verify?rd=https://auth.homelab.dev"
+      address: "http://authelia.authelia.svc.cluster.local:9091/api/verify?rd=https://auth.{{ domain_name }}"
       trustForwardHeader: true
       authResponseHeaders:
         - "Remote-User"

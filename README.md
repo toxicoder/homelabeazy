@@ -67,30 +67,25 @@ cd homelabeazy
 
 ### 2\. Automated Setup (Recommended)
 
-The `make setup` command is the easiest way to get started. It will automatically provision the infrastructure, configure secrets, and deploy the applications with minimal user interaction.
+The `make setup-homelab` command is the easiest way to get started. It will automatically provision the infrastructure, configure secrets, and deploy the applications with minimal user interaction.
 
 ```bash
-make setup
+make setup-homelab
 ```
 
 This will run the `scripts/setup.sh` script, which will guide you through the following steps:
 
-1.  **Proxmox Credentials:** You will be prompted to enter your Proxmox API URL, Token ID, and Token Secret. These are used by Terraform to provision the virtual machines.
+1.  **Configuration:** The script will create a `config/` directory by copying the contents of the `config.example/` directory. This is where all your personalized configuration will be stored.
 
-2.  **Domain Name:** You will be prompted to enter the domain name for your homelab. This will be used to configure DNS and access your applications.
+2.  **Proxmox Credentials:** You will be prompted to enter your Proxmox API URL, Token ID, and Token Secret. These are used by Terraform to provision the virtual machines and are stored in `infrastructure/proxmox/terraform.tfvars`.
 
-3.  **Secret Management:** You will be asked if you want to use Vault for secret management.
+3.  **Domain Name:** You will be prompted to enter the domain name for your homelab. This will be used to configure DNS and access your applications. This is stored in `config/config.yml`.
 
-      * **Using Vault (Recommended):** If you choose to use Vault, the script will:
-          * Install the Vault client on your local machine if it is not already installed.
-          * Prompt you for your Vault address and token.
-          * Automatically generate and store all the necessary secrets in Vault. This includes passwords, API keys, and certificates.
-          * Configure the applications to securely retrieve their secrets from Vault.
-      * **Manual Secret Management:** If you choose not to use Vault, you will be prompted to enter each secret manually. This is less secure and not recommended for production environments.
+4.  **Secret Management:** The script will use the `secure-gen` script to generate any secrets defined in `config/config.yml` and store them in Vault.
 
-4.  **Infrastructure Provisioning:** The script will run Terraform to provision the virtual machines for the K3s cluster.
+5.  **Infrastructure Provisioning:** The script will run Terraform to provision the virtual machines for the K3s cluster.
 
-5.  **Application Deployment:** The script will run Ansible to deploy the applications and configure them with the secrets you provided.
+6.  **Application Deployment:** The script will run Ansible to deploy the applications and configure them with the secrets you provided.
 
 **Detailed Explanation of the Automated Setup Process:**
 
@@ -115,17 +110,17 @@ The automated setup process is designed to be both user-friendly and educational
 
 The manual setup process is for advanced users who want to customize the installation. This process gives you more control over the configuration of the infrastructure and applications.
 
-1.  **Configure Terraform:**
+1.  **Create your configuration:**
 
-      - Navigate to the `terraform` directory.
-      - Create a `terraform.tfvars` file by copying the example:
-        ```bash
-        cp terraform.tfvars.example terraform.tfvars
-        ```
-      - Edit `terraform.tfvars` to match your environment.
+    - Copy the `config.example` directory to `config`:
+      ```bash
+      cp -r config.example/ config/
+      ```
+    - Edit `config/config.yml` to match your environment. This file is the central place for all your configuration.
 
 2.  **Provision the infrastructure:**
 
+      - Create a `infrastructure/proxmox/terraform.tfvars` file with your Proxmox credentials.
       - Initialize Terraform:
         ```bash
         make terraform-init
@@ -138,10 +133,6 @@ The manual setup process is for advanced users who want to customize the install
         ```bash
         make terraform-apply
         ```
-
-3.  **Configure Ansible:**
-
-      - Edit `ansible/group_vars/all.yml` to set your domain name, user passwords, and other application-specific configurations.
 
 4.  **Manage Secrets:**
 
@@ -242,7 +233,7 @@ This repository includes two `.gitignore` files:
 
 ### Application Configuration
 
-The configuration for each application is defined in a `values.yaml` file located in the `config/apps/<app-name>` directory. These files are standard Helm values files, so you can use any valid Helm syntax.
+The configuration for each application is defined in a `values.yaml` file located in the `config/apps/<app-name>` directory. These files are standard Helm values files, so you can use any valid Helm syntax. You can also use variables from the `config/config.yml` file in these `values.yaml` files.
 
 **Customizing Application Configuration:**
 
@@ -251,16 +242,10 @@ To customize the configuration of an application, you can edit its `values.yaml`
 After making your changes, you can apply them by running the following command:
 
 ```bash
-make ansible-playbook-setup
+make ansible-playbook-main
 ```
 
 This will re-run the Ansible playbook and update the application with the new configuration.
-
-5.  **Run the Ansible playbook:**
-
-    ```bash
-    make ansible-playbook-setup
-    ```
 
 ## System Architecture
 
@@ -605,11 +590,15 @@ This project includes a `Makefile` that provides a convenient way to run common 
 ### Makefile Commands
 
   - **`make help`**: Display a list of available commands.
-  - **`make setup`**: Run the automated setup script.
-  - **`make configure-proxmox`**: Run the Proxmox configuration script.
-  - **`make import`**: Run the import script.
-  - **`make terraform-apply`**: Apply the Terraform configuration.
-  - **`make ansible-playbook-setup`**: Run the Ansible setup playbook.
+  - **`make install-deps`**: Install dependencies and setup pre-commit.
+  - **`make setup-homelab`**: Run the interactive setup script for the homelab.
+  - **`make lint`**: Run all linters.
+  - **`make terraform-init`**: Initialize Terraform.
+  - **`make terraform-plan`**: Plan the Terraform deployment.
+  - **`make terraform-apply`**: Apply the Terraform deployment.
+  - **`make ansible-playbook-main`**: Run the main Ansible playbook.
+  - **`make test`**: Run Molecule tests for all Ansible roles.
+  - **`make clean`**: Clean up temporary files.
 
 ## Testing
 
@@ -729,7 +718,7 @@ If the `scripts/setup.sh` script fails, it is most likely due to an issue with t
 2.  **Run Ansible manually:**
     ```bash
     cd ansible
-    ansible-playbook -i inventory/inventory.auto.yml playbooks/setup.yml
+    ansible-playbook -i inventory/inventory.auto.yml playbooks/main.yml
     ```
 
 ### Terraform Fails to Apply Changes
@@ -802,29 +791,15 @@ To add a new application, you will need to create a new Ansible role for it. The
   - A `templates` directory that contains any necessary configuration files.
   - A `defaults/main.yml` file that defines the default variables for the application.
 
-Once you have created the role, you can add it to the `ansible/playbooks/setup.yml` file to have it deployed with the rest of the applications.
+Once you have created the role, you can add it to the `ansible/playbooks/main.yml` file to have it deployed with the rest of the applications.
 
 ### Managing Secrets
 
-This project uses Vault to manage secrets by default. However, you can choose to manage your secrets manually.
-
-  - **With Vault (Default):** If you are using Vault, you will need to add your secrets to the appropriate path in Vault. The Ansible playbook will automatically retrieve the secrets from Vault during the deployment process. To use this method, you will need to have a Vault server running and have the `VAULT_ADDR` and `VAULT_TOKEN` environment variables set.
-
-  - **Without Vault:** If you are not using Vault, you will need to create a `secrets.yml` file in the `ansible/group_vars` directory. This file should contain all of your secrets in the following format:
-
-    ```yaml
-    secret_key: "secret_value"
-    ```
-
-    To use this method, you will need to run the `setup.sh` script with the `--no-vault` flag. This will skip the Vault setup and allow you to enter your secrets manually.
+This project uses Vault to manage secrets by default. The `secure-gen` script will automatically generate any secrets defined in the `secrets_to_generate` section of your `config/config.yml` file and store them in Vault.
 
 ### Configuring Network Settings
 
-The network settings for the virtual machines are defined in the `terraform/variables.tf` file. You can modify this file to change the following:
-
-  - The IP address range for the virtual machines.
-  - The gateway and DNS servers for the virtual machines.
-  - The VLAN tag for the virtual machines.
+All network settings can be configured in the `config/config.yml` file.
 
 ### Using Different Cloud-Init Templates
 

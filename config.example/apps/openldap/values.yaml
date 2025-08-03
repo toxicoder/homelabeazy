@@ -1,4 +1,4 @@
 vault_path: "openldap"
 secrets:
-  root-password: "<path:secret/data/openldap#root-password>"
-  admin-password: "<path:secret/data/openldap#admin-password>"
+  root-password: "vault:secret/data/openldap#root-password"
+  admin-password: "vault:secret/data/openldap#admin-password"

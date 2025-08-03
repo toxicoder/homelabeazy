@@ -1,3 +1,7 @@
+- name: Include config variables
+  ansible.builtin.include_vars:
+    file: ../../config/config.yml
+
 - name: Create configmaps directory
   ansible.builtin.file:
     path: "{{ config_maps_dir }}"
