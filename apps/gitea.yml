@@ -1,20 +1,20 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
+apiVersion: "argoproj.io/v1alpha1"
+kind: "Application"
 metadata:
-  name: gitea
-  namespace: argocd
+  name: "gitea"
+  namespace: "argocd"
 spec:
-  project: default
+  project: "default"
   source:
-    repoURL: 'https://dl.gitea.io/charts/'
-    chart: gitea
-    targetRevision: 9.0.0
+    repoURL: "https://dl.gitea.io/charts/"
+    chart: "gitea"
+    targetRevision: "9.0.0"
     helm:
       valueFiles:
         - "config/apps/gitea/values.yaml"
   destination:
-    server: 'https://kubernetes.default.svc'
-    namespace: gitea
+    server: "https://kubernetes.default.svc"
+    namespace: "gitea"
   syncPolicy:
     automated:
       prune: true

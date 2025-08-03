@@ -38,3 +38,6 @@ ldap.toml
 
 # gitleaks report
 gitleaks-report.json
+
+# Virtual environment
+.venv/

@@ -1,2 +1,4 @@
 ---
 # defaults file for traefik role
+traefik_helm_repo_url: "https://helm.traefik.io/traefik"
+traefik_namespace: "traefik"

@@ -69,8 +69,14 @@ variable "os_type" {
 
 variable "agent" {
   description = "Enable/disable the QEMU guest agent."
-  type        = bool
-  default     = true
+  type        = number
+  default     = 1
+}
+
+variable "mac" {
+  description = "The MAC address of the network interface."
+  type        = string
+  default     = ""
 }
 
 variable "hostname" {

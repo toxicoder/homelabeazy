@@ -40,9 +40,9 @@ spec:
               ARCH={{ .Values.initContainer.appflowy.arch }}
               DISTRO={{ .Values.initContainer.appflowy.distro }}
               TARBALL="AppFlowy_${ARCH}-${OS}_${DISTRO}.tar.gz"
-              DOWNLOAD_URL="https://github.com/AppFlowy-IO/AppFlowy/releases/download/${VERSION}/${TARBALL}"
+              DOWNLOAD_URL="{{ .Values.initContainer.appflowy.download_url_base }}/${VERSION}/${TARBALL}"
               echo "Downloading AppFlowy from ${DOWNLOAD_URL}"
-              wget -O /tmp/appflowy.tar.gz ${DOWNLOAD_URL}
+              wget -O /tmp/appflowy.tar.gz "${DOWNLOAD_URL}"
               echo "Extracting AppFlowy"
               tar -xzvf /tmp/appflowy.tar.gz -C /appflowy-bin/
               echo "AppFlowy extracted"

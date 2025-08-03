@@ -14,7 +14,7 @@ spec:
         auth:
           database: rreading-glasses
           username: rreading-glasses
-          password: "a-very-secret-password" # This should be changed or managed by a secret management system
+          password: "<path:secrets/data/postgres#password>"
         primary:
           persistence:
             enabled: true

@@ -5,28 +5,33 @@ import os
 import hvac
 import yaml
 
-def generate_secrets(config):
+def generate_secrets(client, config):
     """
     Generates secrets based on the provided configuration.
     """
     for secret_type, secrets in config.items():
         for secret in secrets:
             if secret_type == "ssh_keys":
-                generate_ssh_key(secret["user_alias"])
+                generate_ssh_key(client, secret["user_alias"])
             elif secret_type == "gpg_keys":
-                generate_gpg_key(secret["user_alias"])
+                generate_gpg_key(client, secret["user_alias"])
             elif secret_type == "private_keys":
-                generate_private_key(secret["alias"])
+                generate_private_key(client, secret["alias"])
             elif secret_type == "self_signed_certs":
-                generate_self_signed_cert(secret["cn"])
+                generate_self_signed_cert(client, secret["cn"])
             elif secret_type == "passwords":
-                generate_password(secret["alias"])
+                generate_password(client, secret["alias"])
 
 def get_vault_client():
+    """
+    Initializes and returns a Vault client.
+    """
     vault_addr = os.environ.get("VAULT_ADDR", "http://127.0.0.1:8200")
     role_id = os.environ.get("VAULT_ROLE_ID")
     secret_id = os.environ.get("VAULT_SECRET_ID")
 
+    if not vault_addr:
+        raise ValueError("VAULT_ADDR environment variable must be set")
     if not role_id or not secret_id:
         raise ValueError("VAULT_ROLE_ID and VAULT_SECRET_ID environment variables must be set")
 
@@ -39,7 +44,7 @@ from cryptography.hazmat.primitives import serialization as crypto_serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.backends import default_backend as crypto_default_backend
 
-def generate_ssh_key(user_alias):
+def generate_ssh_key(client, user_alias):
     """
     Generates a new SSH key pair and stores it in Vault.
     """
@@ -62,7 +67,6 @@ def generate_ssh_key(user_alias):
     )
 
     # Store the key in Vault
-    client = get_vault_client()
     secret_path = f"secret/ssh/{user_alias}"
     client.secrets.kv.v2.create_or_update_secret(
         path=secret_path,
@@ -73,7 +77,7 @@ def generate_ssh_key(user_alias):
 
 import gnupg
 
-def generate_gpg_key(user_alias):
+def generate_gpg_key(client, user_alias):
     """
     Generates a new GPG key and stores it in Vault.
     """
@@ -92,7 +96,6 @@ def generate_gpg_key(user_alias):
     public_key = gpg.export_keys(key.fingerprint)
 
     # Store the key in Vault
-    client = get_vault_client()
     secret_path = f"secret/gpg/{user_alias}"
     client.secrets.kv.v2.create_or_update_secret(
         path=secret_path,
@@ -101,7 +104,7 @@ def generate_gpg_key(user_alias):
 
     print(f"GPG key for {user_alias} stored in Vault at {secret_path}")
 
-def generate_private_key(alias):
+def generate_private_key(client, alias):
     """
     Generates a new private key and stores it in Vault.
     """
@@ -120,7 +123,6 @@ def generate_private_key(alias):
     )
 
     # Store the key in Vault
-    client = get_vault_client()
     secret_path = f"secret/private_keys/{alias}"
     client.secrets.kv.v2.create_or_update_secret(
         path=secret_path,
@@ -133,7 +135,7 @@ from cryptography import x509
 from cryptography.x509.oid import NameOID
 import datetime
 
-def generate_self_signed_cert(cn):
+def generate_self_signed_cert(client, cn):
     """
     Generates a new self-signed X.509 certificate and stores it in Vault.
     """
@@ -179,7 +181,6 @@ def generate_self_signed_cert(cn):
     certificate = cert.public_bytes(crypto_serialization.Encoding.PEM)
 
     # Store the certificate and private key in Vault
-    client = get_vault_client()
     secret_path = f"secret/certs/{cn}"
     client.secrets.kv.v2.create_or_update_secret(
         path=secret_path,
@@ -191,7 +192,7 @@ def generate_self_signed_cert(cn):
 import secrets
 import string
 
-def generate_password(alias):
+def generate_password(client, alias):
     """
     Generates a new password and stores it in Vault.
     """
@@ -202,7 +203,6 @@ def generate_password(alias):
     password = ''.join(secrets.choice(alphabet) for i in range(20))
 
     # Store the password in Vault
-    client = get_vault_client()
     secret_path = f"secret/passwords/{alias}"
     client.secrets.kv.v2.create_or_update_secret(
         path=secret_path,
@@ -212,20 +212,33 @@ def generate_password(alias):
     print(f"Password with alias {alias} stored in Vault at {secret_path}")
 
 def main():
+    """
+    Main function to generate secrets and store them in Vault.
+    """
     parser = argparse.ArgumentParser(description="Generate secrets and store them in Vault.")
     parser.add_argument("--env", default="dev", help="The environment to generate secrets for.")
     parser.add_argument("--config-file", required=True, help="Path to the configuration file.")
     args = parser.parse_args()
 
-    with open(args.config_file, "r") as f:
-        config_data = yaml.safe_load(f)
+    try:
+        with open(args.config_file, "r") as f:
+            config_data = yaml.safe_load(f)
 
-    config = {**config_data.get("common", {}), **config_data.get(args.env, {})}
+        config = {**config_data.get("common", {}), **config_data.get(args.env, {})}
 
-    if "secrets_to_generate" in config:
-        generate_secrets(config["secrets_to_generate"])
-    else:
-        print("No secrets to generate.")
+        if "secrets_to_generate" in config:
+            client = get_vault_client()
+            generate_secrets(client, config["secrets_to_generate"])
+        else:
+            print("No secrets to generate.")
+    except FileNotFoundError:
+        print(f"Error: Configuration file not found at {args.config_file}", file=sys.stderr)
+        sys.exit(1)
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}", file=sys.stderr)
+        sys.exit(1)
+
 
 if __name__ == "__main__":
+    import sys
     main()
