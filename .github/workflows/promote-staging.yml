@@ -19,3 +19,6 @@ jobs:
 
       - name: Terraform apply
         run: terraform apply -auto-approve
+
+      - name: Run Ansible
+        run: ansible-playbook ansible/playbooks/main.yml -i ansible/inventory/hosts.ini --extra-vars "env=staging"

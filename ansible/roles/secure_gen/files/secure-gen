@@ -3,6 +3,7 @@
 import argparse
 import os
 import hvac
+import yaml
 
 def generate_secrets(config):
     """
@@ -207,11 +208,20 @@ def generate_password(alias):
 
     print(f"Password with alias {alias} stored in Vault at {secret_path}")
 
-if __name__ == "__main__":
-    import yaml
+def main():
+    parser = argparse.ArgumentParser(description="Generate secrets and store them in Vault.")
+    parser.add_argument("--env", default="dev", help="The environment to generate secrets for.")
+    args = parser.parse_args()
+
     with open("../../../../config/config.yml", "r") as f:
-        config = yaml.safe_load(f)
+        config_data = yaml.safe_load(f)
+
+    config = {**config_data.get("common", {}), **config_data.get(args.env, {})}
+
     if "secrets_to_generate" in config:
         generate_secrets(config["secrets_to_generate"])
     else:
         print("No secrets to generate.")
+
+if __name__ == "__main__":
+    main()
