@@ -24,33 +24,3 @@
 
 # Proxmox host to deploy the VM on
 # proxmox_host = ""
-
-# Test VM variables
-# test_vm_name = "pfsense"
-# test_vm_clone = "pfsense-template"
-# test_vm_vmid = 101
-# test_vm_memory = 2048
-# test_vm_sockets = 1
-# test_vm_cores = 2
-# test_vm_os_type = "other"
-# test_vm_networks = [
-#   {
-#     model  = "virtio"
-#     bridge = "vmbr0"
-#   },
-#   {
-#     model  = "virtio"
-#     bridge = "vmbr1"
-#   },
-#   {
-#     model  = "virtio"
-#     bridge = "vmbr2"
-#     tag    = 10
-#   }
-# ]
-
-# Test LXC variables
-# test_lxc_hostname = "lxc-with-docker"
-# test_lxc_vmid = 102
-# test_lxc_memory = 2048
-# test_lxc_cores = 1

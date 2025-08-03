@@ -1,5 +1,0 @@
----
-- name: Deploy sonarr
-  kubernetes.core.k8s:
-    state: present
-    src: "{{ role_path }}/../../../apps/sonarr.yml"

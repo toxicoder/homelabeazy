@@ -1,0 +1,3 @@
+{{- if .Values.ingress.enabled -}}
+{{- template "common.ingressroute" . -}}
+{{- end -}}
