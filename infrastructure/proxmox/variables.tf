@@ -47,10 +47,52 @@ variable "windows_iso" {
   default     = ""
 }
 
-variable "gpu_pci_id" {
-  description = "The PCI ID of the GPU to pass through."
+variable "bios" {
+  description = "The BIOS to use for the stealth VM."
   type        = string
-  default     = ""
+  default     = "ovmf"
+}
+
+variable "machine" {
+  description = "The machine type for the stealth VM."
+  type        = string
+  default     = "q35"
+}
+
+variable "cpu" {
+  description = "The CPU type for the stealth VM."
+  type        = string
+  default     = "host"
+}
+
+variable "cores" {
+  description = "The number of cores for the stealth VM."
+  type        = number
+  default     = 4
+}
+
+variable "memory" {
+  description = "The amount of memory for the stealth VM."
+  type        = number
+  default     = 8192
+}
+
+variable "scsihw" {
+  description = "The SCSI hardware for the stealth VM."
+  type        = string
+  default     = "virtio-scsi-pci"
+}
+
+variable "bootdisk" {
+  description = "The boot disk for the stealth VM."
+  type        = string
+  default     = "scsi0"
+}
+
+variable "network_model" {
+  description = "The network model for the stealth VM."
+  type        = string
+  default     = "e1000"
 }
 
 variable "real_mac" {
@@ -59,8 +101,8 @@ variable "real_mac" {
   default     = ""
 }
 
-variable "smbios_uuid" {
-  description = "The SMBIOS UUID for the stealth VM."
+variable "gpu_pci_id" {
+  description = "The PCI ID of the GPU to pass through."
   type        = string
   default     = ""
 }
@@ -69,4 +111,10 @@ variable "hv_vendor_id" {
   description = "The hypervisor vendor ID for the stealth VM."
   type        = string
   default     = "GenuineIntel"
+}
+
+variable "smbios_uuid" {
+  description = "The SMBIOS UUID for the stealth VM."
+  type        = string
+  default     = ""
 }

@@ -61,11 +61,11 @@ These instructions will guide you through setting up the homelab environment on 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/toxicoder/homelabeazy.git
+git clone [https://github.com/toxicoder/homelabeazy.git](https://github.com/toxicoder/homelabeazy.git)
 cd homelabeazy
-```
+````
 
-### 2. Automated Setup (Recommended)
+### 2\. Automated Setup (Recommended)
 
 The `make setup` command is the easiest way to get started. It will automatically provision the infrastructure, configure secrets, and deploy the applications with minimal user interaction.
 
@@ -80,12 +80,13 @@ This will run the `scripts/setup.sh` script, which will guide you through the fo
 2.  **Domain Name:** You will be prompted to enter the domain name for your homelab. This will be used to configure DNS and access your applications.
 
 3.  **Secret Management:** You will be asked if you want to use Vault for secret management.
-    *   **Using Vault (Recommended):** If you choose to use Vault, the script will:
-        *   Install the Vault client on your local machine if it is not already installed.
-        *   Prompt you for your Vault address and token.
-        *   Automatically generate and store all the necessary secrets in Vault. This includes passwords, API keys, and certificates.
-        *   Configure the applications to securely retrieve their secrets from Vault.
-    *   **Manual Secret Management:** If you choose not to use Vault, you will be prompted to enter each secret manually. This is less secure and not recommended for production environments.
+
+      * **Using Vault (Recommended):** If you choose to use Vault, the script will:
+          * Install the Vault client on your local machine if it is not already installed.
+          * Prompt you for your Vault address and token.
+          * Automatically generate and store all the necessary secrets in Vault. This includes passwords, API keys, and certificates.
+          * Configure the applications to securely retrieve their secrets from Vault.
+      * **Manual Secret Management:** If you choose not to use Vault, you will be prompted to enter each secret manually. This is less secure and not recommended for production environments.
 
 4.  **Infrastructure Provisioning:** The script will run Terraform to provision the virtual machines for the K3s cluster.
 
@@ -95,51 +96,52 @@ This will run the `scripts/setup.sh` script, which will guide you through the fo
 
 The automated setup process is designed to be both user-friendly and educational. Here's a detailed breakdown of what happens under the hood:
 
-*   **`scripts/setup.sh`:** This is the main script that orchestrates the entire setup process. It uses a series of helper scripts and Ansible playbooks to perform the necessary tasks.
+  * **`scripts/setup.sh`:** This is the main script that orchestrates the entire setup process. It uses a series of helper scripts and Ansible playbooks to perform the necessary tasks.
 
-*   **Terraform for Infrastructure:** The script uses Terraform to create the virtual machines on Proxmox. The Terraform configuration is located in the `infrastructure/proxmox` directory. The `main.tf` file defines the resources to be created, and the `variables.tf` file defines the variables that can be customized.
+  * **Terraform for Infrastructure:** The script uses Terraform to create the virtual machines on Proxmox. The Terraform configuration is located in the `infrastructure/proxmox` directory. The `main.tf` file defines the resources to be created, and the `variables.tf` file defines the variables that can be customized.
 
-*   **Ansible for Configuration:** Once the infrastructure is provisioned, the script uses Ansible to configure the K3s cluster and deploy the applications. The Ansible playbooks are located in the `ansible/playbooks` directory.
+  * **Ansible for Configuration:** Once the infrastructure is provisioned, the script uses Ansible to configure the K3s cluster and deploy the applications. The Ansible playbooks are located in the `ansible/playbooks` directory.
 
-*   **Vault for Secret Management:** The script uses the `ansible/roles/vault-secrets-operator` role to manage secrets. This role will:
-    *   Find all the `values.yaml` files in the `config/apps` directory.
-    *   Parse the `values.yaml` files and identify any values that start with `vault:`.
-    *   Use the `community.hashi_vault.vault_kv2_get` module to fetch the secrets from Vault.
-    *   Create Kubernetes secrets with the fetched values.
+  * **Vault for Secret Management:** The script uses the `ansible/roles/vault-secrets-operator` role to manage secrets. This role will:
 
-*   **Application Configuration:** The configuration for each application is defined in a `values.yaml` file located in the `config/apps/<app-name>` directory. These files are used by Helm to deploy the applications with the correct configuration.
+      * Find all the `values.yaml` files in the `config/apps` directory.
+      * Parse the `values.yaml` files and identify any values that start with `vault:`.
+      * Use the `community.hashi_vault.vault_kv2_get` module to fetch the secrets from Vault.
+      * Create Kubernetes secrets with the fetched values.
 
-### 3. Manual Setup
+  * **Application Configuration:** The configuration for each application is defined in a `values.yaml` file located in the `config/apps/<app-name>` directory. These files are used by Helm to deploy the applications with the correct configuration.
+
+### 3\. Manual Setup
 
 The manual setup process is for advanced users who want to customize the installation. This process gives you more control over the configuration of the infrastructure and applications.
 
 1.  **Configure Terraform:**
 
-    - Navigate to the `terraform` directory.
-    - Create a `terraform.tfvars` file by copying the example:
-      ```bash
-      cp terraform.tfvars.example terraform.tfvars
-      ```
-    - Edit `terraform.tfvars` to match your environment.
+      - Navigate to the `terraform` directory.
+      - Create a `terraform.tfvars` file by copying the example:
+        ```bash
+        cp terraform.tfvars.example terraform.tfvars
+        ```
+      - Edit `terraform.tfvars` to match your environment.
 
 2.  **Provision the infrastructure:**
 
-    - Initialize Terraform:
-      ```bash
-      make terraform-init
-      ```
-    - Plan the deployment:
-      ```bash
-      make terraform-plan
-      ```
-    - Apply the changes:
-      ```bash
-      make terraform-apply
-      ```
+      - Initialize Terraform:
+        ```bash
+        make terraform-init
+        ```
+      - Plan the deployment:
+        ```bash
+        make terraform-plan
+        ```
+      - Apply the changes:
+        ```bash
+        make terraform-apply
+        ```
 
 3.  **Configure Ansible:**
 
-    - Edit `ansible/group_vars/all.yml` to set your domain name, user passwords, and other application-specific configurations.
+      - Edit `ansible/group_vars/all.yml` to set your domain name, user passwords, and other application-specific configurations.
 
 4.  **Manage Secrets:**
 
@@ -149,14 +151,12 @@ This project uses HashiCorp Vault to manage secrets. The `ansible/roles/vault-se
 
 1.  **Configuration:** The configuration for each application is defined in a `values.yaml` file located in the `config/apps/<app-name>` directory.
 2.  **Secret Declaration:** Within these `values.yaml` files, secrets are declared using the following format:
-        ```yaml
-    some_secret: "vault:secret/data/path/to/secret#key"
-        ```
-    *   `vault:`: This prefix indicates that the value is a secret to be fetched from Vault.
-    *   `secret/data/path/to/secret`: This is the path to the secret in Vault's KVv2 secrets engine.
-    *   `key`: This is the key of the secret to retrieve.
+    ` yaml some_secret: "vault:secret/data/path/to/secret#key"  `
+      * `vault:`: This prefix indicates that the value is a secret to be fetched from Vault.
+      * `secret/data/path/to/secret`: This is the path to the secret in Vault's KVv2 secrets engine.
+      * `key`: This is the key of the secret to retrieve.
 3.  **Ansible Role:** The `ansible/roles/vault-secrets-operator` Ansible role performs the following actions:
-    *   Deploys the [HashiCorp Vault Secrets Operator](https://www.vaultproject.io/docs/platform/k8s/vso) to the Kubernetes cluster.
+      * Deploys the [HashiCorp Vault Secrets Operator](https://www.vaultproject.io/docs/platform/k8s/vso) to the Kubernetes cluster.
 
 **Example:**
 
@@ -187,56 +187,61 @@ To add a new secret, you need to:
 This repository is designed to be used as a template. You can clone it from GitHub, and then push it to your own private Gitea instance to store your homelab's configuration securely.
 
 This repository includes two `.gitignore` files:
-- `.gitignore`: This is the default gitignore, and it's designed for the public GitHub repository. It ignores all sensitive files, such as configuration files, secrets, and terraform variables.
-- `.gitignore.gitea`: This is the gitignore for your private Gitea repository. It's less strict and will allow you to commit your configuration files to your private repository.
+
+  - `.gitignore`: This is the default gitignore, and it's designed for the public GitHub repository. It ignores all sensitive files, such as configuration files, secrets, and terraform variables.
+  - `.gitignore.gitea`: This is the gitignore for your private Gitea repository. It's less strict and will allow you to commit your configuration files to your private repository.
 
 **Follow these steps to set up your private repository:**
 
 1.  **Clone the repository from GitHub:**
+
     ```bash
-    git clone https://github.com/toxicoder/homelabeazy.git
+    git clone [https://github.com/toxicoder/homelabeazy.git](https://github.com/toxicoder/homelabeazy.git)
     cd homelabeazy
     ```
 
 2.  **Prepare your private repository:**
-    - Rename the default `.gitignore` to `.gitignore.github`:
-      ```bash
-      mv .gitignore .gitignore.github
-      ```
-    - Rename `.gitignore.gitea` to `.gitignore`:
-      ```bash
-      mv .gitignore.gitea .gitignore
-      ```
+
+      - Rename the default `.gitignore` to `.gitignore.github`:
+        ```bash
+        mv .gitignore .gitignore.github
+        ```
+      - Rename `.gitignore.gitea` to `.gitignore`:
+        ```bash
+        mv .gitignore.gitea .gitignore
+        ```
 
 3.  **Copy and customize the example configurations:**
     This repository comes with example configuration files. You'll need to copy them and customize them for your own environment.
-    - `config/`: This directory contains all the application configurations. Copy the `config.example/` directory to `config/` and customize the `values.yaml` files inside.
-      ```bash
-      cp -r config.example/ config/
-      ```
-    - `ansible/group_vars/all.yml`: This file contains global variables for Ansible. Copy `ansible/group_vars/all.yml.example` to `ansible/group_vars/all.yml` and edit it.
-      ```bash
-      cp ansible/group_vars/all.yml.example ansible/group_vars/all.yml
-      ```
-    - `ldap.toml`: This is the configuration file for LDAP. Copy `ldap.toml.example` to `ldap.toml` and edit it.
-      ```bash
-      cp ldap.toml.example ldap.toml
-      ```
-    - `infrastructure/proxmox/terraform.tfvars`: This file contains the variables for Terraform. Copy `infrastructure/proxmox/terraform.tfvars.example` to `infrastructure/proxmox/terraform.tfvars` and edit it.
-      ```bash
-      cp infrastructure/proxmox/terraform.tfvars.example infrastructure/proxmox/terraform.tfvars
-      ```
+
+      - `config/`: This directory contains all the application configurations. Copy the `config.example/` directory to `config/` and customize the `values.yaml` files inside.
+        ```bash
+        cp -r config.example/ config/
+        ```
+      - `ansible/group_vars/all.yml`: This file contains global variables for Ansible. Copy `ansible/group_vars/all.yml.example` to `ansible/group_vars/all.yml` and edit it.
+        ```bash
+        cp ansible/group_vars/all.yml.example ansible/group_vars/all.yml
+        ```
+      - `ldap.toml`: This is the configuration file for LDAP. Copy `ldap.toml.example` to `ldap.toml` and edit it.
+        ```bash
+        cp ldap.toml.example ldap.toml
+        ```
+      - `infrastructure/proxmox/terraform.tfvars`: This file contains the variables for Terraform. Copy `infrastructure/proxmox/terraform.tfvars.example` to `infrastructure/proxmox/terraform.tfvars` and edit it.
+        ```bash
+        cp infrastructure/proxmox/terraform.tfvars.example infrastructure/proxmox/terraform.tfvars
+        ```
 
 4.  **Set up your private Gitea repository:**
-    - Create a new private repository in your Gitea instance.
-    - Add your Gitea repository as a new remote:
-      ```bash
-      git remote set-url origin <your-gitea-repo-url>
-      ```
-    - Push the code to your Gitea repository:
-      ```bash
-      git push -u origin main
-      ```
+
+      - Create a new private repository in your Gitea instance.
+      - Add your Gitea repository as a new remote:
+        ```bash
+        git remote set-url origin <your-gitea-repo-url>
+        ```
+      - Push the code to your Gitea repository:
+        ```bash
+        git push -u origin main
+        ```
 
 ### Application Configuration
 
@@ -268,16 +273,16 @@ The architecture is designed to be highly available and scalable. The K3s cluste
 
 ### Core Components
 
-- **Proxmox:** A powerful open-source virtualization platform that provides the foundation for the homelab.
-- **Terraform:** Used to provision the virtual machines for the K3s cluster on Proxmox.
-- **Ansible:** Used for configuration management and application deployment on the K3s cluster.
-- **K3s:** A lightweight, certified Kubernetes distribution that is easy to install and manage.
-- **Traefik:** A modern reverse proxy and load balancer that makes deploying microservices easy.
-- **Authelia:** An open-source authentication and authorization server providing two-factor authentication and single sign-on.
-- **OpenLDAP:** A lightweight directory access protocol for user authentication.
-- **Vault:** A tool for securely accessing secrets.
-- **Velero:** A tool for backing up and restoring your Kubernetes cluster resources and persistent volumes.
-- **EFK Stack:** A centralized logging solution consisting of Elasticsearch, Fluentd, and Kibana.
+  - **Proxmox:** A powerful open-source virtualization platform that provides the foundation for the homelab.
+  - **Terraform:** Used to provision the virtual machines for the K3s cluster on Proxmox.
+  - **Ansible:** Used for configuration management and application deployment on the K3s cluster.
+  - **K3s:** A lightweight, certified Kubernetes distribution that is easy to install and manage.
+  - **Traefik:** A modern reverse proxy and load balancer that makes deploying microservices easy.
+  - **Authelia:** An open-source authentication and authorization server providing two-factor authentication and single sign-on.
+  - **OpenLDAP:** A lightweight directory access protocol for user authentication.
+  - **Vault:** A tool for securely accessing secrets.
+  - **Velero:** A tool for backing up and restoring your Kubernetes cluster resources and persistent volumes.
+  - **EFK Stack:** A centralized logging solution consisting of Elasticsearch, Fluentd, and Kibana.
 
 ### Networking
 
@@ -285,15 +290,15 @@ This homelab uses a VLAN-based network segmentation strategy to isolate differen
 
 The following VLANs are defined:
 
-*   **VLAN 10 (Service Network):** This network is used for the services running in the homelab, such as the K3s cluster and other applications.
-*   **VLAN 20 (Guest Network):** This network is used for guest devices and is isolated from the rest of the network.
-*   **VLAN 30 (Management Network):** This network is used for managing the Proxmox host and other infrastructure components.
+  * **VLAN 10 (Service Network):** This network is used for the services running in the homelab, such as the K3s cluster and other applications.
+  * **VLAN 20 (Guest Network):** This network is used for guest devices and is isolated from the rest of the network.
+  * **VLAN 30 (Management Network):** This network is used for managing the Proxmox host and other infrastructure components.
 
 Service discovery is provided by Consul. All services are automatically registered with Consul, which allows them to discover each other and communicate securely.
 
 Firewall rules are managed by pfSense. The firewall is configured to allow traffic between the VLANs according to a set of predefined rules.
 
-For more detailed information about the networking setup, please see the [networking documentation](infrastructure/proxmox/networking/README.md).
+For more detailed information about the networking setup, please see the [networking documentation](https://www.google.com/search?q=infrastructure/proxmox/networking/README.md).
 
 ### System Architecture Diagram
 
@@ -342,41 +347,47 @@ graph TD
 The system architecture is designed to be a robust, scalable, and automated homelab environment. Here’s a step-by-step walkthrough of the diagram, explaining the role and value of each component:
 
 1.  **Hardware (Physical Server):**
-    -   **Component:** `Physical Server`
-    -   **Role:** This is the foundation of the entire homelab, providing the necessary compute, memory, and storage resources.
-    -   **Value:** A dedicated physical server ensures that all virtualized components have direct access to high-performance hardware, leading to better overall performance and stability.
+
+      - **Component:** `Physical Server`
+      - **Role:** This is the foundation of the entire homelab, providing the necessary compute, memory, and storage resources.
+      - **Value:** A dedicated physical server ensures that all virtualized components have direct access to high-performance hardware, leading to better overall performance and stability.
 
 2.  **Virtualization (Proxmox VE):**
-    -   **Component:** `Proxmox VE`
-    -   **Role:** Proxmox is an open-source virtualization platform that runs on the physical server. It allows for the creation and management of virtual machines (VMs) and containers.
-    -   **Value:** Proxmox enables efficient hardware utilization by allowing multiple isolated environments to run on a single physical machine. This is crucial for creating a flexible and scalable infrastructure.
+
+      - **Component:** `Proxmox VE`
+      - **Role:** Proxmox is an open-source virtualization platform that runs on the physical server. It allows for the creation and management of virtual machines (VMs) and containers.
+      - **Value:** Proxmox enables efficient hardware utilization by allowing multiple isolated environments to run on a single physical machine. This is crucial for creating a flexible and scalable infrastructure.
 
 3.  **Automation (Terraform & Ansible):**
-    -   **Component:** `Terraform` & `Ansible`
-    -   **Role:**
-        -   `Terraform` is used to provision the virtual machines on Proxmox. It defines the infrastructure as code, making it easy to create, modify, and destroy VMs in a repeatable manner.
-        -   `Ansible` is used for configuration management. Once the VMs are provisioned, Ansible configures them, installs the necessary software, and deploys the applications.
-    -   **Value:** This combination of tools automates the entire setup process, reducing manual effort and ensuring consistency. It allows you to rebuild the entire homelab from scratch with minimal intervention.
+
+      - **Component:** `Terraform` & `Ansible`
+      - **Role:**
+          - `Terraform` is used to provision the virtual machines on Proxmox. It defines the infrastructure as code, making it easy to create, modify, and destroy VMs in a repeatable manner.
+          - `Ansible` is used for configuration management. Once the VMs are provisioned, Ansible configures them, installs the necessary software, and deploys the applications.
+      - **Value:** This combination of tools automates the entire setup process, reducing manual effort and ensuring consistency. It allows you to rebuild the entire homelab from scratch with minimal intervention.
 
 4.  **Container Orchestration (K3s Kubernetes Cluster):**
-    -   **Component:** `K3s Kubernetes Cluster`
-    -   **Role:** K3s is a lightweight, certified Kubernetes distribution that runs on the VMs. It orchestrates the deployment, scaling, and management of containerized applications.
-    -   **Value:** Kubernetes provides a powerful and standardized platform for running applications. It offers high availability, fault tolerance, and automatic scaling, making the homelab resilient and easy to manage.
+
+      - **Component:** `K3s Kubernetes Cluster`
+      - **Role:** K3s is a lightweight, certified Kubernetes distribution that runs on the VMs. It orchestrates the deployment, scaling, and management of containerized applications.
+      - **Value:** Kubernetes provides a powerful and standardized platform for running applications. It offers high availability, fault tolerance, and automatic scaling, making the homelab resilient and easy to manage.
 
 5.  **Applications (Core Services & User Applications):**
-    -   **Component:** `Core Services` & `User Applications`
-    -   **Role:** The K3s cluster runs two types of applications:
-        -   `Core Services`: These are essential infrastructure components like monitoring, logging, and security services.
-        -   `User Applications`: These are the end-user applications that you want to run in your homelab, such as a password manager, Git service, or home automation platform.
-    -   **Value:** This separation allows you to manage the core infrastructure independently of the applications, making it easier to update and maintain both.
+
+      - **Component:** `Core Services` & `User Applications`
+      - **Role:** The K3s cluster runs two types of applications:
+          - `Core Services`: These are essential infrastructure components like monitoring, logging, and security services.
+          - `User Applications`: These are the end-user applications that you want to run in your homelab, such as a password manager, Git service, or home automation platform.
+      - **Value:** This separation allows you to manage the core infrastructure independently of the applications, making it easier to update and maintain both.
 
 6.  **Supporting Services (Traefik, Authelia, Vault):**
-    -   **Component:** `Traefik Ingress`, `Authelia SSO`, `Vault Secrets`
-    -   **Role:**
-        -   `Traefik Ingress`: A reverse proxy and load balancer that manages external access to the applications running in the cluster.
-        -   `Authelia SSO`: Provides single sign-on and two-factor authentication for the applications, enhancing security.
-        -   `Vault Secrets`: A secure storage for secrets like API keys, passwords, and certificates.
-    -   **Value:** These services provide essential functionality for managing and securing the applications. Traefik simplifies routing, Authelia centralizes authentication, and Vault protects sensitive information.
+
+      - **Component:** `Traefik Ingress`, `Authelia SSO`, `Vault Secrets`
+      - **Role:**
+          - `Traefik Ingress`: A reverse proxy and load balancer that manages external access to the applications running in the cluster.
+          - `Authelia SSO`: Provides single sign-on and two-factor authentication for the applications, enhancing security.
+          - `Vault Secrets`: A secure storage for secrets like API keys, passwords, and certificates.
+      - **Value:** These services provide essential functionality for managing and securing the applications. Traefik simplifies routing, Authelia centralizes authentication, and Vault protects sensitive information.
 
 ### General Flow of the System
 
@@ -384,8 +395,8 @@ The system architecture is designed to be a robust, scalable, and automated home
 2.  **Configuration:** `Ansible` configures the VMs and installs the `K3s Kubernetes Cluster`.
 3.  **Deployment:** `Ansible` deploys the `Core Services` and `User Applications` to the `K3s` cluster.
 4.  **Access:**
-    -   Users access the applications through the `Traefik Ingress`.
-    -   `Authelia SSO` intercepts the requests to handle authentication.
+      - Users access the applications through the `Traefik Ingress`.
+      - `Authelia SSO` intercepts the requests to handle authentication.
 5.  **Secrets Management:** The applications and the cluster use `Vault` to securely retrieve their secrets.
 
 ### Network Architecture
@@ -436,35 +447,35 @@ The following services are included in this homelab. Some are enabled by default
 
 | Service           | Description                                                                                             | Enabled by Default |
 | ----------------- | ------------------------------------------------------------------------------------------------------- | ------------------ |
-| **Traefik**       | A modern reverse proxy and load balancer that makes deploying microservices easy.                       | Yes                |
-| **Authelia**      | An open-source authentication and authorization server providing two-factor authentication and single sign-on. | Yes                |
-| **OpenLDAP**      | A lightweight directory access protocol for user authentication.                                        | Yes                |
-| **Vault**         | A tool for securely accessing secrets.                                                                  | Yes                |
-| **Velero**        | A tool for backing up and restoring your Kubernetes cluster resources and persistent volumes.           | Yes                |
-| **EFK Stack**     | A centralized logging solution consisting of Elasticsearch, Fluentd, and Kibana.                      | Yes                |
+| **Traefik** | A modern reverse proxy and load balancer that makes deploying microservices easy.                       | Yes                |
+| **Authelia** | An open-source authentication and authorization server providing two-factor authentication and single sign-on. | Yes                |
+| **OpenLDAP** | A lightweight directory access protocol for user authentication.                                        | Yes                |
+| **Vault** | A tool for securely accessing secrets.                                                                  | Yes                |
+| **Velero** | A tool for backing up and restoring your Kubernetes cluster resources and persistent volumes.           | Yes                |
+| **EFK Stack** | A centralized logging solution consisting of Elasticsearch, Fluentd, and Kibana.                      | Yes                |
 
 ### Applications
 
 | Service           | Description                                                                                             | Enabled by Default |
 | ----------------- | ------------------------------------------------------------------------------------------------------- | ------------------ |
-| **Bitwarden**     | A self-hosted password manager.                                                                         | Yes                |
-| **Gitea**         | A self-hosted Git service.                                                                              | Yes                |
-| **Homepage**      | A simple, static homepage for your homelab.                                                             | Yes                |
-| **Coder**         | A remote development environment that runs on your own infrastructure.                                  | Yes                |
-| **Gluetun**       | A VPN client in a container to secure other services.                                                   | Yes                |
-| **Grafana**       | A monitoring and observability platform.                                                                | Yes                |
+| **Bitwarden** | A self-hosted password manager.                                                                         | Yes                |
+| **Gitea** | A self-hosted Git service.                                                                              | Yes                |
+| **Homepage** | A simple, a static homepage for your homelab.                                                             | Yes                |
+| **Coder** | A remote development environment that runs on your own infrastructure.                                  | Yes                |
+| **Gluetun** | A VPN client in a container to secure other services.                                                   | Yes                |
+| **Grafana** | A monitoring and observability platform.                                                                | Yes                |
 | **Home Assistant**| An open-source home automation platform.                                                                | Yes                |
-| **Kasm**          | A container streaming platform for running desktops and applications in a browser.                      | Yes                |
-| **MariaDB**       | A popular open-source relational database.                                                              | Yes                |
-| **Monitoring**    | A full monitoring stack including Prometheus, Grafana, and Alertmanager.                                | Yes                |
-| **pfSense**       | A powerful open-source firewall and router.                                                             | Yes                |
-| **Pi-hole**       | A network-wide ad blocker.                                                                              | Yes                |
-| **Puter**         | A self-hosted cloud desktop.                                                                            | Yes                |
-| **Redis**         | An in-memory data structure store.                                                                      | Yes                |
-| **SearXNG**       | A privacy-respecting, hackable metasearch engine.                                                       | Yes                |
-| **Supabase**      | An open-source Firebase alternative.                                                                    | Yes                |
-| **Tailscale**     | A zero-config VPN for building secure networks.                                                         | Yes                |
-| **WireGuard**     | A fast, modern, and secure VPN tunnel.                                                                  | Yes                |
+| **Kasm** | A container streaming platform for running desktops and applications in a browser.                      | Yes                |
+| **MariaDB** | A popular open-source relational database.                                                              | Yes                |
+| **Monitoring** | A full monitoring stack including Prometheus, Grafana, and Alertmanager.                                | Yes                |
+| **pfSense** | A powerful open-source firewall and router.                                                             | Yes                |
+| **Pi-hole** | A network-wide ad blocker.                                                                              | Yes                |
+| **Puter** | A self-hosted cloud desktop.                                                                            | Yes                |
+| **Redis** | An in-memory data structure store.                                                                      | Yes                |
+| **SearXNG** | A privacy-respecting, hackable metasearch engine.                                                       | Yes                |
+| **Supabase** | An open-source Firebase alternative.                                                                    | Yes                |
+| **Tailscale** | A zero-config VPN for building secure networks.                                                         | Yes                |
+| **WireGuard** | A fast, modern, and secure VPN tunnel.                                                                  | Yes                |
 
 ## Deployment
 
@@ -472,9 +483,9 @@ This project uses Terraform workspaces to manage multiple environments. Each wor
 
 ### Environments
 
-*   **dev:** The development environment. This is the default workspace. It is used for testing new features and changes.
-*   **staging:** The staging environment. This workspace is used for testing changes before they are deployed to production.
-*   **prod:** The production environment. This workspace is used for the live application.
+  * **dev:** The development environment. This is the default workspace. It is used for testing new features and changes.
+  * **staging:** The staging environment. This workspace is used for testing changes before they are deployed to production.
+  * **prod:** The production environment. This workspace is used for the live application.
 
 ### Managing Environments
 
@@ -547,7 +558,7 @@ The deployment process is designed to be as automated as possible. However, you 
 
 ### Terraform Commands
 
--   **Initialize Terraform:**
+  - **Initialize Terraform:**
 
     ```bash
     terraform init
@@ -555,7 +566,7 @@ The deployment process is designed to be as automated as possible. However, you 
 
     This command initializes the Terraform working directory, downloading the necessary provider plugins.
 
--   **Plan the deployment:**
+  - **Plan the deployment:**
 
     ```bash
     terraform plan
@@ -563,7 +574,7 @@ The deployment process is designed to be as automated as possible. However, you 
 
     This command creates an execution plan, which lets you preview the changes that Terraform plans to make to your infrastructure.
 
--   **Apply the changes:**
+  - **Apply the changes:**
 
     ```bash
     terraform apply
@@ -571,7 +582,7 @@ The deployment process is designed to be as automated as possible. However, you 
 
     This command applies the changes required to reach the desired state of the configuration.
 
--   **Destroy the infrastructure:**
+  - **Destroy the infrastructure:**
 
     ```bash
     terraform destroy
@@ -595,12 +606,12 @@ This project includes a `Makefile` that provides a convenient way to run common 
 
 ### Makefile Commands
 
--   **`make help`**: Display a list of available commands.
--   **`make setup`**: Run the automated setup script.
--   **`make configure-proxmox`**: Run the Proxmox configuration script.
--   **`make import`**: Run the import script.
--   **`make terraform-apply`**: Apply the Terraform configuration.
--   **`make ansible-playbook-setup`**: Run the Ansible setup playbook.
+  - **`make help`**: Display a list of available commands.
+  - **`make setup`**: Run the automated setup script.
+  - **`make configure-proxmox`**: Run the Proxmox configuration script.
+  - **`make import`**: Run the import script.
+  - **`make terraform-apply`**: Apply the Terraform configuration.
+  - **`make ansible-playbook-setup`**: Run the Ansible setup playbook.
 
 ## Testing
 
@@ -635,8 +646,8 @@ This repository includes an Ansible role for deploying OpenLDAP to the Kubernete
 
 The OpenLDAP role uses the following variables for configuration:
 
-- `openldap_root_password`: The password for the OpenLDAP root user.
-- `openldap_admin_password`: The password for the OpenLDAP admin user.
+  - `openldap_root_password`: The password for the OpenLDAP root user.
+  - `openldap_admin_password`: The password for the OpenLDAP admin user.
 
 These variables should be set as environment variables before running the Ansible playbook:
 
@@ -647,30 +658,30 @@ export OPENLDAP_ADMIN_PASSWORD="your-admin-password"
 
 The OpenLDAP application is deployed using the `apps/openldap.yml` manifest. The passwords for the OpenLDAP users are managed by Vault. You will need to add the following secrets to Vault:
 
-- `secrets/data/openldap`
-  - `root-password`
-  - `admin-password`
+  - `secrets/data/openldap`
+      - `root-password`
+      - `admin-password`
 
 ## Post-Installation
 
 After the setup is complete, you will need to perform the following steps to access your new homelab environment:
 
-### 1. Access Proxmox
+### 1\. Access Proxmox
 
 You can access the Proxmox web interface by navigating to the IP address of your Proxmox server in your web browser.
 
-### 2. Access the Kubernetes Cluster
+### 2\. Access the Kubernetes Cluster
 
 The K3s cluster is now running on your Proxmox server. You can access it by SSHing into one of the master nodes and using the `kubectl` command-line tool. The kubeconfig file is located at `~/.kube/config` on the master node.
 
-### 3. Configure DNS
+### 3\. Configure DNS
 
 You will need to configure DNS for your applications to be accessible at their respective domain names. This can be done by adding DNS records to your DNS provider or by using a local DNS server such as Pi-hole.
 
 **Example: Using Pi-hole for Local DNS**
 
 1.  Log in to your Pi-hole admin interface.
-2.  Navigate to "Local DNS" -> "DNS Records".
+2.  Navigate to "Local DNS" -\> "DNS Records".
 3.  Add a new A record for your domain, pointing to the IP address of your Traefik load balancer. For example:
 
 | Domain      | IP Address      |
@@ -679,7 +690,7 @@ You will need to configure DNS for your applications to be accessible at their r
 
 This will resolve all subdomains of `example.com` to the IP address of your Traefik load balancer.
 
-### 4. Access Applications
+### 4\. Access Applications
 
 Once DNS is configured, you can access the applications by navigating to their respective domain names in your web browser.
 
@@ -696,10 +707,10 @@ This project includes an optional "stealth" Windows VM on Proxmox for anti-cheat
 
 ### Prerequisites
 
-- Proxmox 8.x+
-- A Windows ISO file
-- The PCI ID of the GPU you want to pass through
-- The MAC address of your physical network card
+  - Proxmox 8.x+
+  - A Windows ISO file
+  - The PCI ID of the GPU you want to pass through
+  - The MAC address of your physical network card
 
 ### Usage
 
@@ -734,31 +745,31 @@ If the `scripts/setup.sh` script fails, it is most likely due to an issue with t
 
 If Terraform fails to apply the changes, it may be due to a problem with your Proxmox environment. Check the following:
 
--   **Proxmox API Token:** Make sure your Proxmox API token has the correct permissions.
--   **Proxmox Host:** Make sure the Proxmox host is running and accessible.
--   **Cloud-init Template:** Make sure the cloud-init template exists and is configured correctly.
+  - **Proxmox API Token:** Make sure your Proxmox API token has the correct permissions.
+  - **Proxmox Host:** Make sure the Proxmox host is running and accessible.
+  - **Cloud-init Template:** Make sure the cloud-init template exists and is configured correctly.
 
 ### Ansible Playbook Fails to Run
 
 If the Ansible playbook fails to run, it may be due to a problem with your SSH connection. Check the following:
 
--   **SSH Key:** Make sure your SSH key is added to your SSH agent.
--   **SSH Connection:** Make sure you can connect to the nodes using SSH.
+  - **SSH Key:** Make sure your SSH key is added to your SSH agent.
+  - **SSH Connection:** Make sure you can connect to the nodes using SSH.
 
 ### Application Is Not Accessible
 
 If an application is not accessible, it may be due to a problem with the Traefik Ingress controller or the application itself.
 
--   **Check the Traefik Dashboard:** The Traefik dashboard will show you the status of your Ingress routes and whether there are any errors.
--   **Check the Application Logs:** Use `kubectl logs` to check the logs of the application's pods. This will often give you a clue as to what is wrong.
+  - **Check the Traefik Dashboard:** The Traefik dashboard will show you the status of your Ingress routes and whether there are any errors.
+  - **Check the Application Logs:** Use `kubectl logs` to check the logs of the application's pods. This will often give you a clue as to what is wrong.
     ```bash
     kubectl logs -l app=<app-name>
     ```
--   **Check the Ingress Route:** Make sure the Ingress route for the application is configured correctly.
+  - **Check the Ingress Route:** Make sure the Ingress route for the application is configured correctly.
     ```bash
     kubectl get ingressroute -n <namespace>
     ```
--   **Check DNS:** Make sure the DNS record for the application is pointing to the correct IP address.
+  - **Check DNS:** Make sure the DNS record for the application is pointing to the correct IP address.
 
 ### Restarting the Setup Process
 
@@ -796,9 +807,9 @@ This project is highly customizable. You can add new applications, manage secret
 
 To add a new application, you will need to create a new Ansible role for it. The role should include the following:
 
--   A `tasks/main.yml` file that defines the tasks for deploying the application.
--   A `templates` directory that contains any necessary configuration files.
--   A `defaults/main.yml` file that defines the default variables for the application.
+  - A `tasks/main.yml` file that defines the tasks for deploying the application.
+  - A `templates` directory that contains any necessary configuration files.
+  - A `defaults/main.yml` file that defines the default variables for the application.
 
 Once you have created the role, you can add it to the `ansible/playbooks/setup.yml` file to have it deployed with the rest of the applications.
 
@@ -806,22 +817,23 @@ Once you have created the role, you can add it to the `ansible/playbooks/setup.y
 
 This project uses Vault to manage secrets by default. However, you can choose to manage your secrets manually.
 
--   **With Vault (Default):** If you are using Vault, you will need to add your secrets to the appropriate path in Vault. The Ansible playbook will automatically retrieve the secrets from Vault during the deployment process. To use this method, you will need to have a Vault server running and have the `VAULT_ADDR` and `VAULT_TOKEN` environment variables set.
+  - **With Vault (Default):** If you are using Vault, you will need to add your secrets to the appropriate path in Vault. The Ansible playbook will automatically retrieve the secrets from Vault during the deployment process. To use this method, you will need to have a Vault server running and have the `VAULT_ADDR` and `VAULT_TOKEN` environment variables set.
 
--   **Without Vault:** If you are not using Vault, you will need to create a `secrets.yml` file in the `ansible/group_vars` directory. This file should contain all of your secrets in the following format:
+  - **Without Vault:** If you are not using Vault, you will need to create a `secrets.yml` file in the `ansible/group_vars` directory. This file should contain all of your secrets in the following format:
 
     ```yaml
     secret_key: "secret_value"
     ```
+
     To use this method, you will need to run the `setup.sh` script with the `--no-vault` flag. This will skip the Vault setup and allow you to enter your secrets manually.
 
 ### Configuring Network Settings
 
 The network settings for the virtual machines are defined in the `terraform/variables.tf` file. You can modify this file to change the following:
 
--   The IP address range for the virtual machines.
--   The gateway and DNS servers for the virtual machines.
--   The VLAN tag for the virtual machines.
+  - The IP address range for the virtual machines.
+  - The gateway and DNS servers for the virtual machines.
+  - The VLAN tag for the virtual machines.
 
 ### Using Different Cloud-Init Templates
 
@@ -829,62 +841,7 @@ This project uses a cloud-init template to configure the virtual machines. You c
 
 ## Contributing
 
-### Code Formatting
-
-This project uses several open-source code formatters to ensure a consistent code style. Before submitting a pull request, please make sure to run the appropriate formatters on your changes. The CI pipeline will check for formatting, and your pull request will not be merged if it is not correctly formatted.
-
-You can install the formatters using the provided Ansible roles or install them manually.
-
-#### Prettier
-
-Used for formatting web development files like YAML, JSON, and Markdown.
-
--   **Install:** `npm install -g prettier`
--   **Run:** `prettier --write .`
-
-#### Biome
-
-Used for formatting and linting web development files.
-
--   **Install:** `curl -fsSL https://biomejs.dev/install.sh | bash` then move the `biome` binary to a directory in your `$PATH`.
--   **Run:** `biome format --write .`
-
-#### Unibeautify
-
-A universal code beautifier.
-
--   **Install:** `npm install -g @unibeautify/cli`
--   **Run:** `unibeautify`
-
-#### Black
-
-The uncompromising Python code formatter.
-
--   **Install:** `pip install black`
--   **Run:** `black .`
-
-#### gofmt
-
-The official Go code formatter. It is included with the Go distribution.
-
--   **Install:** Install Go.
--   **Run:** `go fmt ./...`
-
-#### clang-format
-
-Used for formatting C, C++, and Objective-C code.
-
--   **Install:** `sudo apt-get install -y clang-format` (or equivalent for your OS)
--   **Run:** `find . -name "*.h" -o -name "*.cpp" | xargs clang-format -i`
-
-#### google-java-format
-
-A Java code formatter that follows Google's style guide.
-
--   **Install:** Download the formatter jar from the [releases page](https://github.com/google/google-java-format/releases).
--   **Run:** `java -jar /path/to/google-java-format.jar --replace $(find . -name "*.java")`
-
-Contributions are welcome! If you would like to contribute to this project, please follow these steps:
+Contributions are welcome\! If you would like to contribute to this project, please follow these steps:
 
 1.  **Open an issue:** Before you start working on a new feature or bug fix, please open an issue to discuss it with the project maintainers. This will help to ensure that your contribution is in line with the project's goals.
 2.  **Fork the repository:** Fork the repository to your own GitHub account.
@@ -907,4 +864,4 @@ To promote the current version of the `main` branch to the staging environment, 
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](https://www.google.com/search?q=LICENSE) file for details.

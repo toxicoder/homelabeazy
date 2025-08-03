@@ -1,5 +1,4 @@
 terraform {
-  required_version = ">= 1.0"
   required_providers {
     proxmox = {
       source  = "telmate/proxmox"
@@ -21,41 +20,47 @@ module "k3s" {
   worker_vmid_start = var.worker_vmid_start
 }
 
+resource "proxmox_vm_qemu" "test_vm" {
+  name        = "test-vm"
+  target_node = "pve"
+  vmid        = 100
+  memory      = 2048
+  sockets     = 1
+  cores       = 2
+  os_type     = "cloud-init"
+
+  network {
+    model  = "virtio"
+    bridge = var.service_bridge
+    tag    = var.service_vlan_tag
+  }
+}
+
+resource "proxmox_lxc" "test_lxc" {
+  hostname    = "test-lxc"
+  target_node = "pve"
+  vmid        = 101
+  memory      = 1024
+  cores       = 1
+}
 
 module "stealth-vm" {
   source = "../stealth-vm"
 
   enable_stealth_vm = var.enable_stealth_vm
-  target_node       = var.target_node
+  proxmox_host      = var.target_node
   windows_iso       = var.windows_iso
-  service_bridge    = var.service_bridge
+  bios              = var.bios
+  machine           = var.machine
+  cpu               = var.cpu
+  cores             = var.cores
+  memory            = var.memory
+  scsihw            = var.scsihw
+  bootdisk          = var.bootdisk
+  network_model     = var.network_model
+  network_bridge    = var.service_bridge
   real_mac          = var.real_mac
   gpu_pci_id        = var.gpu_pci_id
   hv_vendor_id      = var.hv_vendor_id
+  smbios_uuid       = var.smbios_uuid
 }
-
-# module "test_vm" {
-#   source = "./modules/test_vm"
-#
-#   name        = var.test_vm_name
-#   target_node = var.target_node
-#   clone       = var.test_vm_clone
-#   vmid        = var.test_vm_vmid
-#   memory      = var.test_vm_memory
-#   sockets     = var.test_vm_sockets
-#   cores       = var.test_vm_cores
-#   os_type     = var.test_vm_os_type
-#   networks    = var.test_vm_networks
-# }
-#
-# module "test_lxc" {
-#   source = "./modules/test_lxc"
-#
-#   hostname    = var.test_lxc_hostname
-#   target_node = var.target_node
-#   vmid        = var.test_lxc_vmid
-#   memory      = var.test_lxc_memory
-#   cores       = var.test_lxc_cores
-#   service_bridge = var.service_bridge
-#   service_vlan_tag = var.service_vlan_tag
-# }

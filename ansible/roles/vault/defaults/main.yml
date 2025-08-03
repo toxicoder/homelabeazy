@@ -1,2 +1,2 @@
 ---
-vault_hostname: "vault.{{ base_domain }}"
+vault_hostname: "vault.{{ domain_root }}"

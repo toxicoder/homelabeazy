@@ -1,16 +1,2 @@
 ---
 # Tasks for the authelia role will go here
-- name: Add Authelia Helm repository
-  community.kubernetes.helm_repository:
-    name: authelia
-    repo_url: "https://charts.authelia.com"
-    state: present
-
-- name: Deploy Authelia
-  community.kubernetes.helm:
-    name: authelia
-    chart_ref: authelia/authelia
-    release_namespace: authelia
-    create_namespace: yes
-    values_files:
-      - "{{ authelia_values_file }}"

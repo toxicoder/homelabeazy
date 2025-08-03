@@ -69,35 +69,26 @@ def get_docker_containers(
         else:
             return []
 
-        # Check for guest agent readiness
-        try:
-            guest.agent.get('info')
-        except Exception:
-            logging.debug(f"Guest agent not running or responding in {vm_type}/{vmid} on node {node}.")
-            return []
-
-
         # Fetch container list
         result = guest.agent.exec.post(command="docker ps -a --format '{{json .}}'")
-        if not result or "stdout" not in result or not result["stdout"]:
-            logging.debug(f"No docker containers found in {vm_type}/{vmid} on node {node}")
+        if not result or "stdout" not in result:
             return []
         containers = [
             json.loads(line) for line in result["stdout"].strip().split("\n") if line
         ]
 
         result = guest.agent.exec.post(command="docker ps -a --format '{{.ID}}'")
-        if not result or "stdout" not in result or not result["stdout"]:
-            return containers # Return basic info if we can't get IDs
+        if not result or "stdout" not in result:
+            return []
         container_ids = result["stdout"].strip().split("\n")
-
+        if not container_ids:
+            return []
 
         # Fetch detailed container info
         inspect_result = guest.agent.exec.post(
             command=f"docker inspect {' '.join(container_ids)}"
         )
-        if not inspect_result or "stdout" not in inspect_result or not inspect_result["stdout"]:
-            logging.warning(f"Could not inspect Docker containers in {vm_type}/{vmid}")
+        if not inspect_result or "stdout" not in inspect_result:
             return containers  # Return basic info if inspect fails
 
         inspected_data = json.loads(inspect_result["stdout"])
