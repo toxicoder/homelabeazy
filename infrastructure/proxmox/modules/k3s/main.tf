@@ -1,6 +1,4 @@
-module "k3s_master" {
-  source = "../proxmox_vm"
-
+resource "proxmox_vm_qemu" "k3s_master" {
   name        = "k3s-master"
   target_node = var.target_node
   clone       = var.clone
@@ -11,17 +9,16 @@ module "k3s_master" {
   os_type     = "cloud-init"
   agent       = var.agent
 
-  networks = [{
+  network {
     bridge  = var.network_bridge
     macaddr = var.mac
     tag     = var.vlan
-  }]
+    model   = "virtio"
+  }
 }
 
-module "k3s_worker" {
+resource "proxmox_vm_qemu" "k3s_worker" {
   count = var.worker_count
-
-  source = "../proxmox_vm"
 
   name        = "k3s-worker-${count.index}"
   target_node = var.target_node
@@ -33,9 +30,10 @@ module "k3s_worker" {
   os_type     = "cloud-init"
   agent       = var.agent
 
-  networks = [{
+  network {
     bridge  = var.network_bridge
     macaddr = var.mac
     tag     = var.vlan
-  }]
+    model   = "virtio"
+  }
 }

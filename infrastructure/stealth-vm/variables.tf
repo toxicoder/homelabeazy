@@ -1,94 +1,94 @@
-variable "enable_stealth_vm" {
+variable "stealth_vm_enabled" {
   description = "If set to true, the stealth VM will be created."
   type        = bool
   default     = false
 }
 
-variable "windows_iso" {
+variable "stealth_vm_windows_iso" {
   description = "The path to the Windows ISO file. This is required for the stealth VM."
   type        = string
   default     = ""
 }
 
-variable "gpu_pci_id" {
+variable "stealth_vm_gpu_pci_id" {
   description = "The PCI ID of the GPU to pass through to the stealth VM."
   type        = string
   default     = ""
 }
 
-variable "hv_vendor_id" {
+variable "stealth_vm_hv_vendor_id" {
   description = "The Hyper-V vendor ID to use for the stealth VM. Can be either 'amd' or 'intel'."
   type        = string
   default     = "amd"
 }
 
-variable "real_mac" {
+variable "stealth_vm_real_mac" {
   description = "The MAC address of the physical network card to use for the stealth VM."
   type        = string
   default     = ""
 }
 
-variable "smbios_uuid" {
+variable "stealth_vm_smbios_uuid" {
   description = "The SMBIOS UUID to use for the stealth VM."
   type        = string
   default     = ""
 }
 
-variable "proxmox_host" {
-  description = "The Proxmox host to deploy the stealth VM on."
+variable "proxmox_node" {
+  description = "The Proxmox node to deploy the stealth VM on."
   type        = string
   default     = ""
 }
 
-variable "bios" {
+variable "stealth_vm_bios" {
   description = "The BIOS to use for the stealth VM."
   type        = string
   default     = "ovmf"
 }
 
-variable "machine" {
+variable "stealth_vm_machine" {
   description = "The machine type to use for the stealth VM."
   type        = string
   default     = "q35"
 }
 
-variable "cpu" {
+variable "stealth_vm_cpu" {
   description = "The CPU type to use for the stealth VM."
   type        = string
   default     = "host"
 }
 
-variable "cores" {
+variable "stealth_vm_cores" {
   description = "The number of cores to use for the stealth VM."
   type        = number
   default     = 4
 }
 
-variable "memory" {
+variable "stealth_vm_memory" {
   description = "The amount of memory to use for the stealth VM."
   type        = number
   default     = 8192
 }
 
-variable "scsihw" {
+variable "stealth_vm_scsihw" {
   description = "The SCSI hardware to use for the stealth VM."
   type        = string
   default     = "lsi"
 }
 
-variable "bootdisk" {
+variable "stealth_vm_bootdisk" {
   description = "The boot disk to use for the stealth VM."
   type        = string
   default     = "scsi0"
 }
 
-variable "network_model" {
+variable "stealth_vm_network_model" {
   description = "The network model to use for the stealth VM."
   type        = string
   default     = "virtio"
 }
 
-variable "network_bridge" {
+variable "proxmox_service_bridge" {
   description = "The network bridge to use for the stealth VM."
   type        = string
   default     = "vmbr0"

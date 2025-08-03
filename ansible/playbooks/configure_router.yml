@@ -1,6 +1,6 @@
 ---
 - name: Configure ASUS Router
-  hosts: "{{ target_hosts | default('routers') }}"
+  hosts: routers
   gather_facts: false
   roles:
     - role: asuswrt
