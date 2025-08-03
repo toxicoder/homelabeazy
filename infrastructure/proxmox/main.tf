@@ -65,4 +65,6 @@ module "test_lxc" {
   vmid        = var.test_lxc_vmid
   memory      = var.test_lxc_memory
   cores       = var.test_lxc_cores
+  service_bridge = var.service_bridge
+  service_vlan_tag = var.service_vlan_tag
 }

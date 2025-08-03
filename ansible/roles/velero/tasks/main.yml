@@ -43,7 +43,7 @@
           aws_secret_access_key={{ velero_minio_credentials[velero_minio_vault_secret_key_name] }}
 
 - name: Install velero
-  command: >
+  shell: >
     velero install \
       --provider aws \
       --plugins velero/velero-plugin-for-aws:v1.5.0 \

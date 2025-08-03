@@ -22,7 +22,8 @@ dependencies = [
     "python-dotenv",
     "python-hcl2",
     "requests",
-    "PyYAML"
+    "PyYAML",
+    "hvac"
 ]
 
 [project.optional-dependencies]

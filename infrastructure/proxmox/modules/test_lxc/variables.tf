@@ -22,3 +22,13 @@ variable "cores" {
   description = "The number of cores for the LXC container."
   type        = number
 }
+
+variable "service_bridge" {
+  description = "The name of the network bridge for the service network."
+  type        = string
+}
+
+variable "service_vlan_tag" {
+  description = "The VLAN tag for the service network."
+  type        = number
+}

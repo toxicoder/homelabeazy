@@ -8,6 +8,12 @@ terraform {
   }
 }
 
+variable "pfsense_wan_bridge" {
+  description = "The name of the WAN bridge for pfSense."
+  type        = string
+  default     = "vmbr1"
+}
+
 resource "proxmox_vm_qemu" "pfsense_vm" {
   name        = "pfsense"
   target_node = "proxmox"
@@ -25,7 +31,7 @@ resource "proxmox_vm_qemu" "pfsense_vm" {
 
   network {
     model  = "virtio"
-    bridge = "vmbr1"
+    bridge = var.pfsense_wan_bridge
   }
 
   network {

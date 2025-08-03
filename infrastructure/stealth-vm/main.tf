@@ -34,9 +34,9 @@ resource "proxmox_vm_qemu" "stealth_vm" {
   args = "-cpu host,-hypervisor,+kvm_pv_unhalt,+kvm_pv_eoi,hv_spinlocks=0x1fff,hv_vapic,hv_time,hv_reset,hv_vpindex,hv_runtime,hv_relaxed,kvm=off,hv_vendor_id=${var.hv_vendor_id}"
 
   # SMBIOS
-  # smbios {
-  #   manufacturer = var.smbios_manufacturer
-  #   product      = var.smbios_product
-  #   uuid         = var.smbios_uuid
-  # }
+  smbios {
+    manufacturer = var.smbios_manufacturer
+    product      = var.smbios_product
+    uuid         = var.smbios_uuid
+  }
 }

@@ -145,10 +145,12 @@ This Ansible module allows you to manage a Synology NAS.
 
 #### Usage
 
-To use this module, you need to add it to your Ansible playbook. Here is an example of how to use the module to create a user, group, and shared folder:
+To use this module, you need to add it to your Ansible playbook. Here are some examples of how to use the module to manage users, groups, and shared folders.
+
+##### Managing Users
 
 ```yaml
-- name: Manage Synology NAS
+- name: Manage Synology Users
   hosts: localhost
   gather_facts: false
   vars:
@@ -156,11 +158,9 @@ To use this module, you need to add it to your Ansible playbook. Here is an exam
     synology_nas_username: "admin"
     synology_nas_password: "{{ vault_synology_password }}"
     test_user: "testuser"
-    test_group: "testgroup"
-    test_folder: "testfolder"
 
   tasks:
-    - name: Create test user
+    - name: Create a new user
       synology:
         host: "{{ synology_nas_ip }}"
         username: "{{ synology_nas_username }}"
@@ -172,7 +172,30 @@ To use this module, you need to add it to your Ansible playbook. Here is an exam
           password: "{{ vault_synology_user_password }}"
           email: "testuser@example.com"
 
-    - name: Create test group
+    - name: Remove a user
+      synology:
+        host: "{{ synology_nas_ip }}"
+        username: "{{ synology_nas_username }}"
+        password: "{{ synology_nas_password }}"
+        resource: user
+        name: "{{ test_user }}"
+        state: absent
+```
+
+##### Managing Groups
+
+```yaml
+- name: Manage Synology Groups
+  hosts: localhost
+  gather_facts: false
+  vars:
+    synology_nas_ip: "192.168.1.100"
+    synology_nas_username: "admin"
+    synology_nas_password: "{{ vault_synology_password }}"
+    test_group: "testgroup"
+
+  tasks:
+    - name: Create a new group
       synology:
         host: "{{ synology_nas_ip }}"
         username: "{{ synology_nas_username }}"
@@ -181,9 +204,34 @@ To use this module, you need to add it to your Ansible playbook. Here is an exam
         name: "{{ test_group }}"
         state: present
         config:
-          description: "Test group"
+          description: "A group for testing purposes"
 
-    - name: Create test shared folder
+    - name: Remove a group
+      synology:
+        host: "{{ synology_nas_ip }}"
+        username: "{{ synology_nas_username }}"
+        password: "{{ synology_nas_password }}"
+        resource: group
+        name: "{{ test_group }}"
+        state: absent
+```
+
+##### Managing Shared Folders
+
+```yaml
+- name: Manage Synology Shared Folders
+  hosts: localhost
+  gather_facts: false
+  vars:
+    synology_nas_ip: "192.168.1.100"
+    synology_nas_username: "admin"
+    synology_nas_password: "{{ vault_synology_password }}"
+    test_folder: "testfolder"
+    test_user: "testuser"
+    test_group: "testgroup"
+
+  tasks:
+    - name: Create a new shared folder
       synology:
         host: "{{ synology_nas_ip }}"
         username: "{{ synology_nas_username }}"
@@ -200,17 +248,14 @@ To use this module, you need to add it to your Ansible playbook. Here is an exam
               type: "group"
               permission: "ro"
 
-    - name: Create backup task
+    - name: Remove a shared folder
       synology:
         host: "{{ synology_nas_ip }}"
         username: "{{ synology_nas_username }}"
         password: "{{ synology_nas_password }}"
-        resource: backup_task
-        name: "My Backup Task"
-        state: present
-        config:
-          source: "/volume1/data"
-          destination: "/volume1/backup"
+        resource: shared_folder
+        name: "{{ test_folder }}"
+        state: absent
 ```
 
 #### Parameters
@@ -230,15 +275,21 @@ To use this module, you need to add it to your Ansible playbook. Here is an exam
   - `name`: The name of the user or group.
   - `type`: The type of the principal. Can be `user` or `group`.
   - `permission`: The permission to set. Can be `ro` (read-only) or `rw` (read-write).
+- `description`: A description for the shared folder.
+- `enable_recycle_bin`: Whether to enable the recycle bin for the shared folder. (default: `true`)
+- `recycle_bin_admin_only`: Whether to restrict access to the recycle bin to administrators only. (default: `false`)
 
 ##### `user` config
 
 - `password`: The password for the user.
 - `email`: The email address for the user.
+- `description`: A description for the user.
+- `groups`: A list of groups to add the user to.
 
 ##### `group` config
 
 - `description`: The description for the group.
+- `members`: A list of users to add to the group.
 
 ##### `backup_task` config
 
