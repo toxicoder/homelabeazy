@@ -26,9 +26,9 @@ spec:
               services:
                 - name: grafana
                   port: 3000
-              middlewares:
-                - name: authelia
-                  namespace: traefik
+        metadata:
+          annotations:
+            traefik.ingress.kubernetes.io/router.middlewares: authelia@kubernetescrd
         service:
           type: ClusterIP
           port: 3000

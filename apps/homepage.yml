@@ -21,9 +21,9 @@ spec:
               services:
                 - name: homepage
                   port: 3000
-              middlewares:
-                - name: authelia
-                  namespace: traefik
+        metadata:
+          annotations:
+            traefik.ingress.kubernetes.io/router.middlewares: authelia@kubernetescrd
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: homepage
