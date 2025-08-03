@@ -1,0 +1,11 @@
+---
+- name: Setup Homelab
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  roles:
+    - role: homelab_config
+    - role: k3s_cluster
+    - role: core_services
+    - role: applications

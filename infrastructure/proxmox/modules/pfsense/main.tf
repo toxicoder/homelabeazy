@@ -8,30 +8,24 @@ terraform {
   }
 }
 
-variable "pfsense_wan_bridge" {
-  description = "The name of the WAN bridge for pfSense."
-  type        = string
-  default     = "vmbr1"
-}
-
 resource "proxmox_vm_qemu" "pfsense_vm" {
-  name        = "pfsense"
-  target_node = "proxmox"
-  clone       = "pfsense-template"
-  vmid        = 101
-  memory      = 2048
-  sockets     = 1
-  cores       = 2
-  os_type     = "other"
+  name        = var.name
+  target_node = var.target_node
+  clone       = var.clone
+  vmid        = var.vmid
+  memory      = var.memory
+  sockets     = var.sockets
+  cores       = var.cores
+  os_type     = var.os_type
 
   network {
     model  = "virtio"
-    bridge = "vmbr0"
+    bridge = var.wan_bridge
   }
 
   network {
     model  = "virtio"
-    bridge = var.pfsense_wan_bridge
+    bridge = var.lan_bridge
   }
 
   network {

@@ -1,0 +1,16 @@
+- name: Create configmaps directory
+  ansible.builtin.file:
+    path: "{{ config_maps_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: Create ConfigMap from template
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ config_maps_dir }}/{{ item.dest }}"
+  with_items:
+    - { src: 'main.yml.j2', dest: 'main-configmap.yml' }
+
+- name: Apply configmaps
+  ansible.builtin.command: kubectl apply -f {{ config_maps_dir }}
+  changed_when: true

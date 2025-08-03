@@ -3,7 +3,7 @@ ingressRoute:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`auth.homelab.dev`)
+    - match: Host(`auth.{{ homelabeazy_domain }}`)
       kind: Rule
       services:
         - name: authelia
@@ -34,11 +34,11 @@ pod:
       memory: 256Mi
 
 authelia:
-  default_redirection_url: https://homepage.homelab.dev
+  default_redirection_url: https://homepage.{{ homelabeazy_domain }}
   authentication_backend:
     ldap:
       url: 'ldap://openldap.openldap.svc.cluster.local:389'
-      base_dn: dc=homelab,dc=com
+      base_dn: dc={{ homelabeazy_domain.split('.')[0] }},dc={{ homelabeazy_domain.split('.')[1] }}
       username_attribute: uid
       additional_users_dn: ou=users
       users_filter: (&(objectClass=inetOrgPerson)(uid={username}))
@@ -47,11 +47,11 @@ authelia:
       group_name_attribute: cn
       mail_attribute: mail
       display_name_attribute: displayName
-      user: cn=admin,dc=homelab,dc=com
+      user: cn=admin,dc={{ homelabeazy_domain.split('.')[0] }},dc={{ homelabeazy_domain.split('.')[1] }}
   access_control:
     default_policy: two_factor
     rules:
-      - domain: "auth.homelab.dev"
+      - domain: "auth.{{ homelabeazy_domain }}"
         policy: bypass
   session:
     name: authelia_session
