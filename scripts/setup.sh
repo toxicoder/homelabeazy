@@ -30,6 +30,11 @@ check_dependencies() {
         echo "ansible-playbook could not be found"
         exit 1
     fi
+
+    if ! command -v yq &> /dev/null; then
+        echo "yq could not be found. Please install yq: https://github.com/mikefarah/yq#install"
+        exit 1
+    fi
 }
 
 # Create configuration from examples
@@ -57,8 +62,9 @@ EOF
 
     # Prompt for domain name
     read -p "Enter your domain name (e.g., homelab.local): " domain_name
-    sed -i "s/domain_name: .*/domain_name: $domain_name/" "$CONFIG_DIR/config.yml"
-    sed -i "s/ldap_base_dn: .*/ldap_base_dn: dc=$(echo $domain_name | sed 's/\./,dc=/g')/" "$CONFIG_DIR/config.yml"
+    yq e '.common.domain_name = "'$domain_name'"' -i "$CONFIG_DIR/config.yml"
+    yq e '.common.ldap_base_dn = "dc='$(echo $domain_name | sed 's/\./,dc=/g')'"' -i "$CONFIG_DIR/config.yml"
+
 
     # Prompt for stealth VM
     read -p "Enable stealth VM? (y/n): " enable_stealth_vm
