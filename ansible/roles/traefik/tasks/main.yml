@@ -1,0 +1,4 @@
+# This file is intentionally left empty. Future tasks for Traefik can be added here.
+- name: Traefik placeholder task
+  ansible.builtin.debug:
+    msg: "This is a placeholder for the Traefik role."

@@ -214,9 +214,10 @@ def generate_password(alias):
 def main():
     parser = argparse.ArgumentParser(description="Generate secrets and store them in Vault.")
     parser.add_argument("--env", default="dev", help="The environment to generate secrets for.")
+    parser.add_argument("--config-file", required=True, help="Path to the configuration file.")
     args = parser.parse_args()
 
-    with open("../../../../config/config.yml", "r") as f:
+    with open(args.config_file, "r") as f:
         config_data = yaml.safe_load(f)
 
     config = {**config_data.get("common", {}), **config_data.get(args.env, {})}

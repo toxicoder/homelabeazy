@@ -1,6 +1,9 @@
-#SPDX-License-Identifier: MIT-0
----
+# SPDX-License-Identifier: MIT-0
 - hosts: localhost
   remote_user: root
   roles:
     - minio
+
+- name: Minio placeholder test
+  ansible.builtin.debug:
+    msg: "This is a placeholder test for the Minio role."
