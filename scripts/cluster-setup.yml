@@ -2,11 +2,11 @@
 - name: Setup K3s Cluster
   hosts: k3s_masters:k3s_workers
   roles:
-    - role: k3s_cluster
+    - role: k3s-cluster
 
 - name: Configure Vault
   hosts: localhost
   connection: local
   roles:
-    - role: vault_pki
+    - role: vault-pki
     - role: vault-secrets-operator

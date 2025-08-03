@@ -14,14 +14,14 @@ This directory contains the Ansible setup for managing the infrastructure.
 The following roles are available:
 
 - `authelia`: Deploys and configures Authelia.
-- `efk_stack`: Deploys and configures an EFK (Elasticsearch, Fluentd, Kibana) stack.
+- `efk-stack`: Deploys and configures an EFK (Elasticsearch, Fluentd, Kibana) stack.
 - `homepage`: Deploys and configures a homepage application.
-- `k3s_cluster`: Deploys a high-availability k3s cluster onto VMs within Proxmox.
+- `k3s-cluster`: Deploys a high-availability k3s cluster onto VMs within Proxmox.
 - `openldap`: Deploys and configures OpenLDAP.
 - `pfsense`: Configures pfSense.
-- `proxmox_host`: Configures a Proxmox VE server.
+- `proxmox-host`: Configures a Proxmox VE server.
 - `redis`: Deploys and configures Redis.
-- `secure_gen`: Generates secure passwords and other secrets.
+- `secure-gen`: Generates secure passwords and other secrets.
 - `synology`: Manages a Synology NAS.
 - `traefik`: Deploys and configures Traefik.
 - `vault`: Deploys and configures HashiCorp Vault.
@@ -29,7 +29,7 @@ The following roles are available:
 - `vault-secrets-operator`: Deploys the [HashiCorp Vault Secrets Operator](https://www.vaultproject.io/docs/platform/k8s/vso).
 - `velero`: Deploys and configures Velero.
 
-### k3s_cluster Role
+### k3s-cluster Role
 
 This role automates the deployment of a high-availability k3s cluster onto VMs within Proxmox. This role will first create the necessary VMs from a template and then install and configure k3s on them.
 
@@ -131,7 +131,7 @@ The `proxmox_host_templates` variable is a list of VM/LXC templates to upload. E
 ```yaml
 - hosts: proxmox
   roles:
-    - proxmox_host
+    - proxmox-host
 ```
 
 ### Synology Role
