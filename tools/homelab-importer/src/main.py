@@ -131,7 +131,7 @@ if __name__ == "__main__":
     log_level = logging.INFO
     if args.verbose:
         log_level = logging.DEBUG
-    logging.basicConfig(level=log_level, format="%(levelname)s: %(message)s")
+    logging.basicConfig(level=log_level, format="%(asctime)s - %(levelname)s: %(message)s")
 
     try:
         main(args.output_dir)

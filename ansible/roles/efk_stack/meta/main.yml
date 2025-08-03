@@ -1,10 +1,15 @@
----
 galaxy_info:
   author: HomelabEazy
-  description: Deploys and configures an EFK (Elasticsearch, Fluentd, Kibana) stack.
-  company: HomelabEazy
+  description: Deploys an EFK (Elasticsearch, Fluentd, Kibana) stack for logging.
   license: MIT
-  min_ansible_version: 2.9
-  galaxy_tags: []
+  min_ansible_version: 2.12
+  platforms:
+    - name: Generic
+      versions:
+        - all
+  galaxy_tags:
+    - efk
+    - logging
+    - monitoring
 
 dependencies: []

@@ -5,10 +5,9 @@ collections:
   - name: community.hashi_vault
     version: "4.1.0"
   - name: community.general
-    version: "9.2.0"
 
-# roles:
-#   - name: homepage
-#     src: https://github.com/Aidan-Wallace/homepage-kubernetes
-#     scm: git
-#     version: main
+roles:
+  - name: homepage
+    src: https://github.com/Aidan-Wallace/homepage-kubernetes
+    scm: git
+    version: main

@@ -3,6 +3,7 @@ python-dotenv
 python-hcl2
 requests
 PyYAML
+hvac
 
 [dev]
 black

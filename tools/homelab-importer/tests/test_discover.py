@@ -3,16 +3,16 @@ import sys
 
 sys.path.insert(
     0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src"))
-)  # noqa: E501
-import unittest  # noqa: E402
-from unittest.mock import MagicMock  # noqa: E402
+)
+import unittest
+from unittest.mock import MagicMock
 
-from discover import (  # noqa: E402, E501
+from discover import (
     get_docker_containers,
     get_lxc_containers,
     get_vms,
 )
-from proxmoxer.core import ResourceException  # noqa: E402
+from proxmoxer.core import ResourceException
 
 
 class TestDiscover(unittest.TestCase):
@@ -24,6 +24,7 @@ class TestDiscover(unittest.TestCase):
 
         # Mock the agent exec call to prevent errors
         mock_guest = MagicMock()
+        mock_guest.agent.get.return_value = {}
         mock_guest.agent.exec.post.return_value = {"stdout": ""}
         mock_proxmox.nodes.return_value.qemu.return_value = mock_guest
 
@@ -41,6 +42,7 @@ class TestDiscover(unittest.TestCase):
 
         # Mock the agent exec call to prevent errors
         mock_guest = MagicMock()
+        mock_guest.agent.get.return_value = {}
         mock_guest.agent.exec.post.return_value = {"stdout": ""}
         mock_proxmox.nodes.return_value.lxc.return_value = mock_guest
 
@@ -69,6 +71,7 @@ class TestDiscover(unittest.TestCase):
     def test_get_docker_containers(self):
         mock_proxmox = MagicMock()
         mock_guest = MagicMock()
+        mock_guest.agent.get.return_value = {}
         # Mock the three calls to guest.agent.exec.post
         mock_guest.agent.exec.post.side_effect = [
             {"stdout": '{"ID":"123","Names":"test-container"}\n'},
@@ -84,6 +87,7 @@ class TestDiscover(unittest.TestCase):
     def test_get_docker_containers_no_stdout(self):
         mock_proxmox = MagicMock()
         mock_guest = MagicMock()
+        mock_guest.agent.get.return_value = {}
         mock_guest.agent.exec.post.return_value = {}
         mock_proxmox.nodes.return_value.qemu.return_value = mock_guest
 
@@ -93,32 +97,36 @@ class TestDiscover(unittest.TestCase):
     def test_get_docker_containers_no_ids(self):
         mock_proxmox = MagicMock()
         mock_guest = MagicMock()
+        mock_guest.agent.get.return_value = {}
         mock_guest.agent.exec.post.side_effect = [
             {"stdout": '{"ID":"123","Names":"test-container"}\n'},
             {"stdout": ""},
-            {"stdout": "[]"},  # for inspect call
         ]
         mock_proxmox.nodes.return_value.qemu.return_value = mock_guest
 
         containers = get_docker_containers(mock_proxmox, "pve", 100, "qemu")
-        self.assertEqual(len(containers), 0)
+        self.assertEqual(len(containers), 1)
+        self.assertNotIn("details", containers[0])
 
     def test_get_docker_containers_inspect_fails(self):
         mock_proxmox = MagicMock()
         mock_guest = MagicMock()
+        mock_guest.agent.get.return_value = {}
         mock_guest.agent.exec.post.side_effect = [
             {"stdout": '{"ID":"123","Names":"test-container"}\n'},
             {"stdout": "123\n"},
-            ResourceException("Inspect failed", "Internal Server Error", 500),
+            {"stdout": ""},
         ]
         mock_proxmox.nodes.return_value.qemu.return_value = mock_guest
 
         containers = get_docker_containers(mock_proxmox, "pve", 100, "qemu")
-        self.assertEqual(len(containers), 0)
+        self.assertEqual(len(containers), 1)
+        self.assertNotIn("details", containers[0])
 
     def test_get_docker_containers_lxc(self):
         mock_proxmox = MagicMock()
         mock_guest = MagicMock()
+        mock_guest.agent.get.return_value = {}
         # Mock the three calls to guest.agent.exec.post
         mock_guest.agent.exec.post.side_effect = [
             {"stdout": '{"ID":"123","Names":"test-container"}\n'},
@@ -142,6 +150,7 @@ class TestDiscover(unittest.TestCase):
             {"vmid": 100, "name": "test-vm", "node": "pve"}
         ]
         mock_guest = MagicMock()
+        mock_guest.agent.get.return_value = {}
         mock_guest.agent.exec.post.side_effect = [
             {"stdout": '{"ID":"123","Names":"test-container"}\n'},
             {"stdout": "123\n"},
@@ -158,6 +167,7 @@ class TestDiscover(unittest.TestCase):
             {"vmid": 101, "name": "test-lxc", "node": "pve"}
         ]
         mock_guest = MagicMock()
+        mock_guest.agent.get.return_value = {}
         mock_guest.agent.exec.post.side_effect = [
             {"stdout": '{"ID":"123","Names":"test-container"}\n'},
             {"stdout": "123\n"},
@@ -174,6 +184,7 @@ class TestDiscover(unittest.TestCase):
             {"vmid": 100, "name": "test-vm", "node": "pve"}
         ]
         mock_guest = MagicMock()
+        mock_guest.agent.get.return_value = {}
         mock_guest.agent.exec.post.side_effect = ResourceException(
             "Docker error", "Internal Server Error", 500
         )
@@ -188,6 +199,7 @@ class TestDiscover(unittest.TestCase):
             {"vmid": 101, "name": "test-lxc", "node": "pve"}
         ]
         mock_guest = MagicMock()
+        mock_guest.agent.get.return_value = {}
         mock_guest.agent.exec.post.side_effect = ResourceException(
             "Docker error", "Internal Server Error", 500
         )
@@ -199,6 +211,7 @@ class TestDiscover(unittest.TestCase):
     def test_get_docker_containers_inspect_fails_after_list(self):
         mock_proxmox = MagicMock()
         mock_guest = MagicMock()
+        mock_guest.agent.get.return_value = {}
         mock_exec = MagicMock()
         mock_exec.post.side_effect = [
             {"stdout": '{"ID":"123","Names":"test-container"}\n'},
