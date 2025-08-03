@@ -10,7 +10,7 @@ from exceptions import (
     ProxmoxAuthenticationError,
     ProxmoxConnectionError,
 )
-from mapping import map_lxc_to_terraform, map_vm_to_terraform
+from mapping import map_resource_to_terraform
 from proxmoxer import ProxmoxAPI
 from proxmoxer.core import AuthenticationError as ProxmoxerAuthenticationError
 from terraform import (
@@ -46,9 +46,11 @@ def main(output_dir: str) -> None:
         vms = get_vms(proxmox)
         lxc_containers = get_lxc_containers(proxmox)
 
-        terraform_vms = [map_vm_to_terraform(vm) for vm in vms]
+        terraform_vms = [
+            map_resource_to_terraform(vm, "vm") for vm in vms
+        ]
         terraform_lxc_containers = [
-            map_lxc_to_terraform(c) for c in lxc_containers
+            map_resource_to_terraform(c, "lxc") for c in lxc_containers
         ]
 
         all_resources = terraform_vms + terraform_lxc_containers

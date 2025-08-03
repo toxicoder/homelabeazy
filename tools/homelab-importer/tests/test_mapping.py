@@ -3,14 +3,10 @@ import sys
 
 sys.path.insert(
     0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src"))
-)  # noqa: E501
-import unittest  # noqa: E402
-
-from mapping import (  # noqa: E402, E501
-    map_lxc_to_terraform,
-    map_vm_to_terraform,
-    to_snake_case,
 )
+import unittest
+
+from mapping import map_resource_to_terraform, to_snake_case
 
 
 class TestMapping(unittest.TestCase):
@@ -19,9 +15,9 @@ class TestMapping(unittest.TestCase):
         self.assertEqual(to_snake_case("test-string"), "test_string")
         self.assertEqual(to_snake_case("Test-String"), "test_string")
 
-    def test_map_vm_to_terraform(self):
+    def test_map_vm_resource_to_terraform(self):
         vm_data = {
-            "name": "test-vm",
+            "name": "example-vm",
             "node": "pve",
             "vmid": 100,
             "maxmem": 2147483648,
@@ -30,9 +26,9 @@ class TestMapping(unittest.TestCase):
         }
         expected = {
             "resource": "proxmox_vm_qemu",
-            "name": "test_vm",
+            "name": "example_vm",
             "attributes": {
-                "name": "test-vm",
+                "name": "example-vm",
                 "target_node": "pve",
                 "vmid": 100,
                 "memory": 2048,
@@ -41,11 +37,11 @@ class TestMapping(unittest.TestCase):
                 "os_type": "cloud-init",
             },
         }
-        self.assertEqual(map_vm_to_terraform(vm_data), expected)
+        self.assertEqual(map_resource_to_terraform(vm_data, "vm"), expected)
 
-    def test_map_lxc_to_terraform(self):
+    def test_map_lxc_resource_to_terraform(self):
         lxc_data = {
-            "name": "test-lxc",
+            "name": "example-lxc",
             "node": "pve",
             "vmid": 101,
             "maxmem": 1073741824,
@@ -53,20 +49,20 @@ class TestMapping(unittest.TestCase):
         }
         expected = {
             "resource": "proxmox_lxc",
-            "name": "test_lxc",
+            "name": "example_lxc",
             "attributes": {
-                "hostname": "test-lxc",
+                "hostname": "example-lxc",
                 "target_node": "pve",
                 "vmid": 101,
                 "memory": 1024,
                 "cores": 1,
             },
         }
-        self.assertEqual(map_lxc_to_terraform(lxc_data), expected)  # noqa: E501
+        self.assertEqual(map_resource_to_terraform(lxc_data, "lxc"), expected)
 
-    def test_map_vm_to_terraform_no_memory(self):
+    def test_map_vm_resource_to_terraform_no_memory(self):
         vm_data = {
-            "name": "test-vm",
+            "name": "example-vm",
             "node": "pve",
             "vmid": 100,
             "maxcpu": 2,
@@ -74,9 +70,9 @@ class TestMapping(unittest.TestCase):
         }
         expected = {
             "resource": "proxmox_vm_qemu",
-            "name": "test_vm",
+            "name": "example_vm",
             "attributes": {
-                "name": "test-vm",
+                "name": "example-vm",
                 "target_node": "pve",
                 "vmid": 100,
                 "memory": 0,
@@ -85,24 +81,24 @@ class TestMapping(unittest.TestCase):
                 "os_type": "cloud-init",
             },
         }
-        self.assertEqual(map_vm_to_terraform(vm_data), expected)  # noqa: E501
+        self.assertEqual(map_resource_to_terraform(vm_data, "vm"), expected)
 
-    def test_map_lxc_to_terraform_no_memory(self):
-        lxc_data = {"name": "test-lxc", "node": "pve", "vmid": 101, "maxcpu": 1}
+    def test_map_lxc_resource_to_terraform_no_memory(self):
+        lxc_data = {"name": "example-lxc", "node": "pve", "vmid": 101, "maxcpu": 1}
         expected = {
             "resource": "proxmox_lxc",
-            "name": "test_lxc",
+            "name": "example_lxc",
             "attributes": {
-                "hostname": "test-lxc",
+                "hostname": "example-lxc",
                 "target_node": "pve",
                 "vmid": 101,
                 "memory": 0,
                 "cores": 1,
             },
         }
-        self.assertEqual(map_lxc_to_terraform(lxc_data), expected)  # noqa: E501
+        self.assertEqual(map_resource_to_terraform(lxc_data, "lxc"), expected)
 
-    def test_map_vm_to_terraform_missing_attributes(self):
+    def test_map_vm_resource_to_terraform_missing_attributes(self):
         vm_data = {"vmid": 100}
         expected = {
             "resource": "proxmox_vm_qemu",
@@ -117,9 +113,9 @@ class TestMapping(unittest.TestCase):
                 "os_type": "cloud-init",
             },
         }
-        self.assertEqual(map_vm_to_terraform(vm_data), expected)  # noqa: E501
+        self.assertEqual(map_resource_to_terraform(vm_data, "vm"), expected)
 
-    def test_map_lxc_to_terraform_missing_attributes(self):
+    def test_map_lxc_resource_to_terraform_missing_attributes(self):
         lxc_data = {"vmid": 101}
         expected = {
             "resource": "proxmox_lxc",
@@ -132,7 +128,7 @@ class TestMapping(unittest.TestCase):
                 "cores": 1,
             },
         }
-        self.assertEqual(map_lxc_to_terraform(lxc_data), expected)  # noqa: E501
+        self.assertEqual(map_resource_to_terraform(lxc_data, "lxc"), expected)
 
 
 if __name__ == "__main__":

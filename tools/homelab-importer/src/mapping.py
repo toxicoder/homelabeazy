@@ -5,7 +5,7 @@ from typing import Any, Dict
 from utils import to_snake_case
 
 
-def _map_resource_to_terraform(
+def map_resource_to_terraform(
     resource_data: Dict[str, Any], resource_type: str
 ) -> Dict[str, Any]:
     """Maps a Proxmox resource to a Terraform resource."""
@@ -13,9 +13,7 @@ def _map_resource_to_terraform(
     if name is None:
         name = f"{resource_type}-{resource_data.get('vmid')}"
     resource_name = to_snake_case(name)
-    memory = resource_data.get("maxmem")
-    if memory is None:
-        memory = 0
+    memory = resource_data.get("maxmem", 0)
 
     attributes: Dict[str, Any] = {
         "target_node": resource_data.get("node"),
@@ -25,9 +23,13 @@ def _map_resource_to_terraform(
     }
 
     if resource_type == "vm":
-        attributes["name"] = name
-        attributes["sockets"] = resource_data.get("sockets", 1)
-        attributes["os_type"] = "cloud-init"
+        attributes.update(
+            {
+                "name": name,
+                "sockets": resource_data.get("sockets", 1),
+                "os_type": "cloud-init",
+            }
+        )
         resource_key = "proxmox_vm_qemu"
     else:
         attributes["hostname"] = name
@@ -45,11 +47,6 @@ def _map_resource_to_terraform(
             for c in resource_data["docker_containers"]
         ]
     return resource
-
-
-def map_vm_to_terraform(vm_data: Dict[str, Any]) -> Dict[str, Any]:
-    """Maps a Proxmox VM to a Terraform resource."""
-    return _map_resource_to_terraform(vm_data, "vm")
 
 
 def map_docker_container_to_compose(container_data: Dict[str, Any]) -> Dict[str, Any]:
@@ -72,6 +69,3 @@ def map_docker_container_to_compose(container_data: Dict[str, Any]) -> Dict[str,
     }
 
 
-def map_lxc_to_terraform(lxc_data: Dict[str, Any]) -> Dict[str, Any]:
-    """Maps a Proxmox LXC container to a Terraform resource."""
-    return _map_resource_to_terraform(lxc_data, "lxc")

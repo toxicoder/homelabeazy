@@ -8,34 +8,36 @@ from proxmoxer import ProxmoxAPI
 from proxmoxer.core import ResourceException
 
 
+def _get_proxmox_resources(
+    proxmox: ProxmoxAPI, resource_type: str
+) -> List[Dict[str, Any]]:
+    """
+    Generic function to fetch resources from Proxmox, including their
+    Docker containers.
+    """
+    try:
+        resources = proxmox.cluster.resources.get(type=resource_type)
+        for resource in resources:
+            vm_type = "qemu" if resource_type == "vm" else "lxc"
+            resource["docker_containers"] = get_docker_containers(
+                proxmox, resource["node"], resource["vmid"], vm_type
+            )
+        return resources
+    except ResourceException as e:
+        logging.error(f"Error fetching {resource_type}s: {e}")
+        return []
+
+
 def get_vms(proxmox: ProxmoxAPI) -> List[Dict[str, Any]]:
     """Returns a list of all VMs, including their Docker containers."""
-    try:
-        vms = proxmox.cluster.resources.get(type="vm")
-        for vm in vms:
-            vm["docker_containers"] = get_docker_containers(
-                proxmox, vm["node"], vm["vmid"], "qemu"
-            )
-        return vms
-    except ResourceException as e:
-        logging.error(f"Error fetching VMs: {e}")
-        return []
+    return _get_proxmox_resources(proxmox, "vm")
 
 
 def get_lxc_containers(proxmox: ProxmoxAPI) -> List[Dict[str, Any]]:
     """
     Returns a list of all LXC containers, including their Docker containers.
     """
-    try:
-        containers = proxmox.cluster.resources.get(type="lxc")
-        for container in containers:
-            container["docker_containers"] = get_docker_containers(
-                proxmox, container["node"], container["vmid"], "lxc"
-            )
-        return containers
-    except ResourceException as e:
-        logging.error(f"Error fetching LXC containers: {e}")
-        return []
+    return _get_proxmox_resources(proxmox, "lxc")
 
 
 def get_storage_pools(proxmox: ProxmoxAPI) -> List[Dict[str, Any]]:
