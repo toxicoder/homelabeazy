@@ -51,22 +51,12 @@
     daemon_reload: yes
 
 - name: Download and install minio exporter binary
-  get_url:
-    url: "https://github.com/prometheus/minio-exporter/releases/download/v0.0.12/minio-exporter-0.0.12.linux-amd64.tar.gz"
-    dest: /tmp/minio-exporter.tar.gz
-
-- name: Unarchive minio exporter
   unarchive:
-    src: /tmp/minio-exporter.tar.gz
-    dest: /tmp
+    src: "https://github.com/prometheus/minio-exporter/releases/download/v0.0.12/minio-exporter-0.0.12.linux-amd64.tar.gz"
+    dest: /usr/local/bin
     remote_src: yes
-
-- name: Move minio exporter binary
-  copy:
-    src: /tmp/minio-exporter-0.0.12.linux-amd64/minio-exporter
-    dest: /usr/local/bin/minio-exporter
-    mode: '0755'
-    remote_src: yes
+    extra_opts: [--strip-components=1]
+    creates: /usr/local/bin/minio-exporter
   notify: restart minio-exporter
 
 - name: Create systemd service file for minio exporter

@@ -1,7 +1,7 @@
 import argparse
 import logging
 import os
-
+import hvac
 from dotenv import load_dotenv
 from proxmoxer import ProxmoxAPI
 from proxmoxer.core import AuthenticationError as ProxmoxerAuthenticationError
@@ -33,13 +33,21 @@ def main(output_dir: str) -> None:
 
     proxmox_host = os.getenv("PROXMOX_HOST")
     proxmox_user = os.getenv("PROXMOX_USER")
-    proxmox_password = os.getenv("PROXMOX_PASSWORD")
+    vault_addr = os.getenv("VAULT_ADDR")
+    vault_token = os.getenv("VAULT_TOKEN")
 
-    if not all([proxmox_host, proxmox_user, proxmox_password]):
+    if not all([proxmox_host, proxmox_user, vault_addr, vault_token]):
         raise MissingEnvironmentVariableError(
-            "PROXMOX_HOST, PROXMOX_USER, and PROXMOX_PASSWORD must be set as "
+            "PROXMOX_HOST, PROXMOX_USER, VAULT_ADDR, and VAULT_TOKEN must be set as "
             "environment variables or in a .env file."
         )
+
+    try:
+        client = hvac.Client(url=vault_addr, token=vault_token)
+        proxmox_password_data = client.secrets.kv.v2.read_secret_version(path='proxmox')
+        proxmox_password = proxmox_password_data['data']['data']['password']
+    except Exception as e:
+        raise HomelabImporterError(f"Failed to retrieve Proxmox password from Vault: {e}")
 
     try:
         proxmox = ProxmoxAPI(

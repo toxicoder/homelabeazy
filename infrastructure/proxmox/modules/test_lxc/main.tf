@@ -4,4 +4,11 @@ resource "proxmox_lxc" "test_lxc" {
   vmid        = var.vmid
   memory      = var.memory
   cores       = var.cores
+
+  network {
+    name    = "eth0"
+    bridge  = var.service_bridge
+    ip      = "dhcp"
+    vlan_id = var.service_vlan_tag
+  }
 }

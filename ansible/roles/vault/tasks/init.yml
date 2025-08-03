@@ -43,5 +43,6 @@
   kubernetes.core.k8s_exec:
     namespace: vault
     pod: "{{ vault_pod.resources[0].metadata.name }}"
-    command: "vault operator unseal {{ vault_credentials.unseal_keys_b64[0] }}"
+    command: "vault operator unseal {{ item }}"
+  loop: "{{ vault_credentials.unseal_keys_b64 }}"
   no_log: true

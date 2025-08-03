@@ -34,15 +34,6 @@ else
     echo "Enabled community repository."
 fi
 
-# Disable "No Valid Subscription" popup
-JS_FILE="/usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js"
-if [ -f "$JS_FILE" ]; then
-    if grep -q "if (data.status !== 'Active') {" "$JS_FILE"; then
-        sed -i "s/if (data.status !== 'Active') {/if (false) {/" "$JS_FILE"
-        echo "Disabled 'No Valid Subscription' popup."
-    else
-        echo "'No Valid Subscription' popup already disabled."
-    fi
-else
-    echo "Proxmox javascript file not found. Skipping popup disable."
-fi
+# "No Valid Subscription" popup removal has been deprecated.
+# This was previously handled by a sed command, which is not a robust solution.
+# A better approach is to use a subscription or other supported methods.
