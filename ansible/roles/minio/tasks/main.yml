@@ -50,6 +50,12 @@
     enabled: yes
     daemon_reload: yes
 
+- name: Deploy MinIO ServiceMonitor
+  kubernetes.core.k8s:
+    state: present
+    apply: yes
+    definition: "{{ lookup('template', 'minio-servicemonitor.yml.j2') | from_yaml }}"
+
 - name: Download and install minio exporter binary
   unarchive:
     src: "https://github.com/prometheus/minio-exporter/releases/download/v0.0.12/minio-exporter-0.0.12.linux-amd64.tar.gz"

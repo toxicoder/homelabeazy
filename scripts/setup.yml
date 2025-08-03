@@ -1,4 +1,0 @@
----
-- import_playbook: cluster-setup.yml
-- import_playbook: core-services.yml
-- import_playbook: applications.yml

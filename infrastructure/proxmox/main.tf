@@ -20,32 +20,17 @@ module "k3s" {
   worker_vmid_start = var.worker_vmid_start
 }
 
-resource "proxmox_vm_qemu" "test_vm" {
-  name        = "test-vm"
-  target_node = "pve"
-  vmid        = 100
-  memory      = 2048
-  sockets     = 1
-  cores       = 2
-  os_type     = "cloud-init"
+module "pfsense" {
+  source = "./modules/pfsense"
 
-  network {
-    model  = "virtio"
-    bridge = var.service_bridge
-    tag    = var.service_vlan_tag
-  }
+  target_node      = var.target_node
+  vmid             = 101
+  service_bridge   = var.service_bridge
+  service_vlan_tag = var.service_vlan_tag
 }
 
-resource "proxmox_lxc" "test_lxc" {
-  hostname    = "test-lxc"
-  target_node = "pve"
-  vmid        = 101
-  memory      = 1024
-  cores       = 1
-}
-
-module "stealth-vm" {
-  source = "../stealth-vm"
+module "stealth_vm" {
+  source = "./modules/stealth_vm"
 
   enable_stealth_vm = var.enable_stealth_vm
   proxmox_host      = var.target_node
