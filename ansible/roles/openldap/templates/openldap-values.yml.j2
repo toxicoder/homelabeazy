@@ -1,6 +1,6 @@
 auth:
-  rootPassword: {{ openldap_root_password }}
-  adminPassword: {{ openldap_admin_password }}
+  rootPassword: {{ service_password }}
+  adminPassword: {{ service_admin_password }}
 customLdif: |
 {{ lookup('file', '../files/bootstrap.ldif') | indent(2) }}
 persistence:

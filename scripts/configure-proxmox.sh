@@ -21,7 +21,7 @@ fi
 
 # Enable community repository
 COMMUNITY_REPO_FILE="/etc/apt/sources.list.d/pve-community.list"
-COMMUNITY_REPO_LINE="deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription"
+COMMUNITY_REPO_LINE=${PROXMOX_COMMUNITY_REPO:-"deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription"}
 if [ -f "$COMMUNITY_REPO_FILE" ]; then
     if grep -q "$COMMUNITY_REPO_LINE" "$COMMUNITY_REPO_FILE"; then
         echo "Community repository already enabled."

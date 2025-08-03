@@ -23,14 +23,17 @@ def generate_secrets(config):
                 generate_password(secret["alias"])
 
 def get_vault_client():
-    # It's recommended to use environment variables for Vault address and token
     vault_addr = os.environ.get("VAULT_ADDR", "http://127.0.0.1:8200")
-    vault_token = os.environ.get("VAULT_TOKEN")
+    role_id = os.environ.get("VAULT_ROLE_ID")
+    secret_id = os.environ.get("VAULT_SECRET_ID")
 
-    if not vault_token:
-        raise ValueError("VAULT_TOKEN environment variable is not set")
+    if not role_id or not secret_id:
+        raise ValueError("VAULT_ROLE_ID and VAULT_SECRET_ID environment variables must be set")
 
-    return hvac.Client(url=vault_addr, token=vault_token)
+    client = hvac.Client(url=vault_addr)
+    client.auth.approle.login(role_id=role_id, secret_id=secret_id)
+
+    return client
 
 from cryptography.hazmat.primitives import serialization as crypto_serialization
 from cryptography.hazmat.primitives.asymmetric import rsa

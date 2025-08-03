@@ -114,26 +114,21 @@ jobs:
         with:
           go-version: '1.22'
 
-      - name: Run tests
+      - name: Run Go tests
         working-directory: ./infrastructure/proxmox
         run: go test -v ./test/...
 
-  python-test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install dependencies
+      - name: Install Python dependencies
         run: |
           pip install -r tools/homelab-importer/requirements.txt
           pip install flake8 pytest coverage
       - name: Run flake8
         run: flake8 tools/homelab-importer/
-      - name: Run tests with coverage
+      - name: Run Python tests with coverage
         run: |
           cd tools/homelab-importer
           coverage run -m unittest discover tests/
