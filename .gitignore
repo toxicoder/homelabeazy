@@ -35,4 +35,6 @@ config/
 ansible/group_vars/
 ansible/inventory/
 ldap.toml
+
+# gitleaks report
 gitleaks-report.json

@@ -177,11 +177,6 @@ To add a new secret, you need to:
 
 This repository is designed to be used as a template. You can clone it from GitHub, and then push it to your own private Gitea instance to store your homelab's configuration securely.
 
-This repository includes two `.gitignore` files:
-
-  - `.gitignore`: This is the default gitignore, and it's designed for the public GitHub repository. It ignores all sensitive files, such as configuration files, secrets, and terraform variables.
-  - `.gitignore.gitea`: This is the gitignore for your private Gitea repository. It's less strict and will allow you to commit your configuration files to your private repository.
-
 **Follow these steps to set up your private repository:**
 
 1.  **Clone the repository from GitHub:**
@@ -191,18 +186,7 @@ This repository includes two `.gitignore` files:
     cd homelabeazy
     ```
 
-2.  **Prepare your private repository:**
-
-      - Rename the default `.gitignore` to `.gitignore.github`:
-        ```bash
-        mv .gitignore .gitignore.github
-        ```
-      - Rename `.gitignore.gitea` to `.gitignore`:
-        ```bash
-        mv .gitignore.gitea .gitignore
-        ```
-
-3.  **Copy and customize the example configurations:**
+2.  **Copy and customize the example configurations:**
     This repository comes with example configuration files. You'll need to copy them and customize them for your own environment.
 
       - `config.example/`: This directory contains example application configurations. You should create a `config/` directory and copy the contents of `config.example/` into it. The `config/` directory is ignored by git, so you can store your private configurations there.
@@ -219,7 +203,7 @@ This repository includes two `.gitignore` files:
         cp infrastructure/proxmox/terraform.tfvars.example infrastructure/proxmox/terraform.tfvars
         ```
 
-4.  **Set up your private Gitea repository:**
+3.  **Set up your private Gitea repository:**
 
       - Create a new private repository in your Gitea instance.
       - Add your Gitea repository as a new remote:

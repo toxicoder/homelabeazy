@@ -1,6 +1,7 @@
 galaxy_info:
-  author: Your Name
+  author: HomelabEazy
   description: Deploys the Vault Secrets Operator
+  company: HomelabEazy
   license: MIT
   min_ansible_version: 2.12
   platforms:

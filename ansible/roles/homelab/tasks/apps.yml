@@ -1,5 +1,0 @@
----
-- name: Deploy applications
-  kubernetes.core.k8s:
-    state: present
-    template: 'apps.yml.j2'

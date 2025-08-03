@@ -36,9 +36,9 @@ spec:
             - -c
             - |
               VERSION={{ .Values.initContainer.appflowy.version }}
-              OS="unknown-linux-gnu"
-              ARCH="x86_64"
-              DISTRO="ubuntu-20.04"
+              OS={{ .Values.initContainer.appflowy.os }}
+              ARCH={{ .Values.initContainer.appflowy.arch }}
+              DISTRO={{ .Values.initContainer.appflowy.distro }}
               TARBALL="AppFlowy_${ARCH}-${OS}_${DISTRO}.tar.gz"
               DOWNLOAD_URL="https://github.com/AppFlowy-IO/AppFlowy/releases/download/${VERSION}/${TARBALL}"
               echo "Downloading AppFlowy from ${DOWNLOAD_URL}"
