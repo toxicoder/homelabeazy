@@ -9,10 +9,13 @@ module "k3s_master" {
   sockets     = var.master_sockets
   cores       = var.master_cores
   os_type     = "cloud-init"
-  network_bridge = var.network_bridge
   agent       = var.agent
-  mac         = var.mac
-  vlan        = var.vlan
+
+  networks = [{
+    bridge  = var.network_bridge
+    macaddr = var.mac
+    tag     = var.vlan
+  }]
 }
 
 module "k3s_worker" {
@@ -28,8 +31,11 @@ module "k3s_worker" {
   sockets     = var.worker_sockets
   cores       = var.worker_cores
   os_type     = "cloud-init"
-  network_bridge = var.network_bridge
   agent       = var.agent
-  mac         = var.mac
-  vlan        = var.vlan
+
+  networks = [{
+    bridge  = var.network_bridge
+    macaddr = var.mac
+    tag     = var.vlan
+  }]
 }

@@ -15,6 +15,7 @@ Requires-Dist: python-dotenv
 Requires-Dist: python-hcl2
 Requires-Dist: requests
 Requires-Dist: PyYAML
+Requires-Dist: hvac
 Provides-Extra: dev
 Requires-Dist: black; extra == "dev"
 Requires-Dist: isort; extra == "dev"

@@ -1,7 +1,7 @@
 import argparse
 import logging
 import os
-
+import hvac
 from dotenv import load_dotenv
 from proxmoxer import ProxmoxAPI
 from proxmoxer.core import AuthenticationError as ProxmoxerAuthenticationError
@@ -33,13 +33,21 @@ def main(output_dir: str) -> None:
 
     proxmox_host = os.getenv("PROXMOX_HOST")
     proxmox_user = os.getenv("PROXMOX_USER")
-    proxmox_password = os.getenv("PROXMOX_PASSWORD")
+    vault_addr = os.getenv("VAULT_ADDR")
+    vault_token = os.getenv("VAULT_TOKEN")
 
-    if not all([proxmox_host, proxmox_user, proxmox_password]):
+    if not all([proxmox_host, proxmox_user, vault_addr, vault_token]):
         raise MissingEnvironmentVariableError(
-            "PROXMOX_HOST, PROXMOX_USER, and PROXMOX_PASSWORD must be set as "
+            "PROXMOX_HOST, PROXMOX_USER, VAULT_ADDR, and VAULT_TOKEN must be set as "
             "environment variables or in a .env file."
         )
+
+    try:
+        client = hvac.Client(url=vault_addr, token=vault_token)
+        proxmox_password_data = client.secrets.kv.v2.read_secret_version(path='proxmox')
+        proxmox_password = proxmox_password_data['data']['data']['password']
+    except Exception as e:
+        raise HomelabImporterError(f"Failed to retrieve Proxmox password from Vault: {e}")
 
     try:
         proxmox = ProxmoxAPI(
@@ -71,13 +79,18 @@ def main(output_dir: str) -> None:
             + terraform_network_bridges
         )
 
+        # Create output directories
+        terraform_dir = os.path.join(output_dir, "terraform")
+        docker_dir = os.path.join(output_dir, "docker")
+        os.makedirs(terraform_dir, exist_ok=True)
+        os.makedirs(docker_dir, exist_ok=True)
+
         # Generate Terraform configuration
-        os.makedirs(output_dir, exist_ok=True)
-        generate_terraform_config(all_resources, output_dir)
-        logging.info(f"Terraform configuration generated in {output_dir}")
+        generate_terraform_config(all_resources, terraform_dir)
+        logging.info(f"Terraform configuration generated in {terraform_dir}")
 
         # Generate Terraform variables
-        tfvars_path = os.path.join(output_dir, "terraform.tfvars")
+        tfvars_path = os.path.join(terraform_dir, "terraform.tfvars")
         generate_terraform_tfvars(all_resources, tfvars_path)
         logging.info(f"Terraform variables generated in {tfvars_path}")
 
@@ -90,7 +103,7 @@ def main(output_dir: str) -> None:
         for resource in all_resources:
             if "docker_containers" in resource and resource["docker_containers"]:
                 filename = f'{resource["name"]}_docker-compose.yml'
-                compose_path = os.path.join(output_dir, filename)
+                compose_path = os.path.join(docker_dir, filename)
                 generate_docker_compose(resource["docker_containers"], compose_path)
                 logging.info(f"Docker Compose file generated in {compose_path}")
 
@@ -118,7 +131,7 @@ if __name__ == "__main__":
     log_level = logging.INFO
     if args.verbose:
         log_level = logging.DEBUG
-    logging.basicConfig(level=log_level, format="%(levelname)s: %(message)s")
+    logging.basicConfig(level=log_level, format="%(asctime)s - %(levelname)s: %(message)s")
 
     try:
         main(args.output_dir)

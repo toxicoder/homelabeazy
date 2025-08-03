@@ -55,8 +55,8 @@ resource "proxmox_lxc" "lxc" {
 
   network {
     name   = "eth0"
-    bridge = var.network_bridge
+    bridge = var.networks[0].bridge
     ip     = "dhcp"
-    tag    = var.vlan
+    tag    = var.networks[0].tag
   }
 }

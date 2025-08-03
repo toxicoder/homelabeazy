@@ -1,10 +1,15 @@
----
 galaxy_info:
   author: HomelabEazy
-  description: Installs and configures Authelia.
-  company: HomelabEazy
+  description: Deploys Authelia for single sign-on.
   license: MIT
-  min_ansible_version: 2.9
-  galaxy_tags: []
+  min_ansible_version: 2.12
+  platforms:
+    - name: Generic
+      versions:
+        - all
+  galaxy_tags:
+    - authelia
+    - sso
+    - security
 
 dependencies: []

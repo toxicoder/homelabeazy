@@ -2,25 +2,25 @@ resource "proxmox_vm_qemu" "stealth_vm" {
   count = var.enable_stealth_vm ? 1 : 0
 
   name        = "stealth-vm"
-  target_node = var.proxmox_host
+  target_node = var.target_node
   iso         = var.windows_iso
   onboot      = true
   agent       = 1
 
   # VM Configuration
-  bios     = var.bios
-  machine  = var.machine
-  cpu      = var.cpu
-  cores    = var.cores
+  bios     = "ovmf"
+  machine  = "q35"
+  cpu      = "host"
+  cores    = 4
   sockets  = 1
-  memory   = var.memory
-  scsihw   = var.scsihw
-  bootdisk = var.bootdisk
+  memory   = 8192
+  scsihw   = "virtio-scsi-pci"
+  bootdisk = "scsi0"
 
   # Network
   network {
-    model  = var.network_model
-    bridge = var.network_bridge
+    model   = "e1000"
+    bridge  = var.service_bridge
     macaddr = var.real_mac
   }
 
@@ -32,11 +32,4 @@ resource "proxmox_vm_qemu" "stealth_vm" {
 
   # QEMU Args
   args = "-cpu host,-hypervisor,+kvm_pv_unhalt,+kvm_pv_eoi,hv_spinlocks=0x1fff,hv_vapic,hv_time,hv_reset,hv_vpindex,hv_runtime,hv_relaxed,kvm=off,hv_vendor_id=${var.hv_vendor_id}"
-
-  # SMBIOS
-  smbios {
-    manufacturer = var.smbios_manufacturer
-    product      = var.smbios_product
-    uuid         = var.smbios_uuid
-  }
 }

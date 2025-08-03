@@ -5,36 +5,42 @@ import tempfile
 
 sys.path.insert(
     0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src"))
-)  # noqa: E501
-import unittest  # noqa: E402
-from unittest.mock import MagicMock, patch  # noqa: E402
+)
+import unittest
+from unittest.mock import MagicMock, patch
 
-from exceptions import (  # noqa: E402
+from exceptions import (
     MissingEnvironmentVariableError,
     ProxmoxConnectionError,
 )
-from main import main  # noqa: E402
+from main import main
 
 
 class TestMain(unittest.TestCase):
     def setUp(self):
         self.test_dir = tempfile.mkdtemp()
+        self.env_vars = {
+            "PROXMOX_HOST": "dummy_host",
+            "PROXMOX_USER": "dummy_user",
+            "VAULT_ADDR": "dummy_addr",
+            "VAULT_TOKEN": "dummy_token",
+        }
+        self.original_env = os.environ.copy()
+        os.environ.update(self.env_vars)
 
     def tearDown(self):
         shutil.rmtree(self.test_dir)
+        os.environ.clear()
+        os.environ.update(self.original_env)
 
+    @patch("main.hvac.Client")
     @patch("main.ProxmoxAPI")
-    def test_main_success(self, mock_proxmox_api):
-        # Set environment variables
-        os.environ["PROXMOX_HOST"] = "dummy_host"
-        os.environ["PROXMOX_USER"] = "dummy_user"
-        os.environ["PROXMOX_PASSWORD"] = "dummy_password"
-
-        # Mock the Proxmox API
+    def test_main_success(self, mock_proxmox_api, mock_hvac_client):
+        mock_hvac_client.return_value.secrets.kv.v2.read_secret_version.return_value = {
+            "data": {"data": {"password": "dummy_password"}}
+        }
         mock_proxmox_instance = MagicMock()
         mock_proxmox_api.return_value = mock_proxmox_instance
-
-        # Mock the return values of the discover functions
         mock_proxmox_instance.cluster.resources.get.side_effect = [
             [
                 {
@@ -54,64 +60,51 @@ class TestMain(unittest.TestCase):
                     "maxcpu": 1,
                 }
             ],
-            [],  # for get_network_bridges
+            [],
         ]
-        mock_proxmox_instance.storage.get.return_value = []  # for get_storage_pools
+        mock_proxmox_instance.storage.get.return_value = []
 
-        # Run the main function
         main(self.test_dir)
 
-        # Assert that the Terraform files were created
         terraform_dir = os.path.join(self.test_dir, "terraform")
         self.assertTrue(os.path.isdir(terraform_dir))
-        # This test is brittle as it assumes the file names. A better test
-        # would be to check the content of the directory.
-        # For now, we just check if any .tf file has been created.
         self.assertTrue(any(f.endswith(".tf") for f in os.listdir(terraform_dir)))
 
     def test_main_missing_env_vars(self):
-        # Unset environment variables
-        os.environ.pop("PROXMOX_HOST", None)
-        os.environ.pop("PROXMOX_USER", None)
-        os.environ.pop("PROXMOX_PASSWORD", None)
-
+        os.environ.clear()
         with self.assertRaises(MissingEnvironmentVariableError):
             main(self.test_dir)
 
+    @patch("main.hvac.Client")
     @patch(
         "main.ProxmoxAPI",
         side_effect=ProxmoxConnectionError("Connection Error"),
     )
-    def test_main_connection_error(self, mock_proxmox_api):
-        # Set environment variables
-        os.environ["PROXMOX_HOST"] = "dummy_host"
-        os.environ["PROXMOX_USER"] = "dummy_user"
-        os.environ["PROXMOX_PASSWORD"] = "dummy_password"
-
+    def test_main_connection_error(self, mock_proxmox_api, mock_hvac_client):
+        mock_hvac_client.return_value.secrets.kv.v2.read_secret_version.return_value = {
+            "data": {"data": {"password": "dummy_password"}}
+        }
         with self.assertRaises(ProxmoxConnectionError):
             main(self.test_dir)
 
     @patch("main.generate_docker_compose")
     @patch("main.get_lxc_containers")
     @patch("main.get_vms")
+    @patch("main.hvac.Client")
     @patch("main.ProxmoxAPI")
     def test_main_with_docker_containers(
         self,
         mock_proxmox_api,
+        mock_hvac_client,
         mock_get_vms,
         mock_get_lxc_containers,
         mock_generate_docker_compose,
     ):
-        # Set environment variables
-        os.environ["PROXMOX_HOST"] = "dummy_host"
-        os.environ["PROXMOX_USER"] = "dummy_user"
-        os.environ["PROXMOX_PASSWORD"] = "dummy_password"
-
-        # Mock the Proxmox API
+        mock_hvac_client.return_value.secrets.kv.v2.read_secret_version.return_value = {
+            "data": {"data": {"password": "dummy_password"}}
+        }
         mock_proxmox_instance = MagicMock()
         mock_proxmox_api.return_value = mock_proxmox_instance
-
-        # Mock the return values of the discover functions
         mock_get_vms.return_value = [
             {
                 "vmid": 100,
@@ -135,26 +128,24 @@ class TestMain(unittest.TestCase):
         ]
         mock_get_lxc_containers.return_value = []
 
-        # Run the main function
         main(self.test_dir)
 
-        # Assert that the Docker Compose file was created
         mock_generate_docker_compose.assert_called_once()
 
-    def test_main_no_docker_containers(self):
-        # Set environment variables
-        os.environ["PROXMOX_HOST"] = "dummy_host"
-        os.environ["PROXMOX_USER"] = "dummy_user"
-        os.environ["PROXMOX_PASSWORD"] = "dummy_password"
-
-        # Mock the Proxmox API
+    @patch("main.get_lxc_containers")
+    @patch("main.get_vms")
+    @patch("main.ProxmoxAPI")
+    @patch("main.hvac.Client")
+    def test_main_no_docker_containers(self, mock_hvac_client, mock_proxmox_api, mock_get_vms, mock_get_lxc_containers):
+        mock_hvac_client.return_value.secrets.kv.v2.read_secret_version.return_value = {
+            "data": {"data": {"password": "dummy_password"}}
+        }
         mock_proxmox_instance = MagicMock()
-        with patch("main.ProxmoxAPI", return_value=mock_proxmox_instance):
-            # Mock the return values of the discover functions
-            with patch("main.get_vms", return_value=[]):
-                with patch("main.get_lxc_containers", return_value=[]):
-                    # Run the main function
-                    main(self.test_dir)
+        mock_proxmox_api.return_value = mock_proxmox_instance
+        mock_get_vms.return_value = []
+        mock_get_lxc_containers.return_value = []
+
+        main(self.test_dir)
 
 
 if __name__ == "__main__":
