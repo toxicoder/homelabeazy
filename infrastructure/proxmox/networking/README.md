@@ -24,8 +24,4 @@ Firewall rules are managed by pfSense. The firewall is configured to allow traff
 
 ## Ansible Configuration
 
-The networking configuration is managed by the `networking` Ansible role. This role is responsible for creating the network bridges and VLANs on the Proxmox host.
-
-The pfSense configuration is managed by the `pfsense` Ansible role. This role is responsible for configuring the firewall rules.
-
-**Note:** The `pfsense` role requires that you have already configured the pfSense provider for Ansible. For more information, please see the [Ansible documentation](https://docs.ansible.com/ansible/latest/collections/community/general/pfsense_rule_module.html).
+The networking configuration is managed by the `homelab` Ansible role. This role is responsible for creating the network bridges and VLANs on the Proxmox host, and configuring the firewall rules.

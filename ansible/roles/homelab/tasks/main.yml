@@ -1,4 +1,6 @@
 ---
-# This role is deprecated and has been broken out into the following roles:
-# - core_services
-# - applications
+- name: Deploy Core Infrastructure
+  ansible.builtin.include_tasks: core_infra.yml
+
+- name: Deploy Applications
+  ansible.builtin.include_tasks: apps.yml

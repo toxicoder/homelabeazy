@@ -1,4 +1,4 @@
-variable "pm_api_url" {
+variable "proxmox_api_url" {
   description = "The URL for the Proxmox API."
   type        = string
 }

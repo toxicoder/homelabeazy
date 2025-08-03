@@ -39,8 +39,8 @@ variable "network_bridge" {
 
 variable "agent" {
   description = "Enable/disable the QEMU agent."
-  type        = number
-  default     = 0
+  type        = bool
+  default     = true
 }
 
 variable "mac" {
@@ -49,7 +49,7 @@ variable "mac" {
   default     = ""
 }
 
-variable "vlan" {
+variable "vlan_tag" {
   description = "The VLAN tag for the VMs' network interface."
   type        = number
   default     = -1
