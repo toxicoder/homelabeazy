@@ -1,51 +1,53 @@
-# Makefile for homelab setup
-
-# Default target
 .DEFAULT_GOAL := help
 
-# Variables
-SHELL := /bin/bash
-ANSIBLE_PLAYBOOK := ansible-playbook
-TERRAFORM := terraform
+# ==============================================================================
+# VARIABLES
+# ==============================================================================
 
-# Targets
+SHELL         := /bin/bash
+PROJECT_NAME  := homelabeazy
+PYTHON        := $(shell which python)
+
+# ==============================================================================
+# COMMANDS
+# ==============================================================================
+
 .PHONY: help
-help:
-	@echo "Usage: make [target]"
-	@echo ""
-	@echo "Targets:"
-	@echo "  setup                  - Run the setup script"
-	@echo "  configure-proxmox      - Run the proxmox configuration script"
-	@echo "  import                 - Run the import script"
-	@echo "  terraform-apply        - Apply terraform configuration"
-	@echo "  ansible-playbook-setup - Run the ansible setup playbook"
+help: ## Display this help screen
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: setup
-setup:
-	@echo "Running setup script..."
-	@scripts/setup.sh
+setup: ## Install dependencies and setup pre-commit
+	@echo ">>> Installing Python dependencies with Pipenv..."
+	@pipenv install --dev
+	@echo ">>> Installing pre-commit hooks..."
+	@pipenv run pre-commit install
 
-.PHONY: configure-proxmox
-configure-proxmox:
-	@echo "Running proxmox configuration script..."
-	@scripts/configure_proxmox.sh
+.PHONY: lint
+lint: lint-yaml lint-ansible lint-terraform ## Run all linters
 
-.PHONY: import
-import:
-	@echo "Running import script..."
-	@scripts/import.sh
+.PHONY: lint-yaml
+lint-yaml: ## Lint YAML files
+	@echo ">>> Linting YAML files..."
+	@pipenv run yamllint .
 
-.PHONY: terraform-apply
-terraform-apply:
-	@echo "Applying terraform configuration..."
-	$(TERRAFORM) -chdir=infrastructure/proxmox apply
+.PHONY: lint-ansible
+lint-ansible: ## Lint Ansible files
+	@echo ">>> Linting Ansible files..."
+	@pipenv run ansible-lint
 
-.PHONY: terraform-destroy
-terraform-destroy:
-	@echo "Destroying terraform configuration..."
-	$(TERRAFORM) -chdir=infrastructure/proxmox destroy
+.PHONY: lint-terraform
+lint-terraform: ## Lint Terraform files
+	@echo ">>> Formatting and linting Terraform files..."
+	@cd infrastructure/proxmox && pipenv run terraform fmt -recursive && pipenv run terraform validate
 
-.PHONY: ansible-playbook-setup
-ansible-playbook-setup:
-	@echo "Running ansible setup playbook..."
-	$(ANSIBLE_PLAYBOOK) ansible/playbooks/setup.yml
+.PHONY: test
+test: ## Run Molecule tests for all Ansible roles
+	@echo ">>> Running Molecule tests..."
+	@cd ansible/roles && pipenv run molecule test --all
+
+.PHONY: clean
+clean: ## Clean up temporary files
+	@echo ">>> Cleaning up..."
+	@find . -type f -name "*.pyc" -delete
+	@find . -type d -name "__pycache__" -delete

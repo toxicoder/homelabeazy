@@ -1,0 +1,21 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+ansible = "~=9.0"
+ansible-core = "~=2.16"
+molecule = {extras = ["docker"], version = "~=6.0"}
+python-vagrant = "*"
+jmespath = "*"
+pywinrm = "*"
+
+[dev-packages]
+yamllint = "*"
+ansible-lint = "*"
+pre-commit = "*"
+terraform-docs = "*"
+
+[requires]
+python_version = "3.11"

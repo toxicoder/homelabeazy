@@ -43,3 +43,9 @@ dist/
 
 # Ansible collections
 .ansible/
+
+# Pipenv
+Pipfile.lock
+
+# Molecule
+.molecule/
