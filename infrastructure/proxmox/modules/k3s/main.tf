@@ -12,7 +12,7 @@ resource "proxmox_vm_qemu" "k3s_master" {
   network {
     bridge  = var.network_bridge
     macaddr = var.mac
-    tag     = var.vlan
+    tag     = var.vlan_tag
     model   = "virtio"
   }
 }
@@ -33,7 +33,7 @@ resource "proxmox_vm_qemu" "k3s_worker" {
   network {
     bridge  = var.network_bridge
     macaddr = var.mac
-    tag     = var.vlan
+    tag     = var.vlan_tag
     model   = "virtio"
   }
 }

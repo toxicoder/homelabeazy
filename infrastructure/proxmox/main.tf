@@ -19,31 +19,36 @@ module "k3s" {
   master_vmid       = var.k3s_master_vm_id
   worker_vmid_start = var.k3s_worker_vm_id_start
   network_bridge    = var.proxmox_service_bridge
-  vlan              = var.proxmox_service_vlan_tag
+  vlan_tag          = var.proxmox_service_vlan_tag
 }
 
-resource "proxmox_vm_qemu" "test_vm" {
-  name        = "test-vm"
-  target_node = "pve"
-  vmid        = 100
-  memory      = 2048
-  sockets     = 1
-  cores       = 2
-  os_type     = "cloud-init"
+module "test_vm" {
+  source = "./modules/instance"
 
-  network {
-    model  = "virtio"
-    bridge = var.proxmox_service_bridge
-    tag    = var.proxmox_service_vlan_tag
-  }
+  instance_type = "qemu"
+  name          = "test-vm"
+  target_node   = "pve"
+  vmid          = 100
+  memory        = 2048
+  sockets       = 1
+  cores         = 2
+  os_type       = "cloud-init"
+
+  network_bridge = var.proxmox_service_bridge
+  vlan_tag       = var.proxmox_service_vlan_tag
 }
 
-resource "proxmox_lxc" "test_lxc" {
-  hostname    = "test-lxc"
-  target_node = "pve"
-  vmid        = 101
-  memory      = 1024
-  cores       = 1
+module "test_lxc" {
+  source = "./modules/instance"
+
+  instance_type = "lxc"
+  hostname      = "test-lxc"
+  target_node   = "pve"
+  vmid          = 101
+  memory        = 1024
+  cores         = 1
+
+  network_bridge = var.proxmox_service_bridge
 }
 
 module "stealth-vm" {

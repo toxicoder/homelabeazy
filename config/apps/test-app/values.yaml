@@ -1,2 +1,0 @@
-namespace: test-app
-test_secret: "vault:secret/data/test-app#test_secret"

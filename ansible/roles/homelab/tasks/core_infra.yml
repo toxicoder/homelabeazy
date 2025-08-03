@@ -5,8 +5,8 @@
 - name: Deploy Authelia
   ansible.builtin.include_tasks: authelia.yml
 
-- name: Configure Grafana
-  ansible.builtin.include_tasks: grafana.yml
-
 - name: Deploy ArgoCD
   ansible.builtin.include_tasks: argocd.yml
+
+- name: Deploy monitoring stack
+  ansible.builtin.include_tasks: monitoring.yml

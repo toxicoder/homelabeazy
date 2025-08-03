@@ -214,14 +214,11 @@ This repository includes two `.gitignore` files:
 3.  **Copy and customize the example configurations:**
     This repository comes with example configuration files. You'll need to copy them and customize them for your own environment.
 
-      - `config/`: This directory contains all the application configurations. Copy the `config.example/` directory to `config/` and customize the `values.yaml` files inside.
+      - `config.example/`: This directory contains example application configurations. You should create a `config/` directory and copy the contents of `config.example/` into it. The `config/` directory is ignored by git, so you can store your private configurations there.
         ```bash
         cp -r config.example/ config/
         ```
-      - `ansible/group_vars/all.yml`: This file contains global variables for Ansible. Copy `ansible/group_vars/all.yml.example` to `ansible/group_vars/all.yml` and edit it.
-        ```bash
-        cp ansible/group_vars/all.yml.example ansible/group_vars/all.yml
-        ```
+      - `ansible/group_vars/all.yml`: This file contains global variables for Ansible. You can edit this file to customize your deployment.
       - `ldap.toml`: This is the configuration file for LDAP. Copy `ldap.toml.example` to `ldap.toml` and edit it.
         ```bash
         cp ldap.toml.example ldap.toml
@@ -277,6 +274,7 @@ The architecture is designed to be highly available and scalable. The K3s cluste
   - **Terraform:** Used to provision the virtual machines for the K3s cluster on Proxmox.
   - **Ansible:** Used for configuration management and application deployment on the K3s cluster.
   - **K3s:** A lightweight, certified Kubernetes distribution that is easy to install and manage.
+  - **Homelab Role:** A comprehensive Ansible role that deploys and configures the entire homelab.
   - **Traefik:** A modern reverse proxy and load balancer that makes deploying microservices easy.
   - **Authelia:** An open-source authentication and authorization server providing two-factor authentication and single sign-on.
   - **OpenLDAP:** A lightweight directory access protocol for user authentication.
@@ -298,7 +296,7 @@ Service discovery is provided by Consul. All services are automatically register
 
 Firewall rules are managed by pfSense. The firewall is configured to allow traffic between the VLANs according to a set of predefined rules.
 
-For more detailed information about the networking setup, please see the [networking documentation](https://www.google.com/search?q=infrastructure/proxmox/networking/README.md).
+For more detailed information about the networking setup, please see the [networking documentation](infrastructure/proxmox/networking/README.md).
 
 ### System Architecture Diagram
 
@@ -534,7 +532,7 @@ The deployment process is designed to be as automated as possible. However, you 
 1.  **Navigate to the Terraform directory:**
 
     ```bash
-    cd terraform
+    cd infrastructure/proxmox
     ```
 
 2.  **Create a `terraform.tfvars` file:**
@@ -547,7 +545,7 @@ The deployment process is designed to be as automated as possible. However, you 
 
     | Variable              | Description                                                                 |
     | --------------------- | --------------------------------------------------------------------------- |
-    | `pm_api_url`          | The URL of your Proxmox API.                                                |
+    | `proxmox_api_url`     | The URL of your Proxmox API.                                                |
     | `pm_token_id`         | Your Proxmox API token ID.                                                  |
     | `pm_token_secret`     | Your Proxmox API token secret.                                              |
     | `proxmox_host`        | The name of the Proxmox node to deploy to.                                  |
@@ -628,13 +626,6 @@ This project uses Molecule to lint and syntax check the Ansible roles.
 
     ```bash
     cd ansible/roles/<role_name>
-    molecule test
-    ```
-
-    For example, to run the tests for the `core_infra` role:
-
-    ```bash
-    cd ansible/roles/core_infra
     molecule test
     ```
 
@@ -864,4 +855,4 @@ To promote the current version of the `main` branch to the staging environment, 
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](https://www.google.com/search?q=LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
