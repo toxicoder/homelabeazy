@@ -1,6 +1,7 @@
 module "k3s-master" {
-  source = "../k3s-node"
+  source = "../instance"
 
+  instance_type  = "qemu"
   name           = "k3s-master"
   target_node    = var.target_node
   clone          = var.clone
@@ -15,9 +16,10 @@ module "k3s-master" {
 }
 
 module "k3s-worker" {
-  source = "../k3s-node"
+  source = "../instance"
   count  = var.worker_count
 
+  instance_type  = "qemu"
   name           = "k3s-worker-${count.index}"
   target_node    = var.target_node
   clone          = var.clone

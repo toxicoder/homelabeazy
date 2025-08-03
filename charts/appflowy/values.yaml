@@ -12,13 +12,14 @@ image:
 
 initContainer:
   image:
-    repository: busybox
-    tag: latest
+    repository: "busybox"
+    tag: "latest"
   appflowy:
     version: "0.9.5"
     os: "unknown-linux-gnu"
     arch: "x86_64"
     distro: "ubuntu-20.04"
+    download_url_base: "https://github.com/AppFlowy-IO/AppFlowy/releases/download"
 
 imagePullSecrets: []
 nameOverride: ""

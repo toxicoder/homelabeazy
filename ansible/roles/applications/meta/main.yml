@@ -1,10 +1,12 @@
 ---
 galaxy_info:
-  author: HomelabEazy
-  description: Deploys applications.
-  company: HomelabEazy
-  license: MIT
-  min_ansible_version: 2.9
-  galaxy_tags: []
+  author: "HomelabEazy"
+  description: "A role to deploy various applications in the homelab."
+  company: "HomelabEazy"
+  license: "MIT"
+  min_ansible_version: "2.9"
+  galaxy_tags:
+    - "homelab"
+    - "applications"
 
 dependencies: []

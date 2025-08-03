@@ -31,8 +31,9 @@ resource "proxmox_vm_qemu" "vm" {
   agent   = var.agent
 
   network {
-    model  = var.network_model
-    bridge = var.network_bridge
-    tag    = var.vlan_tag
+    model   = var.network_model
+    bridge  = var.network_bridge
+    tag     = var.vlan_tag
+    macaddr = var.mac != "" ? var.mac : null
   }
 }

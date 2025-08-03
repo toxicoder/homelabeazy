@@ -8,8 +8,9 @@
     ansible_host: "mock-synology-api"
     ansible_port: 8000
     ansible_user: "admin"
-    ansible_password: "password" # This is a mock password, not a real one
+    ansible_password: "{{ vault_mock_password }}"
     test_user: "testuser"
+    test_user_password: "{{ vault_mock_test_user_password }}"
     test_group: "testgroup"
     test_folder: "testfolder"
 
@@ -26,7 +27,7 @@
         state: present
         config:
           email: "testuser@example.com"
-          password: "some_password"
+          password: "{{ test_user_password }}"
       register: create_user_result
 
     - name: Verify user creation
@@ -46,7 +47,7 @@
         state: present
         config:
           email: "testuser@example.com"
-          password: "some_password"
+          password: "{{ test_user_password }}"
       register: create_user_idempotent_result
 
     - name: Verify user creation idempotency

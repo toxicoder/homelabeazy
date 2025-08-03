@@ -1,14 +1,12 @@
-- name: Set default environment
+- name: "Set default environment"
   ansible.builtin.set_fact:
     homelab_config_env: "{{ env | default('dev') }}"
 
-- name: Load configuration files
+- name: "Load configuration files"
   ansible.builtin.include_vars:
     file: "{{ item }}"
     name: "config_file"
-  with_items:
-    - "../../config/config.yml"
-    - "../../config/applications.yml"
+  with_items: "{{ homelab_config_files }}"
 
 - name: Combine common and environment-specific configurations
   ansible.builtin.set_fact:
@@ -28,5 +26,6 @@
     - { src: 'main.yml.j2', dest: 'main-configmap.yml' }
 
 - name: Apply configmaps
-  ansible.builtin.command: kubectl apply -f {{ config_maps_dir }}
-  changed_when: true
+  kubernetes.core.k8s:
+    state: present
+    src: "{{ config_maps_dir }}"

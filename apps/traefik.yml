@@ -1,20 +1,20 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
+apiVersion: "argoproj.io/v1alpha1"
+kind: "Application"
 metadata:
-  name: traefik
-  namespace: argocd
+  name: "traefik"
+  namespace: "argocd"
 spec:
-  project: default
+  project: "default"
   source:
-    repoURL: 'https://helm.traefik.io/traefik'
-    chart: traefik
-    targetRevision: v25.0.0
+    repoURL: "https://helm.traefik.io/traefik"
+    chart: "traefik"
+    targetRevision: "v25.0.0"
     helm:
       valueFiles:
         - "config/apps/traefik/values.yaml"
   destination:
-    server: 'https://kubernetes.default.svc'
-    namespace: traefik
+    server: "https://kubernetes.default.svc"
+    namespace: "traefik"
   syncPolicy:
     automated:
       prune: true
