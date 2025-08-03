@@ -1,6 +1,8 @@
 ---
-- name: Deploy Core Infrastructure
-  ansible.builtin.include_tasks: core_infra.yml
+- name: Deploy Traefik
+  ansible.builtin.include_role:
+    name: traefik
 
-- name: Deploy Applications
-  ansible.builtin.include_tasks: apps.yml
+- name: Deploy monitoring stack
+  ansible.builtin.include_role:
+    name: efk-stack

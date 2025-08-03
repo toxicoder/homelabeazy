@@ -1,12 +1,103 @@
 ---
-- name: Include system configuration tasks
-  include_tasks: system.yml
+# ==============================================================================
+# System Configuration
+# ==============================================================================
+- name: Check hostname
+  ansible.builtin.raw: nvram get odmpid
+  register: odmpid_check
+  changed_when: false
 
-- name: Include Wi-Fi configuration tasks
-  include_tasks: wifi.yml
+- name: Set hostname
+  ansible.builtin.raw: nvram set odmpid={{ asuswrt_hostname }}
+  when: odmpid_check.stdout != asuswrt_hostname
+  notify: commit_nvram_changes
 
-- name: Include DHCP static lease tasks
-  include_tasks: dhcp.yml
+- name: Check sshd enabled
+  ansible.builtin.raw: nvram get sshd_enable
+  register: sshd_enable_check
+  changed_when: false
 
-- name: Include Port Forwarding tasks
-  include_tasks: port_forwarding.yml
+- name: Set sshd enabled
+  ansible.builtin.raw: nvram set sshd_enable=1
+  when: sshd_enable_check.stdout != "1"
+  notify: commit_nvram_changes
+
+- name: Check sshd wan access
+  ansible.builtin.raw: nvram get sshd_wan
+  register: sshd_wan_check
+  changed_when: false
+
+- name: Set sshd wan access
+  ansible.builtin.raw: nvram set sshd_wan=1
+  when: sshd_wan_check.stdout != "1"
+  notify: commit_nvram_changes
+
+# ==============================================================================
+# Wi-Fi Configuration
+# ==============================================================================
+- name: Configure wifi settings
+  community.general.nvram:
+    name: "{{ item.nvram_prefix }}_ssid"
+    value: "{{ item.ssid }}"
+  loop: "{{ asuswrt_wifi_config }}"
+  notify: restart_wireless
+
+- name: Configure wifi password
+  community.general.nvram:
+    name: "{{ item.nvram_prefix }}_wpa_psk"
+    value: "{{ item.password }}"
+  loop: "{{ asuswrt_wifi_config }}"
+  notify: restart_wireless
+
+- name: Configure wifi channel
+  community.general.nvram:
+    name: "{{ item.nvram_prefix }}_channel"
+    value: "{{ item.channel }}"
+  loop: "{{ asuswrt_wifi_config }}"
+  notify: restart_wireless
+
+# ==============================================================================
+# DHCP Static Leases
+# =================================================.
+- name: Get current DHCP static list
+  ansible.builtin.raw: "nvram get dhcp_staticlist"
+  register: dhcp_staticlist_raw
+  changed_when: false
+  check_mode: false
+
+- name: Set desired DHCP static list
+  ansible.builtin.set_fact:
+    desired_dhcp_staticlist: >-
+      {{ asuswrt_dhcp_static_leases | map(attribute='mac') |
+      zip(asuswrt_dhcp_static_leases | map(attribute='ip')) |
+      zip(asuswrt_dhcp_static_leases | map(attribute='hostname')) |
+      map('flatten') | map('join', '>') | join(' ') }}
+
+- name: Manage DHCP static list
+  ansible.builtin.raw: "nvram set dhcp_staticlist='{{ desired_dhcp_staticlist }}'"
+  when: dhcp_staticlist_raw.stdout != desired_dhcp_staticlist
+  notify: commit_nvram_changes
+
+# ==============================================================================
+# Port Forwarding
+# ==============================================================================
+- name: Get current port forwarding list
+  ansible.builtin.raw: "nvram get vts_rulelist"
+  register: vts_rulelist_raw
+  changed_when: false
+  check_mode: false
+
+- name: Set desired port forwarding list
+  ansible.builtin.set_fact:
+    desired_vts_rulelist: >-
+      {{ asuswrt_port_forwards | map(attribute='description') |
+      zip(asuswrt_port_forwards | map(attribute='external_port')) |
+      zip(asuswrt_port_forwards | map(attribute='internal_ip')) |
+      zip(asuswrt_port_forwards | map(attribute='internal_port')) |
+      zip(asuswrt_port_forwards | map(attribute='protocol')) |
+      map('flatten') | map('join', '>') | join('<') }}
+
+- name: Manage port forwarding list
+  ansible.builtin.raw: "nvram set vts_rulelist='{{ desired_vts_rulelist }}'"
+  when: vts_rulelist_raw.stdout != desired_vts_rulelist
+  notify: commit_nvram_changes

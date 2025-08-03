@@ -1,18 +1,18 @@
 resource "proxmox_vm_qemu" "stealth_vm" {
   count = var.stealth_vm_enabled ? 1 : 0
 
-  name        = "stealth-vm"
+  name        = var.stealth_vm_name
   target_node = var.proxmox_node
   iso         = var.stealth_vm_windows_iso
-  onboot      = true
-  agent       = 1
+  onboot      = var.stealth_vm_onboot
+  agent       = var.stealth_vm_agent_enabled
 
   # VM Configuration
   bios     = var.stealth_vm_bios
   machine  = var.stealth_vm_machine
   cpu      = var.stealth_vm_cpu
   cores    = var.stealth_vm_cores
-  sockets  = 1
+  sockets  = var.stealth_vm_sockets
   memory   = var.stealth_vm_memory
   scsihw   = var.stealth_vm_scsihw
   bootdisk = var.stealth_vm_bootdisk
@@ -27,7 +27,7 @@ resource "proxmox_vm_qemu" "stealth_vm" {
   # GPU Passthrough
   hostpci {
     host = var.stealth_vm_gpu_pci_id
-    pcie = 1
+    pcie = var.stealth_vm_pcie_enabled
   }
 
   # QEMU Args

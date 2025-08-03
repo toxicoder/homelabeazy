@@ -93,3 +93,33 @@ variable "proxmox_service_bridge" {
   type        = string
   default     = "vmbr0"
 }
+
+variable "stealth_vm_name" {
+  description = "The name of the stealth VM."
+  type        = string
+  default     = "stealth-vm"
+}
+
+variable "stealth_vm_onboot" {
+  description = "Whether to start the stealth VM on boot."
+  type        = bool
+  default     = true
+}
+
+variable "stealth_vm_agent_enabled" {
+  description = "Whether to enable the QEMU guest agent."
+  type        = number
+  default     = 1
+}
+
+variable "stealth_vm_sockets" {
+  description = "The number of sockets for the stealth VM."
+  type        = number
+  default     = 1
+}
+
+variable "stealth_vm_pcie_enabled" {
+  description = "Whether to enable PCIe for the GPU passthrough."
+  type        = number
+  default     = 1
+}

@@ -11,6 +11,9 @@ ANSIBLE_PLAYBOOK="playbooks/main.yml"
 ANSIBLE_INVENTORY="inventory/inventory.auto.yml"
 STEALTH_VM_PLAYBOOK="stealth-vm/ansible/playbook.yml"
 
+# --- Global Variables ---
+enable_stealth_vm="n"
+
 # --- Functions ---
 
 # Cleanup function

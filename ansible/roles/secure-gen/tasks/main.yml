@@ -1,3 +1,14 @@
 ---
-- name: Install secure-gen tool
-  include_tasks: install.yml
+- name: Install python libraries
+  ansible.builtin.pip:
+    name:
+      - hvac
+      - cryptography
+      - python-gnupg
+    virtualenv: "{{ python_venv_path }}"
+
+- name: Copy secure-gen tool
+  ansible.builtin.copy:
+    src: secure-gen
+    dest: "{{ python_venv_path }}/bin/secure-gen"
+    mode: '0755'

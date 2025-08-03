@@ -3,10 +3,9 @@ name: nas
 version: 1.0.0
 readme: README.md
 authors:
-  - Your Name <your.email@example.com>
+  - HomelabEazy
 description: A collection to manage Synology NAS devices.
-license:
-  - GPL-2.0-or-later
+license: MIT
 tags:
   - synology
   - nas

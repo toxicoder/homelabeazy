@@ -1,0 +1,28 @@
+---
+# defaults file for asuswrt role
+asuswrt_hostname: "asus"
+
+asuswrt_wifi_config: []
+# Example:
+# asuswrt_wifi_config:
+#   - band: "2.4GHz"
+#     nvram_prefix: "wl0"
+#     ssid: "MyHomeNetwork"
+#     password: "your_password"
+#     channel: "auto"
+
+asuswrt_dhcp_static_leases: []
+# Example:
+# asuswrt_dhcp_static_leases:
+#   - mac: "AA:BB:CC:DD:EE:01"
+#     ip: "192.168.50.101"
+#     name: "my-device"
+
+asuswrt_port_forwards: []
+# Example:
+# asuswrt_port_forwards:
+#   - description: "Web Server"
+#     external_port: 443
+#     internal_port: 443
+#     internal_ip: "192.168.50.200"
+#     protocol: "tcp"

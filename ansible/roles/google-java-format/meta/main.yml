@@ -1,0 +1,10 @@
+---
+galaxy_info:
+  author: HomelabEazy
+  description: Installs google-java-format.
+  company: HomelabEazy
+  license: MIT
+  min_ansible_version: 2.9
+  galaxy_tags: []
+
+dependencies: []
