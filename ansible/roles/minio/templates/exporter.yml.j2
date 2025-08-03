@@ -18,8 +18,8 @@ spec:
         image: prom/minio-exporter:latest
         args:
         - --minio.server={{ minio_url }}
-        - --minio.access-key={{ minio_access_key }}
-        - --minio.secret-key={{ minio_secret_key }}
+        - --minio.access-key={{ service_user }}
+        - --minio.secret-key={{ service_password }}
         ports:
         - containerPort: 9100
 ---
