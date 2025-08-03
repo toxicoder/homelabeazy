@@ -22,34 +22,6 @@ module "k3s" {
   vlan_tag          = var.proxmox_service_vlan_tag
 }
 
-module "test_vm" {
-  source = "./modules/instance"
-
-  instance_type = "qemu"
-  name          = "test-vm"
-  target_node   = "pve"
-  vmid          = 100
-  memory        = 2048
-  sockets       = 1
-  cores         = 2
-  os_type       = "cloud-init"
-
-  network_bridge = var.proxmox_service_bridge
-  vlan_tag       = var.proxmox_service_vlan_tag
-}
-
-module "test_lxc" {
-  source = "./modules/instance"
-
-  instance_type = "lxc"
-  hostname      = "test-lxc"
-  target_node   = "pve"
-  vmid          = 101
-  memory        = 1024
-  cores         = 1
-
-  network_bridge = var.proxmox_service_bridge
-}
 
 module "stealth-vm" {
   source = "../stealth-vm"

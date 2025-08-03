@@ -3,6 +3,18 @@ variable "proxmox_api_url" {
   type        = string
 }
 
+variable "pm_token_id" {
+  description = "The Proxmox API token ID."
+  type        = string
+  sensitive   = true
+}
+
+variable "pm_token_secret" {
+  description = "The Proxmox API token secret."
+  type        = string
+  sensitive   = true
+}
+
 variable "proxmox_node" {
   description = "The Proxmox node to create the VMs on."
   type        = string

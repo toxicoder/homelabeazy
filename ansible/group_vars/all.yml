@@ -1,5 +1,5 @@
 ---
-domain_root: "homelab.dev"
-traefik_namespace: "traefik"
-traefik_load_balancer_ip: "192.168.1.250"
-authelia_namespace: "authelia"
+# All variables are now managed in the `config/config.yml` file.
+# This file is only kept for compatibility with older versions.
+
+# You can add non-sensitive, global variables here if needed.

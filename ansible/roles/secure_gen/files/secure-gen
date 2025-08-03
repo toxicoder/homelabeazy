@@ -209,6 +209,9 @@ def generate_password(alias):
 
 if __name__ == "__main__":
     import yaml
-    with open("../../secrets.yml", "r") as f:
+    with open("../../../../config/config.yml", "r") as f:
         config = yaml.safe_load(f)
-    generate_secrets(config)
+    if "secrets_to_generate" in config:
+        generate_secrets(config["secrets_to_generate"])
+    else:
+        print("No secrets to generate.")
