@@ -1,18 +1,30 @@
 ---
+- name: Check hostname
+  ansible.builtin.raw: nvram get odmpid
+  register: odmpid_check
+  changed_when: false
+
 - name: Set hostname
-  community.general.nvram:
-    name: odmpid
-    value: "{{ odmpid }}"
+  ansible.builtin.raw: nvram set odmpid={{ odmpid }}
+  when: odmpid_check.stdout != odmpid
   notify: commit_nvram_changes
+
+- name: Check sshd enabled
+  ansible.builtin.raw: nvram get sshd_enable
+  register: sshd_enable_check
+  changed_when: false
 
 - name: Set sshd enabled
-  community.general.nvram:
-    name: sshd_enable
-    value: "1"
+  ansible.builtin.raw: nvram set sshd_enable=1
+  when: sshd_enable_check.stdout != "1"
   notify: commit_nvram_changes
 
+- name: Check sshd wan access
+  ansible.builtin.raw: nvram get sshd_wan
+  register: sshd_wan_check
+  changed_when: false
+
 - name: Set sshd wan access
-  community.general.nvram:
-    name: sshd_wan
-    value: "1"
+  ansible.builtin.raw: nvram set sshd_wan=1
+  when: sshd_wan_check.stdout != "1"
   notify: commit_nvram_changes
