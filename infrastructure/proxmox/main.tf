@@ -11,13 +11,13 @@ terraform {
   }
 }
 
-module "k3s" {
-  source = "./modules/k3s"
+module "k3s-cluster" {
+  source = "./modules/k3s-cluster"
 
   target_node       = var.proxmox_node
   clone             = var.proxmox_template
-  master_vmid       = var.k3s_master_vm_id
-  worker_vmid_start = var.k3s_worker_vm_id_start
+  master_vm_id      = var.k3s_master_vm_id
+  worker_vm_id_start = var.k3s_worker_vm_id_start
   network_bridge    = var.proxmox_service_bridge
   vlan_tag          = var.proxmox_service_vlan_tag
 }

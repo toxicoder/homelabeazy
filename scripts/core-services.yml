@@ -6,7 +6,7 @@
     - vault
     - vault-secrets-operator
     - openldap
-    - role: efk_stack
+    - role: efk-stack
     - role: velero
     - role: homepage
     - role: redis

@@ -8,7 +8,7 @@ variable "clone" {
   type        = string
 }
 
-variable "master_vmid" {
+variable "master_vm_id" {
   description = "The ID of the master VM."
   type        = number
 }
@@ -61,7 +61,7 @@ variable "worker_count" {
   default     = 1
 }
 
-variable "worker_vmid_start" {
+variable "worker_vm_id_start" {
   description = "The starting ID of the worker VMs."
   type        = number
 }
