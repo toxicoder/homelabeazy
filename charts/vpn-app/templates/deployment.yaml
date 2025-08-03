@@ -47,3 +47,11 @@ spec:
           imagePullPolicy: {{ .Values.application.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.application.port }}
+          command:
+            - /bin/sh
+            - -c
+            - |
+              # Wait for gluetun to be ready
+              while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:8888/v1/openvpn/status)" != "200" ]]; do sleep 1; done
+              # Replace this with the actual command to start your application
+              /bin/sh

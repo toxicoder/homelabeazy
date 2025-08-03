@@ -1,10 +1,12 @@
----
 galaxy_info:
-  author: HomelabEazy
-  description: Deploys and configures the Vault Secrets Operator.
-  company: HomelabEazy
+  author: Your Name
+  description: Deploys the Vault Secrets Operator
   license: MIT
-  min_ansible_version: 2.9
+  min_ansible_version: 2.12
+  platforms:
+    - name: Generic
+      versions:
+        - all
   galaxy_tags: []
 
 dependencies: []

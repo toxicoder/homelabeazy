@@ -4,7 +4,8 @@ metadata:
   name: fluentd-config
   namespace: {{ efk_namespace }}
 data:
-  fluent.conf: {{ lookup('template', 'fluentd.conf.j2') | to_nice_json }}
+  fluent.conf: |
+{{ lookup('template', 'fluentd.conf.j2') | to_nice_json }}
 ---
 apiVersion: apps/v1
 kind: DaemonSet
