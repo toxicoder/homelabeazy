@@ -5,7 +5,7 @@ resource "proxmox_vm_qemu" "stealth_vm" {
   target_node = var.proxmox_node
   iso         = var.stealth_vm_windows_iso
   onboot      = var.stealth_vm_onboot
-  agent       = var.stealth_vm_agent_enabled
+  agent       = var.stealth_vm_agent_enabled ? 1 : 0
 
   # VM Configuration
   bios     = var.stealth_vm_bios
@@ -27,7 +27,7 @@ resource "proxmox_vm_qemu" "stealth_vm" {
   # GPU Passthrough
   hostpci {
     host = var.stealth_vm_gpu_pci_id
-    pcie = var.stealth_vm_pcie_enabled
+    pcie = var.stealth_vm_pcie_enabled ? 1 : 0
   }
 
   # QEMU Args

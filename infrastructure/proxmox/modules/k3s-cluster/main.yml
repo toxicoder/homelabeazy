@@ -1,8 +1,0 @@
----
-galaxy_info:
-  author: "Jules"
-  description: "An Ansible role to deploy a k3s cluster on Proxmox."
-  license: "MIT"
-  min_ansible_version: "2.9"
-
-dependencies: []
