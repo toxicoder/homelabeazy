@@ -1,0 +1,25 @@
+# From Pipfile
+ansible~=9.0
+ansible-core~=2.16
+molecule[docker]~=6.0
+python-vagrant
+jmespath
+pywinrm
+yamllint
+ansible-lint
+pre-commit
+
+# From ansible/requirements.txt
+python-terraform
+
+# From tools/homelab-importer/pyproject.toml
+proxmoxer
+python-dotenv
+python-hcl2
+requests
+PyYAML
+hvac
+black
+isort
+ruff
+pytest
