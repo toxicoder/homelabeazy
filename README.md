@@ -51,8 +51,9 @@ Before you begin, you will need the following:
 
 -   A **Proxmox server** with a cloud-init template for your desired operating system.
 -   **Ansible** and **Terraform** installed on your local machine.
--   A **password manager** such as Bitwarden or 1Password to store your secrets.
+-   **[yq](https://github.com/mikefarah/yq#install)** for processing YAML files.
 -   An **API token** for your Proxmox server.
+-   A **password manager** such as Bitwarden or 1Password to store your secrets.
 
 ## Getting Started
 
@@ -61,78 +62,62 @@ These instructions will guide you through setting up the homelab environment on 
 ### 1. Clone the Repository
 
 ```bash
-git clone [https://github.com/toxicoder/homelabeazy.git](https://github.com/toxicoder/homelabeazy.git)
+git clone https://github.com/toxicoder/homelabeazy.git
 cd homelabeazy
-````
+```
 
 ### 2\. Automated Setup (Recommended)
 
-The `make setup-homelab` command is the easiest way to get started. It will automatically provision the infrastructure, configure secrets, and deploy the applications with minimal user interaction.
+The `make setup` command is the easiest way to get started. It will automatically provision the infrastructure, configure secrets, and deploy the applications with minimal user interaction.
 
 ```bash
-make setup-homelab
+make setup
 ```
 
-This will run the `scripts/setup.sh` script, which will guide you through the following steps:
+This command will guide you through the following steps:
 
-1.  **Configuration:** The script will create a `config/` directory by copying the contents of the `config.example/` directory. This is where all your personalized configuration will be stored.
+1.  **Dependency Check:** Verifies that `terraform`, `ansible-playbook`, and `yq` are installed.
+2.  **Configuration:** Creates a `config/` directory by copying the contents of the `config.example/` directory. This is where all your personalized configuration will be stored.
+3.  **Proxmox Credentials:** Prompts you to enter your Proxmox API URL, Token ID, and Token Secret. These are used by Terraform and stored in `infrastructure/proxmox/terraform.tfvars`.
+4.  **Domain Name:** Prompts you to enter the domain name for your homelab, which is stored in `config/config.yml`.
+5.  **Stealth VM (Optional):** Asks if you want to enable the experimental Stealth VM and prompts for related configuration if enabled.
+6.  **Infrastructure Provisioning:** Runs Terraform to provision the virtual machines for the K3s cluster.
+7.  **Application Deployment:** Runs Ansible to deploy the applications and configure them.
 
-2.  **Proxmox Credentials:** You will be prompted to enter your Proxmox API URL, Token ID, and Token Secret. These are used by Terraform to provision the virtual machines and are stored in `infrastructure/proxmox/terraform.tfvars`.
-
-3.  **Domain Name:** You will be prompted to enter the domain name for your homelab. This will be used to configure DNS and access your applications. This is stored in `config/config.yml`.
-
-4.  **Secret Management:** The script will use the `secure-gen` script to generate any secrets defined in `config/config.yml` and store them in Vault.
-
-5.  **Infrastructure Provisioning:** The script will run Terraform to provision the virtual machines for the K3s cluster.
-
-6.  **Application Deployment:** The script will run Ansible to deploy the applications and configure them with the secrets you provided.
-
-**Detailed Explanation of the Automated Setup Process:**
-
-The automated setup process is designed to be both user-friendly and educational. Here's a detailed breakdown of what happens under the hood:
-
-  * **`scripts/setup.sh`:** This is the main script that orchestrates the entire setup process. It uses a series of helper scripts and Ansible playbooks to perform the necessary tasks.
-
-  * **Terraform for Infrastructure:** The script uses Terraform to create the virtual machines on Proxmox. The Terraform configuration is located in the `infrastructure/proxmox` directory. The `main.tf` file defines the resources to be created, and the `variables.tf` file defines the variables that can be customized.
-
-  * **Ansible for Configuration:** Once the infrastructure is provisioned, the script uses Ansible to configure the K3s cluster and deploy the applications. The Ansible playbooks are located in the `ansible/playbooks` directory.
-
-  * **Vault for Secret Management:** The script uses the `ansible/roles/vault-secrets-operator` role to manage secrets. This role will:
-
-      * Find all the `values.yaml` files in the `config/apps` directory.
-      * Parse the `values.yaml` files and identify any values that start with `vault:`.
-      * Use the `community.hashi_vault.vault_kv2_get` module to fetch the secrets from Vault.
-      * Create Kubernetes secrets with the fetched values.
-
-  * **Application Configuration:** The configuration for each application is defined in a `values.yaml` file located in the `config/apps/<app-name>` directory. These files are used by Helm to deploy the applications with the correct configuration.
+> **Note:** The final Ansible step in the automated setup is currently **broken** due to a missing Ansible inventory file. See the "Configuration" section for more details.
 
 ### 3\. Manual Setup
 
-The manual setup process is for advanced users who want to customize the installation. This process gives you more control over the configuration of the infrastructure and applications.
+The manual setup process is for advanced users who want to customize the installation.
 
 1.  **Create your configuration:**
-
     - Copy the `config.example` directory to `config`:
       ```bash
       cp -r config.example/ config/
       ```
-    - Edit `config/config.yml` to match your environment. This file is the central place for all your configuration.
+    - Edit `config/config.yml` to match your environment. This file is the central place for all your configuration. See the "Configuration" section for more details on the available variables.
+    - Create an `infrastructure/proxmox/terraform.tfvars` file with your Proxmox credentials. You can copy the example file to get started:
+      ```bash
+      cp infrastructure/proxmox/terraform.tfvars.example infrastructure/proxmox/terraform.tfvars
+      ```
 
 2.  **Provision the infrastructure:**
-
-      - Create a `infrastructure/proxmox/terraform.tfvars` file with your Proxmox credentials.
       - Initialize Terraform:
         ```bash
         make terraform-init
         ```
-      - Plan the deployment:
+      - Plan and apply the deployment:
         ```bash
         make terraform-plan
-        ```
-      - Apply the changes:
-        ```bash
         make terraform-apply
         ```
+
+3.  **Deploy applications with Ansible:**
+    > **Note:** This step is currently **broken**. See the "Configuration" section for details on the missing inventory file.
+    - Run the main Ansible playbook:
+      ```bash
+      make ansible-playbook-setup
+      ```
 
 4.  **Manage Secrets:**
 
@@ -408,41 +393,63 @@ graph TD
 
 ## Default Services
 
-The following services are included in this homelab. Some are enabled by default, while others are optional and can be enabled by modifying the `ansible/group_vars/all.yml` file.
+The following services are included in this homelab. Some are core infrastructure components, while others are applications that can be deployed.
 
 ### Core Infrastructure
 
-| Service           | Description                                                                                             | Enabled by Default |
-| ----------------- | ------------------------------------------------------------------------------------------------------- | ------------------ |
-| **Traefik** | A modern reverse proxy and load balancer that makes deploying microservices easy.                       | Yes                |
-| **Authelia** | An open-source authentication and authorization server providing two-factor authentication and single sign-on. | Yes                |
-| **OpenLDAP** | A lightweight directory access protocol for user authentication.                                        | Yes                |
-| **Vault** | A tool for securely accessing secrets.                                                                  | Yes                |
-| **Velero** | A tool for backing up and restoring your Kubernetes cluster resources and persistent volumes.           | Yes                |
-| **EFK Stack** | A centralized logging solution consisting of Elasticsearch, Fluentd, and Kibana.                      | Yes                |
+| Service           | Description                                                                                             |
+| ----------------- | ------------------------------------------------------------------------------------------------------- |
+| **Traefik** | A modern reverse proxy and load balancer that makes deploying microservices easy.                       |
+| **Authelia** | An open-source authentication and authorization server providing two-factor authentication and single sign-on. |
+| **OpenLDAP** | A lightweight directory access protocol for user authentication.                                        |
+| **Vault** | A tool for securely accessing secrets.                                                                  |
+| **Velero** | A tool for backing up and restoring your Kubernetes cluster resources and persistent volumes.           |
+| **EFK Stack** | A centralized logging solution consisting of Elasticsearch, Fluentd, and Kibana.                      |
 
 ### Applications
 
-| Service           | Description                                                                                             | Enabled by Default |
-| ----------------- | ------------------------------------------------------------------------------------------------------- | ------------------ |
-| **Bitwarden** | A self-hosted password manager.                                                                         | Yes                |
-| **Gitea** | A self-hosted Git service.                                                                              | Yes                |
-| **Homepage** | A simple, a static homepage for your homelab.                                                             | Yes                |
-| **Coder** | A remote development environment that runs on your own infrastructure.                                  | Yes                |
-| **Gluetun** | A VPN client in a container to secure other services.                                                   | Yes                |
-| **Grafana** | A monitoring and observability platform.                                                                | Yes                |
-| **Home Assistant**| An open-source home automation platform.                                                                | Yes                |
-| **Kasm** | A container streaming platform for running desktops and applications in a browser.                      | Yes                |
-| **MariaDB** | A popular open-source relational database.                                                              | Yes                |
-| **Monitoring** | A full monitoring stack including Prometheus, Grafana, and Alertmanager.                                | Yes                |
-| **pfSense** | A powerful open-source firewall and router.                                                             | Yes                |
-| **Pi-hole** | A network-wide ad blocker.                                                                              | Yes                |
-| **Puter** | A self-hosted cloud desktop.                                                                            | Yes                |
-| **Redis** | An in-memory data structure store.                                                                      | Yes                |
-| **SearXNG** | A privacy-respecting, hackable metasearch engine.                                                       | Yes                |
-| **Supabase** | An open-source Firebase alternative.                                                                    | Yes                |
-| **Tailscale** | A zero-config VPN for building secure networks.                                                         | Yes                |
-| **WireGuard** | A fast, modern, and secure VPN tunnel.                                                                  | Yes                |
+| Service           | Description                                                                                             |
+| ----------------- | ------------------------------------------------------------------------------------------------------- |
+| **AppFlowy**      | An open-source alternative to Notion.                                                                   |
+| **Bitwarden**     | A self-hosted password manager.                                                                         |
+| **Bolt**          | A content management system.                                                                            |
+| **Coder**         | A remote development environment that runs on your own infrastructure.                                  |
+| **Faster Whisper**| A fast, lightweight, and accurate speech-to-text model.                                                 |
+| **Gitea**         | A self-hosted Git service.                                                                              |
+| **Gluetun**       | A VPN client in a container to secure other services.                                                   |
+| **Grafana**       | A monitoring and observability platform.                                                                |
+| **Guacamole**     | A clientless remote desktop gateway.                                                                    |
+| **Home Assistant**| An open-source home automation platform.                                                                |
+| **Homelab Importer**| A tool for importing homelab configurations.                                                          |
+| **Homepage**      | A simple, a static homepage for your homelab.                                                             |
+| **Jellyfin**      | A self-hosted media server.                                                                             |
+| **Jellyseerr**    | A request management and media discovery tool for Jellyfin.                                             |
+| **Kasm**          | A container streaming platform for running desktops and applications in a browser.                      |
+| **Langflow**      | A UI for experimenting with and prototyping language models.                                            |
+| **Lidarr**        | A music collection manager for Usenet and BitTorrent users.                                             |
+| **MariaDB**       | A popular open-source relational database.                                                              |
+| **Monitoring**    | A full monitoring stack including Prometheus, Grafana, and Alertmanager.                                |
+| **Ollama**        | A tool for running large language models locally.                                                       |
+| **Open WebUI**    | A user-friendly web interface for large language models.                                                |
+| **Overseerr**     | A request management and media discovery tool for Plex.                                                 |
+| **pfSense**       | A powerful open-source firewall and router.                                                             |
+| **Pi-hole**       | A network-wide ad blocker.                                                                              |
+| **Plex**          | A self-hosted media server.                                                                             |
+| **Portainer**     | A lightweight management UI for Docker, Swarm, Kubernetes, and ACI.                                     |
+| **Postgres**      | A powerful, open-source object-relational database system.                                              |
+| **Puter**         | A self-hosted cloud desktop.                                                                            |
+| **qBittorrent**   | A lightweight BitTorrent client.                                                                        |
+| **Radarr**        | A movie collection manager for Usenet and BitTorrent users.                                             |
+| **Redis**         | An in-memory data structure store.                                                                      |
+| **rReading Glasses**| A tool for reading and analyzing text.                                                                |
+| **Sabnzbd**       | A binary newsreader for downloading from Usenet.                                                        |
+| **SearXNG**       | A privacy-respecting, hackable metasearch engine.                                                       |
+| **Sonarr**        | A PVR for Usenet and BitTorrent users.                                                                  |
+| **Speaches**      | A text-to-speech application.                                                                           |
+| **Supabase**      | An open-source Firebase alternative.                                                                    |
+| **Tailscale**     | A zero-config VPN for building secure networks.                                                         |
+| **WireGuard**     | A fast, modern, and secure VPN tunnel.                                                                  |
+| **WorkAdventure** | A collaborative virtual office and event platform.                                                      |
 
 ## Deployment
 
@@ -496,76 +503,68 @@ The deployment process is designed to be as automated as possible. However, you 
 
 ## Configuration
 
-### Terraform
+Configuration for this project is managed in three main places:
 
-1.  **Navigate to the Terraform directory:**
+1.  **Global Settings:** The `config/config.yml` file contains high-level settings for your homelab.
+2.  **Terraform Variables:** The `infrastructure/proxmox/terraform.tfvars` file contains variables specific to the Proxmox infrastructure.
+3.  **Ansible Inventory:** The Ansible inventory file tells Ansible which hosts to connect to.
 
-    ```bash
-    cd infrastructure/proxmox
-    ```
+### 1. Global Configuration (`config/config.yml`)
 
-2.  **Create a `terraform.tfvars` file:**
+This file is the central place for all your high-level configuration. It is created when you run `make setup` by copying the example file from `config.example/config.yml`.
 
-    Copy the `terraform.tfvars.example` file to `terraform.tfvars` and edit it to match your environment.
+| Variable                   | Description                                                 |
+| -------------------------- | ----------------------------------------------------------- |
+| `common.domain_name`       | The domain name for your homelab (e.g., `homelab.local`).   |
+| `common.timezone`          | The timezone for the servers (e.g., `Etc/UTC`).             |
+| `common.load_balancer_ip`  | The IP address to be used by the Kubernetes load balancer.  |
+| `common.proxmox_node`      | The name of the Proxmox node to deploy to.                  |
+| `common.proxmox_template`  | The name of the cloud-init template to use for new VMs.     |
+| `common.proxmox_service_bridge` | The Proxmox network bridge for the service network.    |
+| `common.proxmox_service_vlan_tag` | The VLAN tag for the service network.               |
+| `common.k3s_master_vm_id`  | The VM ID for the K3s master node.                          |
+| `common.k3s_worker_vm_id_start` | The starting VM ID for the K3s worker nodes.            |
+| `common.ldap_base_dn`      | The base DN for the LDAP server.                            |
+| `secrets_to_generate`      | A list of secrets to be generated by the `secure-gen` role. |
 
-    ```bash
-    cp terraform.tfvars.example terraform.tfvars
-    ```
+### 2. Terraform Variables (`terraform.tfvars`)
 
-    | Variable              | Description                                                                 |
-    | --------------------- | --------------------------------------------------------------------------- |
-    | `proxmox_api_url`     | The URL of your Proxmox API.                                                |
-    | `pm_token_id`         | Your Proxmox API token ID.                                                  |
-    | `pm_token_secret`     | Your Proxmox API token secret.                                              |
-    | `proxmox_host`        | The name of the Proxmox node to deploy to.                                  |
-    | `template_name`       | The name of the cloud-init template to use.                                 |
-    | `k3s_master_count`    | The number of K3s master nodes to create.                                   |
-    | `k3s_worker_count`    | The number of K3s worker nodes to create.                                   |
-    | `ssh_public_key`      | Your SSH public key for accessing the nodes.                                |
+This file holds the variables needed by Terraform to provision the infrastructure on Proxmox. The `make setup` command will prompt you for the required API credentials.
 
-### Terraform Commands
+| Variable              | Description                                                                 |
+| --------------------- | --------------------------------------------------------------------------- |
+| `proxmox_api_url`     | The URL of your Proxmox API (e.g., `https://proxmox.example.com/api2/json`). |
+| `pm_token_id`         | Your Proxmox API token ID.                                                  |
+| `pm_token_secret`     | Your Proxmox API token secret.                                              |
+| `proxmox_node`        | The name of the Proxmox node to deploy to.                                  |
+| `proxmox_template`    | The name of the cloud-init template to use for the VMs.                     |
+| `k3s_worker_count`    | The number of K3s worker nodes to create. Defaults to `1`.                  |
+| `k3s_master_memory`   | The amount of memory (in MB) for the master VM. Defaults to `2048`.         |
+| `k3s_master_cores`    | The number of CPU cores for the master VM. Defaults to `2`.                 |
+| `k3s_worker_memory`   | The amount of memory (in MB) for the worker VMs. Defaults to `2048`.         |
+| `k3s_worker_cores`    | The number of CPU cores for the worker VMs. Defaults to `22`.               |
 
-  - **Initialize Terraform:**
+### 3. Ansible Inventory
 
-    ```bash
-    terraform init
-    ```
-
-    This command initializes the Terraform working directory, downloading the necessary provider plugins.
-
-  - **Plan the deployment:**
-
-    ```bash
-    terraform plan
-    ```
-
-    This command creates an execution plan, which lets you preview the changes that Terraform plans to make to your infrastructure.
-
-  - **Apply the changes:**
-
-    ```bash
-    terraform apply
-    ```
-
-    This command applies the changes required to reach the desired state of the configuration.
-
-  - **Destroy the infrastructure:**
-
-    ```bash
-    terraform destroy
-    ```
-
-    This command destroys all of the resources created by Terraform.
-
-### Ansible
-
-1.  **Configure Ansible variables:**
-
-    Edit the `ansible/group_vars/all.yml` file to set your domain name, user passwords, and other application-specific configuration options.
-
-2.  **Inventory (auto-generated):**
-
-    The Ansible inventory is now automatically generated by Terraform. After you run `terraform apply`, a file named `inventory.auto.yml` will be created in the `ansible/inventory` directory. This file contains the IP addresses and other information about the nodes that were created.
+> ⚠️ **Important:** The automatic generation of the Ansible inventory file is currently **not implemented**.
+>
+> The `Makefile` and automation are configured to use a static inventory file located at `ansible/inventory/inventory.auto.yml`. However, the Terraform configuration **does not** create this file. This means that after running `make terraform-apply`, the subsequent Ansible playbook will fail.
+>
+> **Workaround:**
+>
+> To make the Ansible playbook run, you must manually create the `ansible/inventory/inventory.auto.yml` file after your infrastructure is provisioned. You will need to get the IP addresses of the VMs created by Terraform from the Proxmox console.
+>
+> The file should look something like this:
+>
+> ```yaml
+> # ansible/inventory/inventory.auto.yml
+> all:
+>   hosts:
+>     k3s-master:
+>       ansible_host: 192.168.1.10
+>     k3s-worker-0:
+>       ansible_host: 192.168.1.11
+> ```
 
 ## Usage
 
@@ -574,33 +573,21 @@ This project includes a `Makefile` that provides a convenient way to run common 
 ### Makefile Commands
 
   - **`make help`**: Display a list of available commands.
-  - **`make install-deps`**: Install dependencies and setup pre-commit.
-  - **`make setup-homelab`**: Run the interactive setup script for the homelab.
+  - **`make install-deps`**: Install dependencies.
+  - **`make setup`**: Run the interactive setup script for the homelab.
   - **`make lint`**: Run all linters.
   - **`make terraform-init`**: Initialize Terraform.
   - **`make terraform-plan`**: Plan the Terraform deployment.
   - **`make terraform-apply`**: Apply the Terraform deployment.
-  - **`make ansible-playbook-main`**: Run the main Ansible playbook.
+  - **`make ansible-playbook-setup`**: Run the main Ansible playbook for setup.
   - **`make test`**: Run Molecule tests for all Ansible roles.
   - **`make clean`**: Clean up temporary files.
 
 ## Testing
 
-This project uses Molecule to lint and syntax check the Ansible roles.
-
-1.  **Install the testing dependencies:**
-
-    ```bash
-    pip install -r ansible/requirements.txt
-    ansible-galaxy collection install -r ansible/requirements.yml
-    ```
-
-2.  **Run the tests for a specific role:**
-
-    ```bash
-    cd ansible/roles/<role_name>
-    molecule test
-    ```
+> ⚠️ **Note:** The testing framework for this project is currently **not implemented**.
+>
+> While the `Makefile` includes a `make test` command that attempts to run Molecule tests, the necessary Molecule configuration files are missing from the Ansible roles. Therefore, testing is not functional at this time.
 
 ## OpenLDAP
 
