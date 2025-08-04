@@ -303,7 +303,7 @@ To use this module, you need to add it to your Ansible playbook. Here are some e
 The following playbooks are available:
 
 - `setup.yml`: Sets up the entire infrastructure.
-- `test.yml`: Runs tests against the infrastructure.
+- `setup_core_apps.yml`: Sets up the core applications.
 - `secure-gen.yml`: Generates secure passwords and other secrets.
 - `mock_synology_api.py`: A mock Synology API for testing.
 - `test_synology_mock.yml`: Tests the Synology mock API.

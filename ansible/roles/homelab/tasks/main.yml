@@ -1,8 +1,0 @@
----
-- name: Deploy Traefik
-  ansible.builtin.include_role:
-    name: traefik
-
-- name: Deploy monitoring stack
-  ansible.builtin.include_role:
-    name: efk-stack

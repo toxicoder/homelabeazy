@@ -7,5 +7,7 @@
   roles:
     - role: homelab-config
     - role: k3s-cluster
+    - role: traefik
+    - role: efk-stack
     - role: core_services
     - role: applications
