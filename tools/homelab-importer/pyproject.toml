@@ -17,22 +17,6 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 
-dependencies = [
-    "proxmoxer",
-    "python-dotenv",
-    "python-hcl2",
-    "requests",
-    "PyYAML",
-    "hvac"
-]
-
-[project.optional-dependencies]
-dev = [
-    "black",
-    "isort",
-    "ruff",
-    "pytest"
-]
 
 [project.urls]
 "Homepage" = "https://github.com/user/homelab-importer"
