@@ -6,41 +6,26 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/Jules-Recruiter/homelab-SRE-challenge' # This will be replaced by the actual repo URL
-    path: charts/vpn-app
-    targetRevision: HEAD
+    repoURL: 'https://bjw-s.github.io/helm-charts'
+    chart: lidarr
+    targetRevision: 15.0.1
     helm:
       values: |
-        application:
-          image:
-            repository: "linuxserver/lidarr"
-            tag: "latest"
-          name: "lidarr"
-          port: 8686
+        image:
+          repository: "linuxserver/lidarr"
+          tag: "latest"
 
-        gluetun:
-          vpn:
-            type: "openvpn"
-            provider: "private internet access"
-            region: "ca montreal"
-            credentials:
-              user: "<path:secret/data/lidarr#pia_username>"
-              password: "<path:secret/data/lidarr#pia_password>"
-
-        service:
-          type: ClusterIP
-          port: 8686
-
-        ingressRoute:
-          enabled: true
-          entryPoints:
-            - websecure
-          routes:
-            - match: Host(`lidarr.{{ domain_root }}`)
-              kind: Rule
-              services:
-                - name: lidarr
-                  port: 8686
+        ingress:
+          main:
+            enabled: true
+            annotations:
+              traefik.ingress.kubernetes.io/router.entrypoints: websecure
+              traefik.ingress.kubernetes.io/router.middlewares: authelia@kubernetescrd
+            hosts:
+              - host: "lidarr.{{ domain_root }}"
+                paths:
+                  - path: /
+                    pathType: Prefix
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: lidarr

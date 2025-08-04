@@ -6,24 +6,22 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://aidan-wallace.github.io/homepage-kubernetes/'
+    repoURL: 'https://bjw-s.github.io/helm-charts'
     chart: homepage
-    targetRevision: 0.2.1
+    targetRevision: 1.0.2
     helm:
       values: |
-        ingressRoute:
-          enabled: true
-          entryPoints:
-            - websecure
-          routes:
-            - match: Host(`homepage.homelab.dev`)
-              kind: Rule
-              services:
-                - name: homepage
-                  port: 3000
-        metadata:
-          annotations:
-            traefik.ingress.kubernetes.io/router.middlewares: authelia@kubernetescrd
+        ingress:
+          main:
+            enabled: true
+            annotations:
+              traefik.ingress.kubernetes.io/router.entrypoints: websecure
+              traefik.ingress.kubernetes.io/router.middlewares: authelia@kubernetescrd
+            hosts:
+              - host: "homepage.homelab.dev"
+                paths:
+                  - path: /
+                    pathType: Prefix
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: homepage

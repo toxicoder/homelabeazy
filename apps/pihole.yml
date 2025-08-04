@@ -6,14 +6,12 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/pi-hole/docker-pi-hole.git
-    targetRevision: '2025.07.1'
-    path: '.'
-    directory:
-      recurse: true
+    repoURL: https://mojo2600.github.io/pihole-helm
+    targetRevision: 0.13.2
+    chart: pihole
     helm:
       values: |
-        adminPassword: <path:secrets/data/pihole#admin-password>
+        adminPassword: "<vault:secret/data/pihole#admin-password>"
         persistence:
           enabled: true
           storageClassName: "local-path"

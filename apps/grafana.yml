@@ -11,7 +11,7 @@ spec:
     targetRevision: 6.50.0
     helm:
       values: |
-        adminPassword: <path:secrets/data/grafana#admin-password>
+        adminPassword: <vault:secret/data/grafana#admin-password>
         persistence:
           enabled: true
           storageClassName: "longhorn"

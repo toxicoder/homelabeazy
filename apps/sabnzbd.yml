@@ -6,41 +6,26 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/toxicoder/homelabeazy'
-    path: charts/vpn-app
-    targetRevision: HEAD
+    repoURL: 'https://bjw-s.github.io/helm-charts'
+    chart: sabnzbd
+    targetRevision: 15.0.1
     helm:
       values: |
-        application:
-          image:
-            repository: "linuxserver/sabnzbd"
-            tag: "latest"
-          name: "sabnzbd"
-          port: 8080
+        image:
+          repository: "linuxserver/sabnzbd"
+          tag: "latest"
 
-        gluetun:
-          vpn:
-            type: "openvpn"
-            provider: "private internet access"
-            region: "ca montreal"
-            credentials:
-              user: "<path:secret/data/sabnzbd#pia_username>"
-              password: "<path:secret/data/sabnzbd#pia_password>"
-
-        service:
-          type: ClusterIP
-          port: 8080
-
-        ingressRoute:
-          enabled: true
-          entryPoints:
-            - websecure
-          routes:
-            - match: Host(`sabnzbd.{{ domain_root }}`)
-              kind: Rule
-              services:
-                - name: sabnzbd
-                  port: 8080
+        ingress:
+          main:
+            enabled: true
+            annotations:
+              traefik.ingress.kubernetes.io/router.entrypoints: websecure
+              traefik.ingress.kubernetes.io/router.middlewares: authelia@kubernetescrd
+            hosts:
+              - host: "sabnzbd.{{ domain_root }}"
+                paths:
+                  - path: /
+                    pathType: Prefix
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: sabnzbd

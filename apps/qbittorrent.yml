@@ -6,41 +6,26 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/Jules-Recruiter/homelab-SRE-challenge' # This will be replaced by the actual repo URL
-    path: charts/vpn-app
-    targetRevision: HEAD
+    repoURL: 'https://bjw-s.github.io/helm-charts'
+    chart: qbittorrent
+    targetRevision: 15.0.1
     helm:
       values: |
-        application:
-          image:
-            repository: "linuxserver/qbittorrent"
-            tag: "latest"
-          name: "qbittorrent"
-          port: 8080
+        image:
+          repository: "linuxserver/qbittorrent"
+          tag: "latest"
 
-        gluetun:
-          vpn:
-            type: "openvpn"
-            provider: "private internet access"
-            region: "ca montreal"
-            credentials:
-              user: "<path:secret/data/qbittorrent#pia_username>"
-              password: "<path:secret/data/qbittorrent#pia_password>"
-
-        service:
-          type: ClusterIP
-          port: 8080
-
-        ingressRoute:
-          enabled: true
-          entryPoints:
-            - websecure
-          routes:
-            - match: Host(`qbittorrent.{{ domain_root }}`)
-              kind: Rule
-              services:
-                - name: qbittorrent
-                  port: 8080
+        ingress:
+          main:
+            enabled: true
+            annotations:
+              traefik.ingress.kubernetes.io/router.entrypoints: websecure
+              traefik.ingress.kubernetes.io/router.middlewares: authelia@kubernetescrd
+            hosts:
+              - host: "qbittorrent.{{ domain_root }}"
+                paths:
+                  - path: /
+                    pathType: Prefix
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: qbittorrent

@@ -6,41 +6,26 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/toxicoder/homelabeazy'
-    path: charts/vpn-app
-    targetRevision: HEAD
+    repoURL: 'https://bjw-s.github.io/helm-charts'
+    chart: radarr
+    targetRevision: 15.0.1
     helm:
       values: |
-        application:
-          image:
-            repository: "linuxserver/radarr"
-            tag: "latest"
-          name: "radarr"
-          port: 7878
+        image:
+          repository: "linuxserver/radarr"
+          tag: "latest"
 
-        gluetun:
-          vpn:
-            type: "openvpn"
-            provider: "private internet access"
-            region: "ca montreal"
-            credentials:
-              user: "<path:secret/data/radarr#pia_username>"
-              password: "<path:secret/data/radarr#pia_password>"
-
-        service:
-          type: ClusterIP
-          port: 7878
-
-        ingressRoute:
-          enabled: true
-          entryPoints:
-            - websecure
-          routes:
-            - match: Host(`radarr.{{ domain_root }}`)
-              kind: Rule
-              services:
-                - name: radarr
-                  port: 7878
+        ingress:
+          main:
+            enabled: true
+            annotations:
+              traefik.ingress.kubernetes.io/router.entrypoints: websecure
+              traefik.ingress.kubernetes.io/router.middlewares: authelia@kubernetescrd
+            hosts:
+              - host: "radarr.{{ domain_root }}"
+                paths:
+                  - path: /
+                    pathType: Prefix
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: radarr

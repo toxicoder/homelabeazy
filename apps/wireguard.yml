@@ -6,9 +6,22 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/Jules-Recruiter/homelab-SRE-challenge'
-    path: charts/wireguard
-    targetRevision: HEAD
+    repoURL: 'https://geek-cookbook.github.io/charts/'
+    chart: wg-easy
+    targetRevision: 3.2.1
+    helm:
+      values: |
+        ingress:
+          main:
+            enabled: true
+            annotations:
+              traefik.ingress.kubernetes.io/router.entrypoints: websecure
+              traefik.ingress.kubernetes.io/router.middlewares: authelia@kubernetescrd
+            hosts:
+              - host: "wg.{{ domain_root }}"
+                paths:
+                  - path: /
+                    pathType: Prefix
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: wireguard

@@ -26,7 +26,7 @@ spec:
             enabled: true
             url: "ldap://openldap.ldap.svc.cluster.local:389"
             bindDN: "cn=admin,dc=homelab,dc=com"
-            bindPassword: "<path:secrets/data/openldap#admin-password>"
+            bindPassword: "<vault:secret/data/openldap#admin-password>"
             userSearch:
               baseDN: "ou=users,dc=homelab,dc=com"
               filter: "(uid=%s)"

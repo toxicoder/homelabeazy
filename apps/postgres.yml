@@ -14,7 +14,7 @@ spec:
         auth:
           database: rreading-glasses
           username: rreading-glasses
-          password: "<path:secrets/data/postgres#password>"
+          password: "<vault:secret/data/postgres#password>"
         primary:
           persistence:
             enabled: true
