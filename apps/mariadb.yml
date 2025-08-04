@@ -12,10 +12,10 @@ spec:
     helm:
       values: |
         auth:
-          rootPassword: <path:secrets/data/mariadb#root-password>
+          rootPassword: <vault:secret/data/mariadb#root-password>
           database: "gitea"
           username: "gitea"
-          password: <path:secrets/data/gitea#db_creds>
+          password: <vault:secret/data/gitea#db_creds>
         primary:
           persistence:
             enabled: true

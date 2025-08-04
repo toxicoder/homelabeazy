@@ -6,9 +6,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://small-hack.github.io/home-assistant-chart/'
+    repoURL: 'https://bjw-s.github.io/helm-charts'
     chart: home-assistant
-    targetRevision: 1.0.0
+    targetRevision: 9.3.0
     helm:
       values: |
         persistence:

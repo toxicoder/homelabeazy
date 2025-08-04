@@ -8,29 +8,29 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://guerzon.github.io/vaultwarden
-    targetRevision: 0.32.1
+    repoURL: 'https://bjw-s.github.io/helm-charts'
     chart: vaultwarden
+    targetRevision: 1.10.1
     helm:
       values: |
         image:
           repository: vaultwarden/server
           tag: 1.40.0
-        ingressRoute:
-          enabled: true
-          entryPoints:
-            - websecure
-          routes:
-            - match: Host(`bitwarden.{{ domain_root }}`)
-              kind: Rule
-              services:
-                - name: bitwarden
-                  port: 80
-              middlewares:
-                - name: authelia
-                  namespace: traefik
-          tls:
-            secretName: bitwarden-tls
+        ingress:
+          main:
+            enabled: true
+            annotations:
+              traefik.ingress.kubernetes.io/router.entrypoints: websecure
+              traefik.ingress.kubernetes.io/router.middlewares: authelia@kubernetescrd
+            hosts:
+              - host: "bitwarden.{{ domain_root }}"
+                paths:
+                  - path: /
+                    pathType: Prefix
+            tls:
+              - secretName: bitwarden-tls
+                hosts:
+                  - "bitwarden.{{ domain_root }}"
         resources:
           requests:
             cpu: 100m
