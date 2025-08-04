@@ -47,6 +47,42 @@ variable "k3s_worker_vm_id_start" {
   type        = number
 }
 
+variable "k3s_worker_count" {
+  description = "The number of worker VMs to create."
+  type        = number
+  default     = 1
+}
+
+variable "k3s_master_memory" {
+  description = "The amount of memory for the master VM."
+  type        = number
+  default     = 2048
+}
+
+variable "k3s_master_cores" {
+  description = "The number of cores for the master VM."
+  type        = number
+  default     = 2
+}
+
+variable "k3s_worker_memory" {
+  description = "The amount of memory for the worker VMs."
+  type        = number
+  default     = 2048
+}
+
+variable "k3s_worker_cores" {
+  description = "The number of cores for the worker VMs."
+  type        = number
+  default     = 2
+}
+
+variable "k3s_agent_enabled" {
+  description = "Enable the QEMU agent on the k3s VMs."
+  type        = bool
+  default     = true
+}
+
 variable "stealth_vm_enabled" {
   description = "If set to true, the stealth VM will be created."
   type        = bool

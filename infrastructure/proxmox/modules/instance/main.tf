@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    proxmox = {
+      source  = "telmate/proxmox"
+      version = ">= 2.9.14, < 4.0.0"
+    }
+  }
+}
+
 resource "proxmox_lxc" "container" {
   count = var.instance_type == "lxc" ? 1 : 0
 
