@@ -1,19 +1,15 @@
+---
 - name: Create rreading-glasses namespace
   kubernetes.core.k8s:
-    name: rreading-glasses
+    name: "{{ rreading_glasses_namespace }}"
     api_version: v1
     kind: Namespace
     state: present
 
-- name: Create rreading-glasses postgres secret
-  kubernetes.core.k8s:
-    state: present
-    definition:
-      apiVersion: v1
-      kind: Secret
-      metadata:
-        name: rreading-glasses-secret
-        namespace: rreading-glasses
-      type: Opaque
-      stringData:
-        POSTGRES_PASSWORD: "a-very-secret-password" # This should be changed or managed by a secret management system
+- name: Deploy rreading-glasses from helm chart
+  kubernetes.core.helm:
+    name: rreading-glasses
+    chart_ref: "charts/{{ rreading_glasses_helm_chart }}"
+    release_namespace: "{{ rreading_glasses_namespace }}"
+    create_namespace: true
+    values: "{{ lookup('file', 'config/apps/rreading-glasses/values.yaml') | from_yaml }}"

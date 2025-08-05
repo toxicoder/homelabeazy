@@ -1,0 +1,14 @@
+ingress:
+  enabled: true
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.middlewares: authelia@kubernetescrd
+  hosts:
+    - host: "stirling-pdf.homelab.dev"
+      paths:
+        - path: /
+          pathType: Prefix
+persistence:
+  enabled: true
+  size: 5Gi
+  storageClass: "local-path"
