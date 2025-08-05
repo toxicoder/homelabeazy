@@ -1,0 +1,6 @@
+apiVersion: v2
+name: openedai-speech
+description: A Helm chart for OpenedAI Speech
+type: application
+version: 0.1.0
+appVersion: "0.18.2"
