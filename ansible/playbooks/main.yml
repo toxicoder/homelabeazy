@@ -11,3 +11,4 @@
     - role: efk-stack
     - role: core_services
     - role: applications
+    - role: mealie
