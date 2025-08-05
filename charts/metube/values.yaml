@@ -1,0 +1,40 @@
+# Default values for metube.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+application:
+  name: metube
+  port: 8081
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/alexta69/metube
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 8081
+
+ingress:
+  host: metube.homelab.dev
+
+persistence:
+  downloads:
+    enabled: true
+    mountPath: /downloads
+    size: 10Gi
+    accessMode: ReadWriteOnce
+    storageClass: ""
+
+# Environment variables for metube
+# See https://github.com/alexta69/metube for more details
+env:
+  - name: UID
+    value: "1000"
+  - name: GID
+    value: "1000"
+  - name: UMASK
+    value: "022"
