@@ -12,3 +12,4 @@
     - role: core_services
     - role: applications
     - role: mealie
+    - role: n8n
