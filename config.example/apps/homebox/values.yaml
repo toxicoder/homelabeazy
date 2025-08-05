@@ -1,0 +1,20 @@
+# Example values for homebox.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+ingress:
+  enabled: true
+  hosts:
+    - host: "homebox.homelab.dev"
+      paths:
+        - path: /
+          pathType: Prefix
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.middlewares: authelia@kubernetescrd
+
+persistence:
+  enabled: true
+  size: 5Gi
+  accessMode: ReadWriteOnce
+  storageClass: "local-path"
