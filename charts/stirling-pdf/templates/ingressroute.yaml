@@ -1,0 +1,23 @@
+{{- if .Values.ingress.enabled -}}
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ include "stirling-pdf.fullname" . }}
+  labels:
+    {{- include "stirling-pdf.labels" . | nindent 4 }}
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`{{ .Values.ingress.hosts[0].host }}`) && PathPrefix(`{{ .Values.ingress.hosts[0].paths[0].path }}`)
+      kind: Rule
+      services:
+        - name: {{ include "stirling-pdf.fullname" . }}
+          port: {{ .Values.service.port }}
+  {{- if .Values.ingress.annotations }}
+  middlewares:
+    {{- range $key, $value := .Values.ingress.annotations }}
+    - name: {{ $value }}
+    {{- end }}
+  {{- end }}
+{{- end }}

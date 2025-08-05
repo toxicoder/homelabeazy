@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "stirling-pdf.fullname" . }}
+  labels:
+    {{- include "stirling-pdf.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "stirling-pdf.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "stirling-pdf.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          volumeMounts:
+          {{- if .Values.persistence.enabled }}
+            - name: configs
+              mountPath: /data/configs
+            - name: custom-files
+              mountPath: /data/customFiles
+            - name: training-data
+              mountPath: /data/trainingData
+          {{- end }}
+      volumes:
+        {{- if .Values.persistence.enabled }}
+        - name: configs
+          persistentVolumeClaim:
+            claimName: {{ include "stirling-pdf.fullname" . }}-configs
+        - name: custom-files
+          persistentVolumeClaim:
+            claimName: {{ include "stirling-pdf.fullname" . }}-custom-files
+        - name: training-data
+          persistentVolumeClaim:
+            claimName: {{ include "stirling-pdf.fullname" . }}-training-data
+        {{- end }}
