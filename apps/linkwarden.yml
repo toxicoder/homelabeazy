@@ -1,0 +1,43 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: linkwarden
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/toxicoder/homelabeazy.git'
+    path: charts/linkwarden
+    targetRevision: HEAD
+    helm:
+      values: |
+        ingress:
+          enabled: true
+          annotations:
+            traefik.ingress.kubernetes.io/router.entrypoints: websecure
+            traefik.ingress.kubernetes.io/router.middlewares: authelia@kubernetescrd
+          hosts:
+            - host: "linkwarden.homelab.dev"
+              paths:
+                - path: /
+                  pathType: Prefix
+        persistence:
+          enabled: true
+          size: 5Gi
+        config:
+          database:
+            password: "<vault:secret/data/postgres#linkwarden_password>"
+          meilisearch:
+            apiKey: "<vault:secret/data/meilisearch#key>"
+          nextauth:
+            secret: "<vault:secret/data/linkwarden#nextauth_secret>"
+            url: "https://linkwarden.homelab.dev/api/v1/auth"
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: linkwarden
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

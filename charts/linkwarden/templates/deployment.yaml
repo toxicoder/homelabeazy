@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "linkwarden.fullname" . }}
+  labels:
+    {{- include "linkwarden.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "linkwarden.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "linkwarden.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          env:
+            - name: DATABASE_URL
+              value: "postgresql://{{ .Values.config.database.user }}:{{ .Values.config.database.password }}@{{ .Values.config.database.host }}:{{ .Values.config.database.port }}/{{ .Values.config.database.database }}"
+            - name: MEILI_HOST
+              value: "http://{{ .Values.config.meilisearch.host }}:{{ .Values.config.meilisearch.port }}"
+            - name: MEILI_MASTER_KEY
+              value: "{{ .Values.config.meilisearch.apiKey }}"
+            - name: NEXTAUTH_SECRET
+              value: "{{ .Values.config.nextauth.secret }}"
+            - name: NEXTAUTH_URL
+              value: "{{ .Values.config.nextauth.url }}"
+          volumeMounts:
+          {{- if .Values.persistence.enabled }}
+            - name: data
+              mountPath: {{ .Values.persistence.mountPath }}
+          {{- end }}
+      volumes:
+        {{- if .Values.persistence.enabled }}
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ include "linkwarden.fullname" . }}
+        {{- end }}
