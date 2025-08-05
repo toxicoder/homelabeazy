@@ -1,0 +1,6 @@
+apiVersion: v2
+name: perplexica
+description: A Helm chart for Perplexica, an AI-powered search engine.
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

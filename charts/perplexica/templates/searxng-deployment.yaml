@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-searxng
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}-searxng
+    app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.searxng.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Release.Name }}-searxng
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ .Release.Name }}-searxng
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: searxng
+          image: "{{ .Values.searxng.image.repository }}:{{ .Values.searxng.image.tag }}"
+          imagePullPolicy: {{ .Values.searxng.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.searxng.service.port }}
+              protocol: TCP
