@@ -1,0 +1,23 @@
+apiVersion: "argoproj.io/v1alpha1"
+kind: "Application"
+metadata:
+  name: "tika"
+  namespace: "argocd"
+spec:
+  project: "default"
+  source:
+    repoURL: "https://gitea.com/Cosmic-Loop/homelab"
+    path: "charts/tika"
+    targetRevision: "HEAD"
+    helm:
+      valueFiles:
+        - "config/apps/tika/values.yaml"
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: "tika"
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
