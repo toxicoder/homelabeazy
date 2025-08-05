@@ -1,2 +1,5 @@
 ---
-# defaults file for homepage role
+homepage_helm_repo: "https://bjw-s.github.io/helm-charts"
+homepage_helm_chart: "homepage"
+homepage_helm_version: "1.0.2"
+homepage_namespace: "homepage"

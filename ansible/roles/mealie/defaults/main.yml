@@ -1,0 +1,5 @@
+---
+mealie_helm_repo: "https://jvalskis.github.io/mealie-helm/"
+mealie_helm_chart: "mealie"
+mealie_helm_version: "2.0.0"
+mealie_namespace: "mealie"

@@ -1,2 +1,3 @@
 ---
-# defaults file for speaches role
+speaches_helm_chart: "speaches"
+speaches_namespace: "speaches"

@@ -1,6 +1,15 @@
+---
 - name: Create speaches namespace
   kubernetes.core.k8s:
-    name: speaches
+    name: "{{ speaches_namespace }}"
     api_version: v1
     kind: Namespace
     state: present
+
+- name: Deploy speaches from helm chart
+  kubernetes.core.helm:
+    name: speaches
+    chart_ref: "charts/{{ speaches_helm_chart }}"
+    release_namespace: "{{ speaches_namespace }}"
+    create_namespace: true
+    values: "{{ lookup('file', 'config/apps/speaches/values.yaml') | from_yaml }}"

@@ -1,0 +1,11 @@
+ingress:
+  main:
+    enabled: true
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.middlewares: authelia@kubernetescrd
+    hosts:
+      - host: "n8n.homelab.dev"
+        paths:
+          - path: /
+            pathType: Prefix

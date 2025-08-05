@@ -1,7 +1,17 @@
 ---
 - name: Create n8n namespace
   kubernetes.core.k8s:
-    name: n8n
+    name: "{{ n8n_namespace }}"
     api_version: v1
     kind: Namespace
     state: present
+
+- name: Deploy n8n from helm chart
+  kubernetes.core.helm:
+    name: n8n
+    chart_ref: "{{ n8n_helm_chart }}"
+    chart_repo_url: "{{ n8n_helm_repo }}"
+    chart_version: "{{ n8n_helm_version }}"
+    release_namespace: "{{ n8n_namespace }}"
+    create_namespace: true
+    values: "{{ lookup('file', 'config/apps/n8n/values.yaml') | from_yaml }}"

@@ -1,0 +1,3 @@
+---
+stirling_pdf_helm_chart: "stirling-pdf"
+stirling_pdf_namespace: "stirling-pdf"

@@ -1,2 +1,5 @@
 ---
-# defaults file for ollama role
+ollama_helm_repo: "https://helm.otwld.com/"
+ollama_helm_chart: "ollama"
+ollama_helm_version: "1.25.0"
+ollama_namespace: "ollama"

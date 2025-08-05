@@ -1,0 +1,10 @@
+galaxy_info:
+  author: Jules
+  description: Role to deploy mealie
+  license: MIT
+  min_ansible_version: 2.9
+  platforms:
+    - name: Generic
+      versions:
+        - all
+dependencies: []
