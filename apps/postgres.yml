@@ -15,7 +15,20 @@ spec:
           database: rreading-glasses
           username: rreading-glasses
           password: "<vault:secret/data/postgres#password>"
+          postgresPassword: "<vault:secret/data/postgres#postgres-password>"
         primary:
+          extraEnvVars:
+            - name: LINKWARDEN_DB_PASSWORD
+              value: "<vault:secret/data/postgres#linkwarden_password>"
+          initdb:
+            scripts:
+              "create-linkwarden-db.sh": |
+                #!/bin/bash
+                set -e
+                psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
+                  CREATE USER linkwarden WITH PASSWORD '$LINKWARDEN_DB_PASSWORD';
+                  CREATE DATABASE linkwarden OWNER linkwarden;
+                EOSQL
           persistence:
             enabled: true
             size: 1Gi

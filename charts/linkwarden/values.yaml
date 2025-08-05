@@ -1,0 +1,48 @@
+# Default values for linkwarden.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/linkwarden/linkwarden
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 3000
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: linkwarden.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+
+persistence:
+  enabled: false
+  size: 1Gi
+  accessMode: ReadWriteOnce
+  storageClass: ""
+  mountPath: /data/data
+
+# Linkwarden specific configuration
+config:
+  database:
+    host: "postgres.postgres.svc.cluster.local"
+    port: 5432
+    user: "linkwarden"
+    password: "" # This should be set from vault
+    database: "linkwarden"
+  meilisearch:
+    host: "meilisearch-service.meilisearch.svc.cluster.local"
+    port: 7700
+    apiKey: "" # This should be set from vault
+  nextauth:
+    secret: "" # This should be set from vault
+    url: "http://linkwarden.local/api/v1/auth"
