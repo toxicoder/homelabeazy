@@ -1,0 +1,20 @@
+replicaCount: 1
+
+image:
+  repository: kiwix/kiwix-serve
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: true
+  host: kiwix.local
+
+persistence:
+  enabled: true
+  size: 10Gi
+  accessMode: ReadWriteOnce
+  storageClass: ""
