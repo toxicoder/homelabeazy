@@ -1,0 +1,23 @@
+apiVersion: "argoproj.io/v1alpha1"
+kind: "Application"
+metadata:
+  name: "docling"
+  namespace: "argocd"
+spec:
+  project: "default"
+  source:
+    repoURL: "https://gitea.com/Cosmic-Loop/homelab"
+    path: "charts/docling"
+    targetRevision: "HEAD"
+    helm:
+      valueFiles:
+        - "config/apps/docling/values.yaml"
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: "docling"
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
