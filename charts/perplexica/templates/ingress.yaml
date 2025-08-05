@@ -1,0 +1,18 @@
+{{- if .Values.ingress.enabled -}}
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ .Release.Name }}-ingress
+  labels:
+    app.kubernetes.io/name: {{ .Release.Name }}-ingress
+    app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`{{ .Values.ingress.hosts[0].host }}`)
+      kind: Rule
+      services:
+        - name: {{ .Release.Name }}-frontend
+          port: {{ .Values.frontend.service.port }}
+{{- end }}

@@ -1,0 +1,62 @@
+# Default values for perplexica.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+frontend:
+  replicaCount: 1
+  image:
+    repository: itzcrazykns/perplexica-frontend
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  service:
+    type: ClusterIP
+    port: 3000
+
+backend:
+  replicaCount: 1
+  image:
+    repository: itzcrazykns/perplexica-backend
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  service:
+    type: ClusterIP
+    port: 8080
+
+searxng:
+  replicaCount: 1
+  image:
+    repository: searxng/searxng
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  service:
+    type: ClusterIP
+    port: 8080
+
+ingress:
+  enabled: true
+  className: ""
+  annotations: {}
+  hosts:
+    - host: perplexica.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+
+config:
+  # This will be mounted as config.toml
+  settings: |
+    [server]
+    host = "0.0.0.0"
+    port = 8080
+
+    [search]
+    searxng_url = "http://perplexica-searxng.perplexica.svc.cluster.local:8080"
+
+    [llm]
+    model = "llama3"
+
+    [ollama]
+    ollama_api_base_url = "http://ollama.ollama.svc.cluster.local:11434"
+
+    [auth]
+    enabled = false
