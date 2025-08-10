@@ -30,6 +30,11 @@ common:
     passwords:
       - alias: "openldap_root_password"
       - alias: "openldap_admin_password"
+      - alias: "redis_password"
+      - alias: "k3s_join_token"
+      - alias: "asus_wifi_2ghz_password"
+      - alias: "asus_wifi_5ghz_password"
+      - alias: "asus_wifi_6ghz_password"
 
 dev:
   # Development-specific overrides

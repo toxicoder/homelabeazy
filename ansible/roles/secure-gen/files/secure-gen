@@ -25,20 +25,32 @@ def generate_secrets(client, config):
 def get_vault_client():
     """
     Initializes and returns a Vault client.
+    It supports authentication via AppRole or token.
     """
     vault_addr = os.environ.get("VAULT_ADDR", "http://127.0.0.1:8200")
-    role_id = os.environ.get("VAULT_ROLE_ID")
-    secret_id = os.environ.get("VAULT_SECRET_ID")
-
     if not vault_addr:
         raise ValueError("VAULT_ADDR environment variable must be set")
-    if not role_id or not secret_id:
-        raise ValueError("VAULT_ROLE_ID and VAULT_SECRET_ID environment variables must be set")
 
     client = hvac.Client(url=vault_addr)
-    client.auth.approle.login(role_id=role_id, secret_id=secret_id)
 
-    return client
+    vault_token = os.environ.get("VAULT_TOKEN")
+    if vault_token:
+        client.token = vault_token
+        if not client.is_authenticated():
+            raise ValueError("Vault authentication failed using VAULT_TOKEN.")
+        print("Authenticated to Vault using token.")
+        return client
+
+    role_id = os.environ.get("VAULT_ROLE_ID")
+    secret_id = os.environ.get("VAULT_SECRET_ID")
+    if role_id and secret_id:
+        client.auth.approle.login(role_id=role_id, secret_id=secret_id)
+        if not client.is_authenticated():
+            raise ValueError("Vault authentication failed using AppRole.")
+        print("Authenticated to Vault using AppRole.")
+        return client
+
+    raise ValueError("Vault authentication failed. Please provide VAULT_TOKEN or VAULT_ROLE_ID/VAULT_SECRET_ID.")
 
 from cryptography.hazmat.primitives import serialization as crypto_serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
