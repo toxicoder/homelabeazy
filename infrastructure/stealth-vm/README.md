@@ -1,6 +1,8 @@
 # Terraform Module: stealth-vm
 
-This module creates a "stealth" VM in Proxmox, which is configured to be difficult to detect as a virtual machine. This is useful for gaming, anti-cheat, and other applications that may not work well in a virtualized environment.
+This module creates a "stealth" VM in Proxmox, which is configured to be difficult to detect as a virtual machine. This is useful for game streaming and other applications that may not work well in a virtualized environment.
+
+**Note:** This module is intended to ensure compatibility and performance for legitimate use cases. It is not designed to enable or facilitate cheating in any way.
 
 ## Usage
 
