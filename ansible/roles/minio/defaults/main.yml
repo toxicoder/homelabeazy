@@ -1,7 +1,8 @@
 ---
 # defaults file for minio
 
-minio_version: "RELEASE.2023-01-25T00-19-53Z"
+minio_version: "RELEASE.2023-01-25T00-19-54Z"
+minio_checksum: "sha256:e7d44bb2f808d9ada43c7b1a677b3ae8e336f5be442992cd35a1b89e545c76d5"
 minio_data_dir: "/data"
 minio_vault_path: "secret/data/minio"
 minio_vault_access_key_name: "access_key"

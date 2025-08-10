@@ -32,6 +32,7 @@
     url: "https://dl.min.io/server/minio/release/linux-amd64/minio.{{ minio_version }}"
     dest: /usr/local/bin/minio
     mode: '0755'
+    checksum: "{{ minio_checksum }}"
   notify: restart minio
 
 - name: Set service credentials
