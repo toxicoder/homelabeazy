@@ -10,4 +10,4 @@
   environment:
     INSTALL_K3S_VERSION: "{{ k3s_version }}"
     K3S_URL: "https://{{ groups['k3s_masters'][0] }}:6443"
-    K3S_TOKEN: "{{ lookup('community.hashi_vault.vault_read', 'secret/k3s')['data']['join_token'] }}"
+    K3S_TOKEN: "{{ lookup('community.hashi_vault.vault_read', 'secret/passwords/k3s_join_token')['data']['password'] }}"

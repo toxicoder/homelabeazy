@@ -1,2 +1,2 @@
 ---
-# defaults file for redis role
+service_password: "{{ vault_redis_password }}"

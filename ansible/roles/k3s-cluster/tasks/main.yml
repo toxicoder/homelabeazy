@@ -3,9 +3,6 @@
   hosts: localhost
   gather_facts: false
   tasks:
-    - name: Generate and store k3s join token
-      include_tasks: generate_token.yml
-
     - name: Install k3s master(s)
       include_tasks: install_master.yml
       loop: "{{ groups['k3s_masters'] }}"

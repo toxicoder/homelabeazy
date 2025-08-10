@@ -1,16 +1,3 @@
-- name: Create redis password
-  community.hashi_vault.vault_kv2_write:
-    url: "{{ vault_addr }}"
-    token: "{{ vault_token }}"
-    mount_point: "secret"
-    path: "redis"
-    data:
-      password: "{{ lookup('password', '/dev/null length=32 chars=ascii_letters,digits') }}"
-  register: redis_password_result
-  until: redis_password_result is success
-  retries: 5
-  delay: 2
-
 - name: Create redis secret
   kubernetes.core.k8s:
     state: present
@@ -22,4 +9,4 @@
         namespace: redis
       type: Opaque
       stringData:
-        password: "{{ redis_password_result.value.data.password }}"
+        password: "{{ service_password }}"
