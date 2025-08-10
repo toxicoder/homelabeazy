@@ -654,7 +654,11 @@ Once DNS is configured, you can access the applications by navigating to their r
 
 ## Stealth VM
 
-This project includes an optional "stealth" Windows VM on Proxmox for anti-cheat evasion in game streaming. This feature is experimental and should be used with caution.
+This project includes an optional "stealth" Windows VM on Proxmox. The purpose of this VM is to allow for game streaming from a server. It aims to provide a normal gaming environment, which can sometimes be challenging on virtualized hardware.
+
+### Our Stance on Cheating
+
+**This project is firmly against cheating in any form.** The "stealth" features are designed to make the virtual machine appear as a standard physical machine to the game, ensuring compatibility and performance. It is **not** intended to enable or facilitate cheating. We believe in fair play and sportsmanship. Any use of this project for activities that violate the terms of service of a game, including cheating, is strictly discouraged.
 
 ### Prerequisites
 
@@ -669,7 +673,7 @@ To enable the stealth VM, run the `scripts/setup.sh` script and answer "y" when 
 
 ### Disclaimer
 
-This feature is intended for educational purposes only. The use of this feature to circumvent anti-cheat mechanisms may be against the terms of service of some games and could result in a ban. The author of this project is not responsible for any consequences that may arise from the use of this feature.
+This feature is intended for running games on a virtual machine for streaming purposes. Using this for any form of cheating is against the principles of this project. The author of this project is not responsible for any consequences that may arise from the misuse of this feature.
 
 ## Troubleshooting
 
