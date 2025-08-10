@@ -13,19 +13,40 @@ This directory contains the Ansible setup for managing the infrastructure.
 
 The following roles are available:
 
-- `authelia`: Deploys and configures Authelia.
+- `applications`: Deploys a set of applications.
+- `asuswrt`: Configures Asuswrt-merlin firmware on routers.
+- `biome`: Installs Biome, a code formatter and linter.
+- `black`: Installs Black, a Python code formatter.
+- `clang-format`: Installs clang-format, a C/C++/Java/etc. code formatter.
+- `config`: Manages configuration files.
+- `consul`: Deploys and configures Consul.
 - `efk-stack`: Deploys and configures an EFK (Elasticsearch, Fluentd, Kibana) stack.
+- `faster-whisper`: Deploys the Faster Whisper speech-to-text model.
+- `go`: Installs the Go programming language.
+- `gofmt`: Installs gofmt, a Go code formatter.
+- `google-java-format`: Installs google-java-format, a Java code formatter.
+- `homelab-config`: Configures the homelab.
 - `homepage`: Deploys and configures a homepage application.
 - `k3s-cluster`: Deploys a high-availability k3s cluster onto VMs within Proxmox.
+- `mealie`: Deploys Mealie, a recipe manager.
+- `minio`: Deploys and configures Minio, an S3-compatible object storage server.
+- `n8n`: Deploys n8n, a workflow automation tool.
+- `ollama`: Deploys Ollama for running large language models.
 - `openldap`: Deploys and configures OpenLDAP.
 - `pfsense`: Configures pfSense.
+- `prettier`: Installs Prettier, a code formatter.
 - `proxmox-host`: Configures a Proxmox VE server.
+- `python-base`: Installs a base Python environment.
 - `redis`: Deploys and configures Redis.
+- `rreading-glasses`: Deploys rReading Glasses, a text analysis tool.
 - `secure-gen`: Generates secure passwords and other secrets.
+- `speaches`: Deploys Speaches, a text-to-speech application.
+- `stirling-pdf`: Deploys Stirling-PDF, a PDF manipulation tool.
 - `synology`: Manages a Synology NAS.
 - `traefik`: Deploys and configures Traefik.
+- `unibeautify`: Installs Unibeautify, a code beautifier.
 - `vault`: Deploys and configures HashiCorp Vault.
-- `vault-secrets-operator`: Deploys and configures the Vault Secrets Operator.
+- `vault-pki`: Configures Vault's PKI secrets engine.
 - `vault-secrets-operator`: Deploys the [HashiCorp Vault Secrets Operator](https://www.vaultproject.io/docs/platform/k8s/vso).
 - `velero`: Deploys and configures Velero.
 

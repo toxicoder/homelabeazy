@@ -1,16 +1,14 @@
 # Homelab as Code
 
-This project uses Ansible to automate the setup of a homelab environment on a Proxmox server. It will provision a K3s cluster and deploy a set of core infrastructure and applications.
+This project automates the setup of a homelab environment on a Proxmox server using a combination of Terraform, Ansible, and ArgoCD. It provisions a K3s cluster, configures the nodes, and deploys a suite of applications using a GitOps approach.
 
-The project is designed to be idempotent, meaning it can be run multiple times without causing any unintended side effects. It is also designed to be modular, so you can easily add or remove applications to fit your needs.
+The project is designed to be idempotent and modular, allowing you to easily customize your homelab by adding or removing applications to fit your needs.
 
 ## Table of Contents
 
 - [Homelab as Code](#homelab-as-code)
   - [Prerequisites](#prerequisites)
   - [Getting Started](#getting-started)
-    - [One-Click Setup](#one-click-setup)
-    - [Manual Setup](#manual-setup)
   - [System Architecture](#system-architecture)
     - [Core Components](#core-components)
     - [Architecture Diagram](#architecture-diagram)
@@ -24,6 +22,7 @@ The project is designed to be idempotent, meaning it can be run multiple times w
     - [Ansible](#ansible)
   - [Usage](#usage)
   - [Testing](#testing)
+  - [Homelab Importer](#homelab-importer)
   - [OpenLDAP](#openldap)
     - [Configuration](#configuration-1)
   - [Post-Installation](#post-installation)
@@ -50,14 +49,16 @@ The project is designed to be idempotent, meaning it can be run multiple times w
 Before you begin, you will need the following:
 
 -   A **Proxmox server** with a cloud-init template for your desired operating system.
--   **Ansible** and **Terraform** installed on your local machine.
+-   **Terraform** and **Ansible** installed on your local machine.
 -   **[yq](https://github.com/mikefarah/yq#install)** for processing YAML files.
+-   **[kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)** to interact with the Kubernetes cluster.
+-   **[argocd](https://argo-cd.readthedocs.io/en/stable/cli_installation/)** CLI (optional) for managing ArgoCD from the command line.
 -   An **API token** for your Proxmox server.
 -   A **password manager** such as Bitwarden or 1Password to store your secrets.
 
 ## Getting Started
 
-These instructions will guide you through setting up the homelab environment on your Proxmox server.
+These instructions will guide you through setting up the homelab environment on your Proxmox server. The automated `make setup` command is currently not recommended as it follows an outdated workflow. Please follow the manual steps below for a successful deployment.
 
 ### 1. Clone the Repository
 
@@ -66,60 +67,65 @@ git clone https://github.com/toxicoder/homelabeazy.git
 cd homelabeazy
 ```
 
-### 2\. Automated Setup (Recommended)
+### 2. Configure Your Environment
 
-The `make setup` command is the easiest way to get started. It will automatically provision the infrastructure, configure secrets, and deploy the applications with minimal user interaction.
-
-```bash
-make setup
-```
-
-This command will guide you through the following steps:
-
-1.  **Dependency Check:** Verifies that `terraform`, `ansible-playbook`, and `yq` are installed.
-2.  **Configuration:** Creates a `config/` directory by copying the contents of the `config.example/` directory. This is where all your personalized configuration will be stored.
-3.  **Proxmox Credentials:** Prompts you to enter your Proxmox API URL, Token ID, and Token Secret. These are used by Terraform and stored in `infrastructure/proxmox/terraform.tfvars`.
-4.  **Domain Name:** Prompts you to enter the domain name for your homelab, which is stored in `config/config.yml`.
-5.  **Stealth VM (Optional):** Asks if you want to enable the experimental Stealth VM and prompts for related configuration if enabled.
-6.  **Infrastructure Provisioning:** Runs Terraform to provision the virtual machines for the K3s cluster.
-7.  **Application Deployment:** Runs Ansible to deploy the applications and configure them.
-
-> **Note:** The final Ansible step in the automated setup is currently **broken** due to a missing Ansible inventory file. See the "Configuration" section for more details.
-
-### 3\. Manual Setup
-
-The manual setup process is for advanced users who want to customize the installation.
-
-1.  **Create your configuration:**
-    - Copy the `config.example` directory to `config`:
-      ```bash
-      cp -r config.example/ config/
-      ```
-    - Edit `config/config.yml` to match your environment. This file is the central place for all your configuration. See the "Configuration" section for more details on the available variables.
-    - Create an `infrastructure/proxmox/terraform.tfvars` file with your Proxmox credentials. You can copy the example file to get started:
+1.  **Copy the example configuration:**
+    ```bash
+    cp -r config.example/ config/
+    ```
+2.  **Edit `config/config.yml`:**
+    - This file is the central place for all your configuration. Review the variables and adjust them to your needs.
+3.  **Create `terraform.tfvars`:**
+    - Copy the example file:
       ```bash
       cp infrastructure/proxmox/terraform.tfvars.example infrastructure/proxmox/terraform.tfvars
       ```
+    - Edit `infrastructure/proxmox/terraform.tfvars` with your Proxmox API credentials.
 
-2.  **Provision the infrastructure:**
-      - Initialize Terraform:
-        ```bash
-        make terraform-init
-        ```
-      - Plan and apply the deployment:
-        ```bash
-        make terraform-plan
-        make terraform-apply
-        ```
+### 3. Provision the Infrastructure
 
-3.  **Deploy applications with Ansible:**
-    > **Note:** This step is currently **broken**. See the "Configuration" section for details on the missing inventory file.
-    - Run the main Ansible playbook:
-      ```bash
-      make ansible-playbook-setup
+Run the following command to provision the virtual machines for the K3s cluster on Proxmox:
+
+```bash
+make terraform-apply
+```
+
+### 4. Configure the Cluster with Ansible
+
+1.  **Create the Ansible Inventory:**
+    - After `terraform apply` is complete, you need to get the IP addresses of the newly created VMs from the Proxmox console.
+    - Create a file named `ansible/inventory/inventory.auto.yml` and add the IP addresses in the following format:
+      ```yaml
+      # ansible/inventory/inventory.auto.yml
+      all:
+        hosts:
+          k3s-master:
+            ansible_host: <IP_of_master_node>
+          k3s-worker-0:
+            ansible_host: <IP_of_worker_node_0>
+          # Add more workers if you have them
       ```
+2.  **Run the Ansible Playbook:**
+    - This will configure the nodes, install K3s, and set up some core components.
+    ```bash
+    make ansible-playbook-setup
+    ```
 
-4.  **Manage Secrets:**
+### 5. Deploy Applications with ArgoCD
+
+This project uses a GitOps approach with ArgoCD to manage applications.
+
+1.  **Install ArgoCD:**
+    - If you don't have ArgoCD running on your cluster, you need to install it. You can follow the [official ArgoCD documentation](https://argo-cd.readthedocs.io/en/stable/getting_started/).
+2.  **Deploy the App of Apps:**
+    - The `apps/app-of-apps.yml` manifest is the entry point for all applications in this repository. Applying this manifest to your cluster will have ArgoCD automatically deploy and manage all the other applications defined in the `apps/` directory.
+    - You can apply it using `kubectl`:
+      ```bash
+      kubectl apply -f apps/app-of-apps.yml
+      ```
+    - Alternatively, you can create the application using the ArgoCD UI or CLI, pointing it to this Git repository and the `apps/` path.
+
+### 6. Manage Secrets
 
 This project uses HashiCorp Vault to manage secrets. The `ansible/roles/vault-secrets-operator` role is responsible for deploying the [HashiCorp Vault Secrets Operator](https://www.vaultproject.io/docs/platform/k8s/vso), which in turn is responsible for reading the application configurations, fetching secrets from Vault, and creating the necessary Kubernetes secrets.
 
@@ -156,9 +162,9 @@ To add a new secret, you need to:
 
 1.  Add the secret to Vault at the desired path.
 2.  Update the corresponding `values.yaml` file to reference the new secret using the `vault:` prefix.
-3.  Run the `make ansible-playbook-setup` command to apply the changes.
+3.  Commit and push your changes to the Git repository. ArgoCD will automatically apply the changes.
 
-**Private Gitea Setup**
+### Private Gitea Setup
 
 This repository is designed to be used as a template. You can clone it from GitHub, and then push it to your own private Gitea instance to store your homelab's configuration securely.
 
@@ -167,7 +173,7 @@ This repository is designed to be used as a template. You can clone it from GitH
 1.  **Clone the repository from GitHub:**
 
     ```bash
-    git clone [https://github.com/toxicoder/homelabeazy.git](https://github.com/toxicoder/homelabeazy.git)
+    git clone https://github.com/toxicoder/homelabeazy.git
     cd homelabeazy
     ```
 
@@ -208,27 +214,19 @@ The configuration for each application is defined in a `values.yaml` file locate
 
 To customize the configuration of an application, you can edit its `values.yaml` file. For example, to change the number of replicas for Gitea, you would edit `config/apps/gitea/values.yaml` and modify the `replicaCount` value.
 
-After making your changes, you can apply them by running the following command:
-
-```bash
-make ansible-playbook-main
-```
-
-This will re-run the Ansible playbook and update the application with the new configuration.
+After making your changes, commit and push them to your Git repository. ArgoCD will automatically detect the changes and apply them to the cluster.
 
 ## System Architecture
 
-This homelab is built on a foundation of Proxmox for virtualization, with Terraform and Ansible for infrastructure as code. The core of the homelab is a K3s cluster, which is a lightweight, certified Kubernetes distribution.
-
-The architecture is designed to be highly available and scalable. The K3s cluster is deployed in a high-availability configuration with multiple master and worker nodes. This ensures that the cluster will remain operational even if one of the nodes fails. The applications are deployed as microservices, which allows them to be scaled independently of each other.
+This homelab is built on a foundation of Proxmox for virtualization, with Terraform and Ansible for infrastructure provisioning and node configuration. Applications are managed using a GitOps workflow with ArgoCD. The core of the homelab is a K3s cluster, which is a lightweight, certified Kubernetes distribution.
 
 ### Core Components
 
   - **Proxmox:** A powerful open-source virtualization platform that provides the foundation for the homelab.
   - **Terraform:** Used to provision the virtual machines for the K3s cluster on Proxmox.
-  - **Ansible:** Used for configuration management and application deployment on the K3s cluster.
+  - **Ansible:** Used for configuration management of the K3s nodes.
+  - **ArgoCD:** A declarative, GitOps continuous delivery tool for Kubernetes. It is used to deploy and manage applications.
   - **K3s:** A lightweight, certified Kubernetes distribution that is easy to install and manage.
-  - **Homelab Role:** A comprehensive Ansible role that deploys and configures the entire homelab.
   - **Traefik:** A modern reverse proxy and load balancer that makes deploying microservices easy.
   - **Authelia:** An open-source authentication and authorization server providing two-factor authentication and single sign-on.
   - **OpenLDAP:** A lightweight directory access protocol for user authentication.
@@ -266,11 +264,13 @@ graph TD
 
     subgraph "Automation"
         C(Terraform) -- Provisions VMs on --> B
-        D(Ansible) -- Configures --> E
+        D(Ansible) -- Configures Nodes --> E
     end
 
-    subgraph "Container Orchestration"
+    subgraph "Container Orchestration & GitOps"
         E(K3s Kubernetes Cluster)
+        K(ArgoCD) -- Deploys Apps to --> E
+        L(Git Repository) -- Syncs with --> K
     end
 
     subgraph "Applications"
@@ -315,14 +315,16 @@ The system architecture is designed to be a robust, scalable, and automated home
       - **Component:** `Terraform` & `Ansible`
       - **Role:**
           - `Terraform` is used to provision the virtual machines on Proxmox. It defines the infrastructure as code, making it easy to create, modify, and destroy VMs in a repeatable manner.
-          - `Ansible` is used for configuration management. Once the VMs are provisioned, Ansible configures them, installs the necessary software, and deploys the applications.
+          - `Ansible` is used for configuration management. Once the VMs are provisioned, Ansible configures them and installs the necessary software like K3s.
       - **Value:** This combination of tools automates the entire setup process, reducing manual effort and ensuring consistency. It allows you to rebuild the entire homelab from scratch with minimal intervention.
 
-4.  **Container Orchestration (K3s Kubernetes Cluster):**
+4.  **Container Orchestration & GitOps (K3s & ArgoCD):**
 
-      - **Component:** `K3s Kubernetes Cluster`
-      - **Role:** K3s is a lightweight, certified Kubernetes distribution that runs on the VMs. It orchestrates the deployment, scaling, and management of containerized applications.
-      - **Value:** Kubernetes provides a powerful and standardized platform for running applications. It offers high availability, fault tolerance, and automatic scaling, making the homelab resilient and easy to manage.
+      - **Component:** `K3s Kubernetes Cluster` & `ArgoCD`
+      - **Role:**
+          - `K3s` is a lightweight, certified Kubernetes distribution that runs on the VMs. It orchestrates the deployment, scaling, and management of containerized applications.
+          - `ArgoCD` provides a GitOps workflow. It continuously monitors a Git repository and automatically deploys any changes to the K3s cluster, ensuring that the cluster state always matches the state defined in Git.
+      - **Value:** Kubernetes provides a powerful and standardized platform for running applications. ArgoCD automates application deployment and management, making it easy to track changes, roll back to previous versions, and maintain a consistent environment.
 
 5.  **Applications (Core Services & User Applications):**
 
@@ -345,7 +347,7 @@ The system architecture is designed to be a robust, scalable, and automated home
 
 1.  **Provisioning:** `Terraform` provisions the virtual machines on `Proxmox`.
 2.  **Configuration:** `Ansible` configures the VMs and installs the `K3s Kubernetes Cluster`.
-3.  **Deployment:** `Ansible` deploys the `Core Services` and `User Applications` to the `K3s` cluster.
+3.  **Deployment:** `ArgoCD` monitors the Git repository and deploys the `Core Services` and `User Applications` to the `K3s` cluster.
 4.  **Access:**
       - Users access the applications through the `Traefik Ingress`.
       - `Authelia SSO` intercepts the requests to handle authentication.
@@ -365,13 +367,14 @@ graph TD
 ```mermaid
 graph TD
     subgraph "User"
-        A(make setup)
+        A(Manual Setup)
+        P(git push)
     end
 
     subgraph "Automation"
-        B(scripts/setup.sh)
         C(Terraform)
         D(Ansible)
+        K(ArgoCD)
     end
 
     subgraph "Infrastructure"
@@ -379,16 +382,12 @@ graph TD
         F(K3s Cluster)
     end
 
-    subgraph "Configuration"
-        G(Ansible Roles)
-    end
-
-    A --> B
-    B --> C
+    A -- Triggers --> C
+    A -- Triggers --> D
     C -- Provisions VMs on --> E
-    B --> D
     D -- Configures --> F
-    D -- Executes --> G
+    P -- Triggers --> K
+    K -- Deploys to --> F
 ```
 
 ## Default Services
@@ -411,27 +410,35 @@ The following services are included in this homelab. Some are core infrastructur
 | Service           | Description                                                                                             |
 | ----------------- | ------------------------------------------------------------------------------------------------------- |
 | **AppFlowy**      | An open-source alternative to Notion.                                                                   |
+| **Authelia**      | An open-source authentication and authorization server.                                                 |
 | **Bitwarden**     | A self-hosted password manager.                                                                         |
 | **Bolt**          | A content management system.                                                                            |
 | **Coder**         | A remote development environment that runs on your own infrastructure.                                  |
-| **Faster Whisper**| A fast, lightweight, and accurate speech-to-text model.                                                 |
+| **Docling**       | A documentation site generator.                                                                         |
 | **Gitea**         | A self-hosted Git service.                                                                              |
 | **Gluetun**       | A VPN client in a container to secure other services.                                                   |
 | **Grafana**       | A monitoring and observability platform.                                                                |
 | **Guacamole**     | A clientless remote desktop gateway.                                                                    |
 | **Home Assistant**| An open-source home automation platform.                                                                |
+| **Homebox**       | A simple, a static homepage for your homelab.                                                             |
 | **Homelab Importer**| A tool for importing homelab configurations.                                                          |
-| **Homepage**      | A simple, a static homepage for your homelab.                                                             |
+| **Jackett**       | A proxy server for torrent trackers.                                                                    |
 | **Jellyfin**      | A self-hosted media server.                                                                             |
 | **Jellyseerr**    | A request management and media discovery tool for Jellyfin.                                             |
 | **Kasm**          | A container streaming platform for running desktops and applications in a browser.                      |
+| **Kiwix**         | An offline reader for online content like Wikipedia.                                                    |
 | **Langflow**      | A UI for experimenting with and prototyping language models.                                            |
 | **Lidarr**        | A music collection manager for Usenet and BitTorrent users.                                             |
+| **Linkwarden**    | A self-hosted, open-source collaborative bookmark manager.                                              |
 | **MariaDB**       | A popular open-source relational database.                                                              |
+| **Meilisearch**   | A fast, open-source, and powerful search engine.                                                        |
+| **Metube**        | A web UI for youtube-dl.                                                                                |
 | **Monitoring**    | A full monitoring stack including Prometheus, Grafana, and Alertmanager.                                |
-| **Ollama**        | A tool for running large language models locally.                                                       |
 | **Open WebUI**    | A user-friendly web interface for large language models.                                                |
+| **OpenEDAI Speech**| A text-to-speech application.                                                                         |
+| **OpenLDAP**      | A lightweight directory access protocol for user authentication.                                        |
 | **Overseerr**     | A request management and media discovery tool for Plex.                                                 |
+| **Perplexica**    | An open-source AI search engine.                                                                        |
 | **pfSense**       | A powerful open-source firewall and router.                                                             |
 | **Pi-hole**       | A network-wide ad blocker.                                                                              |
 | **Plex**          | A self-hosted media server.                                                                             |
@@ -441,15 +448,14 @@ The following services are included in this homelab. Some are core infrastructur
 | **qBittorrent**   | A lightweight BitTorrent client.                                                                        |
 | **Radarr**        | A movie collection manager for Usenet and BitTorrent users.                                             |
 | **Redis**         | An in-memory data structure store.                                                                      |
-| **rReading Glasses**| A tool for reading and analyzing text.                                                                |
 | **Sabnzbd**       | A binary newsreader for downloading from Usenet.                                                        |
 | **SearXNG**       | A privacy-respecting, hackable metasearch engine.                                                       |
 | **Sonarr**        | A PVR for Usenet and BitTorrent users.                                                                  |
-| **Speaches**      | A text-to-speech application.                                                                           |
 | **Supabase**      | An open-source Firebase alternative.                                                                    |
 | **Tailscale**     | A zero-config VPN for building secure networks.                                                         |
+| **Tika**          | A content analysis toolkit.                                                                             |
+| **Traefik**       | A modern reverse proxy and load balancer.                                                               |
 | **WireGuard**     | A fast, modern, and secure VPN tunnel.                                                                  |
-| **WorkAdventure** | A collaborative virtual office and event platform.                                                      |
 
 ## Deployment
 
@@ -459,7 +465,7 @@ This project uses Terraform workspaces to manage multiple environments. Each wor
 
   * **dev:** The development environment. This is the default workspace. It is used for testing new features and changes.
   * **staging:** The staging environment. This workspace is used for testing changes before they are deployed to production.
-  * **prod:** The production environment. This workspace is used for the live application.
+  - **prod:** The production environment. This workspace is used for the live application.
 
 ### Managing Environments
 
@@ -493,21 +499,22 @@ To promote the current version of the `staging` branch to the production environ
 
 ## Deployment Workflow
 
-This project uses a two-step process to deploy the homelab environment:
+This project follows a GitOps methodology for application deployment, with infrastructure managed as code. The workflow is as follows:
 
-1.  **Provision Infrastructure:** Use Terraform to create the virtual machines for the K3s cluster on Proxmox. This step is automated by the `scripts/setup.sh` script, which will create a `terraform.tfvars` file with your Proxmox credentials and then run `terraform init`, `terraform plan`, and `terraform apply`.
+1.  **Provision Infrastructure:** Use Terraform to create the virtual machines for the K3s cluster on Proxmox. This is typically a one-time setup or for making infrastructure-level changes.
 
-2.  **Configure Cluster and Applications:** Use Ansible to configure the K3s cluster, install core infrastructure components, and deploy applications. This step is also automated by the `scripts/setup.sh` script, which will create an `ansible/group_vars/all.yml` file with your domain name and then run the Ansible playbook.
+2.  **Configure Cluster:** Use Ansible to configure the K3s nodes, install necessary packages, and set up core components. This is also a one-time setup or for node-level configuration changes.
 
-The deployment process is designed to be as automated as possible. However, you can also run the Terraform and Ansible commands manually if you want more control over the deployment process.
+3.  **Deploy and Manage Applications:** Applications are managed by ArgoCD. To deploy, update, or remove an application, you make changes to the corresponding YAML files in the `apps/` directory and push them to the Git repository. ArgoCD automatically syncs these changes to the cluster.
 
 ## Configuration
 
-Configuration for this project is managed in three main places:
+Configuration for this project is managed in several places:
 
 1.  **Global Settings:** The `config/config.yml` file contains high-level settings for your homelab.
 2.  **Terraform Variables:** The `infrastructure/proxmox/terraform.tfvars` file contains variables specific to the Proxmox infrastructure.
 3.  **Ansible Inventory:** The Ansible inventory file tells Ansible which hosts to connect to.
+4.  **Application Configuration:** The `config/apps/` directory contains `values.yaml` files for each application, which are used to configure the Helm charts deployed by ArgoCD.
 
 ### 1. Global Configuration (`config/config.yml`)
 
@@ -548,7 +555,7 @@ This file holds the variables needed by Terraform to provision the infrastructur
 
 > ⚠️ **Important:** The automatic generation of the Ansible inventory file is currently **not implemented**.
 >
-> The `Makefile` and automation are configured to use a static inventory file located at `ansible/inventory/inventory.auto.yml`. However, the Terraform configuration **does not** create this file. This means that after running `make terraform-apply`, the subsequent Ansible playbook will fail.
+> The Terraform configuration **does not** create this file. This means that after running `make terraform-apply`, the subsequent Ansible playbook will fail.
 >
 > **Workaround:**
 >
@@ -574,7 +581,7 @@ This project includes a `Makefile` that provides a convenient way to run common 
 
   - **`make help`**: Display a list of available commands.
   - **`make install-deps`**: Install dependencies.
-  - **`make setup`**: Run the interactive setup script for the homelab.
+  - **`make setup`**: Run the interactive setup script for the homelab. **(Not Recommended)**
   - **`make lint`**: Run all linters.
   - **`make terraform-init`**: Initialize Terraform.
   - **`make terraform-plan`**: Plan the Terraform deployment.
@@ -585,9 +592,17 @@ This project includes a `Makefile` that provides a convenient way to run common 
 
 ## Testing
 
-> ⚠️ **Note:** The testing framework for this project is currently **not implemented**.
->
-> While the `Makefile` includes a `make test` command that attempts to run Molecule tests, the necessary Molecule configuration files are missing from the Ansible roles. Therefore, testing is not functional at this time.
+Some parts of this project have tests, but the overall testing framework is still under development. You can run the available tests with:
+
+```bash
+make test
+```
+
+## Homelab Importer
+
+This repository includes a tool to import an existing, manually-configured Proxmox environment into a Terraform-managed setup. This is useful for migrating your existing homelab to this project's infrastructure as code approach.
+
+For detailed instructions on how to use the importer, please see the [Homelab Importer README](tools/homelab-importer/README.md).
 
 ## OpenLDAP
 
@@ -733,26 +748,22 @@ If you encounter an issue that you cannot resolve, you can restart the setup pro
 1.  **Destroy the infrastructure:**
 
     ```bash
-    terraform destroy
+    make destroy
     ```
 
 2.  **Delete the `terraform.tfvars` file:**
 
     ```bash
-    rm terraform/terraform.tfvars
+    rm infrastructure/proxmox/terraform.tfvars
     ```
 
-3.  **Delete the `ansible/group_vars/all.yml` file:**
+3.  **Delete the `ansible/inventory/inventory.auto.yml` file:**
 
     ```bash
-    rm ansible/group_vars/all.yml
+    rm ansible/inventory/inventory.auto.yml
     ```
 
-4.  **Run the setup script again:**
-
-    ```bash
-    ./scripts/setup.sh
-    ```
+4.  **Run the setup process again by following the steps in the "Getting Started" section.**
 
 ## Customization
 
@@ -760,13 +771,13 @@ This project is highly customizable. You can add new applications, manage secret
 
 ### Adding New Applications
 
-To add a new application, you will need to create a new Ansible role for it. The role should include the following:
+To add a new application, you need to add a new ArgoCD application manifest to the `apps/` directory. This typically involves the following steps:
 
-  - A `tasks/main.yml` file that defines the tasks for deploying the application.
-  - A `templates` directory that contains any necessary configuration files.
-  - A `defaults/main.yml` file that defines the default variables for the application.
-
-Once you have created the role, you can add it to the `ansible/playbooks/main.yml` file to have it deployed with the rest of the applications.
+1.  **Find or create a Helm chart for the application.**
+2.  **Create a new `values.yaml` file** in `config/apps/<app-name>/` to store the configuration for the application.
+3.  **Create a new YAML file** in the `apps/` directory (e.g., `apps/<app-name>.yml`). This file will define an ArgoCD `Application` resource that points to the Helm chart and your `values.yaml` file.
+4.  **Add the new application to `apps/app-of-apps.yml`** so that it is automatically deployed with the other applications.
+5.  **Commit and push your changes** to the Git repository. ArgoCD will automatically deploy the new application.
 
 ### Managing Secrets
 
