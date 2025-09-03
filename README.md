@@ -1,5 +1,7 @@
 # Homelab as Code
 
+<img width="1024" height="1024" alt="homelab_eazy" src="https://github.com/user-attachments/assets/4ceb9098-019d-4c6f-849a-383152296a73" />
+
 This project automates the setup of a homelab environment on a Proxmox server using a combination of Terraform, Ansible, and ArgoCD. It provisions a K3s cluster, configures the nodes, and deploys a suite of applications using a GitOps approach.
 
 The project is designed to be idempotent and modular, allowing you to easily customize your homelab by adding or removing applications to fit your needs.
