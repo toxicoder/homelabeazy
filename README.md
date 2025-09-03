@@ -1,8 +1,26 @@
-# Homelab as Code
+# Homelabeazy - Your _Homelab as Code_
 
-<img width="760" height="420" alt="homelabeazy" src="https://github.com/user-attachments/assets/36680064-3e62-4a1b-b558-989c29bb0e9c" />
+<div align="center">
+    <img width="760" height="420" alt="homelabeazy" src="https://github.com/user-attachments/assets/36680064-3e62-4a1b-b558-989c29bb0e9c" />
+</div>
 
-This project automates the setup of a homelab environment on a Proxmox server using a combination of Terraform, Ansible, and ArgoCD. It provisions a K3s cluster, configures the nodes, and deploys a suite of applications using a GitOps approach.
+## Project Mission
+
+To bring enterprise-grade automation to the personal homelab. This project provides a complete blueprint to build a powerful, reproducible server environment using professional Infrastructure as Code (IaC) and GitOps practices, allowing you to manage your entire homelab with the same reliability and control as a modern software project.
+
+### Details
+
+This project automates the setup of a homelab environment on a Proxmox server using a combination of:
+
+* **Terraform**
+* **Ansible**
+* **ArgoCD**.
+
+It:
+
+1. **provisions a K3s cluster**
+1. **configures the nodes**
+1. **and deploys a suite of applications using a GitOps approach.**
 
 The project is designed to be idempotent and modular, allowing you to easily customize your homelab by adding or removing applications to fit your needs.
 
