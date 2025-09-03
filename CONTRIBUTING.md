@@ -1,29 +1,10 @@
-# Contributing to HomelabEazy
+# Contributing
 
-First off, thank you for considering contributing to HomelabEazy! It's people like you that make HomelabEazy such a great tool.
+Contributions are welcome! If you would like to contribute to this project, please follow these steps:
 
-## Where do I go from here?
-
-If you've noticed a bug or have a question, [search the issue tracker](https://github.com/toxicoder/homelabeazy/issues) to see if someone else has already reported the issue. If not, feel free to [open a new issue](https://github.com/toxicoder/homelabeazy/issues/new).
-
-## Fork & create a branch
-
-If you want to contribute with code, please fork the repository and create a new branch from `main`.
-
-```
-git checkout -b my-new-feature
-```
-
-## Commit your changes
-
-Make sure your commit messages are descriptive.
-
-## Submitting a pull request
-
-When you're ready to submit a pull request, please make sure to:
-
--   Run the test suite to ensure that your changes don't break anything.
--   Update the documentation if you've added or changed any features.
--   Add a descriptive title and a clear description of your changes.
-
-Thank you for your contribution!
+1.  **Open an issue:** Before you start working on a new feature or bug fix, please open an issue to discuss it with the project maintainers. This will help to ensure that your contribution is in line with the project's goals.
+2.  **Fork the repository:** Fork the repository to your own GitHub account.
+3.  **Create a new branch:** Create a new branch for your changes.
+4.  **Make your changes:** Make your changes and commit them with a clear and concise commit message.
+5.  **Push your changes:** Push your changes to your fork.
+6.  **Create a pull request:** Create a pull request to merge your changes into the `main` branch.
