@@ -1,0 +1,23 @@
+apiVersion: "argoproj.io/v1alpha1"
+kind: "Application"
+metadata:
+  name: "stirling-pdf"
+  namespace: "argocd"
+spec:
+  project: "default"
+  source:
+    repoURL: "https://github.com/toxicoder/homelabeazy.git"
+    path: "charts/stirling-pdf"
+    targetRevision: "HEAD"
+    helm:
+      valueFiles:
+        - "config/apps/stirling-pdf/values.yaml"
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: "stirling-pdf"
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
