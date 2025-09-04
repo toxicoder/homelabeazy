@@ -82,56 +82,48 @@ Before you begin, you will need the following:
 
 ## Getting Started
 
-These instructions will guide you through setting up the homelab environment on your Proxmox server using a single, streamlined command.
+Welcome to Homelabeazy! This guide will walk you through setting up your homelab using an interactive process that is designed to safely import your existing environment without causing disruptions.
 
-### 1. Clone the Repository
+The primary method for setting up your homelab is to use a private Git repository to store your configuration. This keeps your sensitive information separate from the public codebase.
+
+### 1. Create a Private Git Repository
+
+Before you begin, create a new **private** Git repository on a service like GitHub, GitLab, or Gitea. You will use this repository to store all of your homelab's configuration.
+
+### 2. Clone the Homelabeazy Repository
+
+Clone this `homelabeazy` repository to your local machine:
 
 ```bash
 git clone https://github.com/toxicoder/homelabeazy.git
 cd homelabeazy
 ```
 
-### 2. Run the Automated Setup
+### 3. Run the Interactive Setup
 
-The `make setup` command automates the entire process, including dependency installation, configuration, and provisioning.
+The `make setup-interactive` command will guide you through the entire process, from discovering your existing homelab setup to deploying the core services.
 
 ```bash
-make setup
+make setup-interactive
 ```
 
-The script will prompt you for the following information:
+The script will perform the following steps:
 
--   **Proxmox API URL**: The URL of your Proxmox server (e.g., `https://proxmox.example.com:8006`).
--   **Proxmox Token ID**: Your Proxmox API token ID.
--   **Proxmox Token Secret**: Your Proxmox API token secret.
--   **Domain Name**: The domain name for your homelab (e.g., `homelab.local`).
+1.  **Prompt for your private repository path:** You'll be asked to provide the local path to the private Git repository you created in step 1.
+2.  **Discover existing infrastructure:** The script will run a `homelab-importer` tool to connect to your Proxmox server, discover your existing VMs and containers, and generate Terraform configuration.
+3.  **Import to Terraform:** Your existing resources will be imported into Terraform's state, which allows Terraform to manage them without needing to destroy and recreate them.
+4.  **Deploy core services:** The script will use Ansible to deploy and configure the core services of your homelab, such as Gitea, Vault, and more.
+5.  **Commit to your private repository:** The generated configuration will be committed to your private repository, giving you a complete, version-controlled copy of your homelab's infrastructure and configuration.
 
-The `make setup` command performs the following steps:
-1.  Installs Python dependencies.
-2.  Checks for required tools like `terraform`, `ansible-playbook`, and `yq`.
-3.  Creates a new `private/` directory from the `config.example/` template.
-4.  Prompts for your Proxmox credentials and domain name, then creates the necessary `private/terraform.tfvars` and `private/config.yml` files.
-5.  Provisions the virtual machines on Proxmox using Terraform.
-6.  Generates the Ansible inventory file (`ansible/inventory/inventory.auto.yml`) automatically.
-7.  Configures the nodes and installs K3s using Ansible.
+After the script completes, your homelab will be fully configured and managed by code.
 
-### 3. Deploy Applications with ArgoCD
+### 4. Deploying Applications
 
-This project uses a GitOps approach with ArgoCD to manage applications.
-
-1.  **Install ArgoCD:**
-    - If you don't have ArgoCD running on your cluster, you need to install it. You can follow the [official ArgoCD documentation](https://argo-cd.readthedocs.io/en/stable/getting_started/).
-2.  **Deploy the App of Apps:**
-    - The `apps/app-of-apps.yml` manifest is the entry point for all applications in this repository. Applying this manifest to your cluster will have ArgoCD automatically deploy and manage all the other applications defined in the `apps/` directory.
-    - You can apply it using `kubectl`:
-      ```bash
-      kubectl apply -f apps/app-of-apps.yml
-      ```
-    - Alternatively, you can create the application using the ArgoCD UI or CLI, pointing it to this Git repository and the `apps/` path.
+This project uses a GitOps approach with ArgoCD to manage applications. The interactive setup will install and configure ArgoCD for you. To deploy additional applications, you can add them to the `apps/` directory in your private configuration repository and they will be automatically synced to your cluster.
 
 ## Private Deployment
 
-For users who wish to manage their homelab configuration in a private repository, separate from the public `homelabeazy` codebase, please see our [Private Deployment Guide](PRIVATE_DEPLOYMENT.md).
+This project is designed to be used with a private deployment model. The `make setup-interactive` command is the recommended way to get started with a private deployment. For more details on the private deployment strategy, please see our [Private Deployment Guide](PRIVATE_DEPLOYMENT.md).
 
 ## Further Documentation
 
