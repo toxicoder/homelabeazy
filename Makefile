@@ -20,6 +20,10 @@ CONFIG_EXAMPLE_DIR := config.example
 help: ## Display this help screen
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
+.PHONY: setup-interactive
+setup-interactive: ## Run the new interactive setup script
+	@scripts/setup-interactive.sh
+
 .PHONY: install-deps
 install-deps: ## Install dependencies
 	@echo ">>> Installing Python dependencies..."
