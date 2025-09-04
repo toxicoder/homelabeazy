@@ -11,7 +11,7 @@ spec:
     targetRevision: HEAD
     helm:
       valueFiles:
-        - "config/apps/guacamole/values.yaml"
+        - "private/apps/guacamole/values.yaml"
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: guacamole

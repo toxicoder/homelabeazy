@@ -31,7 +31,6 @@ __pycache__/
 *$py.class
 
 # Private configurations for Gitea
-config/
 ansible/group_vars/
 ansible/inventory/
 ldap.toml
@@ -41,3 +40,6 @@ gitleaks-report.json
 
 # Virtual environment
 .venv/
+
+# Private configuration
+/private/

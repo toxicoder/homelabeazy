@@ -11,7 +11,7 @@ spec:
     targetRevision: 0.1.21 # Using a specific version is better practice
     helm:
       valueFiles:
-        - "config/apps/open-webui/values.yaml"
+        - "private/apps/open-webui/values.yaml"
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: open-webui

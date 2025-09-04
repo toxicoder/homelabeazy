@@ -3,7 +3,7 @@
   gather_facts: false
   tasks:
     - name: Run secure-gen script
-      ansible.builtin.command: "python3 {{ role_path }}/files/secure-gen --config-file ../../../../config/config.yml"
+      ansible.builtin.command: "python3 {{ role_path }}/files/secure-gen --config-file ../../../../private/config.yml"
       args:
         chdir: "{{ role_path }}/files"
       environment:

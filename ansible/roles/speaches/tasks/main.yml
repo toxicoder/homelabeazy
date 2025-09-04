@@ -12,4 +12,4 @@
     chart_ref: "charts/{{ speaches_helm_chart }}"
     release_namespace: "{{ speaches_namespace }}"
     create_namespace: true
-    values: "{{ lookup('file', 'config/apps/speaches/values.yaml') | from_yaml }}"
+    values: "{{ lookup('file', 'private/apps/speaches/values.yaml') | from_yaml }}"

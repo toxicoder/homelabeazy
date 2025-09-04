@@ -14,4 +14,4 @@
     chart_version: "{{ homepage_helm_version }}"
     release_namespace: "{{ homepage_namespace }}"
     create_namespace: true
-    values: "{{ lookup('file', 'config/apps/homepage/values.yaml') | from_yaml }}"
+    values: "{{ lookup('file', 'private/apps/homepage/values.yaml') | from_yaml }}"

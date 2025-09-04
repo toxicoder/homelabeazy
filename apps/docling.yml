@@ -11,7 +11,7 @@ spec:
     targetRevision: "HEAD"
     helm:
       valueFiles:
-        - "config/apps/docling/values.yaml"
+        - "private/apps/docling/values.yaml"
   destination:
     server: "https://kubernetes.default.svc"
     namespace: "docling"

@@ -12,4 +12,4 @@
     chart_ref: "charts/{{ faster_whisper_helm_chart }}"
     release_namespace: "{{ faster_whisper_namespace }}"
     create_namespace: true
-    values: "{{ lookup('file', 'config/apps/faster-whisper/values.yaml') | from_yaml }}"
+    values: "{{ lookup('file', 'private/apps/faster-whisper/values.yaml') | from_yaml }}"

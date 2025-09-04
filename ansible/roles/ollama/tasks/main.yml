@@ -14,4 +14,4 @@
     chart_version: "{{ ollama_helm_version }}"
     release_namespace: "{{ ollama_namespace }}"
     create_namespace: true
-    values: "{{ lookup('file', 'config/apps/ollama/values.yaml') | from_yaml }}"
+    values: "{{ lookup('file', 'private/apps/ollama/values.yaml') | from_yaml }}"
