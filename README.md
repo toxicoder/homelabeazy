@@ -82,7 +82,7 @@ Before you begin, you will need the following:
 
 ## Getting Started
 
-These instructions will guide you through setting up the homelab environment on your Proxmox server. The automated `make setup` command is currently not recommended as it follows an outdated workflow. Please follow the manual steps below for a successful deployment.
+These instructions will guide you through setting up the homelab environment on your Proxmox server using a single, streamlined command.
 
 ### 1. Clone the Repository
 
@@ -91,51 +91,31 @@ git clone https://github.com/toxicoder/homelabeazy.git
 cd homelabeazy
 ```
 
-### 2. Configure Your Environment
+### 2. Run the Automated Setup
 
-1.  **Copy the example configuration:**
-    ```bash
-    cp -r config.example/ config/
-    ```
-2.  **Edit `config/config.yml`:**
-    - This file is the central place for all your configuration. Review the variables and adjust them to your needs.
-3.  **Create `terraform.tfvars`:**
-    - Copy the example file:
-      ```bash
-      cp infrastructure/proxmox/terraform.tfvars.example infrastructure/proxmox/terraform.tfvars
-      ```
-    - Edit `infrastructure/proxmox/terraform.tfvars` with your Proxmox API credentials.
-
-### 3. Provision the Infrastructure
-
-Run the following command to provision the virtual machines for the K3s cluster on Proxmox:
+The `make setup` command automates the entire process, including dependency installation, configuration, and provisioning.
 
 ```bash
-make terraform-apply
+make setup
 ```
 
-### 4. Configure the Cluster with Ansible
+The script will prompt you for the following information:
 
-1.  **Create the Ansible Inventory:**
-    - After `terraform apply` is complete, you need to get the IP addresses of the newly created VMs from the Proxmox console.
-    - Create a file named `ansible/inventory/inventory.auto.yml` and add the IP addresses in the following format:
-      ```yaml
-      # ansible/inventory/inventory.auto.yml
-      all:
-        hosts:
-          k3s-master:
-            ansible_host: <IP_of_master_node>
-          k3s-worker-0:
-            ansible_host: <IP_of_worker_node_0>
-          # Add more workers if you have them
-      ```
-2.  **Run the Ansible Playbook:**
-    - This will configure the nodes, install K3s, and set up some core components.
-    ```bash
-    make ansible-playbook-setup
-    ```
+-   **Proxmox API URL**: The URL of your Proxmox server (e.g., `https://proxmox.example.com:8006`).
+-   **Proxmox Token ID**: Your Proxmox API token ID.
+-   **Proxmox Token Secret**: Your Proxmox API token secret.
+-   **Domain Name**: The domain name for your homelab (e.g., `homelab.local`).
 
-### 5. Deploy Applications with ArgoCD
+The `make setup` command performs the following steps:
+1.  Installs Python dependencies.
+2.  Checks for required tools like `terraform`, `ansible-playbook`, and `yq`.
+3.  Creates a new `config/` directory from the `config.example/` template.
+4.  Prompts for your Proxmox credentials and domain name, then creates the necessary `terraform.tfvars` and `config/config.yml` files.
+5.  Provisions the virtual machines on Proxmox using Terraform.
+6.  Generates the Ansible inventory file (`ansible/inventory/inventory.auto.yml`) automatically.
+7.  Configures the nodes and installs K3s using Ansible.
+
+### 3. Deploy Applications with ArgoCD
 
 This project uses a GitOps approach with ArgoCD to manage applications.
 
@@ -153,13 +133,15 @@ This project uses a GitOps approach with ArgoCD to manage applications.
 
 For more detailed information, please see the following documents:
 
+- [Advanced Usage](docs/advanced-usage.md)
 - [Architecture](docs/architecture.md)
 - [Configuration](docs/configuration.md)
-- [Deployment](docs/deployment.md)
 - [Customization](docs/customization.md)
-- [Services](docs/services.md)
+- [Deployment](docs/deployment.md)
+- [Folder Structure](docs/folder-structure.md)
 - [Post-Installation](docs/post-installation.md)
-- [Advanced Usage](docs/advanced-usage.md)
+- [Services](docs/services.md)
+- [Technical Design](docs/technical-design.md)
 - [Troubleshooting](docs/troubleshooting.md)
 
 ## Contributing

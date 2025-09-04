@@ -73,6 +73,8 @@ EOF; \
 	fi
 	@echo ">>> Provisioning infrastructure with Terraform..."
 	$(MAKE) terraform-apply
+	@echo ">>> Generating Ansible inventory..."
+	$(MAKE) inventory
 	@echo ">>> Configuring cluster with Ansible..."
 	$(MAKE) ansible-playbook-setup
 	@if [ "$$enable_stealth_vm" = "y" ]; then \
@@ -117,6 +119,11 @@ terraform-plan: ## Plan the Terraform deployment
 terraform-apply: terraform-init ## Apply the Terraform deployment
 	@echo ">>> Applying Terraform deployment..."
 	@cd $(TERRAFORM_DIR) && terraform apply -auto-approve
+
+.PHONY: inventory
+inventory: ## Generate Ansible inventory file from Terraform outputs
+	@echo ">>> Generating Ansible inventory..."
+	@cd $(TERRAFORM_DIR) && terraform output -json | yq eval '. as $$out | { "all": { "hosts": { ($$out.k3s_master_name.value): {"ansible_host": $$out.k3s_master_ip.value} } } } | .all.hosts += ( [$$out.k3s_worker_names.value, $$out.k3s_worker_ips.value] | transpose | map({(.[0]): {"ansible_host": .[1]}}) | add )' - > ../../$(ANSIBLE_DIR)/inventory/inventory.auto.yml
 
 .PHONY: ansible-playbook-setup
 ansible-playbook-setup: ## Run the main Ansible playbook for setup
