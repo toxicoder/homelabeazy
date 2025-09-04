@@ -11,7 +11,7 @@ spec:
     targetRevision: HEAD
     helm:
       valueFiles:
-        - "config/apps/langflow/values.yaml"
+        - "private/apps/langflow/values.yaml"
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: langflow

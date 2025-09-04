@@ -12,4 +12,4 @@
     chart_ref: "charts/{{ rreading_glasses_helm_chart }}"
     release_namespace: "{{ rreading_glasses_namespace }}"
     create_namespace: true
-    values: "{{ lookup('file', 'config/apps/rreading-glasses/values.yaml') | from_yaml }}"
+    values: "{{ lookup('file', 'private/apps/rreading-glasses/values.yaml') | from_yaml }}"

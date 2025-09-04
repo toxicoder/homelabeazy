@@ -109,8 +109,8 @@ The script will prompt you for the following information:
 The `make setup` command performs the following steps:
 1.  Installs Python dependencies.
 2.  Checks for required tools like `terraform`, `ansible-playbook`, and `yq`.
-3.  Creates a new `config/` directory from the `config.example/` template.
-4.  Prompts for your Proxmox credentials and domain name, then creates the necessary `terraform.tfvars` and `config/config.yml` files.
+3.  Creates a new `private/` directory from the `config.example/` template.
+4.  Prompts for your Proxmox credentials and domain name, then creates the necessary `private/terraform.tfvars` and `private/config.yml` files.
 5.  Provisions the virtual machines on Proxmox using Terraform.
 6.  Generates the Ansible inventory file (`ansible/inventory/inventory.auto.yml`) automatically.
 7.  Configures the nodes and installs K3s using Ansible.
@@ -128,6 +128,10 @@ This project uses a GitOps approach with ArgoCD to manage applications.
       kubectl apply -f apps/app-of-apps.yml
       ```
     - Alternatively, you can create the application using the ArgoCD UI or CLI, pointing it to this Git repository and the `apps/` path.
+
+## Private Deployment
+
+For users who wish to manage their homelab configuration in a private repository, separate from the public `homelabeazy` codebase, please see our [Private Deployment Guide](PRIVATE_DEPLOYMENT.md).
 
 ## Further Documentation
 

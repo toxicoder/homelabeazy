@@ -11,7 +11,7 @@ spec:
     targetRevision: "HEAD"
     helm:
       valueFiles:
-        - "config/apps/tika/values.yaml"
+        - "private/apps/tika/values.yaml"
   destination:
     server: "https://kubernetes.default.svc"
     namespace: "tika"

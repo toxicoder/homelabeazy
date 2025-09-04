@@ -9,7 +9,7 @@ PROJECT_NAME  := homelabeazy
 PYTHON        := $(shell which python)
 TERRAFORM_DIR := infrastructure/proxmox
 ANSIBLE_DIR   := ansible
-CONFIG_DIR    := config
+CONFIG_DIR    := private
 CONFIG_EXAMPLE_DIR := config.example
 
 # ==============================================================================
@@ -40,16 +40,17 @@ setup: install-deps ## Run the interactive setup script for the homelab
 		echo "yq could not be found. Please install yq: https://github.com/mikefarah/yq#install"; \
 		exit 1; \
 	fi
-	@echo ">>> Creating config directory..."
+	@echo ">>> Creating private config directory..."
 	@if [ ! -d "$(CONFIG_DIR)" ]; then \
-		cp -r "$(CONFIG_EXAMPLE_DIR)/" "$(CONFIG_DIR)/"; \
+		mkdir -p $(CONFIG_DIR); \
+		cp -r "$(CONFIG_EXAMPLE_DIR)/." "$(CONFIG_DIR)/"; \
 	fi
 	@echo ">>> Prompting for input and creating configs..."
 	@read -p "Enter Proxmox API URL: " proxmox_api_url; \
 	read -p "Enter Proxmox Token ID: " pm_token_id; \
 	read -sp "Enter Proxmox Token Secret: " pm_token_secret; \
 	echo; \
-	cat > "$(TERRAFORM_DIR)/terraform.tfvars" <<EOF; \
+	cat > "$(CONFIG_DIR)/terraform.tfvars" <<EOF; \
 proxmox_api_url = "$$proxmox_api_url"
 pm_token_id     = "$$pm_token_id"
 pm_token_secret = "$$pm_token_secret"
@@ -85,7 +86,7 @@ EOF; \
 .PHONY: destroy
 destroy: ## Destroy the infrastructure
 	@echo ">>> Destroying Terraform infrastructure..."
-	@cd $(TERRAFORM_DIR) && terraform destroy -auto-approve
+	@cd $(TERRAFORM_DIR) && terraform destroy -auto-approve -var-file=../../$(CONFIG_DIR)/terraform.tfvars
 
 .PHONY: lint
 lint: lint-yaml lint-ansible lint-terraform ## Run all linters
@@ -113,17 +114,17 @@ terraform-init: ## Initialize Terraform
 .PHONY: terraform-plan
 terraform-plan: ## Plan the Terraform deployment
 	@echo ">>> Planning Terraform deployment..."
-	@cd $(TERRAFORM_DIR) && terraform plan
+	@cd $(TERRAFORM_DIR) && terraform plan -var-file=../../$(CONFIG_DIR)/terraform.tfvars
 
 .PHONY: terraform-apply
 terraform-apply: terraform-init ## Apply the Terraform deployment
 	@echo ">>> Applying Terraform deployment..."
-	@cd $(TERRAFORM_DIR) && terraform apply -auto-approve
+	@cd $(TERRAFORM_DIR) && terraform apply -auto-approve -var-file=../../$(CONFIG_DIR)/terraform.tfvars
 
 .PHONY: inventory
 inventory: ## Generate Ansible inventory file from Terraform outputs
 	@echo ">>> Generating Ansible inventory..."
-	@cd $(TERRAFORM_DIR) && terraform output -json | yq eval '. as $$out | { "all": { "hosts": { ($$out.k3s_master_name.value): {"ansible_host": $$out.k3s_master_ip.value} } } } | .all.hosts += ( [$$out.k3s_worker_names.value, $$out.k3s_worker_ips.value] | transpose | map({(.[0]): {"ansible_host": .[1]}}) | add )' - > ../../$(ANSIBLE_DIR)/inventory/inventory.auto.yml
+	@cd $(TERRAFORM_DIR) && terraform output -json | $(PYTHON) ../../scripts/generate_inventory.py
 
 .PHONY: ansible-playbook-setup
 ansible-playbook-setup: ## Run the main Ansible playbook for setup

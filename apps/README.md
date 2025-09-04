@@ -10,4 +10,4 @@ The `app-of-apps.yml` file is the main entry point. It is an ArgoCD Application 
 
 ## Configuration
 
-The configuration for each application is stored in the `config/apps` directory. Each application has a `values.yaml` file that contains the Helm values for the application.
+The configuration for each application is stored in the `private/apps` directory. Each application has a `values.yaml` file that contains the Helm values for the application.
