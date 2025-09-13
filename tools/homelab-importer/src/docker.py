@@ -6,7 +6,8 @@ import yaml
 
 
 def generate_docker_compose(
-    containers: List[Dict[str, Any]], filename: str
+    containers: List[Dict[str, Any]],
+    filename: str,
 ) -> None:
     """Generates a docker-compose.yml file."""
     services = {}

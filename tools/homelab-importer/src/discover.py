@@ -20,8 +20,9 @@ def _get_proxmox_resources(
         resources = proxmox.cluster.resources.get(type=resource_type)
         for resource in resources:
             vm_type = "qemu" if resource_type == "vm" else "lxc"
+            node, vmid = resource["node"], resource["vmid"]
             resource["docker_containers"] = get_docker_containers(
-                proxmox, resource["node"], resource["vmid"], vm_type
+                proxmox, node, vmid, vm_type
             )
         return resources
     except ResourceException as e:
@@ -75,16 +76,10 @@ def get_docker_containers(
         # Fetch container list
         cmd = "docker ps -a --format '{{json .}}'"
         result = guest.agent.exec.post(command=cmd)
-        if (
-            not result
-            or "stdout" not in result
-            or not result["stdout"].strip()
-        ):
+        if not result or "stdout" not in result or not result["stdout"].strip():
             return []
         containers = [
-            json.loads(line)
-            for line in result["stdout"].strip().split("\n")
-            if line
+            json.loads(line) for line in result["stdout"].strip().split("\n") if line
         ]
 
         cmd = "docker ps -a --format '{{.ID}}'"
@@ -118,13 +113,19 @@ def get_docker_containers(
         requests.exceptions.RequestException,
     ) as e:
         logging.error(
-            f"Error fetching Docker containers for {vm_type}/{vmid} on "
-            f"node {node}: {e}"
+            "Error fetching Docker containers for %s/%s on node %s: %s",
+            vm_type,
+            vmid,
+            node,
+            e,
         )
         return []
     except json.JSONDecodeError as e:
         logging.error(
-            f"Error decoding JSON from docker command for {vm_type}/{vmid} "
-            f"on node {node}: {e}"
+            "Error decoding JSON from docker command for %s/%s on node %s: %s",
+            vm_type,
+            vmid,
+            node,
+            e,
         )
         return []
