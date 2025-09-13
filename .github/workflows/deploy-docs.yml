@@ -1,0 +1,38 @@
+name: Deploy Docs
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0' # Or your desired Ruby version
+
+      - name: Install Dependencies
+        run: |
+          gem install bundler
+          bundle install --gemfile=docs/Gemfile --jobs 4 --retry 3
+
+      - name: Build and Deploy
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./docs
+          destination: ./_site
+        env:
+          JEKYLL_ENV: production
+          BASE_URL: /homelabeazy
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site

@@ -1,21 +1,19 @@
 ---
 layout: default
-title: Folder Structure
+title: Home
+nav_order: 1
 ---
 
-# Folder Structure
+# Welcome to Homelabeazy
 
-This document outlines the folder structure of the repository.
+**Your Homelab as Code**
 
-- **.gitea/**: Configuration for Gitea.
-- **.github/**: Contains GitHub Actions workflows for continuous integration.
-- **ansible/**: Holds Ansible playbooks and roles for infrastructure automation.
-- **apps/**: Kubernetes application definitions, likely for ArgoCD.
-- **charts/**: Helm charts for deploying various applications.
-- **config.example/**: Example configuration files to help users set up their own.
-- **docs/**: Documentation for the project.
-- **infrastructure/**: Terraform code for managing the infrastructure (e.g., Proxmox).
-- **scripts/**: A collection of utility scripts.
-- **src/**: Source code for the main application.
-- **test/**: Test files and configurations.
-- **tools/**: Contains various tools and utilities, such as the homelab-importer.
+This project provides a comprehensive, automated, and easy-to-manage homelab setup using tools like Ansible, Terraform, Kubernetes, and more. Our goal is to simplify the process of creating and maintaining a powerful and flexible homelab environment.
+
+## Getting Started
+
+To get started, check out our **[Configuration](configuration.md)** and **[Deployment](deployment.md)** guides.
+
+## View on GitHub
+
+The complete source code and issue tracker can be found on our **[GitHub repository](https://github.com/toxicoder/homelabeazy)**.
