@@ -1,3 +1,7 @@
+terraform {
+  required_version = ">= 0.13"
+}
+
 provider "proxmox" {
   pm_api_url      = var.proxmox_api_url
   pm_api_token_id = var.pm_token_id
