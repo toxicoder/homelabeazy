@@ -67,18 +67,21 @@ def main(output_dir: str) -> None:
         logging.info("Import script generated in %s", import_script_path)
 
         for resource in all_resources:
-            if "docker_containers" in resource and resource["docker_containers"]:
+            if resource.get("docker_containers"):
                 filename = f'{resource["name"]}_docker-compose.yml'
                 compose_path = os.path.join(output_dir, filename)
-                generate_docker_compose(resource["docker_containers"], compose_path)
-                logging.info("Docker Compose file generated in %s", compose_path)
+                docker_containers = resource["docker_containers"]
+                generate_docker_compose(docker_containers, compose_path)
+                logging.info("Docker Compose generated in %s", compose_path)
 
     except ProxmoxerAuthenticationError as e:
         raise ProxmoxAuthenticationError(
             f"Authentication error with Proxmox API: {e}"
         ) from e
     except ConnectionError as e:
-        raise ProxmoxConnectionError(f"Connection error with Proxmox API: {e}") from e
+        raise ProxmoxConnectionError(
+            f"Connection error with Proxmox API: {e}"
+        ) from e
 
 
 if __name__ == "__main__":
