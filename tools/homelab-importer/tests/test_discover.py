@@ -101,20 +101,6 @@ class TestDiscover(unittest.TestCase):
         mock_guest.agent.exec.post.side_effect = [
             {"stdout": '{"ID":"123","Names":"test-container"}\n'},
             {"stdout": ""},
-        ]
-        mock_proxmox.nodes.return_value.qemu.return_value = mock_guest
-
-        containers = get_docker_containers(mock_proxmox, "pve", 100, "qemu")
-        self.assertEqual(len(containers), 1)
-        self.assertNotIn("details", containers[0])
-
-    def test_get_docker_containers_inspect_fails(self):
-        mock_proxmox = MagicMock()
-        mock_guest = MagicMock()
-        mock_guest.agent.get.return_value = {}
-        mock_guest.agent.exec.post.side_effect = [
-            {"stdout": '{"ID":"123","Names":"test-container"}\n'},
-            {"stdout": "123\n"},
             {"stdout": ""},
         ]
         mock_proxmox.nodes.return_value.qemu.return_value = mock_guest

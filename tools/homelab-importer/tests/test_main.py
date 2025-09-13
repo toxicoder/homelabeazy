@@ -22,8 +22,7 @@ class TestMain(unittest.TestCase):
         self.env_vars = {
             "PROXMOX_HOST": "dummy_host",
             "PROXMOX_USER": "dummy_user",
-            "VAULT_ADDR": "dummy_addr",
-            "VAULT_TOKEN": "dummy_token",
+            "PROXMOX_PASSWORD": "dummy_password",
         }
         self.original_env = os.environ.copy()
         os.environ.update(self.env_vars)
@@ -33,12 +32,8 @@ class TestMain(unittest.TestCase):
         os.environ.clear()
         os.environ.update(self.original_env)
 
-    @patch("main.hvac.Client")
     @patch("main.ProxmoxAPI")
-    def test_main_success(self, mock_proxmox_api, mock_hvac_client):
-        mock_hvac_client.return_value.secrets.kv.v2.read_secret_version.return_value = {
-            "data": {"data": {"password": "dummy_password"}}
-        }
+    def test_main_success(self, mock_proxmox_api):
         mock_proxmox_instance = MagicMock()
         mock_proxmox_api.return_value = mock_proxmox_instance
         mock_proxmox_instance.cluster.resources.get.side_effect = [
@@ -66,43 +61,33 @@ class TestMain(unittest.TestCase):
 
         main(self.test_dir)
 
-        terraform_dir = os.path.join(self.test_dir, "terraform")
-        self.assertTrue(os.path.isdir(terraform_dir))
-        self.assertTrue(any(f.endswith(".tf") for f in os.listdir(terraform_dir)))
+        self.assertTrue(os.path.isdir(self.test_dir))
+        self.assertTrue(any(f.endswith(".tf") for f in os.listdir(self.test_dir)))
 
     def test_main_missing_env_vars(self):
         os.environ.clear()
         with self.assertRaises(MissingEnvironmentVariableError):
             main(self.test_dir)
 
-    @patch("main.hvac.Client")
     @patch(
         "main.ProxmoxAPI",
         side_effect=ProxmoxConnectionError("Connection Error"),
     )
-    def test_main_connection_error(self, mock_proxmox_api, mock_hvac_client):
-        mock_hvac_client.return_value.secrets.kv.v2.read_secret_version.return_value = {
-            "data": {"data": {"password": "dummy_password"}}
-        }
+    def test_main_connection_error(self, mock_proxmox_api):
         with self.assertRaises(ProxmoxConnectionError):
             main(self.test_dir)
 
     @patch("main.generate_docker_compose")
     @patch("main.get_lxc_containers")
     @patch("main.get_vms")
-    @patch("main.hvac.Client")
     @patch("main.ProxmoxAPI")
     def test_main_with_docker_containers(
         self,
         mock_proxmox_api,
-        mock_hvac_client,
         mock_get_vms,
         mock_get_lxc_containers,
         mock_generate_docker_compose,
     ):
-        mock_hvac_client.return_value.secrets.kv.v2.read_secret_version.return_value = {
-            "data": {"data": {"password": "dummy_password"}}
-        }
         mock_proxmox_instance = MagicMock()
         mock_proxmox_api.return_value = mock_proxmox_instance
         mock_get_vms.return_value = [
@@ -135,11 +120,7 @@ class TestMain(unittest.TestCase):
     @patch("main.get_lxc_containers")
     @patch("main.get_vms")
     @patch("main.ProxmoxAPI")
-    @patch("main.hvac.Client")
-    def test_main_no_docker_containers(self, mock_hvac_client, mock_proxmox_api, mock_get_vms, mock_get_lxc_containers):
-        mock_hvac_client.return_value.secrets.kv.v2.read_secret_version.return_value = {
-            "data": {"data": {"password": "dummy_password"}}
-        }
+    def test_main_no_docker_containers(self, mock_proxmox_api, mock_get_vms, mock_get_lxc_containers):
         mock_proxmox_instance = MagicMock()
         mock_proxmox_api.return_value = mock_proxmox_instance
         mock_get_vms.return_value = []

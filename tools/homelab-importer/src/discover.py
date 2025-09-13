@@ -74,24 +74,25 @@ def get_docker_containers(
 
         # Fetch container list
         result = guest.agent.exec.post(command="docker ps -a --format '{{json .}}'")
-        if not result or "stdout" not in result:
+        if not result or "stdout" not in result or not result["stdout"].strip():
             return []
         containers = [
             json.loads(line) for line in result["stdout"].strip().split("\n") if line
         ]
 
         result = guest.agent.exec.post(command="docker ps -a --format '{{.ID}}'")
-        if not result or "stdout" not in result:
-            return []
-        container_ids = result["stdout"].strip().split("\n")
-        if not container_ids:
-            return []
+        container_ids = []
+        if result and "stdout" in result and result["stdout"].strip():
+            container_ids = result["stdout"].strip().split("\n")
 
         # Fetch detailed container info
+        if not container_ids:
+            return containers
+
         inspect_result = guest.agent.exec.post(
             command=f"docker inspect {' '.join(container_ids)}"
         )
-        if not inspect_result or "stdout" not in inspect_result:
+        if not inspect_result or "stdout" not in inspect_result or not inspect_result["stdout"].strip():
             return containers  # Return basic info if inspect fails
 
         inspected_data = json.loads(inspect_result["stdout"])
