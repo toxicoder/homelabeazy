@@ -2,18 +2,18 @@ import os
 import shutil
 import sys
 import tempfile
+import unittest
+from unittest.mock import MagicMock, patch
 
 sys.path.insert(
     0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src"))
 )
-import unittest
-from unittest.mock import MagicMock, patch
 
-from exceptions import (
+from exceptions import (  # noqa: E402
     MissingEnvironmentVariableError,
     ProxmoxConnectionError,
 )
-from main import main
+from main import main  # noqa: E402
 
 
 class TestMain(unittest.TestCase):
@@ -62,7 +62,8 @@ class TestMain(unittest.TestCase):
         main(self.test_dir)
 
         self.assertTrue(os.path.isdir(self.test_dir))
-        self.assertTrue(any(f.endswith(".tf") for f in os.listdir(self.test_dir)))
+        tf_files = [f for f in os.listdir(self.test_dir) if f.endswith(".tf")]
+        self.assertTrue(tf_files)
 
     def test_main_missing_env_vars(self):
         os.environ.clear()
@@ -120,7 +121,9 @@ class TestMain(unittest.TestCase):
     @patch("main.get_lxc_containers")
     @patch("main.get_vms")
     @patch("main.ProxmoxAPI")
-    def test_main_no_docker_containers(self, mock_proxmox_api, mock_get_vms, mock_get_lxc_containers):
+    def test_main_no_docker_containers(
+        self, mock_proxmox_api, mock_get_vms, mock_get_lxc_containers
+    ):
         mock_proxmox_instance = MagicMock()
         mock_proxmox_api.return_value = mock_proxmox_instance
         mock_get_vms.return_value = []

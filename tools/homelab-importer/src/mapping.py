@@ -42,10 +42,12 @@ def map_resource_to_terraform(
     }
 
     if "docker_containers" in resource_data:
-        resource["docker_containers"] = [
-            map_docker_container_to_compose(c)
-            for c in resource_data["docker_containers"]
-        ]
+        containers = resource_data["docker_containers"]
+        docker_containers = []
+        for c in containers:
+            mapped_container = map_docker_container_to_compose(c)
+            docker_containers.append(mapped_container)
+        resource["docker_containers"] = docker_containers
     return resource
 
 
@@ -58,14 +60,16 @@ def map_docker_container_to_compose(container_data: Dict[str, Any]) -> Dict[str,
             "image": container_data.get("Image"),
             "restart": "unless-stopped",
             "ports": [
-                f'{p.get("PublicPort", "")}:{p.get("PrivatePort", "")}'
+                (
+                    f"{p.get('PublicPort', '')}:"
+                    f"{p.get('PrivatePort', '')}"
+                )
                 for p in container_data.get("Ports", [])
             ],
             "volumes": [
-                f'{m["Source"]}:{m["Destination"]}' for m in details.get("Mounts", [])
+                f'{m["Source"]}:{m["Destination"]}'
+                for m in details.get("Mounts", [])
             ],
             "environment": details.get("Config", {}).get("Env", []),
         },
     }
-
-

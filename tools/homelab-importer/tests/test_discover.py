@@ -1,18 +1,18 @@
 import os
 import sys
+import unittest
+from unittest.mock import MagicMock
 
 sys.path.insert(
     0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src"))
 )
-import unittest
-from unittest.mock import MagicMock
 
-from discover import (
+from discover import (  # noqa: E402
     get_docker_containers,
     get_lxc_containers,
     get_vms,
 )
-from proxmoxer.core import ResourceException
+from proxmoxer.core import ResourceException  # noqa: E402
 
 
 class TestDiscover(unittest.TestCase):
@@ -206,8 +206,6 @@ class TestDiscover(unittest.TestCase):
         ]
         mock_guest.agent.exec = mock_exec
         mock_proxmox.nodes.return_value.qemu.return_value = mock_guest
-
-        from discover import get_docker_containers
 
         containers = get_docker_containers(mock_proxmox, "pve", 100, "qemu")
         self.assertEqual(len(containers), 1)

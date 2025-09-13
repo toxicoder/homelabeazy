@@ -48,14 +48,15 @@ class TestDocker(unittest.TestCase):
             # Assertions on the generated data
             self.assertIn("services", compose_data)
             self.assertIn("test-container-1", compose_data["services"])
-            self.assertIn("volumes", compose_data["services"]["test-container-1"])
-            self.assertIn("environment", compose_data["services"]["test-container-1"])
+            service = compose_data["services"]["test-container-1"]
+            self.assertIn("volumes", service)
+            self.assertIn("environment", service)
             self.assertEqual(
-                compose_data["services"]["test-container-1"]["volumes"],
+                service["volumes"],
                 ["/data:/data"],
             )
             self.assertEqual(
-                compose_data["services"]["test-container-1"]["environment"],
+                service["environment"],
                 ["FOO=bar"],
             )
 

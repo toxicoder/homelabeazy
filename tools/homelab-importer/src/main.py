@@ -70,7 +70,7 @@ def main(output_dir: str) -> None:
         import_script_path = os.path.join(output_dir, "import.sh")
         generate_import_script(all_resources, import_script_path)
         logging.info(
-            f"Terraform import script generated in {import_script_path}"
+            "Terraform import script generated in %s", import_script_path
         )
 
         # Generate docker-compose files
