@@ -47,3 +47,6 @@ gitleaks-report.json
 
 # Ansible collections
 ansible/.ansible/
+
+# Ruby / Jekyll
+vendor/bundle

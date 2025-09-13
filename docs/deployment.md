@@ -1,15 +1,6 @@
-**Navigation**
-* [Home](index.md)
-* [Advanced Usage](advanced-usage.md)
-* [Architecture](architecture.md)
-* [Configuration](configuration.md)
-* [Customization](customization.md)
-* [Deployment](deployment.md)
-* [Post Installation](post-installation.md)
-* [Services](services.md)
-* [Technical Design](technical-design.md)
-* [Troubleshooting](troubleshooting.md)
-
+---
+layout: default
+title: Deployment
 ---
 
 # Deployment
@@ -62,4 +53,4 @@ This project follows a GitOps methodology for application deployment, with infra
 
 2.  **Configure Cluster:** Use Ansible to configure the K3s nodes, install necessary packages, and set up core components. This is also a one-time setup or for node-level configuration changes.
 
-3.  **Deploy and Manage Applications:** Applications are managed by ArgoCD. To deploy, update, or remove an application, you make changes to the corresponding YAML files in the `apps/` directory and push them to the Git repository. ArgoCD automatically syncs these changes to the cluster.
+3.  **Deploy and Manage Applications:** Applications are managed by ArgoCD. To deploy, update, or remove an application, you make changes to the corresponding YAML files in the `apps/` directory and push them to your Git repository. ArgoCD automatically syncs these changes to the cluster.

@@ -125,20 +125,18 @@ This project uses a GitOps approach with ArgoCD to manage applications. The inte
 
 This project is designed to be used with a private deployment model. The `make setup-interactive` command is the recommended way to get started with a private deployment. For more details on the private deployment strategy, please see our [Private Deployment Guide](PRIVATE_DEPLOYMENT.md).
 
-## Further Documentation
+## Documentation
 
-For more detailed information, please see the following documents:
+This project's documentation is built with Jekyll and is located in the `docs/` directory.
 
-- [Advanced Usage](docs/advanced-usage.md)
-- [Architecture](docs/architecture.md)
-- [Configuration](docs/configuration.md)
-- [Customization](docs/customization.md)
-- [Deployment](docs/deployment.md)
-- [Folder Structure](docs/folder-structure.md)
-- [Post-Installation](docs/post-installation.md)
-- [Services](docs/services.md)
-- [Technical Design](docs/technical-design.md)
-- [Troubleshooting](docs/troubleshooting.md)
+To view the documentation locally, you will need to have Ruby and Bundler installed. Then, you can run the following commands:
+
+```bash
+bundle install
+bundle exec jekyll serve
+```
+
+The documentation will be available at `http://localhost:4000`.
 
 ## Contributing
 
