@@ -25,7 +25,9 @@
 
 - name: Get Minio credentials from vault
   ansible.builtin.set_fact:
-    velero_minio_credentials: "{{ lookup('community.hashi_vault.vault_kv2_get', velero_minio_vault_path, engine_mount_point='secret') }}"
+    velero_minio_credentials: >-
+      {{ lookup('community.hashi_vault.vault_kv2_get',
+      velero_minio_vault_path, engine_mount_point='secret') }}
   no_log: true
 
 - name: Create Velero secret

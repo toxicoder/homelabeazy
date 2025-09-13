@@ -4,6 +4,7 @@ collections:
   - name: community.hashi_vault
     version: "4.1.0"
   - name: community.general
+  - name: pfsensible.core
 
 roles:
   - name: homepage

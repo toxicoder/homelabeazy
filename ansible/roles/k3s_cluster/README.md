@@ -7,7 +7,7 @@ This role installs a k3s cluster.
 Available variables are listed below, along with default values (see `defaults/main.yml`):
 
 ```yaml
-k3s_version: "v1.29.3+k3s1"
+k3s_cluster_version: "v1.29.3+k3s1"
 ```
 
 ## Dependencies

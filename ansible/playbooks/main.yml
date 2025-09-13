@@ -4,9 +4,11 @@
   gather_facts: false
 
   roles:
-    - role: homelab_config
-    - role: k3s_cluster
-    - role: traefik
-    - role: efk_stack
-    - role: core_services
-    - role: applications
+    - homelab_config
+    - k3s_cluster
+    - traefik
+    - efk_stack
+    - applications
+
+- name: Run core services playbook
+  ansible.builtin.import_playbook: ../../scripts/core-services.yml

@@ -8,7 +8,7 @@
   ansible.builtin.unarchive:
     src: "/tmp/consul_{{ consul_version }}_linux_amd64.zip"
     dest: "/usr/local/bin"
-    remote_src: yes
+    remote_src: true
     creates: /usr/local/bin/consul
 
 - name: Configure Consul
@@ -21,4 +21,4 @@
   ansible.builtin.systemd:
     name: consul
     state: started
-    enabled: yes
+    enabled: true

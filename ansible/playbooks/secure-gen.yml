@@ -3,7 +3,9 @@
   gather_facts: false
   tasks:
     - name: Run secure_gen script
-      ansible.builtin.command: "python3 {{ secure_gen_role_path }}/files/secure-gen --config-file ../../../../private/config.yml"
+      ansible.builtin.command: >
+        python3 {{ secure_gen_role_path }}/files/secure-gen
+        --config-file ../../../../private/config.yml
       register: secure_gen_result
       changed_when: secure_gen_result.rc != 0
       args:

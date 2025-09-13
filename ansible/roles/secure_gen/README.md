@@ -7,7 +7,7 @@ This role installs the secure_gen tool.
 Available variables are listed below, along with default values (see `defaults/main.yml`):
 
 ```yaml
-python_venv_path: /opt/secure_gen
+secure_gen_venv_path: /opt/secure_gen
 ```
 
 The path to the python virtual environment where the tool will be installed.

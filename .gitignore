@@ -44,3 +44,6 @@ gitleaks-report.json
 
 # Private configuration
 /private/
+
+# Ansible collections
+ansible/.ansible/

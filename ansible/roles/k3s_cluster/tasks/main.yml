@@ -1,11 +1,7 @@
-- name: Deploy k3s cluster
-  hosts: localhost
-  gather_facts: false
-  tasks:
-    - name: Install k3s master(s)
-      include_tasks: install_master.yml
-      loop: "{{ groups['k3s_masters'] }}"
+- name: Install k3s master(s)
+  ansible.builtin.include_tasks: install_master.yml
+  loop: "{{ groups['k3s_masters'] }}"
 
-    - name: Install k3s worker(s)
-      include_tasks: install_worker.yml
-      loop: "{{ groups['k3s_workers'] }}"
+- name: Install k3s worker(s)
+  ansible.builtin.include_tasks: install_worker.yml
+  loop: "{{ groups['k3s_workers'] }}"
