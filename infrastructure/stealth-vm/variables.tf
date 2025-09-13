@@ -98,6 +98,12 @@ variable "stealth_vm_hv_vendor_id" {
   default     = "amd"
 }
 
+variable "smbios_uuid" {
+  description = "The SMBIOS UUID for the stealth VM."
+  type        = string
+  default     = ""
+}
+
 # ----------------------------------------------------------------------------------------------------------------------
 # Network Configuration
 # ----------------------------------------------------------------------------------------------------------------------
