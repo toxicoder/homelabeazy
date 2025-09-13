@@ -1,3 +1,17 @@
+**Navigation**
+* [Home](index.md)
+* [Advanced Usage](advanced-usage.md)
+* [Architecture](architecture.md)
+* [Configuration](configuration.md)
+* [Customization](customization.md)
+* [Deployment](deployment.md)
+* [Post Installation](post-installation.md)
+* [Services](services.md)
+* [Technical Design](technical-design.md)
+* [Troubleshooting](troubleshooting.md)
+
+---
+
 # Default Services
 
 The following services are included in this homelab. Some are core infrastructure components, while others are applications that can be deployed.

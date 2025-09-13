@@ -1,3 +1,17 @@
+**Navigation**
+* [Home](index.md)
+* [Advanced Usage](advanced-usage.md)
+* [Architecture](architecture.md)
+* [Configuration](configuration.md)
+* [Customization](customization.md)
+* [Deployment](deployment.md)
+* [Post Installation](post-installation.md)
+* [Services](services.md)
+* [Technical Design](technical-design.md)
+* [Troubleshooting](troubleshooting.md)
+
+---
+
 # Deployment
 
 > **Note:** The initial deployment of your homelab is handled by the interactive setup script, as described in the main `README.md`. This document provides more detail on the underlying deployment workflow and how to manage your environment after the initial setup.

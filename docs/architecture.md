@@ -1,3 +1,17 @@
+**Navigation**
+* [Home](index.md)
+* [Advanced Usage](advanced-usage.md)
+* [Architecture](architecture.md)
+* [Configuration](configuration.md)
+* [Customization](customization.md)
+* [Deployment](deployment.md)
+* [Post Installation](post-installation.md)
+* [Services](services.md)
+* [Technical Design](technical-design.md)
+* [Troubleshooting](troubleshooting.md)
+
+---
+
 # System Architecture
 
 This homelab is built on a foundation of Proxmox for virtualization, with Terraform and Ansible for infrastructure provisioning and node configuration. Applications are managed using a GitOps workflow with ArgoCD. The core of the homelab is a K3s cluster, which is a lightweight, certified Kubernetes distribution.
