@@ -1,6 +1,7 @@
 # tasks file for pfsense
 - name: Allow HTTP and HTTPS traffic from the service network to the internet
   pfsensible.core.pfsense_rule:
+    name: "Allow HTTP/HTTPS from service network"
     action: pass
     interface: lan
     protocol: tcp

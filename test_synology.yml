@@ -10,4 +10,4 @@
         resource: "user"
         name: "testuser"
         state: "present"
-      ignore_errors: true
+      failed_when: false
