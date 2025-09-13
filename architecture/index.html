@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Architecture</title>
+  <link rel="stylesheet" href="/homelabeazy/assets/css/style.css">
+</head><body>
+  <div class="container">
+    <h1 id="system-architecture">System Architecture</h1>
+
+<p>This homelab is built on a foundation of Proxmox for virtualization, with Terraform and Ansible for infrastructure provisioning and node configuration. Applications are managed using a GitOps workflow with ArgoCD. The core of the homelab is a K3s cluster, which is a lightweight, certified Kubernetes distribution.</p>
+
+<h2 id="core-components">Core Components</h2>
+
+<ul>
+  <li><strong>Proxmox:</strong> A powerful open-source virtualization platform that provides the foundation for the homelab.</li>
+  <li><strong>Terraform:</strong> Used to provision the virtual machines for the K3s cluster on Proxmox.</li>
+  <li><strong>Ansible:</strong> Used for configuration management of the K3s nodes.</li>
+  <li><strong>ArgoCD:</strong> A declarative, GitOps continuous delivery tool for Kubernetes. It is used to deploy and manage applications.</li>
+  <li><strong>K3s:</strong> A lightweight, certified Kubernetes distribution that is easy to install and manage.</li>
+  <li><strong>Traefik:</strong> A modern reverse proxy and load balancer that makes deploying microservices easy.</li>
+  <li><strong>Authelia:</strong> An open-source authentication and authorization server providing two-factor authentication and single sign-on.</li>
+  <li><strong>OpenLDAP:</strong> A lightweight directory access protocol for user authentication.</li>
+  <li><strong>Vault:</strong> A tool for securely accessing secrets.</li>
+  <li><strong>Velero:</strong> A tool for backing up and restoring your Kubernetes cluster resources and persistent volumes.</li>
+  <li><strong>EFK Stack:</strong> A centralized logging solution consisting of Elasticsearch, Fluentd, and Kibana.</li>
+</ul>
+
+<h2 id="networking">Networking</h2>
+
+<p>This homelab uses a VLAN-based network segmentation strategy to isolate different types of traffic. This is a fundamental security best practice that helps to prevent lateral movement in the event of a security breach.</p>
+
+<p>The following VLANs are defined:</p>
+
+<ul>
+  <li><strong>VLAN 10 (Service Network):</strong> This network is used for the services running in the homelab, such as the K3s cluster and other applications.</li>
+  <li><strong>VLAN 20 (Guest Network):</strong> This network is used for guest devices and is isolated from the rest of the network.</li>
+  <li><strong>VLAN 30 (Management Network):</strong> This network is used for managing the Proxmox host and other infrastructure components.</li>
+</ul>
+
+<p>Service discovery is provided by Consul. All services are automatically registered with Consul, which allows them to discover each other and communicate securely.</p>
+
+<p>Firewall rules are managed by pfSense. The firewall is configured to allow traffic between the VLANs according to a set of predefined rules.</p>
+
+<p>For more detailed information about the networking setup, please see the <a href="infrastructure/proxmox/networking/README.md">networking documentation</a>.</p>
+
+<h2 id="system-architecture-diagram">System Architecture Diagram</h2>
+
+<pre><code class="language-mermaid">graph TD
+    subgraph "Hardware"
+        A[Physical Server]
+    end
+
+    subgraph "Virtualization"
+        B(Proxmox VE)
+    end
+
+    subgraph "Automation"
+        C(Terraform) -- Provisions VMs on --&gt; B
+        D(Ansible) -- Configures Nodes --&gt; E
+    end
+
+    subgraph "Container Orchestration &amp; GitOps"
+        E(K3s Kubernetes Cluster)
+        K(ArgoCD) -- Deploys Apps to --&gt; E
+        L(Git Repository) -- Syncs with --&gt; K
+    end
+
+    subgraph "Applications"
+        F[Core Services]
+        G[User Applications]
+    end
+
+    subgraph "Supporting Services"
+        H(Traefik Ingress)
+        I(Authelia SSO)
+        J(Vault Secrets)
+    end
+
+    A --&gt; B
+    B --&gt; E
+    E -- Runs --&gt; F
+    E -- Runs --&gt; G
+    F -- Exposed by --&gt; H
+    G -- Exposed by --&gt; H
+    G -- Authenticated by --&gt; I
+    E -- Uses --&gt; J
+</code></pre>
+
+<h2 id="system-architecture-walkthrough">System Architecture Walkthrough</h2>
+
+<p>The system architecture is designed to be a robust, scalable, and automated homelab environment. Here’s a step-by-step walkthrough of the diagram, explaining the role and value of each component:</p>
+
+<ol>
+  <li>
+    <p><strong>Hardware (Physical Server):</strong></p>
+
+    <ul>
+      <li><strong>Component:</strong> <code class="language-plaintext highlighter-rouge">Physical Server</code></li>
+      <li><strong>Role:</strong> This is the foundation of the entire homelab, providing the necessary compute, memory, and storage resources.</li>
+      <li><strong>Value:</strong> A dedicated physical server ensures that all virtualized components have direct access to high-performance hardware, leading to better overall performance and stability.</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Virtualization (Proxmox VE):</strong></p>
+
+    <ul>
+      <li><strong>Component:</strong> <code class="language-plaintext highlighter-rouge">Proxmox VE</code></li>
+      <li><strong>Role:</strong> Proxmox is an open-source virtualization platform that runs on the physical server. It allows for the creation and management of virtual machines (VMs) and containers.</li>
+      <li><strong>Value:</strong> Proxmox enables efficient hardware utilization by allowing multiple isolated environments to run on a single physical machine. This is crucial for creating a flexible and scalable infrastructure.</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Automation (Terraform &amp; Ansible):</strong></p>
+
+    <ul>
+      <li><strong>Component:</strong> <code class="language-plaintext highlighter-rouge">Terraform</code> &amp; <code class="language-plaintext highlighter-rouge">Ansible</code></li>
+      <li><strong>Role:</strong>
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">Terraform</code> is used to provision the virtual machines on Proxmox. It defines the infrastructure as code, making it easy to create, modify, and destroy VMs in a repeatable manner.</li>
+          <li><code class="language-plaintext highlighter-rouge">Ansible</code> is used for configuration management. Once the VMs are provisioned, Ansible configures them and installs the necessary software like K3s.</li>
+        </ul>
+      </li>
+      <li><strong>Value:</strong> This combination of tools automates the entire setup process, reducing manual effort and ensuring consistency. It allows you to rebuild the entire homelab from scratch with minimal intervention.</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Container Orchestration &amp; GitOps (K3s &amp; ArgoCD):</strong></p>
+
+    <ul>
+      <li><strong>Component:</strong> <code class="language-plaintext highlighter-rouge">K3s Kubernetes Cluster</code> &amp; <code class="language-plaintext highlighter-rouge">ArgoCD</code></li>
+      <li><strong>Role:</strong>
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">K3s</code> is a lightweight, certified Kubernetes distribution that runs on the VMs. It orchestrates the deployment, scaling, and management of containerized applications.</li>
+          <li><code class="language-plaintext highlighter-rouge">ArgoCD</code> provides a GitOps workflow. It continuously monitors a Git repository and automatically deploys any changes to the K3s cluster, ensuring that the cluster state always matches the state defined in Git.</li>
+        </ul>
+      </li>
+      <li><strong>Value:</strong> Kubernetes provides a powerful and standardized platform for running applications. ArgoCD automates application deployment and management, making it easy to track changes, roll back to previous versions, and maintain a consistent environment.</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Applications (Core Services &amp; User Applications):</strong></p>
+
+    <ul>
+      <li><strong>Component:</strong> <code class="language-plaintext highlighter-rouge">Core Services</code> &amp; <code class="language-plaintext highlighter-rouge">User Applications</code></li>
+      <li><strong>Role:</strong> The K3s cluster runs two types of applications:
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">Core Services</code>: These are essential infrastructure components like monitoring, logging, and security services.</li>
+          <li><code class="language-plaintext highlighter-rouge">User Applications</code>: These are the end-user applications that you want to run in your homelab, such as a password manager, Git service, or home automation platform.</li>
+        </ul>
+      </li>
+      <li><strong>Value:</strong> This separation allows you to manage the core infrastructure independently of the applications, making it easier to update and maintain both.</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Supporting Services (Traefik, Authelia, Vault):</strong></p>
+
+    <ul>
+      <li><strong>Component:</strong> <code class="language-plaintext highlighter-rouge">Traefik Ingress</code>, <code class="language-plaintext highlighter-rouge">Authelia SSO</code>, <code class="language-plaintext highlighter-rouge">Vault Secrets</code></li>
+      <li><strong>Role:</strong>
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">Traefik Ingress</code>: A reverse proxy and load balancer that manages external access to the applications running in the cluster.</li>
+          <li><code class="language-plaintext highlighter-rouge">Authelia SSO</code>: Provides single sign-on and two-factor authentication for the applications, enhancing security.</li>
+          <li><code class="language-plaintext highlighter-rouge">Vault Secrets</code>: A secure storage for secrets like API keys, passwords, and certificates.</li>
+        </ul>
+      </li>
+      <li><strong>Value:</strong> These services provide essential functionality for managing and securing the applications. Traefik simplifies routing, Authelia centralizes authentication, and Vault protects sensitive information.</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="general-flow-of-the-system">General Flow of the System</h3>
+
+<ol>
+  <li><strong>Provisioning:</strong> <code class="language-plaintext highlighter-rouge">Terraform</code> provisions the virtual machines on <code class="language-plaintext highlighter-rouge">Proxmox</code>.</li>
+  <li><strong>Configuration:</strong> <code class="language-plaintext highlighter-rouge">Ansible</code> configures the VMs and installs the <code class="language-plaintext highlighter-rouge">K3s Kubernetes Cluster</code>.</li>
+  <li><strong>Deployment:</strong> <code class="language-plaintext highlighter-rouge">ArgoCD</code> monitors the Git repository and deploys the <code class="language-plaintext highlighter-rouge">Core Services</code> and <code class="language-plaintext highlighter-rouge">User Applications</code> to the <code class="language-plaintext highlighter-rouge">K3s</code> cluster.</li>
+  <li><strong>Access:</strong>
+    <ul>
+      <li>Users access the applications through the <code class="language-plaintext highlighter-rouge">Traefik Ingress</code>.</li>
+      <li><code class="language-plaintext highlighter-rouge">Authelia SSO</code> intercepts the requests to handle authentication.</li>
+    </ul>
+  </li>
+  <li><strong>Secrets Management:</strong> The applications and the cluster use <code class="language-plaintext highlighter-rouge">Vault</code> to securely retrieve their secrets.</li>
+</ol>
+
+<h3 id="network-architecture">Network Architecture</h3>
+
+<pre><code class="language-mermaid">graph TD
+    A[Public Internet] --&gt; B(Firewall)
+    B --&gt; C(Traefik Reverse Proxy)
+    C --&gt; D{Applications}
+</code></pre>
+
+<h3 id="code-execution-flow">Code Execution Flow</h3>
+
+<pre><code class="language-mermaid">graph TD
+    subgraph "User"
+        A(Manual Setup)
+        P(git push)
+    end
+
+    subgraph "Automation"
+        C(Terraform)
+        D(Ansible)
+        K(ArgoCD)
+    end
+
+    subgraph "Infrastructure"
+        E(Proxmox)
+        F(K3s Cluster)
+    end
+
+    A -- Triggers --&gt; C
+    A -- Triggers --&gt; D
+    C -- Provisions VMs on --&gt; E
+    D -- Configures --&gt; F
+    P -- Triggers --&gt; K
+    K -- Deploys to --&gt; F
+</code></pre>
+
+  </div>
+</body>
+</html>

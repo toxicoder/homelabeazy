@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customization</title>
+  <link rel="stylesheet" href="/homelabeazy/assets/css/style.css">
+</head><body>
+  <div class="container">
+    <h1 id="customization">Customization</h1>
+
+<p>This project is highly customizable. You can add new applications, manage secrets, and configure network settings to fit your needs.</p>
+
+<h2 id="adding-new-applications">Adding New Applications</h2>
+
+<p>To add a new application, you need to add a new ArgoCD application manifest to the <code class="language-plaintext highlighter-rouge">apps/</code> directory. This typically involves the following steps:</p>
+
+<ol>
+  <li><strong>Find or create a Helm chart for the application.</strong></li>
+  <li><strong>Create a new <code class="language-plaintext highlighter-rouge">values.yaml</code> file</strong> in <code class="language-plaintext highlighter-rouge">private/apps/&lt;app-name&gt;/</code> to store the configuration for the application.</li>
+  <li><strong>Create a new YAML file</strong> in the <code class="language-plaintext highlighter-rouge">apps/</code> directory (e.g., <code class="language-plaintext highlighter-rouge">apps/&lt;app-name&gt;.yml</code>). This file will define an ArgoCD <code class="language-plaintext highlighter-rouge">Application</code> resource that points to the Helm chart and your <code class="language-plaintext highlighter-rouge">values.yaml</code> file.</li>
+  <li><strong>Add the new application to <code class="language-plaintext highlighter-rouge">apps/app-of-apps.yml</code></strong> so that it is automatically deployed with the other applications.</li>
+  <li><strong>Commit and push your changes</strong> to the Git repository. ArgoCD will automatically deploy the new application.</li>
+</ol>
+
+<h2 id="managing-secrets">Managing Secrets</h2>
+
+<p>This project uses Vault to manage secrets by default. The <code class="language-plaintext highlighter-rouge">secure_gen</code> script will automatically generate any secrets defined in the <code class="language-plaintext highlighter-rouge">secrets_to_generate</code> section of your <code class="language-plaintext highlighter-rouge">private/config.yml</code> file and store them in Vault.</p>
+
+<h2 id="configuring-network-settings">Configuring Network Settings</h2>
+
+<p>All network settings can be configured in the <code class="language-plaintext highlighter-rouge">private/config.yml</code> file.</p>
+
+<h2 id="using-different-cloud-init-templates">Using Different Cloud-Init Templates</h2>
+
+<p>This project uses a cloud-init template to configure the virtual machines. You can use a different cloud-init template by modifying the <code class="language-plaintext highlighter-rouge">template_name</code> variable in the <code class="language-plaintext highlighter-rouge">terraform/terraform.tfvars</code> file.</p>
+
+  </div>
+</body>
+</html>

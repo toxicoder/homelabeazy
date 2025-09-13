@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Usage</title>
+  <link rel="stylesheet" href="/homelabeazy/assets/css/style.css">
+</head><body>
+  <div class="container">
+    <h1 id="usage">Usage</h1>
+
+<p>This project includes a <code class="language-plaintext highlighter-rouge">Makefile</code> that provides a convenient way to run common tasks.</p>
+
+<h2 id="makefile-commands">Makefile Commands</h2>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">make help</code></strong>: Display a list of available commands.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">make install-deps</code></strong>: Install dependencies.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">make setup</code></strong>: Run the interactive setup script for the homelab. <strong>(Not Recommended)</strong></li>
+  <li><strong><code class="language-plaintext highlighter-rouge">make lint</code></strong>: Run all linters.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">make terraform-init</code></strong>: Initialize Terraform.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">make terraform-plan</code></strong>: Plan the Terraform deployment.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">make terraform-apply</code></strong>: Apply the Terraform deployment.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">make ansible-playbook-setup</code></strong>: Run the main Ansible playbook for setup.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">make test</code></strong>: Run Molecule tests for all Ansible roles.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">make clean</code></strong>: Clean up temporary files.</li>
+</ul>
+
+<h1 id="testing">Testing</h1>
+
+<p>Some parts of this project have tests, but the overall testing framework is still under development. You can run the available tests with:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make <span class="nb">test</span>
+</code></pre></div></div>
+
+<h1 id="homelab-importer">Homelab Importer</h1>
+
+<p>This repository includes a tool to import an existing, manually-configured Proxmox environment into a Terraform-managed setup. This is useful for migrating your existing homelab to this project’s infrastructure as code approach.</p>
+
+<p>For detailed instructions on how to use the importer, please see the <a href="tools/homelab-importer/README.md">Homelab Importer README</a>.</p>
+
+<h1 id="openldap">OpenLDAP</h1>
+
+<p>This repository includes an Ansible role for deploying OpenLDAP to the Kubernetes cluster. The role can be found in <code class="language-plaintext highlighter-rouge">ansible/roles/openldap</code>.</p>
+
+<h2 id="configuration">Configuration</h2>
+
+<p>The OpenLDAP role uses the following variables for configuration:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">openldap_root_password</code>: The password for the OpenLDAP root user.</li>
+  <li><code class="language-plaintext highlighter-rouge">openldap_admin_password</code>: The password for the OpenLDAP admin user.</li>
+</ul>
+
+<p>These variables should be set as environment variables before running the Ansible playbook:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">OPENLDAP_ROOT_PASSWORD</span><span class="o">=</span><span class="s2">"your-root-password"</span>
+<span class="nb">export </span><span class="nv">OPENLDAP_ADMIN_PASSWORD</span><span class="o">=</span><span class="s2">"your-admin-password"</span>
+</code></pre></div></div>
+
+<p>The OpenLDAP application is deployed using the <code class="language-plaintext highlighter-rouge">apps/openldap.yml</code> manifest. The passwords for the OpenLDAP users are managed by Vault. You will need to add the following secrets to Vault:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">secrets/data/openldap</code>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">root-password</code></li>
+      <li><code class="language-plaintext highlighter-rouge">admin-password</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="stealth-vm">Stealth VM</h1>
+
+<p>This project includes an optional “stealth” Windows VM on Proxmox. The purpose of this VM is to allow for game streaming from a server. It aims to provide a normal gaming environment, which can sometimes be challenging on virtualized hardware.</p>
+
+<h2 id="our-stance-on-cheating">Our Stance on Cheating</h2>
+
+<p><strong>This project is firmly against cheating in any form.</strong> The “stealth” features are designed to make the virtual machine appear as a standard physical machine to the game, ensuring compatibility and performance. It is <strong>not</strong> intended to enable or facilitate cheating. We believe in fair play and sportsmanship. Any use of this project for activities that violate the terms of service of a game, including cheating, is strictly discouraged.</p>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<ul>
+  <li>Proxmox 8.x+</li>
+  <li>A Windows ISO file</li>
+  <li>The PCI ID of the GPU you want to pass through</li>
+  <li>The MAC address of your physical network card</li>
+</ul>
+
+<h2 id="usage-1">Usage</h2>
+
+<p>To enable the stealth VM, run the <code class="language-plaintext highlighter-rouge">scripts/setup.sh</code> script and answer “y” when prompted to enable the stealth VM. You will then be prompted for the Windows ISO path, GPU PCI ID, and real MAC address.</p>
+
+<h2 id="disclaimer">Disclaimer</h2>
+
+<p>This feature is intended for running games on a virtual machine for streaming purposes. Using this for any form of cheating is against the principles of this project. The author of this project is not responsible for any consequences that may arise from the misuse of this feature.</p>
+
+  </div>
+</body>
+</html>

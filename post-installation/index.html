@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post-Installation</title>
+  <link rel="stylesheet" href="/homelabeazy/assets/css/style.css">
+</head><body>
+  <div class="container">
+    <h1 id="post-installation">Post-Installation</h1>
+
+<p>After the setup is complete, you will need to perform the following steps to access your new homelab environment:</p>
+
+<h2 id="1-access-proxmox">1. Access Proxmox</h2>
+
+<p>You can access the Proxmox web interface by navigating to the IP address of your Proxmox server in your web browser.</p>
+
+<h2 id="2-access-the-kubernetes-cluster">2. Access the Kubernetes Cluster</h2>
+
+<p>The K3s cluster is now running on your Proxmox server. You can access it by SSHing into one of the master nodes and using the <code class="language-plaintext highlighter-rouge">kubectl</code> command-line tool. The kubeconfig file is located at <code class="language-plaintext highlighter-rouge">~/.kube/config</code> on the master node.</p>
+
+<h2 id="3-configure-dns">3. Configure DNS</h2>
+
+<p>You will need to configure DNS for your applications to be accessible at their respective domain names. This can be done by adding DNS records to your DNS provider or by using a local DNS server such as Pi-hole.</p>
+
+<p><strong>Example: Using Pi-hole for Local DNS</strong></p>
+
+<ol>
+  <li>Log in to your Pi-hole admin interface.</li>
+  <li>Navigate to “Local DNS” -&gt; “DNS Records”.</li>
+  <li>Add a new A record for your domain, pointing to the IP address of your Traefik load balancer. For example:</li>
+</ol>
+
+<table>
+  <thead>
+    <tr>
+      <th>Domain</th>
+      <th>IP Address</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">*.example.com</code></td>
+      <td><code class="language-plaintext highlighter-rouge">192.168.1.100</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>This will resolve all subdomains of <code class="language-plaintext highlighter-rouge">example.com</code> to the IP address of your Traefik load balancer.</p>
+
+<h2 id="4-access-applications">4. Access Applications</h2>
+
+<p>Once DNS is configured, you can access the applications by navigating to their respective domain names in your web browser.</p>
+
+<p><strong>Example: Accessing Grafana</strong></p>
+
+<ol>
+  <li>Open your web browser and navigate to <code class="language-plaintext highlighter-rouge">https://grafana.example.com</code>.</li>
+  <li>You will be redirected to the Authelia login page.</li>
+  <li>Log in with your credentials.</li>
+  <li>You will then be redirected to the Grafana dashboard.</li>
+</ol>
+
+  </div>
+</body>
+</html>

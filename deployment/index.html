@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deployment</title>
+  <link rel="stylesheet" href="/homelabeazy/assets/css/style.css">
+</head><body>
+  <div class="container">
+    <h1 id="deployment">Deployment</h1>
+
+<blockquote>
+  <p><strong>Note:</strong> The initial deployment of your homelab is handled by the interactive setup script, as described in the main <code class="language-plaintext highlighter-rouge">README.md</code>. This document provides more detail on the underlying deployment workflow and how to manage your environment after the initial setup.</p>
+</blockquote>
+
+<p>This project uses Terraform workspaces to manage multiple environments. Each workspace represents a different environment (e.g., <code class="language-plaintext highlighter-rouge">dev</code>, <code class="language-plaintext highlighter-rouge">staging</code>, <code class="language-plaintext highlighter-rouge">prod</code>). The current workspace is determined by the <code class="language-plaintext highlighter-rouge">TF_WORKSPACE</code> environment variable.</p>
+
+<h2 id="environments">Environments</h2>
+
+<ul>
+  <li><strong>dev:</strong> The development environment. This is the default workspace. It is used for testing new features and changes.</li>
+  <li><strong>staging:</strong> The staging environment. This workspace is used for testing changes before they are deployed to production.</li>
+  <li><strong>prod:</strong> The production environment. This workspace is used for the live application.</li>
+</ul>
+
+<h2 id="managing-environments">Managing Environments</h2>
+
+<p>You can switch between workspaces using the <code class="language-plaintext highlighter-rouge">terraform workspace select</code> command.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>terraform workspace <span class="k">select</span> &lt;workspace-name&gt;
+</code></pre></div></div>
+
+<p>For example, to switch to the <code class="language-plaintext highlighter-rouge">staging</code> workspace, you would run the following command:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>terraform workspace <span class="k">select </span>staging
+</code></pre></div></div>
+
+<h2 id="promoting-to-staging">Promoting to Staging</h2>
+
+<p>To promote the current version of the <code class="language-plaintext highlighter-rouge">main</code> branch to the staging environment, you can manually trigger the <code class="language-plaintext highlighter-rouge">Promote to Staging</code> workflow.</p>
+
+<ol>
+  <li>Go to the “Actions” tab of the repository.</li>
+  <li>Select the “Promote to Staging” workflow.</li>
+  <li>Click the “Run workflow” button.</li>
+</ol>
+
+<h2 id="promoting-to-production">Promoting to Production</h2>
+
+<p>To promote the current version of the <code class="language-plaintext highlighter-rouge">staging</code> branch to the production environment, you can manually trigger the <code class="language-plaintext highlighter-rouge">Promote to Production</code> workflow. This workflow will merge the <code class="language-plaintext highlighter-rouge">staging</code> branch into the <code class="language-plaintext highlighter-rouge">main</code> branch and then deploy the changes to the production environment.</p>
+
+<ol>
+  <li>Go to the “Actions” tab of the repository.</li>
+  <li>Select the “Promote to Production” workflow.</li>
+  <li>Click the “Run workflow” button.</li>
+</ol>
+
+<h1 id="deployment-workflow">Deployment Workflow</h1>
+
+<p>This project follows a GitOps methodology for application deployment, with infrastructure managed as code. The workflow is as follows:</p>
+
+<ol>
+  <li>
+    <p><strong>Provision Infrastructure:</strong> Use Terraform to create the virtual machines for the K3s cluster on Proxmox. This is typically a one-time setup or for making infrastructure-level changes.</p>
+  </li>
+  <li>
+    <p><strong>Configure Cluster:</strong> Use Ansible to configure the K3s nodes, install necessary packages, and set up core components. This is also a one-time setup or for node-level configuration changes.</p>
+  </li>
+  <li>
+    <p><strong>Deploy and Manage Applications:</strong> Applications are managed by ArgoCD. To deploy, update, or remove an application, you make changes to the corresponding YAML files in the <code class="language-plaintext highlighter-rouge">apps/</code> directory and push them to your Git repository. ArgoCD automatically syncs these changes to the cluster.</p>
+  </li>
+</ol>
+
+  </div>
+</body>
+</html>

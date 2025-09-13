@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Technical Design Document</title>
+  <link rel="stylesheet" href="/homelabeazy/assets/css/style.css">
+</head><body>
+  <div class="container">
+    <h1 id="technical-design-document">Technical Design Document</h1>
+
+<h2 id="1-introduction">1. Introduction</h2>
+
+<p>This document provides a detailed technical overview of the Homelabeazy project. The project’s mission is to bring enterprise-grade automation to personal homelabs, providing a complete blueprint to build a powerful, reproducible server environment using professional Infrastructure as Code (IaC) and GitOps practices. This document delves into the architecture, components, and design decisions that make up this project.</p>
+
+<h2 id="2-goals-and-non-goals">2. Goals and Non-Goals</h2>
+
+<h3 id="21-goals">2.1. Goals</h3>
+
+<p>The primary goals of this project are:</p>
+
+<ul>
+  <li><strong>Automation:</strong> To automate the entire lifecycle of a homelab setup, from infrastructure provisioning to application deployment.</li>
+  <li><strong>Reproducibility:</strong> To ensure that the homelab environment can be torn down and rebuilt from scratch in a consistent and predictable manner.</li>
+  <li><strong>Modularity:</strong> To allow users to easily add or remove applications and components to suit their specific needs.</li>
+  <li><strong>GitOps:</strong> To use Git as the single source of truth for both infrastructure and applications, enabling a declarative approach to management.</li>
+  <li><strong>Security:</strong> To implement security best practices, including network segmentation, secrets management, and single sign-on.</li>
+</ul>
+
+<h3 id="22-non-goals">2.2. Non-Goals</h3>
+
+<p>This project does not aim to:</p>
+
+<ul>
+  <li><strong>Support other virtualization platforms:</strong> The project is tightly coupled with Proxmox and does not support other hypervisors like ESXi or Hyper-V out of the box.</li>
+  <li><strong>Be for Enterprise Production Use:</strong> While using enterprise-grade practices, this project is intended for personal homelab use and is not recommended for production enterprise workloads without significant additional hardening and testing.</li>
+  <li><strong>Provide a simplified setup for beginners:</strong> While the goal is to automate, a certain level of technical understanding of the core components (Terraform, Ansible, Kubernetes) is expected.</li>
+</ul>
+
+<h2 id="3-high-level-architecture">3. High-Level Architecture</h2>
+
+<p>The architecture is a multi-layered system that builds upon a foundation of virtualization. It uses a combination of IaC and GitOps tools to automate the provisioning and configuration of a Kubernetes cluster and the applications that run on it. The diagram below provides a high-level overview of the system.</p>
+
+<pre><code class="language-mermaid">graph TD
+    subgraph "Hardware"
+        A[Physical Server]
+    end
+
+    subgraph "Virtualization"
+        B(Proxmox VE)
+    end
+
+    subgraph "Automation"
+        C(Terraform) -- Provisions VMs on --&gt; B
+        D(Ansible) -- Configures Nodes --&gt; E
+    end
+
+    subgraph "Container Orchestration &amp; GitOps"
+        E(K3s Kubernetes Cluster)
+        K(ArgoCD) -- Deploys Apps to --&gt; E
+        L(Git Repository) -- Syncs with --&gt; K
+    end
+
+    subgraph "Applications"
+        F[Core Services]
+        G[User Applications]
+    end
+
+    subgraph "Supporting Services"
+        H(Traefik Ingress)
+        I(Authelia SSO)
+        J(Vault Secrets)
+    end
+
+    A --&gt; B
+    B --&gt; E
+    E -- Runs --&gt; F
+    E -- Runs --&gt; G
+    F -- Exposed by --&gt; H
+    G -- Exposed by --&gt; H
+    G -- Authenticated by --&gt; I
+    E -- Uses --&gt; J
+</code></pre>
+
+<h2 id="4-detailed-component-design">4. Detailed Component Design</h2>
+
+<h3 id="41-proxmox">4.1. Proxmox</h3>
+
+<p>Proxmox VE is the open-source virtualization platform that serves as the foundation of the homelab. It is used to create and manage the virtual machines that will form the Kubernetes cluster.</p>
+
+<ul>
+  <li><strong>Prerequisites:</strong> A working Proxmox installation is required.</li>
+  <li><strong>VM Templates:</strong> The project relies on a cloud-init compatible VM template to be present on the Proxmox server. This template is used by Terraform to clone new VMs. The template should be a minimal installation of a supported OS (e.g., Ubuntu Server).</li>
+</ul>
+
+<h3 id="42-terraform">4.2. Terraform</h3>
+
+<p>Terraform is used for Infrastructure as Code (IaC) to provision the virtual machines on Proxmox. The Terraform code is located in the <code class="language-plaintext highlighter-rouge">infrastructure/proxmox/</code> directory.</p>
+
+<ul>
+  <li><strong>Configuration:</strong> The main configuration file is <code class="language-plaintext highlighter-rouge">main.tf</code>, which defines the Proxmox provider and the VM resources.</li>
+  <li><strong>Variables:</strong> User-specific variables, such as Proxmox API credentials and VM specifications (CPU, memory, disk), are defined in <code class="language-plaintext highlighter-rouge">variables.tf</code> and should be set in a <code class="language-plaintext highlighter-rouge">terraform.tfvars</code> file (created from <code class="language-plaintext highlighter-rouge">terraform.tfvars.example</code>).</li>
+  <li><strong>Execution:</strong> Running <code class="language-plaintext highlighter-rouge">make terraform-apply</code> will execute the Terraform code and provision the VMs.</li>
+</ul>
+
+<h3 id="43-ansible">4.3. Ansible</h3>
+
+<p>Ansible is used for configuration management. After Terraform provisions the VMs, Ansible connects to them to perform initial setup, install K3s, and configure the nodes to form a cluster.</p>
+
+<ul>
+  <li><strong>Inventory:</strong> Ansible’s inventory is located in <code class="language-plaintext highlighter-rouge">ansible/inventory/</code>. A static inventory file is provided for the user to fill in with the IP addresses of the newly created VMs.</li>
+  <li><strong>Playbooks:</strong> The main playbook for setting up the cluster is <code class="language-plaintext highlighter-rouge">ansible/playbooks/main.yml</code>. It calls various roles to perform specific tasks.</li>
+  <li><strong>Roles:</strong> The <code class="language-plaintext highlighter-rouge">ansible/roles/</code> directory contains reusable roles for tasks such as installing K3s (<code class="language-plaintext highlighter-rouge">k3s_cluster</code>), setting up applications (<code class="language-plaintext highlighter-rouge">applications</code>), and configuring system settings (<code class="language-plaintext highlighter-rouge">config</code>). This modular structure allows for easy extension and customization.</li>
+  <li><strong>Execution:</strong> Running <code class="language-plaintext highlighter-rouge">make ansible-playbook-setup</code> will run the main playbook against the inventory.</li>
+</ul>
+
+<h3 id="44-k3s-cluster">4.4. K3s Cluster</h3>
+
+<p>K3s is a lightweight, certified Kubernetes distribution that is used as the container orchestration platform. It is designed to be a single binary that is easy to install, manage, and scale.</p>
+
+<ul>
+  <li><strong>Architecture:</strong> The cluster consists of one or more master nodes and one or more worker nodes. The master node runs the Kubernetes control plane, while the worker nodes run the application workloads.</li>
+  <li><strong>Installation:</strong> K3s is installed by the <code class="language-plaintext highlighter-rouge">k3s_cluster</code> Ansible role. This role handles the installation of the K3s binary and the configuration of the cluster.</li>
+  <li><strong>Storage:</strong> The project is configured to use the default K3s storage provisioner (local-path-provisioner), which is suitable for single-node clusters or development environments. For multi-node clusters, a more robust storage solution like Longhorn or an NFS provisioner would be recommended.</li>
+</ul>
+
+<h3 id="45-argocd">4.5. ArgoCD</h3>
+
+<p>ArgoCD is a declarative, GitOps continuous delivery tool for Kubernetes. It is used to automate the deployment and lifecycle management of applications in the K3s cluster.</p>
+
+<ul>
+  <li><strong>GitOps Workflow:</strong> ArgoCD monitors the <code class="language-plaintext highlighter-rouge">apps/</code> directory in this Git repository. Any changes pushed to this directory are automatically synced to the cluster.</li>
+  <li><strong>App of Apps Pattern:</strong> The project uses the “app of apps” pattern. A single root application, defined in <code class="language-plaintext highlighter-rouge">apps/app-of-apps.yml</code>, is deployed to the cluster. This root app consists of other ArgoCD applications, each representing a service to be deployed. This allows for modular management of applications.</li>
+  <li><strong>Customization:</strong> To add a new application, you can create a new YAML file in the <code class="language-plaintext highlighter-rouge">apps/</code> directory, following the ArgoCD Application CRD format. ArgoCD will automatically pick it up and deploy it.</li>
+</ul>
+
+<h3 id="46-networking">4.6. Networking</h3>
+
+<p>The project uses a VLAN-based network segmentation strategy to isolate traffic and enhance security.</p>
+
+<h4 id="461-vlans">4.6.1. VLANs</h4>
+<p>VLANs (Virtual LANs) are used to create logical broadcast domains that are isolated from each other. This project defines the following VLANs:</p>
+<ul>
+  <li><strong>VLAN 10 (Service Network):</strong> For services running in the homelab, such as the K3s cluster.</li>
+  <li><strong>VLAN 20 (Guest Network):</strong> For guest devices, isolated from the rest of the network.</li>
+  <li><strong>VLAN 30 (Management Network):</strong> For managing Proxmox and other infrastructure.</li>
+</ul>
+
+<h4 id="462-traefik">4.6.2. Traefik</h4>
+<p>Traefik is a modern reverse proxy and load balancer that is used as the Ingress controller for the K3s cluster.</p>
+<ul>
+  <li><strong>Role:</strong> It manages external access to the services running in the cluster, handling routing, SSL termination, and load balancing.</li>
+  <li><strong>Configuration:</strong> Traefik is deployed as part of the core services and is configured via Custom Resource Definitions (CRDs) in Kubernetes.</li>
+</ul>
+
+<h4 id="463-consul">4.6.3. Consul</h4>
+<p>Consul is used for service discovery within the cluster.</p>
+<ul>
+  <li><strong>Role:</strong> Services can be registered with Consul, allowing them to discover and communicate with each other using DNS. This is particularly useful for services that are not exposed via Ingress.</li>
+</ul>
+
+<h4 id="464-pfsense">4.6.4. pfSense</h4>
+<p>pfSense is a powerful open-source firewall and router that is used to manage the network.</p>
+<ul>
+  <li><strong>Role:</strong> It is responsible for routing traffic between VLANs and enforcing firewall rules to control access between the different network segments.</li>
+</ul>
+
+<h3 id="47-security">4.7. Security</h3>
+
+<p>Security is a key consideration in this project. The following components are used to secure the homelab:</p>
+
+<h4 id="471-vault">4.7.1. Vault</h4>
+<p>HashiCorp Vault is used for secrets management.</p>
+<ul>
+  <li><strong>Role:</strong> Vault provides a centralized and secure way to store and access secrets like API keys, passwords, and certificates. Applications can dynamically fetch their secrets from Vault, avoiding the need to store them in Git or in Kubernetes Secrets.</li>
+  <li><strong>Integration:</strong> Vault is integrated with Kubernetes and can inject secrets into pods using the Vault Secrets Operator.</li>
+</ul>
+
+<h4 id="472-authelia">4.7.2. Authelia</h4>
+<p>Authelia is an open-source authentication and authorization server providing two-factor authentication and single sign-on (SSO).</p>
+<ul>
+  <li><strong>Role:</strong> It acts as a gatekeeper for applications, ensuring that only authenticated users can access them. It integrates with Traefik to protect services at the ingress level.</li>
+  <li><strong>Backend:</strong> Authelia uses OpenLDAP as its user database.</li>
+</ul>
+
+<h4 id="473-openldap">4.7.3. OpenLDAP</h4>
+<p>OpenLDAP is used as the central user directory.</p>
+<ul>
+  <li><strong>Role:</strong> It stores user accounts and credentials, which are used by Authelia for authentication. This provides a single source of truth for user management.</li>
+</ul>
+
+<h3 id="48-monitoring-and-logging">4.8. Monitoring and Logging</h3>
+
+<p>A centralized logging solution is implemented using the EFK stack.</p>
+
+<ul>
+  <li><strong>Components:</strong>
+    <ul>
+      <li><strong>Elasticsearch:</strong> A distributed search and analytics engine used to store and index logs.</li>
+      <li><strong>Fluentd:</strong> A data collector that gathers logs from all the nodes and applications in the cluster and forwards them to Elasticsearch.</li>
+      <li><strong>Kibana:</strong> A web interface for searching, analyzing, and visualizing the logs stored in Elasticsearch.</li>
+    </ul>
+  </li>
+  <li><strong>Benefits:</strong> This setup provides a unified view of all logs, making it easier to troubleshoot issues and monitor the health of the system.</li>
+</ul>
+
+<h3 id="49-backup-and-recovery">4.9. Backup and Recovery</h3>
+
+<p>Velero is used for backing up and restoring the Kubernetes cluster.</p>
+
+<ul>
+  <li><strong>Functionality:</strong> Velero can back up the entire cluster state, including all Kubernetes resources and persistent volumes.</li>
+  <li><strong>Storage:</strong> Backups are stored in an S3-compatible object store (e.g., Minio).</li>
+  <li><strong>Recovery:</strong> In the event of a cluster failure, Velero can be used to restore the cluster to a previous state from a backup.</li>
+</ul>
+
+<h2 id="5-data-management">5. Data Management</h2>
+
+<p>Persistent data for stateful applications is managed using Kubernetes Persistent Volumes (PVs) and Persistent Volume Claims (PVCs).</p>
+
+<ul>
+  <li><strong>Storage Class:</strong> The cluster uses the <code class="language-plaintext highlighter-rouge">local-path</code> storage class provided by K3s, which provisions storage from the local filesystem of the worker nodes.</li>
+  <li><strong>Limitations:</strong> This approach is simple but has limitations. If a node goes down, the data on that node becomes unavailable.</li>
+  <li><strong>Recommendations:</strong> For critical data, it is recommended to use a replicated storage solution like Longhorn or a shared storage solution like NFS or Ceph. This would require setting up a dedicated storage cluster or an NFS server and creating a new StorageClass.</li>
+</ul>
+
+<h2 id="6-scalability">6. Scalability</h2>
+
+<p>The cluster can be scaled horizontally to accommodate more applications and users.</p>
+
+<ul>
+  <li><strong>Adding Worker Nodes:</strong> To scale the cluster, you can provision new virtual machines using Terraform and then run the Ansible playbook to join them to the cluster as worker nodes.</li>
+  <li><strong>Resource Allocation:</strong> The resources (CPU, memory) of the VMs can also be scaled vertically by modifying the Terraform variables and re-provisioning the VMs.</li>
+</ul>
+
+<h2 id="7-customization">7. Customization</h2>
+
+<p>This project is designed to be highly customizable. For detailed instructions on how to add your own applications, configure services, and modify the infrastructure, please refer to the <a href="/homelabeazy/customization/">Customization Guide</a>.</p>
+
+<h2 id="8-roadmap">8. Roadmap</h2>
+
+<p>This project is continuously evolving. Here are some potential future enhancements:</p>
+
+<ul>
+  <li><strong>Multi-Cloud Support:</strong> Adding support for other cloud providers like AWS, GCP, or Azure.</li>
+  <li><strong>Advanced Networking:</strong> Implementing more advanced networking policies using a service mesh like Istio or Linkerd.</li>
+  <li><strong>High Availability:</strong> Setting up a multi-master K3s cluster for high availability of the control plane.</li>
+  <li><strong>Automated Backups:</strong> Creating a more automated backup and restore workflow.</li>
+</ul>
+
+  </div>
+</body>
+</html>
