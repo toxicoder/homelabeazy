@@ -2,6 +2,7 @@
   trippsc2.hashi_vault.vault_pki_secret_engine:
     state: present
     name: pki
+    engine_mount_point: pki
     description: "PKI engine for Traefik"
     default_lease_ttl: "8760h"
     max_lease_ttl: "87600h"
