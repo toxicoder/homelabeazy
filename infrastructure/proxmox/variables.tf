@@ -3,6 +3,12 @@ variable "proxmox_api_url" {
   type        = string
 }
 
+variable "pm_tls_insecure" {
+  description = "If set to true, the Proxmox API will not verify the TLS certificate."
+  type        = bool
+  default     = false
+}
+
 variable "pm_token_id" {
   description = "The Proxmox API token ID."
   type        = string

@@ -1,6 +1,7 @@
 package test
 
 import (
+	"context"
 	"testing"
 
 	"github.com/gruntwork-io/terratest/modules/terraform"
@@ -8,6 +9,11 @@ import (
 
 func TestTerraformPlan(t *testing.T) {
 	t.Parallel()
+
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	startMockProxmoxAPI(ctx)
 
 	terraformOptions := &terraform.Options{
 		// The path to where our Terraform code is located
@@ -20,6 +26,8 @@ func TestTerraformPlan(t *testing.T) {
 			"proxmox_template":         "ubuntu-2204-cloud-init",
 			"k3s_master_vm_id":         100,
 			"k3s_worker_vm_id_start":   101,
+			"pm_tls_insecure":          true,
+			"stealth_vm_enabled":       true,
 		},
 	}
 
