@@ -29,6 +29,7 @@ terraform_1.5.7_linux_amd64.zip
 __pycache__/
 *.py[cod]
 *$py.class
+.coverage
 
 # Private configurations for Gitea
 ansible/group_vars/

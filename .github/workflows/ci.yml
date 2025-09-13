@@ -84,6 +84,7 @@ jobs:
       - name: Install Python dependencies
         run: |
           pip install coverage
+          pip install -r tools/homelab-importer/requirements.txt
       - name: Run Python tests with coverage
         run: |
           cd tools/homelab-importer
