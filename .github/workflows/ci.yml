@@ -60,6 +60,11 @@ jobs:
         with:
           go-version: '1.22'
 
+      - name: Setup OpenTofu
+        uses: opentofu/setup-tofu@v1
+        with:
+          tofu_version: latest
+
       - name: Run Go tests
         working-directory: ./infrastructure/proxmox/test
         run: go test -v ./...
