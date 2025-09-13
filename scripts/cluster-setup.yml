@@ -7,5 +7,5 @@
   hosts: localhost
   connection: local
   roles:
-    - role: vault-pki
-    - role: vault-secrets-operator
+    - role: vault_pki
+    - role: vault_secrets_operator

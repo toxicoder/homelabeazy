@@ -4,10 +4,10 @@
       - hvac
       - cryptography
       - python-gnupg
-    virtualenv: "{{ python_venv_path }}"
+    virtualenv: "{{ secure_gen_venv_path }}"
 
 - name: Copy secure_gen tool
   ansible.builtin.copy:
     src: secure_gen
-    dest: "{{ python_venv_path }}/bin/secure_gen"
+    dest: "{{ secure_gen_venv_path }}/bin/secure_gen"
     mode: '0755'

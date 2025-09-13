@@ -6,20 +6,20 @@
   register: minio_credentials
 
 - name: Create minio group
-  group:
+  ansible.builtin.group:
     name: minio
     state: present
 
 - name: Create minio user
-  user:
+  ansible.builtin.user:
     name: minio
     group: minio
     home: "{{ minio_data_dir }}"
-    create_home: yes
+    create_home: true
     shell: /bin/bash
 
 - name: Create data directory
-  file:
+  ansible.builtin.file:
     path: "{{ minio_data_dir }}"
     state: directory
     owner: minio
@@ -35,35 +35,37 @@
   notify: restart minio
 
 - name: Set service credentials
-  set_fact:
-    service_user: "{{ minio_credentials.data[minio_vault_access_key_name] }}"
-    service_password: "{{ minio_credentials.data[minio_vault_secret_key_name] }}"
+  ansible.builtin.set_fact:
+    minio_service_user: "{{ minio_credentials.data[minio_vault_access_key_name] }}"
+    minio_service_password: "{{ minio_credentials.data[minio_vault_secret_key_name] }}"
   no_log: true
 
 - name: Create systemd service file
   ansible.builtin.template:
     src: minio.service.j2
     dest: /etc/systemd/system/minio.service
+    mode: '0644'
   notify: restart minio
 
 - name: Start and enable minio service
   ansible.builtin.systemd:
     name: minio
     state: started
-    enabled: yes
-    daemon_reload: yes
+    enabled: true
+    daemon_reload: true
 
 - name: Deploy MinIO ServiceMonitor
   kubernetes.core.k8s:
     state: present
-    apply: yes
+    apply: true
     definition: "{{ lookup('template', 'minio-servicemonitor.yml.j2') | from_yaml }}"
 
 - name: Download and install minio exporter binary
-  unarchive:
-    src: "https://github.com/prometheus/minio-exporter/releases/download/v0.0.12/minio-exporter-0.0.12.linux-amd64.tar.gz"
+  ansible.builtin.unarchive:
+    src: >-
+      https://github.com/prometheus/minio-exporter/releases/download/v0.0.12/minio-exporter-0.0.12.linux-amd64.tar.gz
     dest: /usr/local/bin
-    remote_src: yes
+    remote_src: true
     extra_opts: [--strip-components=1]
     creates: /usr/local/bin/minio-exporter
   notify: restart minio-exporter
@@ -72,11 +74,12 @@
   ansible.builtin.template:
     src: minio-exporter.service.j2
     dest: /etc/systemd/system/minio-exporter.service
+    mode: '0644'
   notify: restart minio-exporter
 
 - name: Start and enable minio-exporter service
   ansible.builtin.systemd:
     name: minio-exporter
     state: started
-    enabled: yes
-    daemon_reload: yes
+    enabled: true
+    daemon_reload: true

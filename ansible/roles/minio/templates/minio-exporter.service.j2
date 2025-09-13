@@ -8,8 +8,8 @@ User=minio
 Group=minio
 ExecStart=/usr/local/bin/minio-exporter \
   --minio.server={{ minio_url }} \
-  --minio.access-key={{ service_user }} \
-  --minio.secret-key={{ service_password }}
+  --minio.access-key={{ minio_service_user }} \
+  --minio.secret-key={{ minio_service_password }}
 Restart=always
 
 [Install]

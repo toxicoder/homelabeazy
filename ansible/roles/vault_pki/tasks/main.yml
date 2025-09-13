@@ -11,7 +11,7 @@
     engine_mount_point: pki
     common_name: "{{ domain_root }}"
     ttl: "87600h"
-  register: root_ca
+  register: vault_pki_root_ca
 
 - name: Create Traefik role
   community.hashi_vault.vault_pki_role:
@@ -19,5 +19,5 @@
     name: traefik
     allowed_domains:
       - "{{ domain_root }}"
-    allow_subdomains: yes
+    allow_subdomains: true
     max_ttl: "8760h"

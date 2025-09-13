@@ -1,9 +1,9 @@
 - name: Setup Core Services
   hosts: k3s_masters
   roles:
-    - role: homelab
+    - role: homelab_config
     - vault
-    - vault-secrets-operator
+    - vault_secrets_operator
     - openldap
     - role: efk_stack
     - role: velero

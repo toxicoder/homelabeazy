@@ -1,8 +1,6 @@
 - name: Test Synology Module
   hosts: localhost
   gather_facts: false
-  collections:
-    - synology.nas
   vars:
     ansible_host: "mock-synology-api"
     ansible_port: 8000
@@ -30,7 +28,7 @@
       register: create_user_result
 
     - name: Verify user creation
-      assert:
+      ansible.builtin.assert:
         that:
           - create_user_result.changed
 
@@ -50,7 +48,7 @@
       register: create_user_idempotent_result
 
     - name: Verify user creation idempotency
-      assert:
+      ansible.builtin.assert:
         that:
           - not create_user_idempotent_result.changed
 
@@ -67,7 +65,7 @@
       register: delete_user_result
 
     - name: Verify user deletion
-      assert:
+      ansible.builtin.assert:
         that:
           - delete_user_result.changed
 
@@ -86,7 +84,7 @@
       register: create_group_result
 
     - name: Verify group creation
-      assert:
+      ansible.builtin.assert:
         that:
           - create_group_result.changed
 
@@ -103,7 +101,7 @@
       register: delete_group_result
 
     - name: Verify group deletion
-      assert:
+      ansible.builtin.assert:
         that:
           - delete_group_result.changed
 
@@ -120,7 +118,7 @@
       register: create_folder_result
 
     - name: Verify folder creation
-      assert:
+      ansible.builtin.assert:
         that:
           - create_folder_result.changed
 
@@ -137,6 +135,6 @@
       register: delete_folder_result
 
     - name: Verify folder deletion
-      assert:
+      ansible.builtin.assert:
         that:
           - delete_folder_result.changed

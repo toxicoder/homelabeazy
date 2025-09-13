@@ -1,5 +1,6 @@
 # This playbook will deploy user-facing applications.
-- hosts: localhost
+- name: Deploy user-facing applications
+  hosts: localhost
   roles:
     - rreading_glasses
     - ollama

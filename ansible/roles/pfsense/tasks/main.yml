@@ -1,17 +1,16 @@
 # tasks file for pfsense
 - name: Allow HTTP and HTTPS traffic from the service network to the internet
-  pfsense:
-    rule:
-      action: pass
-      interface: lan
-      protocol: tcp
-      source:
-        network: "{{ service_network }}"
-      destination:
-        network: any
-      destination_port:
-        - 80
-        - 443
-      log: true
+  pfsensible.core.pfsense_rule:
+    action: pass
+    interface: lan
+    protocol: tcp
+    source:
+      network: "{{ service_network }}"
+    destination:
+      network: any
+    destination_port:
+      - 80
+      - 443
+    log: true
   tags:
     - pfsense

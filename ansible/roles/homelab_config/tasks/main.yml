@@ -10,7 +10,9 @@
 
 - name: Combine common and environment-specific configurations
   ansible.builtin.set_fact:
-    homelab_config_vars: "{{ config_file.common | combine(config_file[homelab_config_env] | default({}), recursive=True) }}"
+    homelab_config_vars: >-
+      {{ config_file.common
+      | combine(config_file[homelab_config_env] | default({}), recursive=True) }}
 
 - name: Create configmaps directory
   ansible.builtin.file:
@@ -22,6 +24,7 @@
   ansible.builtin.template:
     src: "{{ item.src }}"
     dest: "{{ config_maps_dir }}/{{ item.dest }}"
+    mode: '0644'
   with_items:
     - { src: 'main.yml.j2', dest: 'main-configmap.yml' }
 

@@ -5,5 +5,5 @@
 
 - name: Create virtual environment
   ansible.builtin.command:
-    cmd: "python3 -m venv {{ python_venv_path }}"
-    creates: "{{ python_venv_path }}/bin/activate"
+    cmd: "python3 -m venv {{ python_base_venv_path }}"
+    creates: "{{ python_base_venv_path }}/bin/activate"

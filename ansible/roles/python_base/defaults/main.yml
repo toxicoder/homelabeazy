@@ -1,2 +1,2 @@
 # defaults file for python-base
-python_venv_path: /opt/python-venv
+python_base_venv_path: /opt/python-venv

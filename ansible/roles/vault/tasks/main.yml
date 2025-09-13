@@ -29,7 +29,7 @@
     namespace: vault
     label_selectors:
       - app.kubernetes.io/name=vault
-    wait: yes
+    wait: true
     wait_condition:
       type: Ready
       status: "True"
@@ -52,14 +52,16 @@
   ansible.builtin.command:
     cmd: "ansible-vault encrypt_string"
     stdin: "{{ vault_credentials | to_nice_yaml }}"
-  register: encrypted_content
+  register: vault_encrypted_content
+  changed_when: false
   no_log: true
   delegate_to: localhost
 
 - name: Store encrypted vault keys
   ansible.builtin.copy:
-    content: "{{ encrypted_content.stdout }}"
+    content: "{{ vault_encrypted_content.stdout }}"
     dest: "{{ playbook_dir }}/.vault_keys.yml"
+    mode: '0600'
   delegate_to: localhost
   no_log: true
 
