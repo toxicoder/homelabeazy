@@ -6,7 +6,3 @@ collections:
   - name: pfsensible.core
 
 roles:
-  - src: https://github.com/Aidan-Wallace/homepage-kubernetes.git
-    scm: git
-    version: main
-    name: homepage
