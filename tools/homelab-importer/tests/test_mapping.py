@@ -4,9 +4,9 @@ import sys
 sys.path.insert(
     0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src"))
 )
-import unittest
+import unittest  # noqa: E402
 
-from mapping import map_resource_to_terraform, to_snake_case
+from mapping import map_resource_to_terraform, to_snake_case  # noqa: E402
 
 
 class TestMapping(unittest.TestCase):
@@ -37,7 +37,9 @@ class TestMapping(unittest.TestCase):
                 "os_type": "cloud-init",
             },
         }
-        self.assertEqual(map_resource_to_terraform(vm_data, "vm"), expected)
+        self.assertEqual(map_resource_to_terraform(
+            vm_data, "vm"
+        ), expected)
 
     def test_map_lxc_resource_to_terraform(self):
         lxc_data = {

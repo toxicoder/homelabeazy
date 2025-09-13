@@ -35,7 +35,9 @@ class TestTerraform(unittest.TestCase):
 
         m.assert_called_once_with("output/vms.tf", "w")
         handle = m()
-        handle.write.assert_any_call('resource "proxmox_vm_qemu" "test-vm" {\n')
+        handle.write.assert_any_call(
+            'resource "proxmox_vm_qemu" "test-vm" {\n'
+        )
         handle.write.assert_any_call('  name = "test-vm"\n')
         handle.write.assert_any_call('  target_node = "pve"\n')
         handle.write.assert_any_call("  vmid = 100\n")

@@ -73,14 +73,22 @@ def get_docker_containers(
             return []
 
         # Fetch container list
-        result = guest.agent.exec.post(command="docker ps -a --format '{{json .}}'")
-        if not result or "stdout" not in result or not result["stdout"].strip():
+        cmd = "docker ps -a --format '{{json .}}'"
+        result = guest.agent.exec.post(command=cmd)
+        if (
+            not result
+            or "stdout" not in result
+            or not result["stdout"].strip()
+        ):
             return []
         containers = [
-            json.loads(line) for line in result["stdout"].strip().split("\n") if line
+            json.loads(line)
+            for line in result["stdout"].strip().split("\n")
+            if line
         ]
 
-        result = guest.agent.exec.post(command="docker ps -a --format '{{.ID}}'")
+        cmd = "docker ps -a --format '{{.ID}}'"
+        result = guest.agent.exec.post(command=cmd)
         container_ids = []
         if result and "stdout" in result and result["stdout"].strip():
             container_ids = result["stdout"].strip().split("\n")
@@ -89,10 +97,13 @@ def get_docker_containers(
         if not container_ids:
             return containers
 
-        inspect_result = guest.agent.exec.post(
-            command=f"docker inspect {' '.join(container_ids)}"
-        )
-        if not inspect_result or "stdout" not in inspect_result or not inspect_result["stdout"].strip():
+        inspect_cmd = f"docker inspect {' '.join(container_ids)}"
+        inspect_result = guest.agent.exec.post(command=inspect_cmd)
+        if (
+            not inspect_result
+            or "stdout" not in inspect_result
+            or not inspect_result["stdout"].strip()
+        ):
             return containers  # Return basic info if inspect fails
 
         inspected_data = json.loads(inspect_result["stdout"])
@@ -101,7 +112,11 @@ def get_docker_containers(
                 container["details"] = inspected_data[i]
 
         return containers
-    except (ResourceException, StopIteration, requests.exceptions.RequestException) as e:
+    except (
+        ResourceException,
+        StopIteration,
+        requests.exceptions.RequestException,
+    ) as e:
         logging.error(
             f"Error fetching Docker containers for {vm_type}/{vmid} on "
             f"node {node}: {e}"
