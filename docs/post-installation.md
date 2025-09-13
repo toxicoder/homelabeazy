@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Post-Installation
+nav_order: 6
 ---
 
 # Post-Installation

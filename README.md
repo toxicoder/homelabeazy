@@ -1,3 +1,5 @@
+**For full documentation, visit our [GitHub Pages site](https://toxicoder.github.io/homelabeazy).**
+
 # Homelabeazy - Your _Homelab as Code_
 
 <div align="center">
