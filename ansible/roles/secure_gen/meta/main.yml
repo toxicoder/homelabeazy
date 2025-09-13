@@ -7,4 +7,4 @@ galaxy_info:
   galaxy_tags: []
 
 dependencies:
-  - role: python-base
+  - role: python_base
