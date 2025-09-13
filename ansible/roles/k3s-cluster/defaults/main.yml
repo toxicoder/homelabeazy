@@ -1,3 +1,0 @@
----
-# defaults file for k3s-cluster role
-k3s_version: "v1.29.3+k3s1"

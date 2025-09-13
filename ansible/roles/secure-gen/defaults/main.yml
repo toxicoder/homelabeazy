@@ -1,3 +1,0 @@
----
-# defaults file for secure-gen role
-python_venv_path: /opt/secure-gen

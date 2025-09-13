@@ -1,13 +1,12 @@
----
 - name: Setup Homelab
   hosts: localhost
   connection: local
   gather_facts: false
 
   roles:
-    - role: homelab-config
-    - role: k3s-cluster
+    - role: homelab_config
+    - role: k3s_cluster
     - role: traefik
-    - role: efk-stack
+    - role: efk_stack
     - role: core_services
     - role: applications

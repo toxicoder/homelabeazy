@@ -1,0 +1,6 @@
+apiVersion: v2
+name: rreading_glasses
+description: A Helm chart for deploying rreading_glasses
+type: application
+version: 0.1.0
+appVersion: "1.0"

@@ -5,7 +5,8 @@ readme: README.md
 authors:
   - HomelabEazy
 description: A collection to manage Synology NAS devices.
-license: MIT
+license:
+  - MIT
 tags:
   - synology
   - nas

@@ -1,3 +1,2 @@
----
-service_password: "{{ vault_openldap_root_password }}"
-service_admin_password: "{{ vault_openldap_admin_password }}"
+openldap_service_password: "{{ vault_openldap_root_password }}"
+openldap_service_admin_password: "{{ vault_openldap_admin_password }}"

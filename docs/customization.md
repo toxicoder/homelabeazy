@@ -14,7 +14,7 @@ To add a new application, you need to add a new ArgoCD application manifest to t
 
 ## Managing Secrets
 
-This project uses Vault to manage secrets by default. The `secure-gen` script will automatically generate any secrets defined in the `secrets_to_generate` section of your `private/config.yml` file and store them in Vault.
+This project uses Vault to manage secrets by default. The `secure_gen` script will automatically generate any secrets defined in the `secrets_to_generate` section of your `private/config.yml` file and store them in Vault.
 
 ## Configuring Network Settings
 

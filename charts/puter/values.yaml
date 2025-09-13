@@ -48,7 +48,6 @@ ingress:
     # kubernetes.io/tls-acme: "true"
   hosts: puter.local
   tls: []
-  tls: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local

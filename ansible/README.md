@@ -20,14 +20,14 @@ The following roles are available:
 - `clang-format`: Installs clang-format, a C/C++/Java/etc. code formatter.
 - `config`: Manages configuration files.
 - `consul`: Deploys and configures Consul.
-- `efk-stack`: Deploys and configures an EFK (Elasticsearch, Fluentd, Kibana) stack.
+- `efk_stack`: Deploys and configures an EFK (Elasticsearch, Fluentd, Kibana) stack.
 - `faster-whisper`: Deploys the Faster Whisper speech-to-text model.
 - `go`: Installs the Go programming language.
 - `gofmt`: Installs gofmt, a Go code formatter.
 - `google-java-format`: Installs google-java-format, a Java code formatter.
-- `homelab-config`: Configures the homelab.
+- `homelab_config`: Configures the homelab.
 - `homepage`: Deploys and configures a homepage application.
-- `k3s-cluster`: Deploys a high-availability k3s cluster onto VMs within Proxmox.
+- `k3s_cluster`: Deploys a high-availability k3s cluster onto VMs within Proxmox.
 - `mealie`: Deploys Mealie, a recipe manager.
 - `minio`: Deploys and configures Minio, an S3-compatible object storage server.
 - `n8n`: Deploys n8n, a workflow automation tool.
@@ -38,8 +38,8 @@ The following roles are available:
 - `proxmox-host`: Configures a Proxmox VE server.
 - `python-base`: Installs a base Python environment.
 - `redis`: Deploys and configures Redis.
-- `rreading-glasses`: Deploys rReading Glasses, a text analysis tool.
-- `secure-gen`: Generates secure passwords and other secrets.
+- `rreading_glasses`: Deploys rReading Glasses, a text analysis tool.
+- `secure_gen`: Generates secure passwords and other secrets.
 - `speaches`: Deploys Speaches, a text-to-speech application.
 - `stirling-pdf`: Deploys Stirling-PDF, a PDF manipulation tool.
 - `synology`: Manages a Synology NAS.
@@ -50,7 +50,7 @@ The following roles are available:
 - `vault-secrets-operator`: Deploys the [HashiCorp Vault Secrets Operator](https://www.vaultproject.io/docs/platform/k8s/vso).
 - `velero`: Deploys and configures Velero.
 
-### k3s-cluster Role
+### k3s_cluster Role
 
 This role automates the deployment of a high-availability k3s cluster onto VMs within Proxmox. This role will first create the necessary VMs from a template and then install and configure k3s on them.
 
@@ -84,7 +84,7 @@ The variables that can be passed to this role and a brief description about them
 | `k3s_ssh_private_key_file` | `~/.ssh/id_rsa` | The private SSH key file for the VMs. |
 | `k3s_ssh_public_key_file` | `~/.ssh/id_rsa.pub` | The public SSH key file for the VMs. |
 | `k3s_version` | `v1.28.4+k3s1` | The k3s version to install. |
-| `k3s_cluster_name` | `k3s-cluster` | The name of the k3s cluster. |
+| `k3s_cluster_name` | `k3s_cluster` | The name of the k3s cluster. |
 | `k3s_cluster_domain` | `k3s.local` | The domain for the k3s cluster. |
 | `k3s_cluster_cidr` | `10.42.0.0/16` | The pod network CIDR. |
 | `k3s_service_cidr` | `10.43.0.0/16` | The service network CIDR. |
@@ -325,6 +325,6 @@ The following playbooks are available:
 
 - `setup.yml`: Sets up the entire infrastructure.
 - `setup_core_apps.yml`: Sets up the core applications.
-- `secure-gen.yml`: Generates secure passwords and other secrets.
+- `secure_gen.yml`: Generates secure passwords and other secrets.
 - `mock_synology_api.py`: A mock Synology API for testing.
 - `test_synology_mock.yml`: Tests the Synology mock API.

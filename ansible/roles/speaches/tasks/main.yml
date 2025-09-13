@@ -1,4 +1,3 @@
----
 - name: Create speaches namespace
   kubernetes.core.k8s:
     name: "{{ speaches_namespace }}"

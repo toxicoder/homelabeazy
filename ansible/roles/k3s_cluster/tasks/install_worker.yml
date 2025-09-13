@@ -1,0 +1,14 @@
+- name: Download k3s install script
+  ansible.builtin.get_url:
+    url: "https://get.k3s.io"
+    dest: "/tmp/k3s-install.sh"
+    mode: '0755'
+
+- name: Install k3s agent
+  ansible.builtin.command: "/tmp/k3s-install.sh"
+  environment:
+    INSTALL_K3S_VERSION: "{{ k3s_version }}"
+    K3S_URL: "https://{{ groups['k3s_masters'][0] }}:6443"
+    K3S_TOKEN: "{{ lookup('community.hashi_vault.vault_read', 'secret/passwords/k3s_join_token')['data']['password'] }}"
+  args:
+    creates: /usr/local/bin/k3s

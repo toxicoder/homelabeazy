@@ -1,0 +1,10 @@
+galaxy_info:
+  author: HomelabEazy
+  description: Generates secure passwords and other secrets.
+  company: HomelabEazy
+  license: MIT
+  min_ansible_version: "2.9"
+  galaxy_tags: []
+
+dependencies:
+  - role: python-base

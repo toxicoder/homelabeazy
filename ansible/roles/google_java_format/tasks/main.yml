@@ -1,0 +1,16 @@
+- name: Download google-java-format
+  vars:
+    google_java_format_version: "1.15.0"
+    google_java_format_url: "https://github.com/google/google-java-format/releases/download/google-java-format-{{ google_java_format_version }}/google-java-format-{{ google_java_format_version }}-all-deps.jar"
+  ansible.builtin.get_url:
+    url: "{{ google_java_format_url }}"
+    dest: /usr/local/bin/google-java-format.jar
+    mode: '0644'
+
+- name: Create google-java-format script
+  ansible.builtin.copy:
+    content: |
+      #!/bin/bash
+      java -jar /usr/local/bin/google-java-format.jar "$@"
+    dest: /usr/local/bin/google-java-format
+    mode: '0755'

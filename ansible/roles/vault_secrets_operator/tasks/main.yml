@@ -1,0 +1,13 @@
+- name: Add HashiCorp Helm repository
+  kubernetes.core.helm_repository:
+    name: hashicorp
+    repo_url: https://helm.releases.hashicorp.com
+    state: present
+
+- name: Deploy Vault Secrets Operator
+  kubernetes.core.helm:
+    name: vault-secrets-operator
+    chart_ref: hashicorp/vault-secrets-operator
+    release_namespace: vault-secrets-operator
+    create_namespace: true
+    values: "{{ lookup('template', 'vault-secrets-operator-values.yml.j2') }}"

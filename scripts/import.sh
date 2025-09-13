@@ -30,7 +30,7 @@ PROXMOX_NODE=$2
 VM_ID=$3
 
 if [ "$RESOURCE_TYPE" == "master" ]; then
-    terraform import module.k3s-cluster.module.k3s-master.proxmox_vm_qemu.node "${PROXMOX_NODE}/qemu/${VM_ID}"
+    terraform import module.k3s_cluster.module.k3s-master.proxmox_vm_qemu.node "${PROXMOX_NODE}/qemu/${VM_ID}"
 elif [ "$RESOURCE_TYPE" == "worker" ]; then
     if [ "$#" -ne 4 ]; then
         echo "Usage: $0 worker <worker_index> <proxmox_node> <vm_id>"
@@ -39,7 +39,7 @@ elif [ "$RESOURCE_TYPE" == "worker" ]; then
     WORKER_INDEX=$2
     PROXMOX_NODE=$3
     VM_ID=$4
-    terraform import "module.k3s-cluster.module.k3s-worker[${WORKER_INDEX}].proxmox_vm_qemu.node" "${PROXMOX_NODE}/qemu/${VM_ID}"
+    terraform import "module.k3s_cluster.module.k3s-worker[${WORKER_INDEX}].proxmox_vm_qemu.node" "${PROXMOX_NODE}/qemu/${VM_ID}"
 else
     echo "Invalid resource type. Must be 'master' or 'worker'."
     exit 1

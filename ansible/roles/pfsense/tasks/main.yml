@@ -1,4 +1,3 @@
----
 # tasks file for pfsense
 - name: Allow HTTP and HTTPS traffic from the service network to the internet
   pfsense:

@@ -1,0 +1,4 @@
+# defaults file for homelab_config
+homelab_config_files:
+  - "{{ inventory_dir }}/../../private/config.yml"
+  - "{{ inventory_dir }}/../../private/applications.yml"

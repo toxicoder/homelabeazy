@@ -1,4 +1,3 @@
----
 - name: Create LDAP Namespace
   kubernetes.core.k8s:
     name: ldap
