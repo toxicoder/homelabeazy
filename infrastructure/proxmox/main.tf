@@ -61,5 +61,5 @@ module "stealth-vm" {
   stealth_vm_real_mac      = var.stealth_vm_real_mac
   stealth_vm_gpu_pci_id    = var.stealth_vm_gpu_pci_id
   stealth_vm_hv_vendor_id  = var.stealth_vm_hv_vendor_id
-  stealth_vm_smbios_uuid   = var.stealth_vm_smbios_uuid
+  smbios_uuid              = var.stealth_vm_smbios_uuid
 }

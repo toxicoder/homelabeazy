@@ -31,7 +31,7 @@ resource "proxmox_vm_qemu" "stealth_vm" {
   }
 
   # QEMU Args
-  args = "-cpu host,-hypervisor,+kvm_pv_unhalt,+kvm_pv_eoi,hv_spinlocks=0x1fff,hv_vapic,hv_time,hv_reset,hv_vpindex,hv_runtime,hv_relaxed,kvm=off,hv_vendor_id=${var.stealth_vm_hv_vendor_id}"
+  args = "-cpu host,-hypervisor,+kvm_pv_unhalt,+kvm_pv_eoi,hv_spinlocks=0x1fff,hv_vapic,hv_time,hv_reset,hv_vpindex,hv_runtime,hv_relaxed,kvm=off,hv_vendor_id=${var.stealth_vm_hv_vendor_id} -smbios type=1,uuid=${var.smbios_uuid}"
 
   # SMBIOS
   # smbios {
