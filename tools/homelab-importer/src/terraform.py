@@ -45,6 +45,9 @@ def generate_docker_tfvars(
         f.write("}\n\n")
 
 
+import os
+
+
 def generate_import_script(
     resources: List[Dict[str, Any]], filename: str = "import.sh"
 ) -> None:
@@ -54,20 +57,29 @@ def generate_import_script(
         for resource in resources:
             resource_type = resource["resource"]
             resource_name = resource["name"]
-            # Construct the Proxmox resource ID
-            node = resource["attributes"].get("target_node")
-            vmid = resource["attributes"].get("vmid")
-            if not node or not vmid:
-                continue
-            if resource_type == "proxmox_vm_qemu":
-                resource_id = f"{node}/qemu/{vmid}"
+            attributes = resource["attributes"]
+            resource_id = ""
+
+            if resource_type in ["proxmox_vm_qemu", "proxmox_lxc"]:
+                node = attributes.get("target_node")
+                vmid = attributes.get("vmid")
+                if not node or not vmid:
+                    continue
+                vm_type = "qemu" if resource_type == "proxmox_vm_qemu" else "lxc"
+                resource_id = f"{node}/{vm_type}/{vmid}"
+            elif resource_type == "proxmox_storage":
+                resource_id = attributes.get("id")
+            elif resource_type == "proxmox_network_bridge":
+                node = attributes.get("node")
+                iface = attributes.get("id")
+                if not node or not iface:
+                    continue
+                resource_id = f"{node}/{iface}"
+
+            if resource_id:
                 f.write(
                     f"terraform import {resource_type}.{resource_name} "
                     f"{resource_id}\n"
                 )
-            elif resource_type == "proxmox_lxc":
-                resource_id = f"{node}/lxc/{vmid}"
-                f.write(
-                    f"terraform import {resource_type}.{resource_name} "
-                    f"{resource_id}\n"
-                )
+
+    os.chmod(filename, 0o755)

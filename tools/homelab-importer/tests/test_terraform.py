@@ -15,8 +15,7 @@ from terraform import (  # noqa: E402
 
 
 class TestTerraform(unittest.TestCase):
-    @patch("os.path.join", side_effect=lambda *args: "/".join(args))
-    def test_generate_terraform_config(self, mock_join):
+    def test_generate_terraform_config(self):
         resources = [
             {
                 "resource": "proxmox_vm_qemu",
@@ -32,7 +31,7 @@ class TestTerraform(unittest.TestCase):
 
         m = mock_open()
         with patch("builtins.open", m):
-            generate_terraform_config(resources, "output")
+            generate_terraform_config(resources, "output/vms.tf")
 
         m.assert_called_once_with("output/vms.tf", "w")
         handle = m()
