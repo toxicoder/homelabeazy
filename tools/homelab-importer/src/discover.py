@@ -76,10 +76,16 @@ def get_docker_containers(
         # Fetch container list
         cmd = "docker ps -a --format '{{json .}}'"
         result = guest.agent.exec.post(command=cmd)
-        if not result or "stdout" not in result or not result["stdout"].strip():
+        if (
+            not result
+            or "stdout" not in result
+            or not result["stdout"].strip()
+        ):
             return []
         containers = [
-            json.loads(line) for line in result["stdout"].strip().split("\n") if line
+            json.loads(line)
+            for line in result["stdout"].strip().split("\n")
+            if line
         ]
 
         cmd = "docker ps -a --format '{{.ID}}'"

@@ -62,11 +62,15 @@ def map_docker_container_to_compose(
             "image": container_data.get("Image"),
             "restart": "unless-stopped",
             "ports": [
-                (f"{p.get('PublicPort', '')}:" f"{p.get('PrivatePort', '')}")
+                (
+                    f"{p.get('PublicPort', '')}:"
+                    f"{p.get('PrivatePort', '')}"
+                )
                 for p in container_data.get("Ports", [])
             ],
             "volumes": [
-                f'{m["Source"]}:{m["Destination"]}' for m in details.get("Mounts", [])
+                f'{m["Source"]}:{m["Destination"]}'
+                for m in details.get("Mounts", [])
             ],
             "environment": details.get("Config", {}).get("Env", []),
         },

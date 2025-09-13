@@ -5,7 +5,9 @@ import os
 from typing import IO, Any, Dict, List
 
 
-def generate_terraform_config(resources: List[Dict[str, Any]], filename: str) -> None:
+def generate_terraform_config(
+    resources: List[Dict[str, Any]], filename: str
+) -> None:
     """Generates a Terraform configuration file."""
     with open(filename, "w") as f:
         for resource in resources:
@@ -66,7 +68,10 @@ def generate_import_script(
                 vmid = attributes.get("vmid")
                 if not node or not vmid:
                     continue
-                vm_type = "qemu" if resource_type == "proxmox_vm_qemu" else "lxc"
+                if resource_type == "proxmox_vm_qemu":
+                    vm_type = "qemu"
+                else:
+                    vm_type = "lxc"
                 resource_id = f"{node}/{vm_type}/{vmid}"
             elif resource_type == "proxmox_storage":
                 resource_id = attributes.get("id")
