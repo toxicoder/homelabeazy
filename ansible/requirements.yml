@@ -4,5 +4,3 @@ collections:
   - name: trippsc2.hashi_vault
   - name: community.general
   - name: pfsensible.core
-
-roles:
