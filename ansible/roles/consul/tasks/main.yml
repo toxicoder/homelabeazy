@@ -1,4 +1,3 @@
----
 - name: Download Consul
   ansible.builtin.get_url:
     url: "https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_linux_amd64.zip"
@@ -13,12 +12,13 @@
     creates: /usr/local/bin/consul
 
 - name: Configure Consul
-  template:
+  ansible.builtin.template:
     src: consul.hcl.j2
     dest: /etc/consul.d/consul.hcl
+    mode: '0644'
 
 - name: Start Consul service
-  systemd:
+  ansible.builtin.systemd:
     name: consul
     state: started
     enabled: yes

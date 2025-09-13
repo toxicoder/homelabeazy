@@ -1,4 +1,3 @@
----
 - name: Apply configmaps from templates
   kubernetes.core.k8s:
     state: present

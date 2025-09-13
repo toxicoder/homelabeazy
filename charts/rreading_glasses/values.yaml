@@ -1,0 +1,35 @@
+# Default values for rreading_glasses.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+application:
+  image:
+    repository: blampe/rreading_glasses
+    tag: latest
+    pullPolicy: IfNotPresent
+  name: rreading_glasses
+  port: 8788
+  args:
+    - "serve"
+    - "--postgres-host=postgres-postgresql.postgres.svc.cluster.local"
+    - "--postgres-user=rreading_glasses"
+    - "--postgres-password=$(POSTGRES_PASSWORD)"
+    - "--postgres-database=rreading_glasses"
+
+# This is where we will get the password from.
+# It will be a secret in the same namespace.
+secret:
+  name: rreading_glasses-secret
+  key: POSTGRES_PASSWORD
+
+service:
+  type: ClusterIP
+  port: 8788
+
+ingress:
+  enabled: true
+  hosts:
+    - host: rreading_glasses.homelab.dev
+      paths:
+        - path: /
+          pathType: ImplementationSpecific

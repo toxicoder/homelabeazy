@@ -1,4 +1,0 @@
----
-vault_secrets_operator_namespace: vault-secrets-operator
-vault_secrets_operator_chart_version: "0.1.0"
-vault_secrets_operator_helm_values: {}

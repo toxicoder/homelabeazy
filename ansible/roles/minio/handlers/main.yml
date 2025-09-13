@@ -1,11 +1,10 @@
----
 # handlers file for minio
 
-- name: restart minio
-  systemd:
+- name: Restart minio
+  ansible.builtin.systemd:
     name: minio
     state: restarted
-- name: restart minio-exporter
-  systemd:
+- name: Restart minio-exporter
+  ansible.builtin.systemd:
     name: minio-exporter
     state: restarted

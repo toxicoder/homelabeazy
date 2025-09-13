@@ -12,8 +12,8 @@ spec:
     helm:
       values: |
         auth:
-          database: rreading-glasses
-          username: rreading-glasses
+          database: rreading_glasses
+          username: rreading_glasses
           password: "<vault:secret/data/postgres#password>"
           postgresPassword: "<vault:secret/data/postgres#postgres-password>"
         primary:

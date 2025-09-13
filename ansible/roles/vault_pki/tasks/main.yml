@@ -1,0 +1,23 @@
+- name: Enable PKI secrets engine
+  community.hashi_vault.vault_pki_engine:
+    state: present
+    name: pki
+    description: "PKI engine for Traefik"
+    default_lease_ttl: "8760h"
+    max_lease_ttl: "87600h"
+
+- name: Generate root CA
+  community.hashi_vault.vault_pki_root_generate:
+    engine_mount_point: pki
+    common_name: "{{ domain_root }}"
+    ttl: "87600h"
+  register: root_ca
+
+- name: Create Traefik role
+  community.hashi_vault.vault_pki_role:
+    engine_mount_point: pki
+    name: traefik
+    allowed_domains:
+      - "{{ domain_root }}"
+    allow_subdomains: yes
+    max_ttl: "8760h"

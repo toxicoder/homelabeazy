@@ -1,6 +1,6 @@
 # This playbook will deploy user-facing applications.
 - hosts: localhost
   roles:
-    - rreading-glasses
+    - rreading_glasses
     - ollama
     - speaches

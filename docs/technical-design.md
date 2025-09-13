@@ -93,7 +93,7 @@ Ansible is used for configuration management. After Terraform provisions the VMs
 
 - **Inventory:** Ansible's inventory is located in `ansible/inventory/`. A static inventory file is provided for the user to fill in with the IP addresses of the newly created VMs.
 - **Playbooks:** The main playbook for setting up the cluster is `ansible/playbooks/main.yml`. It calls various roles to perform specific tasks.
-- **Roles:** The `ansible/roles/` directory contains reusable roles for tasks such as installing K3s (`k3s-cluster`), setting up applications (`applications`), and configuring system settings (`config`). This modular structure allows for easy extension and customization.
+- **Roles:** The `ansible/roles/` directory contains reusable roles for tasks such as installing K3s (`k3s_cluster`), setting up applications (`applications`), and configuring system settings (`config`). This modular structure allows for easy extension and customization.
 - **Execution:** Running `make ansible-playbook-setup` will run the main playbook against the inventory.
 
 ### 4.4. K3s Cluster
@@ -101,7 +101,7 @@ Ansible is used for configuration management. After Terraform provisions the VMs
 K3s is a lightweight, certified Kubernetes distribution that is used as the container orchestration platform. It is designed to be a single binary that is easy to install, manage, and scale.
 
 - **Architecture:** The cluster consists of one or more master nodes and one or more worker nodes. The master node runs the Kubernetes control plane, while the worker nodes run the application workloads.
-- **Installation:** K3s is installed by the `k3s-cluster` Ansible role. This role handles the installation of the K3s binary and the configuration of the cluster.
+- **Installation:** K3s is installed by the `k3s_cluster` Ansible role. This role handles the installation of the K3s binary and the configuration of the cluster.
 - **Storage:** The project is configured to use the default K3s storage provisioner (local-path-provisioner), which is suitable for single-node clusters or development environments. For multi-node clusters, a more robust storage solution like Longhorn or an NFS provisioner would be recommended.
 
 ### 4.5. ArgoCD

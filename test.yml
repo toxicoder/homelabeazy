@@ -1,6 +1,5 @@
----
-- name: Test vault_secrets role
+- name: Test vault_secrets_operator role
   hosts: localhost
   connection: local
   roles:
-    - role: ansible/roles/vault_secrets
+    - role: vault_secrets_operator

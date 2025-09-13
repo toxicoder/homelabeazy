@@ -1,0 +1,6 @@
+# meta/runtime.yml
+requires_ansible: '>=2.10'
+plugin_routing:
+  modules:
+    synology:
+      redirect: synology.nas.synology

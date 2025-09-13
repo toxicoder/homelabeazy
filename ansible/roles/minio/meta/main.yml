@@ -3,7 +3,7 @@ galaxy_info:
   description: Deploys MinIO, a high-performance, S3-compatible object storage server.
   company: HomelabEazy
   license: MIT
-  min_ansible_version: 2.9
+  min_ansible_version: "2.9"
   galaxy_tags:
     - minio
     - s3

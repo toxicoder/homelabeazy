@@ -9,4 +9,4 @@
         namespace: redis
       type: Opaque
       stringData:
-        password: "{{ service_password }}"
+        password: "{{ redis_service_password }}"

@@ -1,2 +1,1 @@
----
 vault_hostname: "vault.{{ domain_root }}"

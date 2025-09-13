@@ -1,4 +1,3 @@
----
 asuswrt_hostname: "zenwifi-et9"
 asuswrt_ssh_enabled: true
 asuswrt_ssh_port: 22
