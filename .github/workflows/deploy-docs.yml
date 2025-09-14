@@ -25,10 +25,7 @@ jobs:
           bundle install --gemfile=docs/Gemfile --jobs 4 --retry 3
 
       - name: Build and Deploy
-        uses: actions/jekyll-build-pages@v1
-        with:
-          source: ./docs
-          destination: ./_site
+        run: bundle exec jekyll build --source ./docs --destination ./_site
         env:
           JEKYLL_ENV: production
           BASE_URL: /homelabeazy
