@@ -2,6 +2,7 @@
 layout: default
 title: Advanced Usage
 nav_order: 8
+category: documentation
 ---
 
 # Usage

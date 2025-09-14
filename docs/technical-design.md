@@ -2,6 +2,7 @@
 layout: default
 title: Technical Design Document
 nav_order: 10
+category: documentation
 ---
 
 # Technical Design Document

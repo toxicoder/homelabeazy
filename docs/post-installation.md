@@ -2,6 +2,7 @@
 layout: default
 title: Post-Installation
 nav_order: 6
+category: documentation
 ---
 
 # Post-Installation
