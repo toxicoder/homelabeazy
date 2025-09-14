@@ -2,6 +2,7 @@
 layout: default
 title: Folder Structure
 nav_order: 3
+category: documentation
 ---
 
 # Folder Structure

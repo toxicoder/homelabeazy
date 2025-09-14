@@ -2,6 +2,7 @@
 layout: default
 title: Default Services
 nav_order: 9
+category: documentation
 ---
 
 # Default Services
