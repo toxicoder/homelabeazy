@@ -17,16 +17,22 @@
 
 <ol>
   <li><strong>Run Terraform manually:</strong>
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>terraform
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="nb">cd </span>terraform
 terraform init
 terraform plan
 terraform apply
-</code></pre></div>    </div>
+</pre></td></tr></tbody></table></code></pre></div>    </div>
   </li>
   <li><strong>Run Ansible manually:</strong>
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>ansible
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nb">cd </span>ansible
 ansible-playbook <span class="nt">-i</span> inventory/inventory.auto.yml playbooks/main.yml
-</code></pre></div>    </div>
+</pre></td></tr></tbody></table></code></pre></div>    </div>
   </li>
 </ol>
 
@@ -56,12 +62,14 @@ ansible-playbook <span class="nt">-i</span> inventory/inventory.auto.yml playboo
 <ul>
   <li><strong>Check the Traefik Dashboard:</strong> The Traefik dashboard will show you the status of your Ingress routes and whether there are any errors.</li>
   <li><strong>Check the Application Logs:</strong> Use <code class="language-plaintext highlighter-rouge">kubectl logs</code> to check the logs of the application’s pods. This will often give you a clue as to what is wrong.
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl logs <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>&lt;app-name&gt;
-</code></pre></div>    </div>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>kubectl logs <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>&lt;app-name&gt;
+</pre></td></tr></tbody></table></code></pre></div>    </div>
   </li>
   <li><strong>Check the Ingress Route:</strong> Make sure the Ingress route for the application is configured correctly.
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get ingressroute <span class="nt">-n</span> &lt;namespace&gt;
-</code></pre></div>    </div>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>kubectl get ingressroute <span class="nt">-n</span> &lt;namespace&gt;
+</pre></td></tr></tbody></table></code></pre></div>    </div>
   </li>
   <li><strong>Check DNS:</strong> Make sure the DNS record for the application is pointing to the correct IP address.</li>
 </ul>
@@ -74,20 +82,23 @@ ansible-playbook <span class="nt">-i</span> inventory/inventory.auto.yml playboo
   <li>
     <p><strong>Destroy the infrastructure:</strong></p>
 
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make destroy
-</code></pre></div>    </div>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>make destroy
+</pre></td></tr></tbody></table></code></pre></div>    </div>
   </li>
   <li>
     <p><strong>Delete the <code class="language-plaintext highlighter-rouge">terraform.tfvars</code> file:</strong></p>
 
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">rm </span>infrastructure/proxmox/terraform.tfvars
-</code></pre></div>    </div>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nb">rm </span>infrastructure/proxmox/terraform.tfvars
+</pre></td></tr></tbody></table></code></pre></div>    </div>
   </li>
   <li>
     <p><strong>Delete the <code class="language-plaintext highlighter-rouge">ansible/inventory/inventory.auto.yml</code> file:</strong></p>
 
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">rm </span>ansible/inventory/inventory.auto.yml
-</code></pre></div>    </div>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nb">rm </span>ansible/inventory/inventory.auto.yml
+</pre></td></tr></tbody></table></code></pre></div>    </div>
   </li>
   <li>
     <p><strong>Run the setup process again by following the steps in the “Getting Started” section.</strong></p>

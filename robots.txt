@@ -1,0 +1,5 @@
+User-agent: *
+
+Disallow: /norobots/
+
+Sitemap: https://toxicoder.github.io/homelabeazy/sitemap.xml

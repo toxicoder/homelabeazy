@@ -30,8 +30,9 @@
 
 <p>Some parts of this project have tests, but the overall testing framework is still under development. You can run the available tests with:</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make <span class="nb">test</span>
-</code></pre></div></div>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>make <span class="nb">test</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
 
 <h1 id="homelab-importer">Homelab Importer</h1>
 
@@ -54,9 +55,11 @@
 
 <p>These variables should be set as environment variables before running the Ansible playbook:</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">OPENLDAP_ROOT_PASSWORD</span><span class="o">=</span><span class="s2">"your-root-password"</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nb">export </span><span class="nv">OPENLDAP_ROOT_PASSWORD</span><span class="o">=</span><span class="s2">"your-root-password"</span>
 <span class="nb">export </span><span class="nv">OPENLDAP_ADMIN_PASSWORD</span><span class="o">=</span><span class="s2">"your-admin-password"</span>
-</code></pre></div></div>
+</pre></td></tr></tbody></table></code></pre></div></div>
 
 <p>The OpenLDAP application is deployed using the <code class="language-plaintext highlighter-rouge">apps/openldap.yml</code> manifest. The passwords for the OpenLDAP users are managed by Vault. You will need to add the following secrets to Vault:</p>
 
