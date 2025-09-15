@@ -1,0 +1,11 @@
+main:
+  - title: "Home"
+    url: /
+  - title: "Guides"
+    url: /guides/
+  - title: "Reference"
+    url: /reference/
+  - title: "Community"
+    url: /community/
+  - title: "Troubleshooting"
+    url: /troubleshooting/

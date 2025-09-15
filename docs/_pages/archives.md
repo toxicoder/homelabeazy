@@ -1,7 +1,7 @@
 ---
 layout: archives
-icon: fas fa-archive
-order: 3
+title: "Archives"
+permalink: /archives/
 ---
 
 This page provides a complete archive of all posts, sorted by date. You can use this page to browse through the history of all content ever published.

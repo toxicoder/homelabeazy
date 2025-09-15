@@ -1,15 +1,12 @@
 # The Site Configuration
 
 # Import the theme
-theme: jekyll-theme-chirpy
+theme: minimal-mistakes-jekyll
 
 # The language of the webpage › http://www.lingoes.net/en/translator/langcode.htm
 # If it has the same name as one of the files in folder `_data/locales`, the layout language will also be changed,
 # otherwise, the layout language will use the default value of 'en'.
 lang: en
-
-# Change to your timezone › https://kevinnovak.github.io/Time-Zone-Picker
-timezone: Etc/UTC
 
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
@@ -31,17 +28,23 @@ github:
 twitter:
   username: homelabeazy # change to your Twitter username
 
-social:
-  # Change to your full name.
-  # It will be displayed as the default author of the posts and the copyright owner in the Footer
+# Author settings
+author:
   name: "Homelabeazy"
-  email: "" # change to your email address
+  avatar: "/assets/logo.png"
+  bio: "Your Homelab as Code"
+  location: "Cloud"
   links:
-    # The first element serves as the copyright owner's link
-    - https://github.com/homelabeazy # change to your GitHub homepage
-    # Uncomment below to add more social links
-    # - https://www.facebook.com/username
-    # - https://www.linkedin.com/in/username
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/homelabeazy"
+
+# Search settings
+search: true
+
+# Atom feed settings
+atom_feed:
+  path: /feed.xml
 
 # ↑ --------------------------
 # The end of `jekyll-seo-tag` settings
@@ -50,18 +53,6 @@ social:
 pageviews:
   provider: # now only supports 'goatcounter'
 
-# Prefer color scheme setting.
-#
-# Note: Keep empty will follow the system prefer color by default,
-# and there will be a toggle to switch the theme between dark and light
-# on the bottom left of the sidebar.
-#
-# Available options:
-#
-#     light — Use the light color scheme
-#     dark — Use the dark color scheme
-#
-theme_mode: # [light | dark]
 
 # The CDN endpoint for media resources.
 # Notice that once it is assigned, the CDN url

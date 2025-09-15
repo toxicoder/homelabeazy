@@ -1,7 +1,6 @@
 ---
-layout: default
+layout: single
 title: Technical Design
-nav_order: 3
 category: "Reference"
 ---
 

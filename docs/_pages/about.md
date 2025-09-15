@@ -1,7 +1,7 @@
 ---
-# the default layout is 'page'
-icon: fas fa-info-circle
-order: 4
+layout: single
+title: "About"
+permalink: /about/
 ---
 
 Welcome to the Homelabeazy documentation!
@@ -19,5 +19,5 @@ This documentation site is your central resource for everything related to Homel
 
 We believe in the power of open source and community collaboration. If you have any questions, suggestions, or contributions, please don't hesitate to get involved!
 
-> To add or edit content on this page, modify the `_tabs/about.md` file.
+> To add or edit content on this page, modify the `_pages/about.md` file.
 > {: .prompt-tip }

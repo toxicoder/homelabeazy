@@ -1,6 +1,6 @@
 # Homelabeazy Documentation
 
-This directory contains the source code for the Homelabeazy documentation site. The site is built with [Jekyll](https://jekyllrb.com/) and uses the [Chirpy](https://github.com/cotes2020/jekyll-theme-chirpy) theme.
+This directory contains the source code for the Homelabeazy documentation site. The site is built with [Jekyll](https://jekyllrb.com/) and uses the [Minimal Mistakes](https://github.com/mmistakes/minimal-mistakes) theme.
 
 ## Adding a Logo
 

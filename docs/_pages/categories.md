@@ -1,7 +1,7 @@
 ---
 layout: categories
-icon: fas fa-stream
-order: 1
+title: "Categories"
+permalink: /categories/
 ---
 
 This page lists all the categories of posts available on the site. Clicking on a category will take you to a page with all the posts in that category.
