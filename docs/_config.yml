@@ -34,7 +34,7 @@ twitter:
 # Author settings
 author:
   name: "Homelabeazy"
-  avatar: "/assets/logo.png"
+  # avatar: "/assets/images/logo.png"
   bio: "Your Homelab as Code"
   location: "Cloud"
   links:

@@ -12,7 +12,7 @@ Welcome to the Technical Design Document for Homelabeazy. This document provides
 
 ### Who is this for?
 
-This document is intended for users who have a basic understanding of the core technologies used in this project, such as Proxmox, Terraform, Ansible, and Kubernetes. If you're new to these technologies, we recommend that you start with our [Getting Started guide](./getting-started.md) and then come back to this document for a deeper dive.
+This document is intended for users who have a basic understanding of the core technologies used in this project, such as Proxmox, Terraform, Ansible, and Kubernetes. If you're new to these technologies, we recommend that you start with our [Getting Started guide](./guides.md) and then come back to this document for a deeper dive.
 
 ### Design Philosophy
 
