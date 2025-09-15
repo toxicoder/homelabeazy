@@ -4,34 +4,47 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  deploy:
+  build_and_deploy:
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.2' # Or your desired Ruby version
+          ruby-version: '3.2'
+          bundler-cache: true
 
       - name: Install Dependencies
         run: |
-          gem install bundler
           bundle install --gemfile=docs/Gemfile --jobs 4 --retry 3
 
-      - name: Build and Deploy
+      - name: Build site
         run: bundle exec jekyll build --source ./docs --destination ./_site
         env:
           JEKYLL_ENV: production
           BASE_URL: /homelabeazy
           BUNDLE_GEMFILE: ${{ github.workspace }}/docs/Gemfile
 
+      - name: Test Site
+        run: |
+          bundle exec htmlproofer ./_site \
+            --disable-external=true \
+            --ignore-urls "/.*/"
+        env:
+          BUNDLE_GEMFILE: ${{ github.workspace }}/docs/Gemfile
+
+
       - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

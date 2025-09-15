@@ -1,58 +1,52 @@
 ---
 layout: default
 title: Deployment
-nav_order: 5
-category: documentation
+nav_order: 6
+category: "Reference"
 ---
 
 # Deployment
 
-> **Note:** The initial deployment of your homelab is handled by the interactive setup script, as described in the main `README.md`. This document provides more detail on the underlying deployment workflow and how to manage your environment after the initial setup.
+This document provides an overview of the deployment process for the Homelabeazy documentation site.
 
-This project uses Terraform workspaces to manage multiple environments. Each workspace represents a different environment (e.g., `dev`, `staging`, `prod`). The current workspace is determined by the `TF_WORKSPACE` environment variable.
+## Documentation Site
 
-## Environments
+The documentation site is a Jekyll-based site that is hosted on GitHub Pages. The site is automatically built and deployed by a GitHub Actions workflow whenever a change is pushed to the `main` branch.
 
-  * **dev:** The development environment. This is the default workspace. It is used for testing new features and changes.
-  * **staging:** The staging environment. This workspace is used for testing changes before they are deployed to production.
-  - **prod:** The production environment. This workspace is used for the live application.
+The workflow is defined in the `.github/workflows/deploy-docs.yml` file. It performs the following steps:
 
-## Managing Environments
+1.  **Checkout:** The workflow checks out the code from the repository.
+2.  **Setup Ruby:** It sets up the Ruby environment and installs the necessary gems, using a cache to speed up the process.
+3.  **Build:** It builds the Jekyll site.
+4.  **Test:** It runs `html-proofer` to check for broken links and other issues.
+5.  **Deploy:** It deploys the built site to the `gh-pages` branch, which is then served by GitHub Pages.
 
-You can switch between workspaces using the `terraform workspace select` command.
+## Homelab Deployment
+
+The deployment of your homelab is handled by a combination of Terraform, Ansible, and ArgoCD.
+
+### Infrastructure
+
+The infrastructure for your homelab is provisioned using Terraform. You can apply the Terraform configuration by running the following command:
 
 ```bash
-terraform workspace select <workspace-name>
+make terraform-apply
 ```
 
-For example, to switch to the `staging` workspace, you would run the following command:
+This will create the virtual machines on your Proxmox server.
+
+### Configuration
+
+After the virtual machines have been provisioned, you'll need to configure them using Ansible.
 
 ```bash
-terraform workspace select staging
+make ansible-playbook-setup
 ```
 
-## Promoting to Staging
+This will install K3s on the virtual machines and configure them to form a Kubernetes cluster.
 
-To promote the current version of the `main` branch to the staging environment, you can manually trigger the `Promote to Staging` workflow.
+### Applications
 
-1.  Go to the "Actions" tab of the repository.
-2.  Select the "Promote to Staging" workflow.
-3.  Click the "Run workflow" button.
+Applications are deployed to your cluster using a GitOps workflow with ArgoCD. To deploy a new application, you'll need to create a new YAML file in the `apps/` directory of your private configuration repository.
 
-## Promoting to Production
-
-To promote the current version of the `staging` branch to the production environment, you can manually trigger the `Promote to Production` workflow. This workflow will merge the `staging` branch into the `main` branch and then deploy the changes to the production environment.
-
-1.  Go to the "Actions" tab of the repository.
-2.  Select the "Promote to Production" workflow.
-3.  Click the "Run workflow" button.
-
-# Deployment Workflow
-
-This project follows a GitOps methodology for application deployment, with infrastructure managed as code. The workflow is as follows:
-
-1.  **Provision Infrastructure:** Use Terraform to create the virtual machines for the K3s cluster on Proxmox. This is typically a one-time setup or for making infrastructure-level changes.
-
-2.  **Configure Cluster:** Use Ansible to configure the K3s nodes, install necessary packages, and set up core components. This is also a one-time setup or for node-level configuration changes.
-
-3.  **Deploy and Manage Applications:** Applications are managed by ArgoCD. To deploy, update, or remove an application, you make changes to the corresponding YAML files in the `apps/` directory and push them to your Git repository. ArgoCD automatically syncs these changes to the cluster.
+For more information on how to add new applications, please see the [Customization](./customization.md) guide.

@@ -1,84 +1,62 @@
 ---
 layout: default
 title: Advanced Usage
-nav_order: 8
-category: documentation
+nav_order: 4
+category: "Guides"
 ---
 
-# Usage
+# Advanced Usage
 
-This project includes a `Makefile` that provides a convenient way to run common tasks.
+This project includes a `Makefile` that provides a convenient way to run common tasks. This guide will walk you through some of the more advanced features of Homelabeazy.
 
 ## Makefile Commands
 
-  - **`make help`**: Display a list of available commands.
-  - **`make install-deps`**: Install dependencies.
-  - **`make setup`**: Run the interactive setup script for the homelab. **(Not Recommended)**
-  - **`make lint`**: Run all linters.
-  - **`make terraform-init`**: Initialize Terraform.
-  - **`make terraform-plan`**: Plan the Terraform deployment.
-  - **`make terraform-apply`**: Apply the Terraform deployment.
-  - **`make ansible-playbook-setup`**: Run the main Ansible playbook for setup.
-  - **`make test`**: Run Molecule tests for all Ansible roles.
-  - **`make clean`**: Clean up temporary files.
+The `Makefile` at the root of the project provides a number of helpful commands for managing your homelab. Here are some of the most common ones:
 
-# Testing
+-   **`make help`**: Display a list of all available commands.
+-   **`make install-deps`**: Install all the necessary dependencies for the project.
+-   **`make setup-interactive`**: Run the interactive setup script to configure your homelab.
+-   **`make lint`**: Run all the linters to check your code for errors.
+-   **`make terraform-apply`**: Apply the Terraform configuration to provision your infrastructure.
+-   **`make ansible-playbook-setup`**: Run the main Ansible playbook to configure your cluster and deploy your applications.
+-   **`make test`**: Run the test suite for the project.
+-   **`make clean`**: Clean up any temporary files.
 
-Some parts of this project have tests, but the overall testing framework is still under development. You can run the available tests with:
+## Homelab Importer
 
-```bash
-make test
-```
-
-# Homelab Importer
-
-This repository includes a tool to import an existing, manually-configured Proxmox environment into a Terraform-managed setup. This is useful for migrating your existing homelab to this project's infrastructure as code approach.
+If you have an existing homelab that was configured manually, you can use the `homelab-importer` tool to import it into a Terraform-managed setup. This is a great way to migrate your existing homelab to the Infrastructure as Code (IaC) approach used by this project.
 
 For detailed instructions on how to use the importer, please see the [Homelab Importer README](tools/homelab-importer/README.md).
 
-# OpenLDAP
+## OpenLDAP
 
-This repository includes an Ansible role for deploying OpenLDAP to the Kubernetes cluster. The role can be found in `ansible/roles/openldap`.
+This project includes an Ansible role for deploying OpenLDAP to your Kubernetes cluster. OpenLDAP is used as the central user directory for your homelab, and it is integrated with Authelia to provide Single Sign-On (SSO) for your applications.
 
-## Configuration
+The OpenLDAP passwords are managed by Vault. You will need to add the following secrets to Vault:
 
-The OpenLDAP role uses the following variables for configuration:
+-   `secrets/data/openldap`
+    -   `root-password`
+    -   `admin-password`
 
-  - `openldap_root_password`: The password for the OpenLDAP root user.
-  - `openldap_admin_password`: The password for the OpenLDAP admin user.
-
-These variables should be set as environment variables before running the Ansible playbook:
-
-```bash
-export OPENLDAP_ROOT_PASSWORD="your-root-password"
-export OPENLDAP_ADMIN_PASSWORD="your-admin-password"
-```
-
-The OpenLDAP application is deployed using the `apps/openldap.yml` manifest. The passwords for the OpenLDAP users are managed by Vault. You will need to add the following secrets to Vault:
-
-  - `secrets/data/openldap`
-      - `root-password`
-      - `admin-password`
-
-# Stealth VM
+## Stealth VM
 
 This project includes an optional "stealth" Windows VM on Proxmox. The purpose of this VM is to allow for game streaming from a server. It aims to provide a normal gaming environment, which can sometimes be challenging on virtualized hardware.
 
-## Our Stance on Cheating
+### Our Stance on Cheating
 
 **This project is firmly against cheating in any form.** The "stealth" features are designed to make the virtual machine appear as a standard physical machine to the game, ensuring compatibility and performance. It is **not** intended to enable or facilitate cheating. We believe in fair play and sportsmanship. Any use of this project for activities that violate the terms of service of a game, including cheating, is strictly discouraged.
 
-## Prerequisites
+### Prerequisites
 
-  - Proxmox 8.x+
-  - A Windows ISO file
-  - The PCI ID of the GPU you want to pass through
-  - The MAC address of your physical network card
+-   Proxmox 8.x+
+-   A Windows ISO file
+-   The PCI ID of the GPU you want to pass through
+-   The MAC address of your physical network card
 
-## Usage
+### Usage
 
 To enable the stealth VM, run the `scripts/setup.sh` script and answer "y" when prompted to enable the stealth VM. You will then be prompted for the Windows ISO path, GPU PCI ID, and real MAC address.
 
-## Disclaimer
+### Disclaimer
 
 This feature is intended for running games on a virtual machine for streaming purposes. Using this for any form of cheating is against the principles of this project. The author of this project is not responsible for any consequences that may arise from the misuse of this feature.

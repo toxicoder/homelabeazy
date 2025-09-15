@@ -1,42 +1,41 @@
 ---
 layout: default
-title: Default Services
-nav_order: 9
-category: documentation
+title: Services
+nav_order: 7
+category: "Reference"
 ---
 
-# Default Services
+# Services
 
-The following services are included in this homelab. Some are core infrastructure components, while others are applications that can be deployed.
+This document provides an overview of the services that are included in the Homelabeazy project.
 
 ## Core Infrastructure
 
+These services are essential for the operation of your homelab. They provide core functionality such as routing, authentication, and secrets management.
+
 | Service           | Description                                                                                             |
 | ----------------- | ------------------------------------------------------------------------------------------------------- |
-| **Traefik** | A modern reverse proxy and load balancer that makes deploying microservices easy.                       |
-| **Authelia** | An open-source authentication and authorization server providing two-factor authentication and single sign-on. |
-| **OpenLDAP** | A lightweight directory access protocol for user authentication.                                        |
-| **Vault** | A tool for securely accessing secrets.                                                                  |
-| **Velero** | A tool for backing up and restoring your Kubernetes cluster resources and persistent volumes.           |
-| **EFK Stack** | A centralized logging solution consisting of Elasticsearch, Fluentd, and Kibana.                      |
+| **Traefik**       | A modern reverse proxy and load balancer that makes deploying microservices easy.                       |
+| **Authelia**      | An open-source authentication and authorization server providing two-factor authentication and single sign-on. |
+| **OpenLDAP**      | A lightweight directory access protocol for user authentication.                                        |
+| **Vault**         | A tool for securely accessing secrets.                                                                  |
+| **Velero**        | A tool for backing up and restoring your Kubernetes cluster resources and persistent volumes.           |
+| **EFK Stack**     | A centralized logging solution consisting of Elasticsearch, Fluentd, and Kibana.                      |
 
 ## Applications
+
+These are some of the applications that you can deploy to your homelab. You can find the ArgoCD application manifests for these applications in the `apps/` directory.
 
 | Service           | Description                                                                                             |
 | ----------------- | ------------------------------------------------------------------------------------------------------- |
 | **AppFlowy**      | An open-source alternative to Notion.                                                                   |
-| **Authelia**      | An open-source authentication and authorization server.                                                 |
 | **Bitwarden**     | A self-hosted password manager.                                                                         |
-| **Bolt**          | A content management system.                                                                            |
 | **Coder**         | A remote development environment that runs on your own infrastructure.                                  |
-| **Docling**       | A documentation site generator.                                                                         |
 | **Gitea**         | A self-hosted Git service.                                                                              |
-| **Gluetun**       | A VPN client in a container to secure other services.                                                   |
 | **Grafana**       | A monitoring and observability platform.                                                                |
 | **Guacamole**     | A clientless remote desktop gateway.                                                                    |
 | **Home Assistant**| An open-source home automation platform.                                                                |
-| **Homebox**       | A simple, a static homepage for your homelab.                                                             |
-| **Homelab Importer**| A tool for importing homelab configurations.                                                          |
+| **Homebox**       | A simple, a static homepage for your homelab.                                                           |
 | **Jackett**       | A proxy server for torrent trackers.                                                                    |
 | **Jellyfin**      | A self-hosted media server.                                                                             |
 | **Jellyseerr**    | A request management and media discovery tool for Jellyfin.                                             |
@@ -48,10 +47,7 @@ The following services are included in this homelab. Some are core infrastructur
 | **MariaDB**       | A popular open-source relational database.                                                              |
 | **Meilisearch**   | A fast, open-source, and powerful search engine.                                                        |
 | **Metube**        | A web UI for youtube-dl.                                                                                |
-| **Monitoring**    | A full monitoring stack including Prometheus, Grafana, and Alertmanager.                                |
 | **Open WebUI**    | A user-friendly web interface for large language models.                                                |
-| **OpenEDAI Speech**| A text-to-speech application.                                                                         |
-| **OpenLDAP**      | A lightweight directory access protocol for user authentication.                                        |
 | **Overseerr**     | A request management and media discovery tool for Plex.                                                 |
 | **Perplexica**    | An open-source AI search engine.                                                                        |
 | **pfSense**       | A powerful open-source firewall and router.                                                             |
@@ -68,6 +64,4 @@ The following services are included in this homelab. Some are core infrastructur
 | **Sonarr**        | A PVR for Usenet and BitTorrent users.                                                                  |
 | **Supabase**      | An open-source Firebase alternative.                                                                    |
 | **Tailscale**     | A zero-config VPN for building secure networks.                                                         |
-| **Tika**          | A content analysis toolkit.                                                                             |
-| **Traefik**       | A modern reverse proxy and load balancer.                                                               |
 | **WireGuard**     | A fast, modern, and secure VPN tunnel.                                                                  |
