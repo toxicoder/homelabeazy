@@ -92,7 +92,6 @@ defaults:
       share: true
       related: true
       toc: true # Display TOC column in posts.
-      last_modified_at: true
   - scope:
       path: _drafts
     values:
@@ -103,7 +102,6 @@ defaults:
     values:
       layout: page
       permalink: /:title/
-      last_modified_at: true
 
 sass:
   style: compressed
