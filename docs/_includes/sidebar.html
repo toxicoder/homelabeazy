@@ -22,7 +22,7 @@
       <li class="nav-item{% if page.layout == 'home' %}{{ " active" }}{% endif %}">
         <a href="{{ '/' | relative_url }}" class="nav-link">
           <i class="fa-fw fas fa-home"></i>
-          <span>{{ site.data.locales[include.lang].tabs.home | upcase }}</span>
+          <span>{{ site.data.locales[include.lang].tabs.home | default: "Home" | upcase }}</span>
         </a>
       </li>
       <!-- the real tabs -->
@@ -30,34 +30,58 @@
         <li class="nav-item{% if tab.url == page.url %}{{ " active" }}{% endif %}">
           <a href="{{ tab.url | relative_url }}" class="nav-link">
             <i class="fa-fw {{ tab.icon }}"></i>
-            {% capture tab_name %}{{ tab.url | split: '/' }}{% endcapture %}
-
-            <span>{{ site.data.locales[include.lang].tabs.[tab_name] | default: tab.title | upcase }}</span>
+            {% capture tab_name %}{{ tab.url | split: '/' | last }}{% endcapture %}
+            <span>{{ site.data.locales[include.lang].tabs[tab_name] | default: tab.title | upcase }}</span>
           </a>
         </li>
         <!-- .nav-item -->
       {% endfor %}
 
-      <!--
-        documentation pages
-      -->
+      <!-- Guides -->
       <li class="nav-item">
         <a
           class="nav-link d-flex justify-content-between"
-          href="#documentation-list"
+          href="#guides-list"
           data-bs-toggle="collapse"
           aria-expanded="false"
-          aria-controls="documentation-list"
+          aria-controls="guides-list"
         >
           <span>
             <i class="fa-fw fas fa-book"></i>
-            <span>DOCUMENTATION</span>
+            <span>GUIDES</span>
           </span>
           <i class="fas fa-angle-down"></i>
         </a>
-        <ul id="documentation-list" class="collapse">
-          {% assign docs = site.pages | where: "category", "documentation" | sort: "nav_order" %}
-          {% for doc in docs %}
+        <ul id="guides-list" class="collapse">
+          {% assign guides = site.pages | where: "category", "Guides" | sort: "nav_order" %}
+          {% for guide in guides %}
+          <li class="nav-item">
+            <a href="{{ guide.url | relative_url }}" class="nav-link">
+              <span>{{ guide.title }}</span>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </li>
+
+      <!-- Reference -->
+      <li class="nav-item">
+        <a
+          class="nav-link d-flex justify-content-between"
+          href="#reference-list"
+          data-bs-toggle="collapse"
+          aria-expanded="false"
+          aria-controls="reference-list"
+        >
+          <span>
+            <i class="fa-fw fas fa-atlas"></i>
+            <span>REFERENCE</span>
+          </span>
+          <i class="fas fa-angle-down"></i>
+        </a>
+        <ul id="reference-list" class="collapse">
+          {% assign reference_docs = site.pages | where: "category", "Reference" | sort: "nav_order" %}
+          {% for doc in reference_docs %}
           <li class="nav-item">
             <a href="{{ doc.url | relative_url }}" class="nav-link">
               <span>{{ doc.title }}</span>
@@ -65,6 +89,38 @@
           </li>
           {% endfor %}
         </ul>
+      </li>
+
+      <!-- Community -->
+      <li class="nav-item">
+        <a
+          class="nav-link d-flex justify-content-between"
+          href="#community-list"
+          data-bs-toggle="collapse"
+          aria-expanded="false"
+          aria-controls="community-list"
+        >
+          <span>
+            <i class="fa-fw fas fa-users"></i>
+            <span>COMMUNITY</span>
+          </span>
+          <i class="fas fa-angle-down"></i>
+        </a>
+        <ul id="community-list" class="collapse">
+          <li class="nav-item">
+            <a href="{{ '/contributing/' | relative_url }}" class="nav-link">
+              <span>Contributing</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <!-- Troubleshooting -->
+      <li class="nav-item">
+        <a href="{{ '/troubleshooting/' | relative_url }}" class="nav-link">
+          <i class="fa-fw fas fa-question-circle"></i>
+          <span>TROUBLESHOOTING</span>
+        </a>
       </li>
     </ul>
   </nav>

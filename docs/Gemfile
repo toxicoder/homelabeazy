@@ -1,3 +1,4 @@
 source "https://rubygems.org"
 gem "jekyll"
-gem "jekyll-theme-chirpy", "~> 7.1"
+gem "jekyll-theme-chirpy", "~> 7.3"
+gem "html-proofer", "~> 3.19"
