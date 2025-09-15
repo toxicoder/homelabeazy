@@ -1,4 +1,250 @@
-<!doctype html><html lang="en" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7f7f7"><meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1b1b1e"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="viewport" content="width=device-width, user-scalable=no initial-scale=1, shrink-to-fit=no, viewport-fit=cover" ><meta name="generator" content="Jekyll v4.4.1" /><meta property="og:title" content="Technical Design" /><meta property="og:locale" content="en" /><meta name="description" content="“Your Homelab as Code”" /><meta property="og:description" content="“Your Homelab as Code”" /><link rel="canonical" href="https://homelabeazy.github.io/homelabeazy/technical-design/" /><meta property="og:url" content="https://homelabeazy.github.io/homelabeazy/technical-design/" /><meta property="og:site_name" content="Homelabeazy Documentation" /><meta property="og:type" content="website" /><meta name="twitter:card" content="summary" /><meta property="twitter:title" content="Technical Design" /><meta name="twitter:site" content="@homelabeazy" /> <script type="application/ld+json"> {"@context":"https://schema.org","@type":"WebPage","description":"“Your Homelab as Code”","headline":"Technical Design","url":"https://homelabeazy.github.io/homelabeazy/technical-design/"}</script><title>Technical Design | Homelabeazy Documentation</title><link rel="apple-touch-icon" sizes="180x180" href="/homelabeazy/assets/img/favicons/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/homelabeazy/assets/img/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/homelabeazy/assets/img/favicons/favicon-16x16.png"><link rel="manifest" href="/homelabeazy/assets/img/favicons/site.webmanifest"><link rel="shortcut icon" href="/homelabeazy/assets/img/favicons/favicon.ico"><meta name="apple-mobile-web-app-title" content="Homelabeazy Documentation"><meta name="application-name" content="Homelabeazy Documentation"><meta name="msapplication-TileColor" content="#da532c"><meta name="msapplication-config" content="/homelabeazy/assets/img/favicons/browserconfig.xml"><meta name="theme-color" content="#ffffff"><link rel="preconnect" href="https://fonts.googleapis.com" ><link rel="dns-prefetch" href="https://fonts.googleapis.com" ><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://fonts.gstatic.com" ><link rel="preconnect" href="https://cdn.jsdelivr.net" ><link rel="dns-prefetch" href="https://cdn.jsdelivr.net" ><link rel="stylesheet" href="/homelabeazy/assets/css/jekyll-theme-chirpy.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Source+Sans+Pro:wght@400;600;700;900&display=swap"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.1/css/all.min.css"> <script src="/homelabeazy/assets/js/dist/theme.min.js"></script> <script defer src="https://cdn.jsdelivr.net/combine/npm/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js"></script> <script defer src="/homelabeazy/assets/js/dist/commons.min.js"></script> <script defer src="/homelabeazy/app.min.js?baseurl=/homelabeazy&register=true" ></script><body><aside aria-label="Sidebar" id="sidebar" class="d-flex flex-column align-items-end"><header class="profile-wrapper"> <a href="/homelabeazy/" id="avatar" class="rounded-circle"></a> <a class="site-title d-block" href="/homelabeazy/">Homelabeazy Documentation</a><p class="site-subtitle fst-italic mb-0">Your Homelab as Code</p></header><nav class="flex-column flex-grow-1 w-100 ps-0"><ul class="nav"><li class="nav-item"> <a href="/homelabeazy/" class="nav-link"> <i class="fa-fw fas fa-home"></i> <span>HOME</span> </a><li class="nav-item"> <a href="/homelabeazy/categories/" class="nav-link"> <i class="fa-fw fas fa-stream"></i> <span>CATEGORIES</span> </a><li class="nav-item"> <a href="/homelabeazy/tags/" class="nav-link"> <i class="fa-fw fas fa-tags"></i> <span>TAGS</span> </a><li class="nav-item"> <a href="/homelabeazy/archives/" class="nav-link"> <i class="fa-fw fas fa-archive"></i> <span>ARCHIVES</span> </a><li class="nav-item"> <a href="/homelabeazy/about/" class="nav-link"> <i class="fa-fw fas fa-info-circle"></i> <span>ABOUT</span> </a><li class="nav-item"> <a class="nav-link d-flex justify-content-between" href="#guides-list" data-bs-toggle="collapse" aria-expanded="false" aria-controls="guides-list" > <span> <i class="fa-fw fas fa-book"></i> <span>GUIDES</span> </span> <i class="fas fa-angle-down"></i> </a><ul id="guides-list" class="collapse"><li class="nav-item"> <a href="/homelabeazy/getting-started/" class="nav-link"> <span>Getting Started</span> </a><li class="nav-item"> <a href="/homelabeazy/advanced-usage/" class="nav-link"> <span>Advanced Usage</span> </a><li class="nav-item"> <a href="/homelabeazy/customization/" class="nav-link"> <span>Customization</span> </a></ul><li class="nav-item"> <a class="nav-link d-flex justify-content-between" href="#reference-list" data-bs-toggle="collapse" aria-expanded="false" aria-controls="reference-list" > <span> <i class="fa-fw fas fa-atlas"></i> <span>REFERENCE</span> </span> <i class="fas fa-angle-down"></i> </a><ul id="reference-list" class="collapse"><li class="nav-item"> <a href="/homelabeazy/folder-structure/" class="nav-link"> <span>Folder Structure</span> </a><li class="nav-item"> <a href="/homelabeazy/technical-design/" class="nav-link"> <span>Technical Design</span> </a><li class="nav-item"> <a href="/homelabeazy/deployment/" class="nav-link"> <span>Deployment</span> </a><li class="nav-item"> <a href="/homelabeazy/services/" class="nav-link"> <span>Services</span> </a></ul><li class="nav-item"> <a class="nav-link d-flex justify-content-between" href="#community-list" data-bs-toggle="collapse" aria-expanded="false" aria-controls="community-list" > <span> <i class="fa-fw fas fa-users"></i> <span>COMMUNITY</span> </span> <i class="fas fa-angle-down"></i> </a><ul id="community-list" class="collapse"><li class="nav-item"> <a href="/homelabeazy/contributing/" class="nav-link"> <span>Contributing</span> </a></ul><li class="nav-item"> <a href="/homelabeazy/troubleshooting/" class="nav-link"> <i class="fa-fw fas fa-question-circle"></i> <span>TROUBLESHOOTING</span> </a></ul></nav><div class="sidebar-bottom d-flex flex-wrap align-items-center w-100"> <button type="button" class="btn btn-link nav-link" aria-label="Switch Mode" id="mode-toggle"> <i class="fas fa-adjust"></i> </button> <span class="icon-border"></span> <a href="https://github.com/homelabeazy" aria-label="github" target="_blank" rel="noopener noreferrer" > <i class="fab fa-github"></i> </a> <a href="https://twitter.com/homelabeazy" aria-label="twitter" target="_blank" rel="noopener noreferrer" > <i class="fa-brands fa-x-twitter"></i> </a> <a href="javascript:location.href = 'mailto:' + ['',''].join('@')" aria-label="email" > <i class="fas fa-envelope"></i> </a> <a href="/homelabeazy/feed.xml" aria-label="rss" > <i class="fas fa-rss"></i> </a></div></aside><div id="main-wrapper" class="d-flex justify-content-center"><div class="container d-flex flex-column px-xxl-5"><header id="topbar-wrapper" class="flex-shrink-0" aria-label="Top Bar"><div id="topbar" class="d-flex align-items-center justify-content-between px-lg-3 h-100" ><nav id="breadcrumb" aria-label="Breadcrumb"> <span> <a href="/homelabeazy/">Home</a> </span> <span>Technical Design</span></nav><button type="button" id="sidebar-trigger" class="btn btn-link" aria-label="Sidebar"> <i class="fas fa-bars fa-fw"></i> </button><div id="topbar-title"> Default</div><button type="button" id="search-trigger" class="btn btn-link" aria-label="Search"> <i class="fas fa-search fa-fw"></i> </button> <search id="search" class="align-items-center ms-3 ms-lg-0"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" autocomplete="off" placeholder="Search..." > </search> <button type="button" class="btn btn-link text-decoration-none" id="search-cancel">Cancel</button></div></header><div class="row flex-grow-1"><main aria-label="Main Content" class="col-12 col-lg-11 col-xl-9 px-md-4"><h1 id="technical-design-document">Technical Design Document</h1><h2 id="1-introduction">1. Introduction</h2><p>Welcome to the Technical Design Document for Homelabeazy. This document provides a detailed technical overview of the project, from its high-level architecture down to the individual components. Whether you’re a user who wants to understand the inner workings of your homelab, or a contributor who wants to help improve the project, this document will serve as your guide.</p><h3 id="who-is-this-for">Who is this for?</h3><p>This document is intended for users who have a basic understanding of the core technologies used in this project, such as Proxmox, Terraform, Ansible, and Kubernetes. If you’re new to these technologies, we recommend that you start with our <a href="./getting-started.md">Getting Started guide</a> and then come back to this document for a deeper dive.</p><h3 id="design-philosophy">Design Philosophy</h3><p>The design of Homelabeazy is guided by a set of core principles that are common in modern DevOps and Site Reliability Engineering (SRE) practices:</p><ul><li><strong>Infrastructure as Code (IaC):</strong> All infrastructure is defined as code, which allows for automation, versioning, and reproducibility.<li><strong>GitOps:</strong> Git is the single source of truth for both infrastructure and applications. All changes are made through pull requests, which provides a clear audit trail and enables collaboration.<li><strong>Modularity:</strong> The project is designed to be modular, so that you can easily add or remove components to suit your needs.<li><strong>Security by Design:</strong> Security is a primary consideration in all aspects of the project, from network segmentation to secrets management.</ul><hr /><h2 id="2-goals-and-non-goals">2. Goals and Non-Goals</h2><h3 id="21-goals">2.1. Goals</h3><p>The primary goals of this project are to:</p><ul><li><strong>Provide a complete blueprint for a modern homelab:</strong> This project aims to be a comprehensive guide for building a powerful and flexible homelab environment.<li><strong>Automate everything:</strong> From the provisioning of virtual machines to the deployment of applications, every aspect of the homelab should be automated.<li><strong>Ensure reproducibility:</strong> You should be able to tear down and rebuild your entire homelab from scratch in a consistent and predictable manner.<li><strong>Promote best practices:</strong> This project aims to demonstrate and encourage the use of enterprise-grade best practices for infrastructure management, such as IaC, GitOps, and security by design.<li><strong>Be highly customizable:</strong> You should be able to easily customize the project to meet your specific needs, whether you want to add new applications, change the network configuration, or integrate with other systems.</ul><h3 id="22-non-goals">2.2. Non-Goals</h3><p>This project does not aim to:</p><ul><li><strong>Be a one-size-fits-all solution:</strong> While the project is highly customizable, it is not intended to be a universal solution for every homelab. It is designed for a specific set of technologies and use cases.<li><strong>Support other virtualization platforms:</strong> The project is tightly coupled with Proxmox and does not support other hypervisors like ESXi or Hyper-V out of the box. However, the modular design of the project would allow for the addition of other providers in the future.<li><strong>Be a beginner-friendly project:</strong> While we strive to make the documentation as clear as possible, a certain level of technical understanding of the core components (Terraform, Ansible, Kubernetes) is expected.<li><strong>Be a production-ready enterprise solution:</strong> While this project uses enterprise-grade practices, it is intended for personal homelab use and is not recommended for production enterprise workloads without significant additional hardening and testing.</ul><hr /><h2 id="3-system-architecture">3. System Architecture</h2><p>The architecture of Homelabeazy is a multi-layered system that builds upon a foundation of virtualization. It uses a combination of IaC and GitOps tools to automate the provisioning and configuration of a Kubernetes cluster and the applications that run on it.</p><pre><code class="language-mermaid">graph TD
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.27.3 by Michael Rose
+  Copyright 2013-2025 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Technical Design - Homelabeazy Documentation</title>
+<meta name="description" content="“Your Homelab as Code”">
+
+
+  <meta name="author" content="Homelabeazy">
+  
+
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Homelabeazy Documentation">
+<meta property="og:title" content="Technical Design">
+<meta property="og:url" content="https://homelabeazy.github.io/homelabeazy/technical-design/">
+
+
+  <meta property="og:description" content="“Your Homelab as Code”">
+
+
+
+
+
+  <meta name="twitter:site" content="@homelabeazy">
+  <meta name="twitter:title" content="Technical Design">
+  <meta name="twitter:description" content="“Your Homelab as Code”">
+  <meta name="twitter:url" content="https://homelabeazy.github.io/homelabeazy/technical-design/">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+  
+
+  
+
+
+
+
+
+
+
+
+<link rel="canonical" href="https://homelabeazy.github.io/homelabeazy/technical-design/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Homelabeazy Documentation Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/homelabeazy/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/homelabeazy/">
+          Homelabeazy Documentation
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/homelabeazy/"
+                
+                
+              >Home</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/homelabeazy/guides/"
+                
+                
+              >Guides</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/homelabeazy/reference/"
+                
+                
+              >Reference</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/homelabeazy/community/"
+                
+                
+              >Community</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/homelabeazy/troubleshooting/"
+                
+                
+              >Troubleshooting</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Technical Design">
+    
+    
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">
+            <a href="https://homelabeazy.github.io/homelabeazy/technical-design/" itemprop="url">Technical Design
+</a>
+          </h1>
+          
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <h1 id="technical-design-document">Technical Design Document</h1>
+
+<h2 id="1-introduction">1. Introduction</h2>
+
+<p>Welcome to the Technical Design Document for Homelabeazy. This document provides a detailed technical overview of the project, from its high-level architecture down to the individual components. Whether you’re a user who wants to understand the inner workings of your homelab, or a contributor who wants to help improve the project, this document will serve as your guide.</p>
+
+<h3 id="who-is-this-for">Who is this for?</h3>
+
+<p>This document is intended for users who have a basic understanding of the core technologies used in this project, such as Proxmox, Terraform, Ansible, and Kubernetes. If you’re new to these technologies, we recommend that you start with our <a href="./getting-started.md">Getting Started guide</a> and then come back to this document for a deeper dive.</p>
+
+<h3 id="design-philosophy">Design Philosophy</h3>
+
+<p>The design of Homelabeazy is guided by a set of core principles that are common in modern DevOps and Site Reliability Engineering (SRE) practices:</p>
+
+<ul>
+  <li><strong>Infrastructure as Code (IaC):</strong> All infrastructure is defined as code, which allows for automation, versioning, and reproducibility.</li>
+  <li><strong>GitOps:</strong> Git is the single source of truth for both infrastructure and applications. All changes are made through pull requests, which provides a clear audit trail and enables collaboration.</li>
+  <li><strong>Modularity:</strong> The project is designed to be modular, so that you can easily add or remove components to suit your needs.</li>
+  <li><strong>Security by Design:</strong> Security is a primary consideration in all aspects of the project, from network segmentation to secrets management.</li>
+</ul>
+
+<hr />
+
+<h2 id="2-goals-and-non-goals">2. Goals and Non-Goals</h2>
+
+<h3 id="21-goals">2.1. Goals</h3>
+
+<p>The primary goals of this project are to:</p>
+
+<ul>
+  <li><strong>Provide a complete blueprint for a modern homelab:</strong> This project aims to be a comprehensive guide for building a powerful and flexible homelab environment.</li>
+  <li><strong>Automate everything:</strong> From the provisioning of virtual machines to the deployment of applications, every aspect of the homelab should be automated.</li>
+  <li><strong>Ensure reproducibility:</strong> You should be able to tear down and rebuild your entire homelab from scratch in a consistent and predictable manner.</li>
+  <li><strong>Promote best practices:</strong> This project aims to demonstrate and encourage the use of enterprise-grade best practices for infrastructure management, such as IaC, GitOps, and security by design.</li>
+  <li><strong>Be highly customizable:</strong> You should be able to easily customize the project to meet your specific needs, whether you want to add new applications, change the network configuration, or integrate with other systems.</li>
+</ul>
+
+<h3 id="22-non-goals">2.2. Non-Goals</h3>
+
+<p>This project does not aim to:</p>
+
+<ul>
+  <li><strong>Be a one-size-fits-all solution:</strong> While the project is highly customizable, it is not intended to be a universal solution for every homelab. It is designed for a specific set of technologies and use cases.</li>
+  <li><strong>Support other virtualization platforms:</strong> The project is tightly coupled with Proxmox and does not support other hypervisors like ESXi or Hyper-V out of the box. However, the modular design of the project would allow for the addition of other providers in the future.</li>
+  <li><strong>Be a beginner-friendly project:</strong> While we strive to make the documentation as clear as possible, a certain level of technical understanding of the core components (Terraform, Ansible, Kubernetes) is expected.</li>
+  <li><strong>Be a production-ready enterprise solution:</strong> While this project uses enterprise-grade practices, it is intended for personal homelab use and is not recommended for production enterprise workloads without significant additional hardening and testing.</li>
+</ul>
+
+<hr />
+
+<h2 id="3-system-architecture">3. System Architecture</h2>
+
+<p>The architecture of Homelabeazy is a multi-layered system that builds upon a foundation of virtualization. It uses a combination of IaC and GitOps tools to automate the provisioning and configuration of a Kubernetes cluster and the applications that run on it.</p>
+
+<pre><code class="language-mermaid">graph TD
     subgraph "Hardware"
         A[Physical Server]
     end
@@ -37,4 +283,277 @@
     G -- Exposed by --&gt; H
     G -- Authenticated by --&gt; I
     E -- Uses --&gt; J
-</code></pre><h3 id="system-architecture-walkthrough">System Architecture Walkthrough</h3><p>The system architecture is designed to be a robust, scalable, and automated homelab environment. Here’s a step-by-step walkthrough of the diagram, explaining the role and value of each component:</p><ol><li><p><strong>Hardware (Physical Server):</strong></p><ul><li><strong>Component:</strong> <code class="language-plaintext highlighter-rouge">Physical Server</code><li><strong>Role:</strong> This is the foundation of the entire homelab, providing the necessary compute, memory, and storage resources.<li><strong>Value:</strong> A dedicated physical server ensures that all virtualized components have direct access to high-performance hardware, leading to better overall performance and stability.</ul><li><p><strong>Virtualization (Proxmox VE):</strong></p><ul><li><strong>Component:</strong> <code class="language-plaintext highlighter-rouge">Proxmox VE</code><li><strong>Role:</strong> Proxmox is an open-source virtualization platform that runs on the physical server. It allows for the creation and management of virtual machines (VMs) and containers.<li><strong>Value:</strong> Proxmox enables efficient hardware utilization by allowing multiple isolated environments to run on a single physical machine. This is crucial for creating a flexible and scalable infrastructure.</ul><li><p><strong>Automation (Terraform &amp; Ansible):</strong></p><ul><li><strong>Component:</strong> <code class="language-plaintext highlighter-rouge">Terraform</code> &amp; <code class="language-plaintext highlighter-rouge">Ansible</code><li><strong>Role:</strong><ul><li><code class="language-plaintext highlighter-rouge">Terraform</code> is used to provision the virtual machines on Proxmox. It defines the infrastructure as code, making it easy to create, modify, and destroy VMs in a repeatable manner.<li><code class="language-plaintext highlighter-rouge">Ansible</code> is used for configuration management. Once the VMs are provisioned, Ansible configures them and installs the necessary software like K3s.</ul><li><strong>Value:</strong> This combination of tools automates the entire setup process, reducing manual effort and ensuring consistency. It allows you to rebuild the entire homelab from scratch with minimal intervention.</ul><li><p><strong>Container Orchestration &amp; GitOps (K3s &amp; ArgoCD):</strong></p><ul><li><strong>Component:</strong> <code class="language-plaintext highlighter-rouge">K3s Kubernetes Cluster</code> &amp; <code class="language-plaintext highlighter-rouge">ArgoCD</code><li><strong>Role:</strong><ul><li><code class="language-plaintext highlighter-rouge">K3s</code> is a lightweight, certified Kubernetes distribution that runs on the VMs. It orchestrates the deployment, scaling, and management of containerized applications.<li><code class="language-plaintext highlighter-rouge">ArgoCD</code> provides a GitOps workflow. It continuously monitors a Git repository and automatically deploys any changes to the K3s cluster, ensuring that the cluster state always matches the state defined in Git.</ul><li><strong>Value:</strong> Kubernetes provides a powerful and standardized platform for running applications. ArgoCD automates application deployment and management, making it easy to track changes, roll back to previous versions, and maintain a consistent environment.</ul><li><p><strong>Applications (Core Services &amp; User Applications):</strong></p><ul><li><strong>Component:</strong> <code class="language-plaintext highlighter-rouge">Core Services</code> &amp; <code class="language-plaintext highlighter-rouge">User Applications</code><li><strong>Role:</strong> The K3s cluster runs two types of applications:<ul><li><code class="language-plaintext highlighter-rouge">Core Services</code>: These are essential infrastructure components like monitoring, logging, and security services.<li><code class="language-plaintext highlighter-rouge">User Applications</code>: These are the end-user applications that you want to run in your homelab, such as a password manager, Git service, or home automation platform.</ul><li><strong>Value:</strong> This separation allows you to manage the core infrastructure independently of the applications, making it easier to update and maintain both.</ul><li><p><strong>Supporting Services (Traefik, Authelia, Vault):</strong></p><ul><li><strong>Component:</strong> <code class="language-plaintext highlighter-rouge">Traefik Ingress</code>, <code class="language-plaintext highlighter-rouge">Authelia SSO</code>, <code class="language-plaintext highlighter-rouge">Vault Secrets</code><li><strong>Role:</strong><ul><li><code class="language-plaintext highlighter-rouge">Traefik Ingress</code>: A reverse proxy and load balancer that manages external access to the applications running in the cluster.<li><code class="language-plaintext highlighter-rouge">Authelia SSO</code>: Provides single sign-on and two-factor authentication for the applications, enhancing security.<li><code class="language-plaintext highlighter-rouge">Vault Secrets</code>: A secure storage for secrets like API keys, passwords, and certificates.</ul><li><strong>Value:</strong> These services provide essential functionality for managing and securing the applications. Traefik simplifies routing, Authelia centralizes authentication, and Vault protects sensitive information.</ul></ol><h3 id="general-flow-of-the-system">General Flow of the System</h3><ol><li><strong>Provisioning:</strong> <code class="language-plaintext highlighter-rouge">Terraform</code> provisions the virtual machines on <code class="language-plaintext highlighter-rouge">Proxmox</code>.<li><strong>Configuration:</strong> <code class="language-plaintext highlighter-rouge">Ansible</code> configures the VMs and installs the <code class="language-plaintext highlighter-rouge">K3s Kubernetes Cluster</code>.<li><strong>Deployment:</strong> <code class="language-plaintext highlighter-rouge">ArgoCD</code> monitors the Git repository and deploys the <code class="language-plaintext highlighter-rouge">Core Services</code> and <code class="language-plaintext highlighter-rouge">User Applications</code> to the <code class="language-plaintext highlighter-rouge">K3s</code> cluster.<li><strong>Access:</strong><ul><li>Users access the applications through the <code class="language-plaintext highlighter-rouge">Traefik Ingress</code>.<li><code class="language-plaintext highlighter-rouge">Authelia SSO</code> intercepts the requests to handle authentication.</ul><li><strong>Secrets Management:</strong> The applications and the cluster use <code class="language-plaintext highlighter-rouge">Vault</code> to securely retrieve their secrets.</ol><hr /><h2 id="4-detailed-component-design">4. Detailed Component Design</h2><h3 id="41-proxmox">4.1. Proxmox</h3><ul><li><strong>Why Proxmox?</strong> Proxmox was chosen for its rich feature set, its open-source nature, and its excellent API support, which is crucial for automation.<li><strong>Prerequisites:</strong> A working Proxmox installation is required.<li><strong>VM Templates:</strong> The project relies on a cloud-init compatible VM template to be present on the Proxmox server. This template is used by Terraform to clone new VMs. The template should be a minimal installation of a supported OS (e.g., Ubuntu Server).</ul><h3 id="42-terraform">4.2. Terraform</h3><ul><li><strong>Why Terraform?</strong> Terraform is a popular and powerful IaC tool that allows you to define your infrastructure in a declarative way. It has excellent support for Proxmox and a wide range of other providers.<li><strong>Configuration:</strong> The main configuration file is <code class="language-plaintext highlighter-rouge">main.tf</code>, which defines the Proxmox provider and the VM resources.<li><strong>Variables:</strong> User-specific variables, such as Proxmox API credentials and VM specifications (CPU, memory, disk), are defined in <code class="language-plaintext highlighter-rouge">variables.tf</code> and should be set in a <code class="language-plaintext highlighter-rouge">terraform.tfvars</code> file.</ul><h3 id="43-ansible">4.3. Ansible</h3><ul><li><strong>Why Ansible?</strong> Ansible is a simple and powerful configuration management tool that is agentless, which means that you don’t need to install any special software on the managed nodes.<li><strong>Inventory:</strong> Ansible’s inventory is located in <code class="language-plaintext highlighter-rouge">ansible/inventory/</code>. A static inventory file is provided for the user to fill in with the IP addresses of the newly created VMs.<li><strong>Playbooks and Roles:</strong> The project uses a combination of playbooks and roles to organize the Ansible code. This modular structure allows for easy extension and customization.</ul><h3 id="44-k3s-cluster">4.4. K3s Cluster</h3><ul><li><strong>Why K3s?</strong> K3s is designed to be a single binary that is easy to install, manage, and scale. It is a great choice for homelab environments where resources may be limited.<li><strong>Architecture:</strong> The cluster consists of one or more master nodes and one or more worker nodes.<li><strong>Storage:</strong> The project is configured to use the default K3s storage provisioner (local-path-provisioner), which is suitable for single-node clusters or development environments. For multi-node clusters, a more robust storage solution like Longhorn or an NFS provisioner would be recommended.</ul><h3 id="45-argocd">4.5. ArgoCD</h3><ul><li><strong>Why ArgoCD?</strong> ArgoCD is a popular and powerful GitOps tool that provides a clear and intuitive way to manage your applications.<li><strong>App of Apps Pattern:</strong> The project uses the “app of apps” pattern, which allows for modular management of applications.</ul><h3 id="46-networking">4.6. Networking</h3><p>The project uses a VLAN-based network segmentation strategy to isolate traffic and enhance security.</p><ul><li><strong>Traefik:</strong> Traefik is a modern reverse proxy and load balancer that is used as the Ingress controller for the K3s cluster.<li><strong>Consul:</strong> Consul is used for service discovery within the cluster.<li><strong>pfSense:</strong> pfSense is a powerful open-source firewall and router that is used to manage the network.</ul><h3 id="47-security">4.7. Security</h3><ul><li><strong>Vault:</strong> HashiCorp Vault is used for secrets management.<li><strong>Authelia:</strong> Authelia is an open-source authentication and authorization server providing two-factor authentication and single sign-on (SSO).<li><strong>OpenLDAP:</strong> OpenLDAP is used as the central user directory.</ul><h3 id="48-monitoring-and-logging">4.8. Monitoring and Logging</h3><ul><li><strong>EFK Stack:</strong> The project uses the EFK stack (Elasticsearch, Fluentd, and Kibana) for centralized logging.</ul><h3 id="49-backup-and-recovery">4.9. Backup and Recovery</h3><ul><li><strong>Velero:</strong> Velero is used for backing up and restoring the Kubernetes cluster.</ul><hr /><h2 id="5-scalability-and-customization">5. Scalability and Customization</h2><p>This project is designed to be both scalable and customizable. You can easily scale your cluster by adding more worker nodes, and you can customize the project by adding your own applications, configuring services, and modifying the infrastructure. For detailed instructions, please refer to the <a href="customization.md">Customization Guide</a>.</p><hr /><h2 id="6-roadmap">6. Roadmap</h2><p>This project is continuously evolving. Here are some potential future enhancements:</p><ul><li><strong>Multi-Cloud Support:</strong> Adding support for other cloud providers like AWS, GCP, or Azure.<li><strong>Advanced Networking:</strong> Implementing more advanced networking policies using a service mesh like Istio or Linkerd.<li><strong>High Availability:</strong> Setting up a multi-master K3s cluster for high availability of the control plane.<li><strong>Automated Backups:</strong> Creating a more automated backup and restore workflow.</ul></main><aside aria-label="Panel" id="panel-wrapper" class="col-xl-3 ps-2 text-muted"><div class="access"></div></aside></div><div class="row"><div id="tail-wrapper" class="col-12 col-lg-11 col-xl-9 px-md-4"><footer aria-label="Site Info" class=" d-flex flex-column justify-content-center text-muted flex-lg-row justify-content-lg-between align-items-lg-center pb-lg-3 " ><p>© <time>2025</time> <a href="https://github.com/homelabeazy">Homelabeazy</a>. <span data-bs-toggle="tooltip" data-bs-placement="top" title="Except where otherwise noted, the blog posts on this site are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) License by the author." >Some rights reserved.</span></p><p>Using the <a data-bs-toggle="tooltip" data-bs-placement="top" title="v7.3.1" href="https://github.com/cotes2020/jekyll-theme-chirpy" target="_blank" rel="noopener" >Chirpy</a> theme for <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a>.</p></footer></div></div><div id="search-result-wrapper" class="d-flex justify-content-center d-none"><div class="col-11 content"><div id="search-hints"></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><aside aria-label="Scroll to Top"> <button id="back-to-top" type="button" class="btn btn-lg btn-box-shadow"> <i class="fas fa-angle-up"></i> </button></aside></div><div id="mask" class="d-none position-fixed w-100 h-100 z-1"></div><aside id="notification" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-animation="true" data-bs-autohide="false" ><div class="toast-header"> <button type="button" class="btn-close ms-auto" data-bs-dismiss="toast" aria-label="Close" ></button></div><div class="toast-body text-center pt-0"><p class="px-2 mb-3">A new version of content is available.</p><button type="button" class="btn btn-primary" aria-label="Update"> Update </button></div></aside><script> document.addEventListener('DOMContentLoaded', () => { SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/homelabeazy/assets/js/data/search.json', searchResultTemplate: '<article class="px-1 px-sm-2 px-lg-4 px-xl-0"><header><h2><a href="{url}">{title}</a></h2><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"> {categories} {tags}</div></header><p>{content}</p></article>', noResultsText: '<p class="mt-5">Oops! No results found.</p>', templateMiddleware: function(prop, value, template) { if (prop === 'categories') { if (value === '') { return `${value}`; } else { return `<div class="me-sm-4"><i class="far fa-folder fa-fw"></i>${value}</div>`; } } if (prop === 'tags') { if (value === '') { return `${value}`; } else { return `<div><i class="fa fa-tag fa-fw"></i>${value}</div>`; } } } }); }); </script>
+</code></pre>
+
+<h3 id="system-architecture-walkthrough">System Architecture Walkthrough</h3>
+
+<p>The system architecture is designed to be a robust, scalable, and automated homelab environment. Here’s a step-by-step walkthrough of the diagram, explaining the role and value of each component:</p>
+
+<ol>
+  <li>
+    <p><strong>Hardware (Physical Server):</strong></p>
+
+    <ul>
+      <li><strong>Component:</strong> <code class="language-plaintext highlighter-rouge">Physical Server</code></li>
+      <li><strong>Role:</strong> This is the foundation of the entire homelab, providing the necessary compute, memory, and storage resources.</li>
+      <li><strong>Value:</strong> A dedicated physical server ensures that all virtualized components have direct access to high-performance hardware, leading to better overall performance and stability.</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Virtualization (Proxmox VE):</strong></p>
+
+    <ul>
+      <li><strong>Component:</strong> <code class="language-plaintext highlighter-rouge">Proxmox VE</code></li>
+      <li><strong>Role:</strong> Proxmox is an open-source virtualization platform that runs on the physical server. It allows for the creation and management of virtual machines (VMs) and containers.</li>
+      <li><strong>Value:</strong> Proxmox enables efficient hardware utilization by allowing multiple isolated environments to run on a single physical machine. This is crucial for creating a flexible and scalable infrastructure.</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Automation (Terraform &amp; Ansible):</strong></p>
+
+    <ul>
+      <li><strong>Component:</strong> <code class="language-plaintext highlighter-rouge">Terraform</code> &amp; <code class="language-plaintext highlighter-rouge">Ansible</code></li>
+      <li><strong>Role:</strong>
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">Terraform</code> is used to provision the virtual machines on Proxmox. It defines the infrastructure as code, making it easy to create, modify, and destroy VMs in a repeatable manner.</li>
+          <li><code class="language-plaintext highlighter-rouge">Ansible</code> is used for configuration management. Once the VMs are provisioned, Ansible configures them and installs the necessary software like K3s.</li>
+        </ul>
+      </li>
+      <li><strong>Value:</strong> This combination of tools automates the entire setup process, reducing manual effort and ensuring consistency. It allows you to rebuild the entire homelab from scratch with minimal intervention.</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Container Orchestration &amp; GitOps (K3s &amp; ArgoCD):</strong></p>
+
+    <ul>
+      <li><strong>Component:</strong> <code class="language-plaintext highlighter-rouge">K3s Kubernetes Cluster</code> &amp; <code class="language-plaintext highlighter-rouge">ArgoCD</code></li>
+      <li><strong>Role:</strong>
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">K3s</code> is a lightweight, certified Kubernetes distribution that runs on the VMs. It orchestrates the deployment, scaling, and management of containerized applications.</li>
+          <li><code class="language-plaintext highlighter-rouge">ArgoCD</code> provides a GitOps workflow. It continuously monitors a Git repository and automatically deploys any changes to the K3s cluster, ensuring that the cluster state always matches the state defined in Git.</li>
+        </ul>
+      </li>
+      <li><strong>Value:</strong> Kubernetes provides a powerful and standardized platform for running applications. ArgoCD automates application deployment and management, making it easy to track changes, roll back to previous versions, and maintain a consistent environment.</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Applications (Core Services &amp; User Applications):</strong></p>
+
+    <ul>
+      <li><strong>Component:</strong> <code class="language-plaintext highlighter-rouge">Core Services</code> &amp; <code class="language-plaintext highlighter-rouge">User Applications</code></li>
+      <li><strong>Role:</strong> The K3s cluster runs two types of applications:
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">Core Services</code>: These are essential infrastructure components like monitoring, logging, and security services.</li>
+          <li><code class="language-plaintext highlighter-rouge">User Applications</code>: These are the end-user applications that you want to run in your homelab, such as a password manager, Git service, or home automation platform.</li>
+        </ul>
+      </li>
+      <li><strong>Value:</strong> This separation allows you to manage the core infrastructure independently of the applications, making it easier to update and maintain both.</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Supporting Services (Traefik, Authelia, Vault):</strong></p>
+
+    <ul>
+      <li><strong>Component:</strong> <code class="language-plaintext highlighter-rouge">Traefik Ingress</code>, <code class="language-plaintext highlighter-rouge">Authelia SSO</code>, <code class="language-plaintext highlighter-rouge">Vault Secrets</code></li>
+      <li><strong>Role:</strong>
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">Traefik Ingress</code>: A reverse proxy and load balancer that manages external access to the applications running in the cluster.</li>
+          <li><code class="language-plaintext highlighter-rouge">Authelia SSO</code>: Provides single sign-on and two-factor authentication for the applications, enhancing security.</li>
+          <li><code class="language-plaintext highlighter-rouge">Vault Secrets</code>: A secure storage for secrets like API keys, passwords, and certificates.</li>
+        </ul>
+      </li>
+      <li><strong>Value:</strong> These services provide essential functionality for managing and securing the applications. Traefik simplifies routing, Authelia centralizes authentication, and Vault protects sensitive information.</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="general-flow-of-the-system">General Flow of the System</h3>
+
+<ol>
+  <li><strong>Provisioning:</strong> <code class="language-plaintext highlighter-rouge">Terraform</code> provisions the virtual machines on <code class="language-plaintext highlighter-rouge">Proxmox</code>.</li>
+  <li><strong>Configuration:</strong> <code class="language-plaintext highlighter-rouge">Ansible</code> configures the VMs and installs the <code class="language-plaintext highlighter-rouge">K3s Kubernetes Cluster</code>.</li>
+  <li><strong>Deployment:</strong> <code class="language-plaintext highlighter-rouge">ArgoCD</code> monitors the Git repository and deploys the <code class="language-plaintext highlighter-rouge">Core Services</code> and <code class="language-plaintext highlighter-rouge">User Applications</code> to the <code class="language-plaintext highlighter-rouge">K3s</code> cluster.</li>
+  <li><strong>Access:</strong>
+    <ul>
+      <li>Users access the applications through the <code class="language-plaintext highlighter-rouge">Traefik Ingress</code>.</li>
+      <li><code class="language-plaintext highlighter-rouge">Authelia SSO</code> intercepts the requests to handle authentication.</li>
+    </ul>
+  </li>
+  <li><strong>Secrets Management:</strong> The applications and the cluster use <code class="language-plaintext highlighter-rouge">Vault</code> to securely retrieve their secrets.</li>
+</ol>
+
+<hr />
+
+<h2 id="4-detailed-component-design">4. Detailed Component Design</h2>
+
+<h3 id="41-proxmox">4.1. Proxmox</h3>
+
+<ul>
+  <li><strong>Why Proxmox?</strong> Proxmox was chosen for its rich feature set, its open-source nature, and its excellent API support, which is crucial for automation.</li>
+  <li><strong>Prerequisites:</strong> A working Proxmox installation is required.</li>
+  <li><strong>VM Templates:</strong> The project relies on a cloud-init compatible VM template to be present on the Proxmox server. This template is used by Terraform to clone new VMs. The template should be a minimal installation of a supported OS (e.g., Ubuntu Server).</li>
+</ul>
+
+<h3 id="42-terraform">4.2. Terraform</h3>
+
+<ul>
+  <li><strong>Why Terraform?</strong> Terraform is a popular and powerful IaC tool that allows you to define your infrastructure in a declarative way. It has excellent support for Proxmox and a wide range of other providers.</li>
+  <li><strong>Configuration:</strong> The main configuration file is <code class="language-plaintext highlighter-rouge">main.tf</code>, which defines the Proxmox provider and the VM resources.</li>
+  <li><strong>Variables:</strong> User-specific variables, such as Proxmox API credentials and VM specifications (CPU, memory, disk), are defined in <code class="language-plaintext highlighter-rouge">variables.tf</code> and should be set in a <code class="language-plaintext highlighter-rouge">terraform.tfvars</code> file.</li>
+</ul>
+
+<h3 id="43-ansible">4.3. Ansible</h3>
+
+<ul>
+  <li><strong>Why Ansible?</strong> Ansible is a simple and powerful configuration management tool that is agentless, which means that you don’t need to install any special software on the managed nodes.</li>
+  <li><strong>Inventory:</strong> Ansible’s inventory is located in <code class="language-plaintext highlighter-rouge">ansible/inventory/</code>. A static inventory file is provided for the user to fill in with the IP addresses of the newly created VMs.</li>
+  <li><strong>Playbooks and Roles:</strong> The project uses a combination of playbooks and roles to organize the Ansible code. This modular structure allows for easy extension and customization.</li>
+</ul>
+
+<h3 id="44-k3s-cluster">4.4. K3s Cluster</h3>
+
+<ul>
+  <li><strong>Why K3s?</strong> K3s is designed to be a single binary that is easy to install, manage, and scale. It is a great choice for homelab environments where resources may be limited.</li>
+  <li><strong>Architecture:</strong> The cluster consists of one or more master nodes and one or more worker nodes.</li>
+  <li><strong>Storage:</strong> The project is configured to use the default K3s storage provisioner (local-path-provisioner), which is suitable for single-node clusters or development environments. For multi-node clusters, a more robust storage solution like Longhorn or an NFS provisioner would be recommended.</li>
+</ul>
+
+<h3 id="45-argocd">4.5. ArgoCD</h3>
+
+<ul>
+  <li><strong>Why ArgoCD?</strong> ArgoCD is a popular and powerful GitOps tool that provides a clear and intuitive way to manage your applications.</li>
+  <li><strong>App of Apps Pattern:</strong> The project uses the “app of apps” pattern, which allows for modular management of applications.</li>
+</ul>
+
+<h3 id="46-networking">4.6. Networking</h3>
+
+<p>The project uses a VLAN-based network segmentation strategy to isolate traffic and enhance security.</p>
+
+<ul>
+  <li><strong>Traefik:</strong> Traefik is a modern reverse proxy and load balancer that is used as the Ingress controller for the K3s cluster.</li>
+  <li><strong>Consul:</strong> Consul is used for service discovery within the cluster.</li>
+  <li><strong>pfSense:</strong> pfSense is a powerful open-source firewall and router that is used to manage the network.</li>
+</ul>
+
+<h3 id="47-security">4.7. Security</h3>
+
+<ul>
+  <li><strong>Vault:</strong> HashiCorp Vault is used for secrets management.</li>
+  <li><strong>Authelia:</strong> Authelia is an open-source authentication and authorization server providing two-factor authentication and single sign-on (SSO).</li>
+  <li><strong>OpenLDAP:</strong> OpenLDAP is used as the central user directory.</li>
+</ul>
+
+<h3 id="48-monitoring-and-logging">4.8. Monitoring and Logging</h3>
+
+<ul>
+  <li><strong>EFK Stack:</strong> The project uses the EFK stack (Elasticsearch, Fluentd, and Kibana) for centralized logging.</li>
+</ul>
+
+<h3 id="49-backup-and-recovery">4.9. Backup and Recovery</h3>
+
+<ul>
+  <li><strong>Velero:</strong> Velero is used for backing up and restoring the Kubernetes cluster.</li>
+</ul>
+
+<hr />
+
+<h2 id="5-scalability-and-customization">5. Scalability and Customization</h2>
+
+<p>This project is designed to be both scalable and customizable. You can easily scale your cluster by adding more worker nodes, and you can customize the project by adding your own applications, configuring services, and modifying the infrastructure. For detailed instructions, please refer to the <a href="customization.md">Customization Guide</a>.</p>
+
+<hr />
+
+<h2 id="6-roadmap">6. Roadmap</h2>
+
+<p>This project is continuously evolving. Here are some potential future enhancements:</p>
+
+<ul>
+  <li><strong>Multi-Cloud Support:</strong> Adding support for other cloud providers like AWS, GCP, or Azure.</li>
+  <li><strong>Advanced Networking:</strong> Implementing more advanced networking policies using a service mesh like Istio or Linkerd.</li>
+  <li><strong>High Availability:</strong> Setting up a multi-master K3s cluster for high availability of the control plane.</li>
+  <li><strong>Automated Backups:</strong> Creating a more automated backup and restore workflow.</li>
+</ul>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+
+      </footer>
+
+      
+
+      
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+      
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';" role="search">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+
+<div class="page__footer-copyright">&copy; 2025 <a href="https://homelabeazy.github.io">Homelabeazy Documentation</a>. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/homelabeazy/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/homelabeazy/assets/js/lunr/lunr.min.js"></script>
+<script src="/homelabeazy/assets/js/lunr/lunr-store.js"></script>
+<script src="/homelabeazy/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+
+  </body>
+</html>

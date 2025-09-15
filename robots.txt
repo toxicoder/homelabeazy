@@ -1,5 +1,1 @@
-User-agent: *
-
-Disallow: /norobots/
-
 Sitemap: https://homelabeazy.github.io/homelabeazy/sitemap.xml

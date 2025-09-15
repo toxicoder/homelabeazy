@@ -1,1 +1,340 @@
-<!doctype html><html lang="en" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7f7f7"><meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1b1b1e"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="viewport" content="width=device-width, user-scalable=no initial-scale=1, shrink-to-fit=no, viewport-fit=cover" ><meta name="generator" content="Jekyll v4.4.1" /><meta property="og:title" content="Advanced Usage" /><meta property="og:locale" content="en" /><meta name="description" content="“Your Homelab as Code”" /><meta property="og:description" content="“Your Homelab as Code”" /><link rel="canonical" href="https://homelabeazy.github.io/homelabeazy/advanced-usage/" /><meta property="og:url" content="https://homelabeazy.github.io/homelabeazy/advanced-usage/" /><meta property="og:site_name" content="Homelabeazy Documentation" /><meta property="og:type" content="website" /><meta name="twitter:card" content="summary" /><meta property="twitter:title" content="Advanced Usage" /><meta name="twitter:site" content="@homelabeazy" /> <script type="application/ld+json"> {"@context":"https://schema.org","@type":"WebPage","description":"“Your Homelab as Code”","headline":"Advanced Usage","url":"https://homelabeazy.github.io/homelabeazy/advanced-usage/"}</script><title>Advanced Usage | Homelabeazy Documentation</title><link rel="apple-touch-icon" sizes="180x180" href="/homelabeazy/assets/img/favicons/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/homelabeazy/assets/img/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/homelabeazy/assets/img/favicons/favicon-16x16.png"><link rel="manifest" href="/homelabeazy/assets/img/favicons/site.webmanifest"><link rel="shortcut icon" href="/homelabeazy/assets/img/favicons/favicon.ico"><meta name="apple-mobile-web-app-title" content="Homelabeazy Documentation"><meta name="application-name" content="Homelabeazy Documentation"><meta name="msapplication-TileColor" content="#da532c"><meta name="msapplication-config" content="/homelabeazy/assets/img/favicons/browserconfig.xml"><meta name="theme-color" content="#ffffff"><link rel="preconnect" href="https://fonts.googleapis.com" ><link rel="dns-prefetch" href="https://fonts.googleapis.com" ><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://fonts.gstatic.com" ><link rel="preconnect" href="https://cdn.jsdelivr.net" ><link rel="dns-prefetch" href="https://cdn.jsdelivr.net" ><link rel="stylesheet" href="/homelabeazy/assets/css/jekyll-theme-chirpy.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Source+Sans+Pro:wght@400;600;700;900&display=swap"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.1/css/all.min.css"> <script src="/homelabeazy/assets/js/dist/theme.min.js"></script> <script defer src="https://cdn.jsdelivr.net/combine/npm/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js"></script> <script defer src="/homelabeazy/assets/js/dist/commons.min.js"></script> <script defer src="/homelabeazy/app.min.js?baseurl=/homelabeazy&register=true" ></script><body><aside aria-label="Sidebar" id="sidebar" class="d-flex flex-column align-items-end"><header class="profile-wrapper"> <a href="/homelabeazy/" id="avatar" class="rounded-circle"></a> <a class="site-title d-block" href="/homelabeazy/">Homelabeazy Documentation</a><p class="site-subtitle fst-italic mb-0">Your Homelab as Code</p></header><nav class="flex-column flex-grow-1 w-100 ps-0"><ul class="nav"><li class="nav-item"> <a href="/homelabeazy/" class="nav-link"> <i class="fa-fw fas fa-home"></i> <span>HOME</span> </a><li class="nav-item"> <a href="/homelabeazy/categories/" class="nav-link"> <i class="fa-fw fas fa-stream"></i> <span>CATEGORIES</span> </a><li class="nav-item"> <a href="/homelabeazy/tags/" class="nav-link"> <i class="fa-fw fas fa-tags"></i> <span>TAGS</span> </a><li class="nav-item"> <a href="/homelabeazy/archives/" class="nav-link"> <i class="fa-fw fas fa-archive"></i> <span>ARCHIVES</span> </a><li class="nav-item"> <a href="/homelabeazy/about/" class="nav-link"> <i class="fa-fw fas fa-info-circle"></i> <span>ABOUT</span> </a><li class="nav-item"> <a class="nav-link d-flex justify-content-between" href="#guides-list" data-bs-toggle="collapse" aria-expanded="false" aria-controls="guides-list" > <span> <i class="fa-fw fas fa-book"></i> <span>GUIDES</span> </span> <i class="fas fa-angle-down"></i> </a><ul id="guides-list" class="collapse"><li class="nav-item"> <a href="/homelabeazy/getting-started/" class="nav-link"> <span>Getting Started</span> </a><li class="nav-item"> <a href="/homelabeazy/advanced-usage/" class="nav-link"> <span>Advanced Usage</span> </a><li class="nav-item"> <a href="/homelabeazy/customization/" class="nav-link"> <span>Customization</span> </a></ul><li class="nav-item"> <a class="nav-link d-flex justify-content-between" href="#reference-list" data-bs-toggle="collapse" aria-expanded="false" aria-controls="reference-list" > <span> <i class="fa-fw fas fa-atlas"></i> <span>REFERENCE</span> </span> <i class="fas fa-angle-down"></i> </a><ul id="reference-list" class="collapse"><li class="nav-item"> <a href="/homelabeazy/folder-structure/" class="nav-link"> <span>Folder Structure</span> </a><li class="nav-item"> <a href="/homelabeazy/technical-design/" class="nav-link"> <span>Technical Design</span> </a><li class="nav-item"> <a href="/homelabeazy/deployment/" class="nav-link"> <span>Deployment</span> </a><li class="nav-item"> <a href="/homelabeazy/services/" class="nav-link"> <span>Services</span> </a></ul><li class="nav-item"> <a class="nav-link d-flex justify-content-between" href="#community-list" data-bs-toggle="collapse" aria-expanded="false" aria-controls="community-list" > <span> <i class="fa-fw fas fa-users"></i> <span>COMMUNITY</span> </span> <i class="fas fa-angle-down"></i> </a><ul id="community-list" class="collapse"><li class="nav-item"> <a href="/homelabeazy/contributing/" class="nav-link"> <span>Contributing</span> </a></ul><li class="nav-item"> <a href="/homelabeazy/troubleshooting/" class="nav-link"> <i class="fa-fw fas fa-question-circle"></i> <span>TROUBLESHOOTING</span> </a></ul></nav><div class="sidebar-bottom d-flex flex-wrap align-items-center w-100"> <button type="button" class="btn btn-link nav-link" aria-label="Switch Mode" id="mode-toggle"> <i class="fas fa-adjust"></i> </button> <span class="icon-border"></span> <a href="https://github.com/homelabeazy" aria-label="github" target="_blank" rel="noopener noreferrer" > <i class="fab fa-github"></i> </a> <a href="https://twitter.com/homelabeazy" aria-label="twitter" target="_blank" rel="noopener noreferrer" > <i class="fa-brands fa-x-twitter"></i> </a> <a href="javascript:location.href = 'mailto:' + ['',''].join('@')" aria-label="email" > <i class="fas fa-envelope"></i> </a> <a href="/homelabeazy/feed.xml" aria-label="rss" > <i class="fas fa-rss"></i> </a></div></aside><div id="main-wrapper" class="d-flex justify-content-center"><div class="container d-flex flex-column px-xxl-5"><header id="topbar-wrapper" class="flex-shrink-0" aria-label="Top Bar"><div id="topbar" class="d-flex align-items-center justify-content-between px-lg-3 h-100" ><nav id="breadcrumb" aria-label="Breadcrumb"> <span> <a href="/homelabeazy/">Home</a> </span> <span>Advanced Usage</span></nav><button type="button" id="sidebar-trigger" class="btn btn-link" aria-label="Sidebar"> <i class="fas fa-bars fa-fw"></i> </button><div id="topbar-title"> Default</div><button type="button" id="search-trigger" class="btn btn-link" aria-label="Search"> <i class="fas fa-search fa-fw"></i> </button> <search id="search" class="align-items-center ms-3 ms-lg-0"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" autocomplete="off" placeholder="Search..." > </search> <button type="button" class="btn btn-link text-decoration-none" id="search-cancel">Cancel</button></div></header><div class="row flex-grow-1"><main aria-label="Main Content" class="col-12 col-lg-11 col-xl-9 px-md-4"><h1 id="advanced-usage">Advanced Usage</h1><p>This project includes a <code class="language-plaintext highlighter-rouge">Makefile</code> that provides a convenient way to run common tasks. This guide will walk you through some of the more advanced features of Homelabeazy.</p><h2 id="makefile-commands">Makefile Commands</h2><p>The <code class="language-plaintext highlighter-rouge">Makefile</code> at the root of the project provides a number of helpful commands for managing your homelab. Here are some of the most common ones:</p><ul><li><strong><code class="language-plaintext highlighter-rouge">make help</code></strong>: Display a list of all available commands.<li><strong><code class="language-plaintext highlighter-rouge">make install-deps</code></strong>: Install all the necessary dependencies for the project.<li><strong><code class="language-plaintext highlighter-rouge">make setup-interactive</code></strong>: Run the interactive setup script to configure your homelab.<li><strong><code class="language-plaintext highlighter-rouge">make lint</code></strong>: Run all the linters to check your code for errors.<li><strong><code class="language-plaintext highlighter-rouge">make terraform-apply</code></strong>: Apply the Terraform configuration to provision your infrastructure.<li><strong><code class="language-plaintext highlighter-rouge">make ansible-playbook-setup</code></strong>: Run the main Ansible playbook to configure your cluster and deploy your applications.<li><strong><code class="language-plaintext highlighter-rouge">make test</code></strong>: Run the test suite for the project.<li><strong><code class="language-plaintext highlighter-rouge">make clean</code></strong>: Clean up any temporary files.</ul><h2 id="homelab-importer">Homelab Importer</h2><p>If you have an existing homelab that was configured manually, you can use the <code class="language-plaintext highlighter-rouge">homelab-importer</code> tool to import it into a Terraform-managed setup. This is a great way to migrate your existing homelab to the Infrastructure as Code (IaC) approach used by this project.</p><p>For detailed instructions on how to use the importer, please see the <a href="tools/homelab-importer/README.md">Homelab Importer README</a>.</p><h2 id="openldap">OpenLDAP</h2><p>This project includes an Ansible role for deploying OpenLDAP to your Kubernetes cluster. OpenLDAP is used as the central user directory for your homelab, and it is integrated with Authelia to provide Single Sign-On (SSO) for your applications.</p><p>The OpenLDAP passwords are managed by Vault. You will need to add the following secrets to Vault:</p><ul><li><code class="language-plaintext highlighter-rouge">secrets/data/openldap</code><ul><li><code class="language-plaintext highlighter-rouge">root-password</code><li><code class="language-plaintext highlighter-rouge">admin-password</code></ul></ul><h2 id="stealth-vm">Stealth VM</h2><p>This project includes an optional “stealth” Windows VM on Proxmox. The purpose of this VM is to allow for game streaming from a server. It aims to provide a normal gaming environment, which can sometimes be challenging on virtualized hardware.</p><h3 id="our-stance-on-cheating">Our Stance on Cheating</h3><p><strong>This project is firmly against cheating in any form.</strong> The “stealth” features are designed to make the virtual machine appear as a standard physical machine to the game, ensuring compatibility and performance. It is <strong>not</strong> intended to enable or facilitate cheating. We believe in fair play and sportsmanship. Any use of this project for activities that violate the terms of service of a game, including cheating, is strictly discouraged.</p><h3 id="prerequisites">Prerequisites</h3><ul><li>Proxmox 8.x+<li>A Windows ISO file<li>The PCI ID of the GPU you want to pass through<li>The MAC address of your physical network card</ul><h3 id="usage">Usage</h3><p>To enable the stealth VM, run the <code class="language-plaintext highlighter-rouge">scripts/setup.sh</code> script and answer “y” when prompted to enable the stealth VM. You will then be prompted for the Windows ISO path, GPU PCI ID, and real MAC address.</p><h3 id="disclaimer">Disclaimer</h3><p>This feature is intended for running games on a virtual machine for streaming purposes. Using this for any form of cheating is against the principles of this project. The author of this project is not responsible for any consequences that may arise from the misuse of this feature.</p></main><aside aria-label="Panel" id="panel-wrapper" class="col-xl-3 ps-2 text-muted"><div class="access"></div></aside></div><div class="row"><div id="tail-wrapper" class="col-12 col-lg-11 col-xl-9 px-md-4"><footer aria-label="Site Info" class=" d-flex flex-column justify-content-center text-muted flex-lg-row justify-content-lg-between align-items-lg-center pb-lg-3 " ><p>© <time>2025</time> <a href="https://github.com/homelabeazy">Homelabeazy</a>. <span data-bs-toggle="tooltip" data-bs-placement="top" title="Except where otherwise noted, the blog posts on this site are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) License by the author." >Some rights reserved.</span></p><p>Using the <a data-bs-toggle="tooltip" data-bs-placement="top" title="v7.3.1" href="https://github.com/cotes2020/jekyll-theme-chirpy" target="_blank" rel="noopener" >Chirpy</a> theme for <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a>.</p></footer></div></div><div id="search-result-wrapper" class="d-flex justify-content-center d-none"><div class="col-11 content"><div id="search-hints"></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><aside aria-label="Scroll to Top"> <button id="back-to-top" type="button" class="btn btn-lg btn-box-shadow"> <i class="fas fa-angle-up"></i> </button></aside></div><div id="mask" class="d-none position-fixed w-100 h-100 z-1"></div><aside id="notification" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-animation="true" data-bs-autohide="false" ><div class="toast-header"> <button type="button" class="btn-close ms-auto" data-bs-dismiss="toast" aria-label="Close" ></button></div><div class="toast-body text-center pt-0"><p class="px-2 mb-3">A new version of content is available.</p><button type="button" class="btn btn-primary" aria-label="Update"> Update </button></div></aside><script> document.addEventListener('DOMContentLoaded', () => { SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/homelabeazy/assets/js/data/search.json', searchResultTemplate: '<article class="px-1 px-sm-2 px-lg-4 px-xl-0"><header><h2><a href="{url}">{title}</a></h2><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"> {categories} {tags}</div></header><p>{content}</p></article>', noResultsText: '<p class="mt-5">Oops! No results found.</p>', templateMiddleware: function(prop, value, template) { if (prop === 'categories') { if (value === '') { return `${value}`; } else { return `<div class="me-sm-4"><i class="far fa-folder fa-fw"></i>${value}</div>`; } } if (prop === 'tags') { if (value === '') { return `${value}`; } else { return `<div><i class="fa fa-tag fa-fw"></i>${value}</div>`; } } } }); }); </script>
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.27.3 by Michael Rose
+  Copyright 2013-2025 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Advanced Usage - Homelabeazy Documentation</title>
+<meta name="description" content="“Your Homelab as Code”">
+
+
+  <meta name="author" content="Homelabeazy">
+  
+
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Homelabeazy Documentation">
+<meta property="og:title" content="Advanced Usage">
+<meta property="og:url" content="https://homelabeazy.github.io/homelabeazy/advanced-usage/">
+
+
+  <meta property="og:description" content="“Your Homelab as Code”">
+
+
+
+
+
+  <meta name="twitter:site" content="@homelabeazy">
+  <meta name="twitter:title" content="Advanced Usage">
+  <meta name="twitter:description" content="“Your Homelab as Code”">
+  <meta name="twitter:url" content="https://homelabeazy.github.io/homelabeazy/advanced-usage/">
+
+  
+    <meta name="twitter:card" content="summary">
+    
+  
+
+  
+
+
+
+
+
+
+
+
+<link rel="canonical" href="https://homelabeazy.github.io/homelabeazy/advanced-usage/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Homelabeazy Documentation Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/homelabeazy/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/homelabeazy/">
+          Homelabeazy Documentation
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/homelabeazy/"
+                
+                
+              >Home</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/homelabeazy/guides/"
+                
+                
+              >Guides</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/homelabeazy/reference/"
+                
+                
+              >Reference</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/homelabeazy/community/"
+                
+                
+              >Community</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/homelabeazy/troubleshooting/"
+                
+                
+              >Troubleshooting</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Advanced Usage">
+    
+    
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">
+            <a href="https://homelabeazy.github.io/homelabeazy/advanced-usage/" itemprop="url">Advanced Usage
+</a>
+          </h1>
+          
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <h1 id="advanced-usage">Advanced Usage</h1>
+
+<p>This project includes a <code class="language-plaintext highlighter-rouge">Makefile</code> that provides a convenient way to run common tasks. This guide will walk you through some of the more advanced features of Homelabeazy.</p>
+
+<h2 id="makefile-commands">Makefile Commands</h2>
+
+<p>The <code class="language-plaintext highlighter-rouge">Makefile</code> at the root of the project provides a number of helpful commands for managing your homelab. Here are some of the most common ones:</p>
+
+<ul>
+  <li><strong><code class="language-plaintext highlighter-rouge">make help</code></strong>: Display a list of all available commands.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">make install-deps</code></strong>: Install all the necessary dependencies for the project.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">make setup-interactive</code></strong>: Run the interactive setup script to configure your homelab.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">make lint</code></strong>: Run all the linters to check your code for errors.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">make terraform-apply</code></strong>: Apply the Terraform configuration to provision your infrastructure.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">make ansible-playbook-setup</code></strong>: Run the main Ansible playbook to configure your cluster and deploy your applications.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">make test</code></strong>: Run the test suite for the project.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge">make clean</code></strong>: Clean up any temporary files.</li>
+</ul>
+
+<h2 id="homelab-importer">Homelab Importer</h2>
+
+<p>If you have an existing homelab that was configured manually, you can use the <code class="language-plaintext highlighter-rouge">homelab-importer</code> tool to import it into a Terraform-managed setup. This is a great way to migrate your existing homelab to the Infrastructure as Code (IaC) approach used by this project.</p>
+
+<p>For detailed instructions on how to use the importer, please see the <a href="tools/homelab-importer/README.md">Homelab Importer README</a>.</p>
+
+<h2 id="openldap">OpenLDAP</h2>
+
+<p>This project includes an Ansible role for deploying OpenLDAP to your Kubernetes cluster. OpenLDAP is used as the central user directory for your homelab, and it is integrated with Authelia to provide Single Sign-On (SSO) for your applications.</p>
+
+<p>The OpenLDAP passwords are managed by Vault. You will need to add the following secrets to Vault:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">secrets/data/openldap</code>
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">root-password</code></li>
+      <li><code class="language-plaintext highlighter-rouge">admin-password</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="stealth-vm">Stealth VM</h2>
+
+<p>This project includes an optional “stealth” Windows VM on Proxmox. The purpose of this VM is to allow for game streaming from a server. It aims to provide a normal gaming environment, which can sometimes be challenging on virtualized hardware.</p>
+
+<h3 id="our-stance-on-cheating">Our Stance on Cheating</h3>
+
+<p><strong>This project is firmly against cheating in any form.</strong> The “stealth” features are designed to make the virtual machine appear as a standard physical machine to the game, ensuring compatibility and performance. It is <strong>not</strong> intended to enable or facilitate cheating. We believe in fair play and sportsmanship. Any use of this project for activities that violate the terms of service of a game, including cheating, is strictly discouraged.</p>
+
+<h3 id="prerequisites">Prerequisites</h3>
+
+<ul>
+  <li>Proxmox 8.x+</li>
+  <li>A Windows ISO file</li>
+  <li>The PCI ID of the GPU you want to pass through</li>
+  <li>The MAC address of your physical network card</li>
+</ul>
+
+<h3 id="usage">Usage</h3>
+
+<p>To enable the stealth VM, run the <code class="language-plaintext highlighter-rouge">scripts/setup.sh</code> script and answer “y” when prompted to enable the stealth VM. You will then be prompted for the Windows ISO path, GPU PCI ID, and real MAC address.</p>
+
+<h3 id="disclaimer">Disclaimer</h3>
+
+<p>This feature is intended for running games on a virtual machine for streaming purposes. Using this for any form of cheating is against the principles of this project. The author of this project is not responsible for any consequences that may arise from the misuse of this feature.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+
+      </footer>
+
+      
+
+      
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+      
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';" role="search">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        
+
+<div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+
+<div class="page__footer-copyright">&copy; 2025 <a href="https://homelabeazy.github.io">Homelabeazy Documentation</a>. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/homelabeazy/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/homelabeazy/assets/js/lunr/lunr.min.js"></script>
+<script src="/homelabeazy/assets/js/lunr/lunr-store.js"></script>
+<script src="/homelabeazy/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+
+  </body>
+</html>
