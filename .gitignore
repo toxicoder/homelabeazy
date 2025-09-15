@@ -49,5 +49,9 @@ gitleaks-report.json
 ansible/.ansible/
 
 # Ruby / Jekyll
+.bundle
+vendor
+_site
+jekyll_output.log
 vendor/bundle
 docs/_site
