@@ -1,4 +1,4 @@
-**For full documentation, visit our [GitHub Pages site](https://toxicoder.github.io/homelabeazy).**
+**For full documentation, visit our <a href="https://toxicoder.github.io/homelabeazy" target="_blank">GitHub Pages site</a>.**
 
 # Homelabeazy - Your _Homelab as Code_
 
