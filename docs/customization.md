@@ -1,7 +1,6 @@
 ---
-layout: default
+layout: single
 title: Customization
-nav_order: 5
 category: "Guides"
 ---
 

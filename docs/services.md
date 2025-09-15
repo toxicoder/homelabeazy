@@ -1,7 +1,6 @@
 ---
-layout: default
+layout: single
 title: Services
-nav_order: 7
 category: "Reference"
 ---
 

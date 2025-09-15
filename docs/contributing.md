@@ -1,7 +1,6 @@
 ---
-layout: default
+layout: single
 title: Contributing
-nav_order: 11
 category: documentation
 ---
 

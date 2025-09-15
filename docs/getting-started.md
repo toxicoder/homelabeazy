@@ -1,7 +1,6 @@
 ---
-layout: default
+layout: single
 title: Getting Started
-nav_order: 1
 category: "Guides"
 ---
 

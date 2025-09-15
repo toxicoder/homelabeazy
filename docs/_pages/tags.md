@@ -1,7 +1,7 @@
 ---
 layout: tags
-icon: fas fa-tags
-order: 2
+title: "Tags"
+permalink: /tags/
 ---
 
 This page lists all the tags that have been used in posts. Tags are used to categorize posts in a more granular way than categories. Clicking on a tag will take you to a page with all the posts that have that tag.
