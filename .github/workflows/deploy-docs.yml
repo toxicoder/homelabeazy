@@ -38,7 +38,7 @@ jobs:
         run: |
           bundle exec htmlproofer ./_site \
             --disable-external \
-            --ignore-urls "/.*/"
+            --url-ignore "/.*/"
         env:
           BUNDLE_GEMFILE: ${{ github.workspace }}/docs/Gemfile
 
