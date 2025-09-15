@@ -6,7 +6,7 @@
   https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
 -->
 
-<html lang="en" class="no-js">
+<html lang="en-US" class="no-js">
   <head>
     <meta charset="utf-8">
 
@@ -22,7 +22,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Homelabeazy Documentation">
 <meta property="og:title" content="Advanced Usage">
-<meta property="og:url" content="https://homelabeazy.github.io/homelabeazy/advanced-usage/">
+<meta property="og:url" content="https://homelabeazy.github.io/homelabeazy/advanced-usage.html">
 
 
   <meta property="og:description" content="“Your Homelab as Code”">
@@ -34,7 +34,7 @@
   <meta name="twitter:site" content="@homelabeazy">
   <meta name="twitter:title" content="Advanced Usage">
   <meta name="twitter:description" content="“Your Homelab as Code”">
-  <meta name="twitter:url" content="https://homelabeazy.github.io/homelabeazy/advanced-usage/">
+  <meta name="twitter:url" content="https://homelabeazy.github.io/homelabeazy/advanced-usage.html">
 
   
     <meta name="twitter:card" content="summary">
@@ -49,8 +49,12 @@
 
 
 
+  
 
-<link rel="canonical" href="https://homelabeazy.github.io/homelabeazy/advanced-usage/">
+  
+
+
+<link rel="canonical" href="https://homelabeazy.github.io/homelabeazy/advanced-usage.html">
 
 
 
@@ -179,7 +183,7 @@
       
         <header>
           <h1 id="page-title" class="page__title" itemprop="headline">
-            <a href="https://homelabeazy.github.io/homelabeazy/advanced-usage/" itemprop="url">Advanced Usage
+            <a href="https://homelabeazy.github.io/homelabeazy/advanced-usage.html" itemprop="url">Advanced Usage
 </a>
           </h1>
           
@@ -192,26 +196,48 @@
         
         <h1 id="advanced-usage">Advanced Usage</h1>
 
-<p>This project includes a <code class="language-plaintext highlighter-rouge">Makefile</code> that provides a convenient way to run common tasks. This guide will walk you through some of the more advanced features of Homelabeazy.</p>
+<p>This project includes a <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Makefile
+</pre></td></tr></tbody></table></code> that provides a convenient way to run common tasks. This guide will walk you through some of the more advanced features of Homelabeazy.</p>
 
 <h2 id="makefile-commands">Makefile Commands</h2>
 
-<p>The <code class="language-plaintext highlighter-rouge">Makefile</code> at the root of the project provides a number of helpful commands for managing your homelab. Here are some of the most common ones:</p>
+<p>The <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Makefile
+</pre></td></tr></tbody></table></code> at the root of the project provides a number of helpful commands for managing your homelab. Here are some of the most common ones:</p>
 
 <ul>
-  <li><strong><code class="language-plaintext highlighter-rouge">make help</code></strong>: Display a list of all available commands.</li>
-  <li><strong><code class="language-plaintext highlighter-rouge">make install-deps</code></strong>: Install all the necessary dependencies for the project.</li>
-  <li><strong><code class="language-plaintext highlighter-rouge">make setup-interactive</code></strong>: Run the interactive setup script to configure your homelab.</li>
-  <li><strong><code class="language-plaintext highlighter-rouge">make lint</code></strong>: Run all the linters to check your code for errors.</li>
-  <li><strong><code class="language-plaintext highlighter-rouge">make terraform-apply</code></strong>: Apply the Terraform configuration to provision your infrastructure.</li>
-  <li><strong><code class="language-plaintext highlighter-rouge">make ansible-playbook-setup</code></strong>: Run the main Ansible playbook to configure your cluster and deploy your applications.</li>
-  <li><strong><code class="language-plaintext highlighter-rouge">make test</code></strong>: Run the test suite for the project.</li>
-  <li><strong><code class="language-plaintext highlighter-rouge">make clean</code></strong>: Clean up any temporary files.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>make help
+</pre></td></tr></tbody></table></code></strong>: Display a list of all available commands.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>make install-deps
+</pre></td></tr></tbody></table></code></strong>: Install all the necessary dependencies for the project.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>make setup-interactive
+</pre></td></tr></tbody></table></code></strong>: Run the interactive setup script to configure your homelab.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>make lint
+</pre></td></tr></tbody></table></code></strong>: Run all the linters to check your code for errors.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>make terraform-apply
+</pre></td></tr></tbody></table></code></strong>: Apply the Terraform configuration to provision your infrastructure.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>make ansible-playbook-setup
+</pre></td></tr></tbody></table></code></strong>: Run the main Ansible playbook to configure your cluster and deploy your applications.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>make test
+</pre></td></tr></tbody></table></code></strong>: Run the test suite for the project.</li>
+  <li><strong><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>make clean
+</pre></td></tr></tbody></table></code></strong>: Clean up any temporary files.</li>
 </ul>
 
 <h2 id="homelab-importer">Homelab Importer</h2>
 
-<p>If you have an existing homelab that was configured manually, you can use the <code class="language-plaintext highlighter-rouge">homelab-importer</code> tool to import it into a Terraform-managed setup. This is a great way to migrate your existing homelab to the Infrastructure as Code (IaC) approach used by this project.</p>
+<p>If you have an existing homelab that was configured manually, you can use the <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>homelab-importer
+</pre></td></tr></tbody></table></code> tool to import it into a Terraform-managed setup. This is a great way to migrate your existing homelab to the Infrastructure as Code (IaC) approach used by this project.</p>
 
 <p>For detailed instructions on how to use the importer, please see the <a href="tools/homelab-importer/README.md">Homelab Importer README</a>.</p>
 
@@ -222,10 +248,16 @@
 <p>The OpenLDAP passwords are managed by Vault. You will need to add the following secrets to Vault:</p>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">secrets/data/openldap</code>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>secrets/data/openldap
+</pre></td></tr></tbody></table></code>
     <ul>
-      <li><code class="language-plaintext highlighter-rouge">root-password</code></li>
-      <li><code class="language-plaintext highlighter-rouge">admin-password</code></li>
+      <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>root-password
+</pre></td></tr></tbody></table></code></li>
+      <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>admin-password
+</pre></td></tr></tbody></table></code></li>
     </ul>
   </li>
 </ul>
@@ -249,7 +281,9 @@
 
 <h3 id="usage">Usage</h3>
 
-<p>To enable the stealth VM, run the <code class="language-plaintext highlighter-rouge">scripts/setup.sh</code> script and answer “y” when prompted to enable the stealth VM. You will then be prompted for the Windows ISO path, GPU PCI ID, and real MAC address.</p>
+<p>To enable the stealth VM, run the <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>scripts/setup.sh
+</pre></td></tr></tbody></table></code> script and answer “y” when prompted to enable the stealth VM. You will then be prompted for the Windows ISO path, GPU PCI ID, and real MAC address.</p>
 
 <h3 id="disclaimer">Disclaimer</h3>
 
@@ -306,7 +340,23 @@
 <div class="page__footer-follow">
   <ul class="social-icons">
     
+      <li><strong>Follow:</strong></li>
+    
 
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
 
     
@@ -316,7 +366,7 @@
 </div>
 
 
-<div class="page__footer-copyright">&copy; 2025 <a href="https://homelabeazy.github.io">Homelabeazy Documentation</a>. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</div>
+<div class="page__footer-copyright">&copy; 2013 - 2025 <a href="https://homelabeazy.github.io">Homelabeazy Documentation</a>. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</div>
 
       </footer>
     </div>

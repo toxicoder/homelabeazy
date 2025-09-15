@@ -6,7 +6,7 @@
   https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
 -->
 
-<html lang="en" class="no-js">
+<html lang="en-US" class="no-js">
   <head>
     <meta charset="utf-8">
 
@@ -22,7 +22,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Homelabeazy Documentation">
 <meta property="og:title" content="Folder Structure">
-<meta property="og:url" content="https://homelabeazy.github.io/homelabeazy/folder-structure/">
+<meta property="og:url" content="https://homelabeazy.github.io/homelabeazy/folder-structure.html">
 
 
   <meta property="og:description" content="“Your Homelab as Code”">
@@ -34,7 +34,7 @@
   <meta name="twitter:site" content="@homelabeazy">
   <meta name="twitter:title" content="Folder Structure">
   <meta name="twitter:description" content="“Your Homelab as Code”">
-  <meta name="twitter:url" content="https://homelabeazy.github.io/homelabeazy/folder-structure/">
+  <meta name="twitter:url" content="https://homelabeazy.github.io/homelabeazy/folder-structure.html">
 
   
     <meta name="twitter:card" content="summary">
@@ -49,8 +49,12 @@
 
 
 
+  
 
-<link rel="canonical" href="https://homelabeazy.github.io/homelabeazy/folder-structure/">
+  
+
+
+<link rel="canonical" href="https://homelabeazy.github.io/homelabeazy/folder-structure.html">
 
 
 
@@ -179,7 +183,7 @@
       
         <header>
           <h1 id="page-title" class="page__title" itemprop="headline">
-            <a href="https://homelabeazy.github.io/homelabeazy/folder-structure/" itemprop="url">Folder Structure
+            <a href="https://homelabeazy.github.io/homelabeazy/folder-structure.html" itemprop="url">Folder Structure
 </a>
           </h1>
           
@@ -195,21 +199,47 @@
 <p>This document provides an overview of the folder structure of the Homelabeazy project.</p>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">.github/</code>: This directory contains the GitHub Actions workflows for continuous integration and deployment.</li>
-  <li><code class="language-plaintext highlighter-rouge">ansible/</code>: This directory holds the Ansible playbooks, roles, and inventory for configuring your homelab.
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>.github/
+</pre></td></tr></tbody></table></code>: This directory contains the GitHub Actions workflows for continuous integration and deployment.</li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>ansible/
+</pre></td></tr></tbody></table></code>: This directory holds the Ansible playbooks, roles, and inventory for configuring your homelab.
     <ul>
-      <li><code class="language-plaintext highlighter-rouge">inventory/</code>: The Ansible inventory, which defines the hosts that Ansible will manage.</li>
-      <li><code class="language-plaintext highlighter-rouge">playbooks/</code>: The Ansible playbooks, which define the tasks that will be executed on the hosts.</li>
-      <li><code class="language-plaintext highlighter-rouge">roles/</code>: The Ansible roles, which are reusable units of automation that can be shared between playbooks.</li>
+      <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>inventory/
+</pre></td></tr></tbody></table></code>: The Ansible inventory, which defines the hosts that Ansible will manage.</li>
+      <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>playbooks/
+</pre></td></tr></tbody></table></code>: The Ansible playbooks, which define the tasks that will be executed on the hosts.</li>
+      <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>roles/
+</pre></td></tr></tbody></table></code>: The Ansible roles, which are reusable units of automation that can be shared between playbooks.</li>
     </ul>
   </li>
-  <li><code class="language-plaintext highlighter-rouge">apps/</code>: This directory contains the ArgoCD application manifests for the applications that will be deployed to your cluster.</li>
-  <li><code class="language-plaintext highlighter-rouge">charts/</code>: This directory contains the Helm charts for the applications that are not available in a public chart repository.</li>
-  <li><code class="language-plaintext highlighter-rouge">config.example/</code>: This directory contains example configuration files to help you set up your own private configuration repository.</li>
-  <li><code class="language-plaintext highlighter-rouge">docs/</code>: This directory contains the documentation for the project.</li>
-  <li><code class="language-plaintext highlighter-rouge">infrastructure/</code>: This directory contains the Terraform code for provisioning the infrastructure for your homelab.</li>
-  <li><code class="language-plaintext highlighter-rouge">scripts/</code>: This directory contains a collection of utility scripts for managing your homelab.</li>
-  <li><code class="language-plaintext highlighter-rouge">tools/</code>: This directory contains various tools and utilities, such as the <code class="language-plaintext highlighter-rouge">homelab-importer</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>apps/
+</pre></td></tr></tbody></table></code>: This directory contains the ArgoCD application manifests for the applications that will be deployed to your cluster.</li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>charts/
+</pre></td></tr></tbody></table></code>: This directory contains the Helm charts for the applications that are not available in a public chart repository.</li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>config.example/
+</pre></td></tr></tbody></table></code>: This directory contains example configuration files to help you set up your own private configuration repository.</li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>docs/
+</pre></td></tr></tbody></table></code>: This directory contains the documentation for the project.</li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>infrastructure/
+</pre></td></tr></tbody></table></code>: This directory contains the Terraform code for provisioning the infrastructure for your homelab.</li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>scripts/
+</pre></td></tr></tbody></table></code>: This directory contains a collection of utility scripts for managing your homelab.</li>
+  <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>tools/
+</pre></td></tr></tbody></table></code>: This directory contains various tools and utilities, such as the <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>homelab-importer
+</pre></td></tr></tbody></table></code>.</li>
 </ul>
 
         
@@ -263,7 +293,23 @@
 <div class="page__footer-follow">
   <ul class="social-icons">
     
+      <li><strong>Follow:</strong></li>
+    
 
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
 
     
@@ -273,7 +319,7 @@
 </div>
 
 
-<div class="page__footer-copyright">&copy; 2025 <a href="https://homelabeazy.github.io">Homelabeazy Documentation</a>. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</div>
+<div class="page__footer-copyright">&copy; 2013 - 2025 <a href="https://homelabeazy.github.io">Homelabeazy Documentation</a>. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</div>
 
       </footer>
     </div>

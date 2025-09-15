@@ -6,7 +6,7 @@
   https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
 -->
 
-<html lang="en" class="no-js">
+<html lang="en-US" class="no-js">
   <head>
     <meta charset="utf-8">
 
@@ -22,7 +22,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Homelabeazy Documentation">
 <meta property="og:title" content="Troubleshooting">
-<meta property="og:url" content="https://homelabeazy.github.io/homelabeazy/troubleshooting/">
+<meta property="og:url" content="https://homelabeazy.github.io/homelabeazy/troubleshooting.html">
 
 
   <meta property="og:description" content="“Your Homelab as Code”">
@@ -34,7 +34,7 @@
   <meta name="twitter:site" content="@homelabeazy">
   <meta name="twitter:title" content="Troubleshooting">
   <meta name="twitter:description" content="“Your Homelab as Code”">
-  <meta name="twitter:url" content="https://homelabeazy.github.io/homelabeazy/troubleshooting/">
+  <meta name="twitter:url" content="https://homelabeazy.github.io/homelabeazy/troubleshooting.html">
 
   
     <meta name="twitter:card" content="summary">
@@ -49,8 +49,12 @@
 
 
 
+  
 
-<link rel="canonical" href="https://homelabeazy.github.io/homelabeazy/troubleshooting/">
+  
+
+
+<link rel="canonical" href="https://homelabeazy.github.io/homelabeazy/troubleshooting.html">
 
 
 
@@ -179,7 +183,7 @@
       
         <header>
           <h1 id="page-title" class="page__title" itemprop="headline">
-            <a href="https://homelabeazy.github.io/homelabeazy/troubleshooting/" itemprop="url">Troubleshooting
+            <a href="https://homelabeazy.github.io/homelabeazy/troubleshooting.html" itemprop="url">Troubleshooting
 </a>
           </h1>
           
@@ -196,9 +200,15 @@
 
 <h2 id="setup-and-installation-issues">Setup and Installation Issues</h2>
 
-<h3 id="make-setup-interactive-fails"><code class="language-plaintext highlighter-rouge">make setup-interactive</code> fails</h3>
+<h3 id="make-setup-interactive-fails"><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>make setup-interactive
+</pre></td></tr></tbody></table></code> fails</h3>
 
-<p>If the <code class="language-plaintext highlighter-rouge">make setup-interactive</code> script fails, it is most likely due to an issue with the <code class="language-plaintext highlighter-rouge">homelab-importer</code> tool. To debug the issue, you can run the tool manually and inspect the output.</p>
+<p>If the <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>make setup-interactive
+</pre></td></tr></tbody></table></code> script fails, it is most likely due to an issue with the <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>homelab-importer
+</pre></td></tr></tbody></table></code> tool. To debug the issue, you can run the tool manually and inspect the output.</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -217,9 +227,45 @@ homelab-importer <span class="nt">--config-dir</span> /path/to/your/private/conf
 <p>If Terraform fails to apply the changes, it may be due to a problem with your Proxmox environment. Check the following:</p>
 
 <ul>
-  <li><strong>Proxmox API Token:</strong> Ensure that your Proxmox API token has the correct permissions. It should have the <code class="language-plaintext highlighter-rouge">Datastore.AllocateSpace</code>, <code class="language-plaintext highlighter-rouge">Datastore.Audit</code>, <code class="language-plaintext highlighter-rouge">Sys.Audit</code>, <code class="language-plaintext highlighter-rouge">Sys.Console</code>, <code class="language-plaintext highlighter-rouge">Sys.Modify</code>, <code class="language-plaintext highlighter-rouge">VM.Allocate</code>, <code class="language-plaintext highlighter-rouge">VM.Audit</code>, <code class="language-plaintext highlighter-rouge">VM.Clone</code>, <code class="language-plaintext highlighter-rouge">VM.Config.CDROM</code>, <code class="language-plaintext highlighter-rouge">VM.Config.CPU</code>, <code class="language-plaintext highlighter-rouge">VM.Config.Disk</code>, <code class="language-plaintext highlighter-rouge">VM.Config.HWType</code>, <code class="language-plaintext highlighter-rouge">VM.Config.Memory</code>, <code class="language-plaintext highlighter-rouge">VM.Config.Network</code>, <code class="language-plaintext highlighter-rouge">VM.Config.Options</code>, <code class="language-plaintext highlighter-rouge">VM.Monitor</code>, <code class="language-plaintext highlighter-rouge">VM.PowerMgmt</code> permissions on the Proxmox node.</li>
+  <li><strong>Proxmox API Token:</strong> Ensure that your Proxmox API token has the correct permissions. It should have the <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Datastore.AllocateSpace
+</pre></td></tr></tbody></table></code>, <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Datastore.Audit
+</pre></td></tr></tbody></table></code>, <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Sys.Audit
+</pre></td></tr></tbody></table></code>, <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Sys.Console
+</pre></td></tr></tbody></table></code>, <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Sys.Modify
+</pre></td></tr></tbody></table></code>, <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>VM.Allocate
+</pre></td></tr></tbody></table></code>, <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>VM.Audit
+</pre></td></tr></tbody></table></code>, <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>VM.Clone
+</pre></td></tr></tbody></table></code>, <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>VM.Config.CDROM
+</pre></td></tr></tbody></table></code>, <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>VM.Config.CPU
+</pre></td></tr></tbody></table></code>, <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>VM.Config.Disk
+</pre></td></tr></tbody></table></code>, <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>VM.Config.HWType
+</pre></td></tr></tbody></table></code>, <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>VM.Config.Memory
+</pre></td></tr></tbody></table></code>, <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>VM.Config.Network
+</pre></td></tr></tbody></table></code>, <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>VM.Config.Options
+</pre></td></tr></tbody></table></code>, <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>VM.Monitor
+</pre></td></tr></tbody></table></code>, <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>VM.PowerMgmt
+</pre></td></tr></tbody></table></code> permissions on the Proxmox node.</li>
   <li><strong>Proxmox Host:</strong> Make sure that the Proxmox host is running and accessible from the machine where you are running Terraform.</li>
-  <li><strong>Cloud-init Template:</strong> Verify that the cloud-init template exists and is configured correctly. It should be a minimal installation of a supported OS (e.g., Ubuntu Server) and should have the <code class="language-plaintext highlighter-rouge">qemu-guest-agent</code> installed.</li>
+  <li><strong>Cloud-init Template:</strong> Verify that the cloud-init template exists and is configured correctly. It should be a minimal installation of a supported OS (e.g., Ubuntu Server) and should have the <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>qemu-guest-agent
+</pre></td></tr></tbody></table></code> installed.</li>
 </ul>
 
 <h3 id="ansible-playbook-fails-to-run">Ansible playbook fails to run</h3>
@@ -227,9 +273,13 @@ homelab-importer <span class="nt">--config-dir</span> /path/to/your/private/conf
 <p>If the Ansible playbook fails to run, it may be due to a problem with your SSH connection. Check the following:</p>
 
 <ul>
-  <li><strong>SSH Key:</strong> Make sure that your SSH key is added to your SSH agent (<code class="language-plaintext highlighter-rouge">ssh-add -l</code>).</li>
+  <li><strong>SSH Key:</strong> Make sure that your SSH key is added to your SSH agent (<code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>ssh-add -l
+</pre></td></tr></tbody></table></code>).</li>
   <li><strong>SSH Connection:</strong> Try to connect to the nodes manually using SSH to verify that the connection is working.</li>
-  <li><strong>Ansible Inventory:</strong> Double-check that the IP addresses in your Ansible inventory (<code class="language-plaintext highlighter-rouge">ansible/inventory/inventory.auto.yml</code>) are correct.</li>
+  <li><strong>Ansible Inventory:</strong> Double-check that the IP addresses in your Ansible inventory (<code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>ansible/inventory/inventory.auto.yml
+</pre></td></tr></tbody></table></code>) are correct.</li>
 </ul>
 
 <hr />
@@ -241,13 +291,19 @@ homelab-importer <span class="nt">--config-dir</span> /path/to/your/private/conf
 <p>If an application is not accessible after it has been deployed, it may be due to a problem with the Traefik Ingress controller, the application itself, or your DNS configuration.</p>
 
 <ol>
-  <li><strong>Check the Traefik Dashboard:</strong> The Traefik dashboard provides a wealth of information about your Ingress routes and can help you diagnose problems. You can access it at <code class="language-plaintext highlighter-rouge">http://traefik.your-domain.com</code>.</li>
-  <li><strong>Check the Application Logs:</strong> Use <code class="language-plaintext highlighter-rouge">kubectl logs</code> to check the logs of the application’s pods. This will often give you a clue as to what is wrong.
+  <li><strong>Check the Traefik Dashboard:</strong> The Traefik dashboard provides a wealth of information about your Ingress routes and can help you diagnose problems. You can access it at <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>http://traefik.your-domain.com
+</pre></td></tr></tbody></table></code>.</li>
+  <li><strong>Check the Application Logs:</strong> Use <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>kubectl logs
+</pre></td></tr></tbody></table></code> to check the logs of the application’s pods. This will often give you a clue as to what is wrong.
     <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre></td><td class="rouge-code"><pre>kubectl logs <span class="nt">-l</span> app.kubernetes.io/name<span class="o">=</span>&lt;app-name&gt; <span class="nt">-n</span> &lt;namespace&gt;
 </pre></td></tr></tbody></table></code></pre></div>    </div>
   </li>
-  <li><strong>Check the IngressRoute:</strong> Make sure that the <code class="language-plaintext highlighter-rouge">IngressRoute</code> for the application is configured correctly.
+  <li><strong>Check the IngressRoute:</strong> Make sure that the <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>IngressRoute
+</pre></td></tr></tbody></table></code> for the application is configured correctly.
     <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre></td><td class="rouge-code"><pre>kubectl get ingressroute <span class="nt">-n</span> &lt;namespace&gt;
 </pre></td></tr></tbody></table></code></pre></div>    </div>
@@ -255,9 +311,15 @@ homelab-importer <span class="nt">--config-dir</span> /path/to/your/private/conf
   <li><strong>Check DNS:</strong> Verify that the DNS record for the application is pointing to the correct IP address (the IP address of your Traefik load balancer).</li>
 </ol>
 
-<h3 id="pods-are-stuck-in-a-pending-state">Pods are stuck in a <code class="language-plaintext highlighter-rouge">Pending</code> state</h3>
+<h3 id="pods-are-stuck-in-a-pending-state">Pods are stuck in a <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Pending
+</pre></td></tr></tbody></table></code> state</h3>
 
-<p>If you see pods that are stuck in a <code class="language-plaintext highlighter-rouge">Pending</code> state, it usually means that there are not enough resources in the cluster to schedule them. You can use <code class="language-plaintext highlighter-rouge">kubectl describe pod &lt;pod-name&gt;</code> to get more information about why the pod is not being scheduled.</p>
+<p>If you see pods that are stuck in a <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Pending
+</pre></td></tr></tbody></table></code> state, it usually means that there are not enough resources in the cluster to schedule them. You can use <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>kubectl describe pod &lt;pod-name&gt;
+</pre></td></tr></tbody></table></code> to get more information about why the pod is not being scheduled.</p>
 
 <p>Common causes for this issue include:</p>
 
@@ -340,7 +402,23 @@ homelab-importer <span class="nt">--config-dir</span> /path/to/your/private/conf
 <div class="page__footer-follow">
   <ul class="social-icons">
     
+      <li><strong>Follow:</strong></li>
+    
 
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
 
     
@@ -350,7 +428,7 @@ homelab-importer <span class="nt">--config-dir</span> /path/to/your/private/conf
 </div>
 
 
-<div class="page__footer-copyright">&copy; 2025 <a href="https://homelabeazy.github.io">Homelabeazy Documentation</a>. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</div>
+<div class="page__footer-copyright">&copy; 2013 - 2025 <a href="https://homelabeazy.github.io">Homelabeazy Documentation</a>. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</div>
 
       </footer>
     </div>

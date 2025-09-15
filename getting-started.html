@@ -6,7 +6,7 @@
   https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
 -->
 
-<html lang="en" class="no-js">
+<html lang="en-US" class="no-js">
   <head>
     <meta charset="utf-8">
 
@@ -22,7 +22,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Homelabeazy Documentation">
 <meta property="og:title" content="Getting Started">
-<meta property="og:url" content="https://homelabeazy.github.io/homelabeazy/getting-started/">
+<meta property="og:url" content="https://homelabeazy.github.io/homelabeazy/getting-started.html">
 
 
   <meta property="og:description" content="“Your Homelab as Code”">
@@ -34,7 +34,7 @@
   <meta name="twitter:site" content="@homelabeazy">
   <meta name="twitter:title" content="Getting Started">
   <meta name="twitter:description" content="“Your Homelab as Code”">
-  <meta name="twitter:url" content="https://homelabeazy.github.io/homelabeazy/getting-started/">
+  <meta name="twitter:url" content="https://homelabeazy.github.io/homelabeazy/getting-started.html">
 
   
     <meta name="twitter:card" content="summary">
@@ -49,8 +49,12 @@
 
 
 
+  
 
-<link rel="canonical" href="https://homelabeazy.github.io/homelabeazy/getting-started/">
+  
+
+
+<link rel="canonical" href="https://homelabeazy.github.io/homelabeazy/getting-started.html">
 
 
 
@@ -179,7 +183,7 @@
       
         <header>
           <h1 id="page-title" class="page__title" itemprop="headline">
-            <a href="https://homelabeazy.github.io/homelabeazy/getting-started/" itemprop="url">Getting Started
+            <a href="https://homelabeazy.github.io/homelabeazy/getting-started.html" itemprop="url">Getting Started
 </a>
           </h1>
           
@@ -270,13 +274,19 @@
   </thead>
   <tbody>
     <tr>
-      <td><code class="language-plaintext highlighter-rouge">*.example.com</code></td>
-      <td><code class="language-plaintext highlighter-rouge">192.168.1.100</code></td>
+      <td><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>*.example.com
+</pre></td></tr></tbody></table></code></td>
+      <td><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>192.168.1.100
+</pre></td></tr></tbody></table></code></td>
     </tr>
   </tbody>
 </table>
 
-<p>This will resolve all subdomains of <code class="language-plaintext highlighter-rouge">example.com</code> to the IP address of your Traefik load balancer.</p>
+<p>This will resolve all subdomains of <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>example.com
+</pre></td></tr></tbody></table></code> to the IP address of your Traefik load balancer.</p>
 
 <h3 id="52-access-applications">5.2. Access Applications</h3>
 
@@ -285,7 +295,9 @@
 <p><strong>Example: Accessing Grafana</strong></p>
 
 <ol>
-  <li>Open your web browser and navigate to <code class="language-plaintext highlighter-rouge">https://grafana.example.com</code>.</li>
+  <li>Open your web browser and navigate to <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>https://grafana.example.com
+</pre></td></tr></tbody></table></code>.</li>
   <li>You will be redirected to the Authelia login page.</li>
   <li>Log in with your credentials.</li>
   <li>You will then be redirected to the Grafana dashboard.</li>
@@ -295,9 +307,13 @@
 
 <p>Congratulations, you now have a fully functional Kubernetes cluster! Now it’s time to deploy your first application.</p>
 
-<p>The Homelabeazy project uses ArgoCD for GitOps-based application deployment. To deploy a new application, you’ll need to create a new YAML file in the <code class="language-plaintext highlighter-rouge">apps/</code> directory of your private configuration repository.</p>
+<p>The Homelabeazy project uses ArgoCD for GitOps-based application deployment. To deploy a new application, you’ll need to create a new YAML file in the <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>apps/
+</pre></td></tr></tbody></table></code> directory of your private configuration repository.</p>
 
-<p>For example, to deploy a simple “Hello, World!” application, you could create a file named <code class="language-plaintext highlighter-rouge">hello-world.yml</code> with the following content:</p>
+<p>For example, to deploy a simple “Hello, World!” application, you could create a file named <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>hello-world.yml
+</pre></td></tr></tbody></table></code> with the following content:</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -336,7 +352,9 @@
 <p>You’ve now successfully set up your homelab and deployed your first application. Here are a few things you can do next:</p>
 
 <ul>
-  <li><strong>Explore the available applications:</strong> The Homelabeazy project comes with a number of pre-configured applications that you can deploy to your cluster. Check out the <code class="language-plaintext highlighter-rouge">apps/</code> directory in the main repository for a list of available applications.</li>
+  <li><strong>Explore the available applications:</strong> The Homelabeazy project comes with a number of pre-configured applications that you can deploy to your cluster. Check out the <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>apps/
+</pre></td></tr></tbody></table></code> directory in the main repository for a list of available applications.</li>
   <li><strong>Add your own applications:</strong> You can easily add your own applications to your homelab by creating new Helm charts or by using existing ones.</li>
   <li><strong>Customize your setup:</strong> The Homelabeazy project is highly customizable. You can change the network configuration, add new services, and integrate with other systems.</li>
   <li><strong>Contribute to the project:</strong> If you’ve found a bug or have an idea for a new feature, we’d love to hear from you! Check out our <a href="./contributing.md">Contributing Guide</a> for more information.</li>
@@ -393,7 +411,23 @@
 <div class="page__footer-follow">
   <ul class="social-icons">
     
+      <li><strong>Follow:</strong></li>
+    
 
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
 
     
@@ -403,7 +437,7 @@
 </div>
 
 
-<div class="page__footer-copyright">&copy; 2025 <a href="https://homelabeazy.github.io">Homelabeazy Documentation</a>. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</div>
+<div class="page__footer-copyright">&copy; 2013 - 2025 <a href="https://homelabeazy.github.io">Homelabeazy Documentation</a>. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</div>
 
       </footer>
     </div>

@@ -6,7 +6,7 @@
   https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
 -->
 
-<html lang="en" class="no-js">
+<html lang="en-US" class="no-js">
   <head>
     <meta charset="utf-8">
 
@@ -22,7 +22,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Homelabeazy Documentation">
 <meta property="og:title" content="Technical Design">
-<meta property="og:url" content="https://homelabeazy.github.io/homelabeazy/technical-design/">
+<meta property="og:url" content="https://homelabeazy.github.io/homelabeazy/technical-design.html">
 
 
   <meta property="og:description" content="“Your Homelab as Code”">
@@ -34,7 +34,7 @@
   <meta name="twitter:site" content="@homelabeazy">
   <meta name="twitter:title" content="Technical Design">
   <meta name="twitter:description" content="“Your Homelab as Code”">
-  <meta name="twitter:url" content="https://homelabeazy.github.io/homelabeazy/technical-design/">
+  <meta name="twitter:url" content="https://homelabeazy.github.io/homelabeazy/technical-design.html">
 
   
     <meta name="twitter:card" content="summary">
@@ -49,8 +49,12 @@
 
 
 
+  
 
-<link rel="canonical" href="https://homelabeazy.github.io/homelabeazy/technical-design/">
+  
+
+
+<link rel="canonical" href="https://homelabeazy.github.io/homelabeazy/technical-design.html">
 
 
 
@@ -179,7 +183,7 @@
       
         <header>
           <h1 id="page-title" class="page__title" itemprop="headline">
-            <a href="https://homelabeazy.github.io/homelabeazy/technical-design/" itemprop="url">Technical Design
+            <a href="https://homelabeazy.github.io/homelabeazy/technical-design.html" itemprop="url">Technical Design
 </a>
           </h1>
           
@@ -294,7 +298,9 @@
     <p><strong>Hardware (Physical Server):</strong></p>
 
     <ul>
-      <li><strong>Component:</strong> <code class="language-plaintext highlighter-rouge">Physical Server</code></li>
+      <li><strong>Component:</strong> <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Physical Server
+</pre></td></tr></tbody></table></code></li>
       <li><strong>Role:</strong> This is the foundation of the entire homelab, providing the necessary compute, memory, and storage resources.</li>
       <li><strong>Value:</strong> A dedicated physical server ensures that all virtualized components have direct access to high-performance hardware, leading to better overall performance and stability.</li>
     </ul>
@@ -303,7 +309,9 @@
     <p><strong>Virtualization (Proxmox VE):</strong></p>
 
     <ul>
-      <li><strong>Component:</strong> <code class="language-plaintext highlighter-rouge">Proxmox VE</code></li>
+      <li><strong>Component:</strong> <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Proxmox VE
+</pre></td></tr></tbody></table></code></li>
       <li><strong>Role:</strong> Proxmox is an open-source virtualization platform that runs on the physical server. It allows for the creation and management of virtual machines (VMs) and containers.</li>
       <li><strong>Value:</strong> Proxmox enables efficient hardware utilization by allowing multiple isolated environments to run on a single physical machine. This is crucial for creating a flexible and scalable infrastructure.</li>
     </ul>
@@ -312,11 +320,19 @@
     <p><strong>Automation (Terraform &amp; Ansible):</strong></p>
 
     <ul>
-      <li><strong>Component:</strong> <code class="language-plaintext highlighter-rouge">Terraform</code> &amp; <code class="language-plaintext highlighter-rouge">Ansible</code></li>
+      <li><strong>Component:</strong> <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Terraform
+</pre></td></tr></tbody></table></code> &amp; <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Ansible
+</pre></td></tr></tbody></table></code></li>
       <li><strong>Role:</strong>
         <ul>
-          <li><code class="language-plaintext highlighter-rouge">Terraform</code> is used to provision the virtual machines on Proxmox. It defines the infrastructure as code, making it easy to create, modify, and destroy VMs in a repeatable manner.</li>
-          <li><code class="language-plaintext highlighter-rouge">Ansible</code> is used for configuration management. Once the VMs are provisioned, Ansible configures them and installs the necessary software like K3s.</li>
+          <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Terraform
+</pre></td></tr></tbody></table></code> is used to provision the virtual machines on Proxmox. It defines the infrastructure as code, making it easy to create, modify, and destroy VMs in a repeatable manner.</li>
+          <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Ansible
+</pre></td></tr></tbody></table></code> is used for configuration management. Once the VMs are provisioned, Ansible configures them and installs the necessary software like K3s.</li>
         </ul>
       </li>
       <li><strong>Value:</strong> This combination of tools automates the entire setup process, reducing manual effort and ensuring consistency. It allows you to rebuild the entire homelab from scratch with minimal intervention.</li>
@@ -326,11 +342,19 @@
     <p><strong>Container Orchestration &amp; GitOps (K3s &amp; ArgoCD):</strong></p>
 
     <ul>
-      <li><strong>Component:</strong> <code class="language-plaintext highlighter-rouge">K3s Kubernetes Cluster</code> &amp; <code class="language-plaintext highlighter-rouge">ArgoCD</code></li>
+      <li><strong>Component:</strong> <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>K3s Kubernetes Cluster
+</pre></td></tr></tbody></table></code> &amp; <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>ArgoCD
+</pre></td></tr></tbody></table></code></li>
       <li><strong>Role:</strong>
         <ul>
-          <li><code class="language-plaintext highlighter-rouge">K3s</code> is a lightweight, certified Kubernetes distribution that runs on the VMs. It orchestrates the deployment, scaling, and management of containerized applications.</li>
-          <li><code class="language-plaintext highlighter-rouge">ArgoCD</code> provides a GitOps workflow. It continuously monitors a Git repository and automatically deploys any changes to the K3s cluster, ensuring that the cluster state always matches the state defined in Git.</li>
+          <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>K3s
+</pre></td></tr></tbody></table></code> is a lightweight, certified Kubernetes distribution that runs on the VMs. It orchestrates the deployment, scaling, and management of containerized applications.</li>
+          <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>ArgoCD
+</pre></td></tr></tbody></table></code> provides a GitOps workflow. It continuously monitors a Git repository and automatically deploys any changes to the K3s cluster, ensuring that the cluster state always matches the state defined in Git.</li>
         </ul>
       </li>
       <li><strong>Value:</strong> Kubernetes provides a powerful and standardized platform for running applications. ArgoCD automates application deployment and management, making it easy to track changes, roll back to previous versions, and maintain a consistent environment.</li>
@@ -340,11 +364,19 @@
     <p><strong>Applications (Core Services &amp; User Applications):</strong></p>
 
     <ul>
-      <li><strong>Component:</strong> <code class="language-plaintext highlighter-rouge">Core Services</code> &amp; <code class="language-plaintext highlighter-rouge">User Applications</code></li>
+      <li><strong>Component:</strong> <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Core Services
+</pre></td></tr></tbody></table></code> &amp; <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>User Applications
+</pre></td></tr></tbody></table></code></li>
       <li><strong>Role:</strong> The K3s cluster runs two types of applications:
         <ul>
-          <li><code class="language-plaintext highlighter-rouge">Core Services</code>: These are essential infrastructure components like monitoring, logging, and security services.</li>
-          <li><code class="language-plaintext highlighter-rouge">User Applications</code>: These are the end-user applications that you want to run in your homelab, such as a password manager, Git service, or home automation platform.</li>
+          <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Core Services
+</pre></td></tr></tbody></table></code>: These are essential infrastructure components like monitoring, logging, and security services.</li>
+          <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>User Applications
+</pre></td></tr></tbody></table></code>: These are the end-user applications that you want to run in your homelab, such as a password manager, Git service, or home automation platform.</li>
         </ul>
       </li>
       <li><strong>Value:</strong> This separation allows you to manage the core infrastructure independently of the applications, making it easier to update and maintain both.</li>
@@ -354,12 +386,24 @@
     <p><strong>Supporting Services (Traefik, Authelia, Vault):</strong></p>
 
     <ul>
-      <li><strong>Component:</strong> <code class="language-plaintext highlighter-rouge">Traefik Ingress</code>, <code class="language-plaintext highlighter-rouge">Authelia SSO</code>, <code class="language-plaintext highlighter-rouge">Vault Secrets</code></li>
+      <li><strong>Component:</strong> <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Traefik Ingress
+</pre></td></tr></tbody></table></code>, <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Authelia SSO
+</pre></td></tr></tbody></table></code>, <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Vault Secrets
+</pre></td></tr></tbody></table></code></li>
       <li><strong>Role:</strong>
         <ul>
-          <li><code class="language-plaintext highlighter-rouge">Traefik Ingress</code>: A reverse proxy and load balancer that manages external access to the applications running in the cluster.</li>
-          <li><code class="language-plaintext highlighter-rouge">Authelia SSO</code>: Provides single sign-on and two-factor authentication for the applications, enhancing security.</li>
-          <li><code class="language-plaintext highlighter-rouge">Vault Secrets</code>: A secure storage for secrets like API keys, passwords, and certificates.</li>
+          <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Traefik Ingress
+</pre></td></tr></tbody></table></code>: A reverse proxy and load balancer that manages external access to the applications running in the cluster.</li>
+          <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Authelia SSO
+</pre></td></tr></tbody></table></code>: Provides single sign-on and two-factor authentication for the applications, enhancing security.</li>
+          <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Vault Secrets
+</pre></td></tr></tbody></table></code>: A secure storage for secrets like API keys, passwords, and certificates.</li>
         </ul>
       </li>
       <li><strong>Value:</strong> These services provide essential functionality for managing and securing the applications. Traefik simplifies routing, Authelia centralizes authentication, and Vault protects sensitive information.</li>
@@ -370,16 +414,38 @@
 <h3 id="general-flow-of-the-system">General Flow of the System</h3>
 
 <ol>
-  <li><strong>Provisioning:</strong> <code class="language-plaintext highlighter-rouge">Terraform</code> provisions the virtual machines on <code class="language-plaintext highlighter-rouge">Proxmox</code>.</li>
-  <li><strong>Configuration:</strong> <code class="language-plaintext highlighter-rouge">Ansible</code> configures the VMs and installs the <code class="language-plaintext highlighter-rouge">K3s Kubernetes Cluster</code>.</li>
-  <li><strong>Deployment:</strong> <code class="language-plaintext highlighter-rouge">ArgoCD</code> monitors the Git repository and deploys the <code class="language-plaintext highlighter-rouge">Core Services</code> and <code class="language-plaintext highlighter-rouge">User Applications</code> to the <code class="language-plaintext highlighter-rouge">K3s</code> cluster.</li>
+  <li><strong>Provisioning:</strong> <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Terraform
+</pre></td></tr></tbody></table></code> provisions the virtual machines on <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Proxmox
+</pre></td></tr></tbody></table></code>.</li>
+  <li><strong>Configuration:</strong> <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Ansible
+</pre></td></tr></tbody></table></code> configures the VMs and installs the <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>K3s Kubernetes Cluster
+</pre></td></tr></tbody></table></code>.</li>
+  <li><strong>Deployment:</strong> <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>ArgoCD
+</pre></td></tr></tbody></table></code> monitors the Git repository and deploys the <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Core Services
+</pre></td></tr></tbody></table></code> and <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>User Applications
+</pre></td></tr></tbody></table></code> to the <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>K3s
+</pre></td></tr></tbody></table></code> cluster.</li>
   <li><strong>Access:</strong>
     <ul>
-      <li>Users access the applications through the <code class="language-plaintext highlighter-rouge">Traefik Ingress</code>.</li>
-      <li><code class="language-plaintext highlighter-rouge">Authelia SSO</code> intercepts the requests to handle authentication.</li>
+      <li>Users access the applications through the <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Traefik Ingress
+</pre></td></tr></tbody></table></code>.</li>
+      <li><code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Authelia SSO
+</pre></td></tr></tbody></table></code> intercepts the requests to handle authentication.</li>
     </ul>
   </li>
-  <li><strong>Secrets Management:</strong> The applications and the cluster use <code class="language-plaintext highlighter-rouge">Vault</code> to securely retrieve their secrets.</li>
+  <li><strong>Secrets Management:</strong> The applications and the cluster use <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>Vault
+</pre></td></tr></tbody></table></code> to securely retrieve their secrets.</li>
 </ol>
 
 <hr />
@@ -398,15 +464,23 @@
 
 <ul>
   <li><strong>Why Terraform?</strong> Terraform is a popular and powerful IaC tool that allows you to define your infrastructure in a declarative way. It has excellent support for Proxmox and a wide range of other providers.</li>
-  <li><strong>Configuration:</strong> The main configuration file is <code class="language-plaintext highlighter-rouge">main.tf</code>, which defines the Proxmox provider and the VM resources.</li>
-  <li><strong>Variables:</strong> User-specific variables, such as Proxmox API credentials and VM specifications (CPU, memory, disk), are defined in <code class="language-plaintext highlighter-rouge">variables.tf</code> and should be set in a <code class="language-plaintext highlighter-rouge">terraform.tfvars</code> file.</li>
+  <li><strong>Configuration:</strong> The main configuration file is <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>main.tf
+</pre></td></tr></tbody></table></code>, which defines the Proxmox provider and the VM resources.</li>
+  <li><strong>Variables:</strong> User-specific variables, such as Proxmox API credentials and VM specifications (CPU, memory, disk), are defined in <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>variables.tf
+</pre></td></tr></tbody></table></code> and should be set in a <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>terraform.tfvars
+</pre></td></tr></tbody></table></code> file.</li>
 </ul>
 
 <h3 id="43-ansible">4.3. Ansible</h3>
 
 <ul>
   <li><strong>Why Ansible?</strong> Ansible is a simple and powerful configuration management tool that is agentless, which means that you don’t need to install any special software on the managed nodes.</li>
-  <li><strong>Inventory:</strong> Ansible’s inventory is located in <code class="language-plaintext highlighter-rouge">ansible/inventory/</code>. A static inventory file is provided for the user to fill in with the IP addresses of the newly created VMs.</li>
+  <li><strong>Inventory:</strong> Ansible’s inventory is located in <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>ansible/inventory/
+</pre></td></tr></tbody></table></code>. A static inventory file is provided for the user to fill in with the IP addresses of the newly created VMs.</li>
   <li><strong>Playbooks and Roles:</strong> The project uses a combination of playbooks and roles to organize the Ansible code. This modular structure allows for easy extension and customization.</li>
 </ul>
 
@@ -525,7 +599,23 @@
 <div class="page__footer-follow">
   <ul class="social-icons">
     
+      <li><strong>Follow:</strong></li>
+    
 
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
 
     
@@ -535,7 +625,7 @@
 </div>
 
 
-<div class="page__footer-copyright">&copy; 2025 <a href="https://homelabeazy.github.io">Homelabeazy Documentation</a>. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</div>
+<div class="page__footer-copyright">&copy; 2013 - 2025 <a href="https://homelabeazy.github.io">Homelabeazy Documentation</a>. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</div>
 
       </footer>
     </div>

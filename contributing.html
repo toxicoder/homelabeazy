@@ -6,11 +6,11 @@
   https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
 -->
 
-<html lang="en" class="no-js">
+<html lang="en-US" class="no-js">
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Deployment - Homelabeazy Documentation</title>
+<!-- begin _includes/seo.html --><title>Contributing - Homelabeazy Documentation</title>
 <meta name="description" content="“Your Homelab as Code”">
 
 
@@ -21,8 +21,8 @@
 <meta property="og:type" content="website">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Homelabeazy Documentation">
-<meta property="og:title" content="Deployment">
-<meta property="og:url" content="https://homelabeazy.github.io/homelabeazy/deployment/">
+<meta property="og:title" content="Contributing">
+<meta property="og:url" content="https://homelabeazy.github.io/homelabeazy/contributing.html">
 
 
   <meta property="og:description" content="“Your Homelab as Code”">
@@ -32,9 +32,9 @@
 
 
   <meta name="twitter:site" content="@homelabeazy">
-  <meta name="twitter:title" content="Deployment">
+  <meta name="twitter:title" content="Contributing">
   <meta name="twitter:description" content="“Your Homelab as Code”">
-  <meta name="twitter:url" content="https://homelabeazy.github.io/homelabeazy/deployment/">
+  <meta name="twitter:url" content="https://homelabeazy.github.io/homelabeazy/contributing.html">
 
   
     <meta name="twitter:card" content="summary">
@@ -49,8 +49,12 @@
 
 
 
+  
 
-<link rel="canonical" href="https://homelabeazy.github.io/homelabeazy/deployment/">
+  
+
+
+<link rel="canonical" href="https://homelabeazy.github.io/homelabeazy/contributing.html">
 
 
 
@@ -170,7 +174,7 @@
 
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Deployment">
+    <meta itemprop="headline" content="Contributing">
     
     
     
@@ -179,7 +183,7 @@
       
         <header>
           <h1 id="page-title" class="page__title" itemprop="headline">
-            <a href="https://homelabeazy.github.io/homelabeazy/deployment/" itemprop="url">Deployment
+            <a href="https://homelabeazy.github.io/homelabeazy/contributing.html" itemprop="url">Contributing
 </a>
           </h1>
           
@@ -190,53 +194,56 @@
 
       <section class="page__content" itemprop="text">
         
-        <h1 id="deployment">Deployment</h1>
+        <h1 id="contributing-to-homelabeazy">Contributing to Homelabeazy</h1>
 
-<p>This document provides an overview of the deployment process for the Homelabeazy documentation site.</p>
+<p>Thank you for your interest in contributing to Homelabeazy! We welcome contributions from the community to help us improve the project and make it even better.</p>
 
-<h2 id="documentation-site">Documentation Site</h2>
+<p>There are many ways you can contribute to the project, including:</p>
 
-<p>The documentation site is a Jekyll-based site that is hosted on GitHub Pages. The site is automatically built and deployed by a GitHub Actions workflow whenever a change is pushed to the <code class="language-plaintext highlighter-rouge">main</code> branch.</p>
+<ul>
+  <li><strong>Reporting bugs:</strong> If you find a bug, please open an issue on our <a href="https://github.com/homelabeazy/homelabeazy/issues">GitHub repository</a>.</li>
+  <li><strong>Suggesting new features:</strong> If you have an idea for a new feature, please open an issue to discuss it with us.</li>
+  <li><strong>Improving the documentation:</strong> If you find any errors or omissions in the documentation, please submit a pull request with your changes.</li>
+  <li><strong>Submitting pull requests:</strong> If you’d like to contribute code to the project, please submit a pull request with your changes.</li>
+</ul>
 
-<p>The workflow is defined in the <code class="language-plaintext highlighter-rouge">.github/workflows/deploy-docs.yml</code> file. It performs the following steps:</p>
+<h2 id="reporting-bugs">Reporting Bugs</h2>
+
+<p>Before you report a bug, please search the existing issues to see if someone else has already reported it. If you can’t find an existing issue, please open a new one with the following information:</p>
+
+<ul>
+  <li>A clear and descriptive title.</li>
+  <li>A detailed description of the bug, including the steps to reproduce it.</li>
+  <li>The version of Homelabeazy you are using.</li>
+  <li>Any relevant logs or error messages.</li>
+</ul>
+
+<h2 id="suggesting-new-features">Suggesting New Features</h2>
+
+<p>We’re always open to new ideas! If you have an idea for a new feature, please open an issue to discuss it with us. This will allow us to provide feedback and ensure that your idea is aligned with the project’s goals.</p>
+
+<h2 id="submitting-pull-requests">Submitting Pull Requests</h2>
+
+<p>If you’d like to contribute code to the project, please follow these steps:</p>
 
 <ol>
-  <li><strong>Checkout:</strong> The workflow checks out the code from the repository.</li>
-  <li><strong>Setup Ruby:</strong> It sets up the Ruby environment and installs the necessary gems, using a cache to speed up the process.</li>
-  <li><strong>Build:</strong> It builds the Jekyll site.</li>
-  <li><strong>Test:</strong> It runs <code class="language-plaintext highlighter-rouge">html-proofer</code> to check for broken links and other issues.</li>
-  <li><strong>Deploy:</strong> It deploys the built site to the <code class="language-plaintext highlighter-rouge">gh-pages</code> branch, which is then served by GitHub Pages.</li>
+  <li><strong>Fork the repository:</strong> Create a fork of the Homelabeazy repository to your own GitHub account.</li>
+  <li><strong>Create a new branch:</strong> Create a new branch in your fork for your changes.</li>
+  <li><strong>Make your changes:</strong> Make your changes to the code and commit them to your branch.</li>
+  <li><strong>Submit a pull request:</strong> Submit a pull request from your branch to the <code class="language-plaintext highlighter-rouge"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>main
+</pre></td></tr></tbody></table></code> branch of the Homelabeazy repository.</li>
 </ol>
 
-<h2 id="homelab-deployment">Homelab Deployment</h2>
+<p>When you submit a pull request, please provide a clear and descriptive title and a detailed description of your changes. If your pull request is related to an existing issue, please link to it in the description.</p>
 
-<p>The deployment of your homelab is handled by a combination of Terraform, Ansible, and ArgoCD.</p>
+<p>We will review your pull request as soon as possible and provide feedback. We may ask you to make some changes before we can merge your pull request.</p>
 
-<h3 id="infrastructure">Infrastructure</h3>
+<h2 id="code-of-conduct">Code of Conduct</h2>
 
-<p>The infrastructure for your homelab is provisioned using Terraform. You can apply the Terraform configuration by running the following command:</p>
+<p>Please note that this project is released with a <a href="https://github.com/homelabeazy/homelabeazy/blob/main/CODE_OF_CONDUCT.md">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>make terraform-apply
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p>This will create the virtual machines on your Proxmox server.</p>
-
-<h3 id="configuration">Configuration</h3>
-
-<p>After the virtual machines have been provisioned, you’ll need to configure them using Ansible.</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>make ansible-playbook-setup
-</pre></td></tr></tbody></table></code></pre></div></div>
-
-<p>This will install K3s on the virtual machines and configure them to form a Kubernetes cluster.</p>
-
-<h3 id="applications">Applications</h3>
-
-<p>Applications are deployed to your cluster using a GitOps workflow with ArgoCD. To deploy a new application, you’ll need to create a new YAML file in the <code class="language-plaintext highlighter-rouge">apps/</code> directory of your private configuration repository.</p>
-
-<p>For more information on how to add new applications, please see the <a href="./customization.md">Customization</a> guide.</p>
+<p>Thank you for your contributions!</p>
 
         
       </section>
@@ -289,7 +296,23 @@
 <div class="page__footer-follow">
   <ul class="social-icons">
     
+      <li><strong>Follow:</strong></li>
+    
 
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
 
     
@@ -299,7 +322,7 @@
 </div>
 
 
-<div class="page__footer-copyright">&copy; 2025 <a href="https://homelabeazy.github.io">Homelabeazy Documentation</a>. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</div>
+<div class="page__footer-copyright">&copy; 2013 - 2025 <a href="https://homelabeazy.github.io">Homelabeazy Documentation</a>. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</div>
 
       </footer>
     </div>
