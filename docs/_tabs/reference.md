@@ -1,7 +1,8 @@
 ---
-layout: single
-title: Technical Design
-category: "Reference"
+layout: default
+title: Reference
+nav_order: 9
+has_children: true
 ---
 
 # Technical Design Document

@@ -1,7 +1,7 @@
 ---
-layout: single
+layout: default
 title: Services
-category: "Reference"
+nav_order: 5
 ---
 
 # Services

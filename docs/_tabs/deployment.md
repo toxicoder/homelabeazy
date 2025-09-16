@@ -1,7 +1,7 @@
 ---
-layout: single
+layout: default
 title: Deployment
-category: "Reference"
+nav_order: 4
 ---
 
 # Deployment
