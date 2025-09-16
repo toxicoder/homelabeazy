@@ -122,4 +122,4 @@ You've now successfully set up your homelab and deployed your first application.
 *   **Explore the available applications:** The Homelabeazy project comes with a number of pre-configured applications that you can deploy to your cluster. Check out the `apps/` directory in the repository.
 *   **Add your own applications:** You can easily add your own applications to your homelab by creating new Helm charts or by using existing ones.
 *   **Customize your setup:** The Homelabeazy project is highly customizable. You can change the network configuration, add new services, and integrate with other systems.
-*   **Contribute to the project:** If you've found a bug or have an idea for a new feature, we'd love to hear from you! Check out our [Contributing Guide](./community.md) for more information.
+*   **Contribute to the project:** If you've found a bug or have an idea for a new feature, we'd love to hear from you! Check out our [Contributing Guide](./community) for more information.

@@ -14,7 +14,7 @@ Welcome to the Technical Design Document for Homelabeazy. This document provides
 
 ### Who is this for?
 
-This document is intended for users who have a basic understanding of the core technologies used in this project, such as Proxmox, Terraform, Ansible, and Kubernetes. If you're new to these technologies, we recommend that you start with our [Getting Started guide](./guides.md) and then come back to this document for a deeper dive.
+This document is intended for users who have a basic understanding of the core technologies used in this project, such as Proxmox, Terraform, Ansible, and Kubernetes. If you're new to these technologies, we recommend that you start with our [Getting Started guide](./guides) and then come back to this document for a deeper dive.
 
 ### Design Philosophy
 
@@ -214,7 +214,7 @@ The project uses a VLAN-based network segmentation strategy to isolate traffic a
 
 ## 5. Scalability and Customization
 
-This project is designed to be both scalable and customizable. You can easily scale your cluster by adding more worker nodes, and you can customize the project by adding your own applications, configuring services, and modifying the infrastructure. For detailed instructions, please refer to the [Customization Guide](customization.md).
+This project is designed to be both scalable and customizable. You can easily scale your cluster by adding more worker nodes, and you can customize the project by adding your own applications, configuring services, and modifying the infrastructure. For detailed instructions, please refer to the [Customization Guide](customization).
 
 ---
 
