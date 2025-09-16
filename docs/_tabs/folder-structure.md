@@ -2,7 +2,7 @@
 layout: default
 title: Folder Structure
 parent: Reference
-nav_order: 7
+nav_order: 5
 permalink: /folder-structure
 ---
 
