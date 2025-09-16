@@ -20,13 +20,10 @@ description: >- # used by seo meta and the atom feed
 
 # Fill in the protocol & hostname for your site.
 # E.g. 'https://username.github.io', note that it does not end with a '/'.
-url: "https://homelabeazy.github.io"
+url: "https://toxicoder.github.io"
 
 github:
-  username: homelabeazy # change to your GitHub username
-
-twitter:
-  username: homelabeazy # change to your Twitter username
+  username: toxicoder # change to your GitHub username
 
 # Search settings
 search_enabled: true
@@ -94,7 +91,7 @@ nav_enabled: true
 nav_sort: case_sensitive
 nav_external_links:
   - title: Homelabeazy on GitHub
-    url: https://github.com/homelabeazy/homelabeazy
+    url: https://github.com/toxicoder/homelabeazy
 callouts:
   warning:
     title: Warning
@@ -107,4 +104,4 @@ callouts:
     color: green
 aux_links:
   "Homelabeazy on GitHub":
-    - "https://github.com/homelabeazy/homelabeazy"
+    - "https://github.com/toxicoder/homelabeazy"
