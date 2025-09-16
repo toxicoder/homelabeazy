@@ -2,392 +2,392 @@
     "doc": "Advanced Usage",
     "title": "Advanced Usage",
     "content": "This project includes a | 1 . | Makefile . | . that provides a convenient way to run common tasks. This guide will walk you through some of the more advanced features of Homelabeazy. ",
-    "url": "/docs/guides/advanced-usage.html",
+    "url": "/homelabeazy/docs/guides/advanced-usage.html",
     
     "relUrl": "/docs/guides/advanced-usage.html"
   },"1": {
     "doc": "Advanced Usage",
     "title": "Makefile Commands",
     "content": "The | 1 . | Makefile . | . at the root of the project provides a number of helpful commands for managing your homelab. Here are some of the most common ones: . | 1 . | make help . | . : Display a list of all available commands. | | 1 . | make install-deps . | . : Install all the necessary dependencies for the project. | | 1 . | make setup-interactive . | . : Run the interactive setup script to configure your homelab. | | 1 . | make lint . | . : Run all the linters to check your code for errors. | | 1 . | make terraform-apply . | . : Apply the Terraform configuration to provision your infrastructure. | | 1 . | make ansible-playbook-setup . | . : Run the main Ansible playbook to configure your cluster and deploy your applications. | | 1 . | make test . | . : Run the test suite for the project. | | 1 . | make clean . | . : Clean up any temporary files. | . ",
-    "url": "/docs/guides/advanced-usage.html#makefile-commands",
+    "url": "/homelabeazy/docs/guides/advanced-usage.html#makefile-commands",
     
     "relUrl": "/docs/guides/advanced-usage.html#makefile-commands"
   },"2": {
     "doc": "Advanced Usage",
     "title": "Homelab Importer",
     "content": "If you have an existing homelab that was configured manually, you can use the | 1 . | homelab-importer . | . tool to import it into a Terraform-managed setup. This is a great way to migrate your existing homelab to the Infrastructure as Code (IaC) approach used by this project. For detailed instructions on how to use the importer, please see the Technical Design guide. ",
-    "url": "/docs/guides/advanced-usage.html#homelab-importer",
+    "url": "/homelabeazy/docs/guides/advanced-usage.html#homelab-importer",
     
     "relUrl": "/docs/guides/advanced-usage.html#homelab-importer"
   },"3": {
     "doc": "Advanced Usage",
     "title": "OpenLDAP",
     "content": "This project includes an Ansible role for deploying OpenLDAP to your Kubernetes cluster. OpenLDAP is used as the central user directory for your homelab, and it is integrated with Authelia to provide Single Sign-On (SSO) for your applications. The OpenLDAP passwords are managed by Vault. You will need to add the following secrets to Vault: . | 1 . | secrets/data/openldap . | . | 1 . | root-password . | . | | 1 . | admin-password . | . | . | . ",
-    "url": "/docs/guides/advanced-usage.html#openldap",
+    "url": "/homelabeazy/docs/guides/advanced-usage.html#openldap",
     
     "relUrl": "/docs/guides/advanced-usage.html#openldap"
   },"4": {
     "doc": "Advanced Usage",
     "title": "Stealth VM",
     "content": "This project includes an optional “stealth” Windows VM on Proxmox. The purpose of this VM is to allow for game streaming from a server. It aims to provide a normal gaming environment, which can sometimes be challenging on virtualized hardware. Our Stance on Cheating . This project is firmly against cheating in any form. The “stealth” features are designed to make the virtual machine appear as a standard physical machine to the game, ensuring compatibility and performance. It is not intended to enable or facilitate cheating. We believe in fair play and sportsmanship. Any use of this project for activities that violate the terms of service of a game, including cheating, is strictly discouraged. Prerequisites . | Proxmox 8.x+ | A Windows ISO file | The PCI ID of the GPU you want to pass through | The MAC address of your physical network card | . Usage . To enable the stealth VM, run the | 1 . | scripts/setup.sh . | . script and answer “y” when prompted to enable the stealth VM. You will then be prompted for the Windows ISO path, GPU PCI ID, and real MAC address. Disclaimer . This feature is intended for running games on a virtual machine for streaming purposes. Using this for any form of cheating is against the principles of this project. The author of this project is not responsible for any consequences that may arise from the misuse of this feature. ",
-    "url": "/docs/guides/advanced-usage.html#stealth-vm",
+    "url": "/homelabeazy/docs/guides/advanced-usage.html#stealth-vm",
     
     "relUrl": "/docs/guides/advanced-usage.html#stealth-vm"
   },"5": {
     "doc": "Community",
     "title": "Contributing to Homelabeazy",
     "content": "Thank you for your interest in contributing to Homelabeazy! We welcome contributions from the community to help us improve the project and make it even better. There are many ways you can contribute to the project, including: . | Reporting bugs: If you find a bug, please open an issue on our GitHub repository. | Suggesting new features: If you have an idea for a new feature, please open an issue to discuss it with us. | Improving the documentation: If you find any errors or omissions in the documentation, please submit a pull request with your changes. | Submitting pull requests: If you’d like to contribute code to the project, please submit a pull request with your changes. | . ",
-    "url": "/docs/community.html#contributing-to-homelabeazy",
+    "url": "/homelabeazy/docs/community.html#contributing-to-homelabeazy",
     
     "relUrl": "/docs/community.html#contributing-to-homelabeazy"
   },"6": {
     "doc": "Community",
     "title": "Reporting Bugs",
     "content": "Before you report a bug, please search the existing issues to see if someone else has already reported it. If you can’t find an existing issue, please open a new one with the following information: . | A clear and descriptive title. | A detailed description of the bug, including the steps to reproduce it. | The version of Homelabeazy you are using. | Any relevant logs or error messages. | . ",
-    "url": "/docs/community.html#reporting-bugs",
+    "url": "/homelabeazy/docs/community.html#reporting-bugs",
     
     "relUrl": "/docs/community.html#reporting-bugs"
   },"7": {
     "doc": "Community",
     "title": "Suggesting New Features",
     "content": "We’re always open to new ideas! If you have an idea for a new feature, please open an issue to discuss it with us. This will allow us to provide feedback and ensure that your idea is aligned with the project’s goals. ",
-    "url": "/docs/community.html#suggesting-new-features",
+    "url": "/homelabeazy/docs/community.html#suggesting-new-features",
     
     "relUrl": "/docs/community.html#suggesting-new-features"
   },"8": {
     "doc": "Community",
     "title": "Submitting Pull Requests",
     "content": "If you’d like to contribute code to the project, please follow these steps: . | Fork the repository: Create a fork of the Homelabeazy repository to your own GitHub account. | Create a new branch: Create a new branch in your fork for your changes. | Make your changes: Make your changes to the code and commit them to your branch. | Submit a pull request: Submit a pull request from your branch to the | 1 . | main . | . branch of the Homelabeazy repository. | . When you submit a pull request, please provide a clear and descriptive title and a detailed description of your changes. If your pull request is related to an existing issue, please link to it in the description. We will review your pull request as soon as possible and provide feedback. We may ask you to make some changes before we can merge your pull request. ",
-    "url": "/docs/community.html#submitting-pull-requests",
+    "url": "/homelabeazy/docs/community.html#submitting-pull-requests",
     
     "relUrl": "/docs/community.html#submitting-pull-requests"
   },"9": {
     "doc": "Community",
     "title": "Code of Conduct",
     "content": "Please note that this project is released with a Contributor Code of Conduct. By participating in this project you agree to abide by its terms. Thank you for your contributions! . ",
-    "url": "/docs/community.html#code-of-conduct",
+    "url": "/homelabeazy/docs/community.html#code-of-conduct",
     
     "relUrl": "/docs/community.html#code-of-conduct"
   },"10": {
     "doc": "Community",
     "title": "Community",
     "content": " ",
-    "url": "/docs/community.html",
+    "url": "/homelabeazy/docs/community.html",
     
     "relUrl": "/docs/community.html"
   },"11": {
     "doc": "Configuration",
     "title": "Configuration",
     "content": "Welcome to the configuration guide for Homelabeazy! This document will walk you through the process of configuring your homelab environment. A solid understanding of these concepts will help you get the most out of your Homelabeazy setup. ",
-    "url": "/docs/reference/configuration.html",
+    "url": "/homelabeazy/docs/reference/configuration.html",
     
     "relUrl": "/docs/reference/configuration.html"
   },"12": {
     "doc": "Configuration",
     "title": "Configuration Strategy",
     "content": "At the heart of Homelabeazy is the principle of “Infrastructure as Code” (IaC). This means that all the configuration for your homelab is stored in files, which can be versioned, shared, and reused. This approach has several advantages: . | Reproducibility: You can easily recreate your entire homelab setup from the configuration files. | Consistency: All your environments (development, testing, production) will be configured in the same way. | Automation: You can automate the process of setting up and managing your homelab. | . Your configuration is stored in a private Git repository that you control. The | 1 . | make setup-interactive . | . script will help you generate the initial configuration files and commit them to your repository. ",
-    "url": "/docs/reference/configuration.html#configuration-strategy",
+    "url": "/homelabeazy/docs/reference/configuration.html#configuration-strategy",
     
     "relUrl": "/docs/reference/configuration.html#configuration-strategy"
   },"13": {
     "doc": "Configuration",
     "title": "Configuration File Types",
     "content": "The configuration is split into several types of files, each with a specific purpose: . | Global Settings ( | 1 . | config.yml . | . ): This file contains high-level settings for your homelab, such as your domain name and timezone. | Terraform Variables ( | 1 . | terraform.tfvars . | . ): This file contains variables specific to the Proxmox infrastructure, such as your API credentials and the specifications for your virtual machines. | Ansible Inventory: This file tells Ansible which hosts to connect to and how to connect to them. | Application Configuration ( | 1 . | apps/ . | . ): This directory contains | 1 . | values.yaml . | . files for each application. These files are used to configure the Helm charts that are deployed by ArgoCD. | . During the setup process, the | 1 . | homelabeazy . | . repository will create a symlink named | 1 . | private . | . that points to your private configuration directory. This allows the tools in this repository to access your configuration without you having to copy it over. ",
-    "url": "/docs/reference/configuration.html#configuration-file-types",
+    "url": "/homelabeazy/docs/reference/configuration.html#configuration-file-types",
     
     "relUrl": "/docs/reference/configuration.html#configuration-file-types"
   },"14": {
     "doc": "Configuration",
     "title": "1. Global Configuration (1\nconfig.yml\n)",
     "content": "This file is the central place for all your high-level configuration. It is generated by the | 1 . | homelab-importer . | . tool during the interactive setup, but you can also edit it manually. Here’s a breakdown of the variables in this file: . | Variable | Description | . | | 1 . | common.domain_name . | . | The domain name for your homelab (e.g., | 1 . | homelab.local . | . ). This domain will be used to access the various services running in your homelab. | . | 1 . | common.timezone . | . | The timezone for your servers (e.g., | 1 . | Etc/UTC . | . ). It’s important to set this correctly to ensure that your logs and other time-sensitive data are accurate. | . | 1 . | common.load_balancer_ip . | . | The IP address to be used by the Kubernetes load balancer. This IP address must be on the same subnet as your homelab servers. | . | 1 . | common.proxmox_node . | . | The name of the Proxmox node where you want to deploy your virtual machines. | . | 1 . | common.proxmox_template . | . | The name of the cloud-init template to use for new VMs. This template should be a minimal Linux distribution, such as Ubuntu Cloud-init. | . | 1 . | common.proxmox_service_bridge . | . | The Proxmox network bridge for the service network. This bridge will be used for communication between the virtual machines in your homelab. | . | 1 . | common.proxmox_service_vlan_tag . | . | The VLAN tag for the service network. If you are not using VLANs, you can leave this blank. | . | 1 . | common.k3s_master_vm_id . | . | The VM ID for the K3s master node. This must be a unique ID in your Proxmox environment. | . | 1 . | common.k3s_worker_vm_id_start . | . | The starting VM ID for the K3s worker nodes. For example, if you set this to | 1 . | 101 . | . and you have 3 worker nodes, the worker nodes will have VM IDs | 1 . | 101 . | . , | 1 . | 102 . | . , and | 1 . | 103 . | . | . | 1 . | common.ldap_base_dn . | . | The base DN for the LDAP server. This is the top-level entry in your LDAP directory. | . | 1 . | secrets_to_generate . | . | A list of secrets to be generated by the | 1 . | secure_gen . | . role. This is used to bootstrap the security of your homelab. | . ",
-    "url": "/docs/reference/configuration.html#1-global-configuration-configyml",
+    "url": "/homelabeazy/docs/reference/configuration.html#1-global-configuration-configyml",
     
     "relUrl": "/docs/reference/configuration.html#1-global-configuration-configyml"
   },"15": {
     "doc": "Configuration",
     "title": "2. Terraform Variables (1\nterraform.tfvars\n)",
     "content": "This file holds the variables needed by Terraform to provision the infrastructure on Proxmox. The | 1 . | homelab-importer . | . tool will generate this file based on your existing Proxmox environment. | Variable | Description | . | | 1 . | proxmox_api_url . | . | The URL of your Proxmox API (e.g., | 1 . | https://proxmox.example.com/api2/json . | . ). | . | 1 . | pm_token_id . | . | Your Proxmox API token ID. You can generate this in the Proxmox web UI under | 1 . | Datacenter &gt; Permissions &gt; API Tokens . | . | . | 1 . | pm_token_secret . | . | Your Proxmox API token secret. This is a sensitive value and should be treated like a password. | . | 1 . | proxmox_node . | . | The name of the Proxmox node to deploy to. This should be the same value as | 1 . | common.proxmox_node . | . in your | 1 . | config.yml . | . file. | . | 1 . | proxmox_template . | . | The name of the cloud-init template to use for the VMs. This should be the same value as | 1 . | common.proxmox_template . | . in your | 1 . | config.yml . | . file. | . | 1 . | k3s_worker_count . | . | The number of K3s worker nodes to create. For most homelab setups, a single worker node is sufficient. If you plan to run a large number of applications, you may want to increase this value. Defaults to | 1 . | 1 . | . | . | 1 . | k3s_master_memory . | . | The amount of memory (in MB) for the master VM. | 1 . | 2048 . | . (2GB) is a good starting point. Defaults to | 1 . | 2048 . | . | . | 1 . | k3s_master_cores . | . | The number of CPU cores for the master VM. | 1 . | 2 . | . cores should be sufficient for most setups. Defaults to | 1 . | 2 . | . | . | 1 . | k3s_worker_memory . | . | The amount of memory (in MB) for the worker VMs. | 1 . | 2048 . | . (2GB) is a good starting point. Defaults to | 1 . | 2048 . | . | . | 1 . | k3s_worker_cores . | . | The number of CPU cores for the worker VMs. | 1 . | 2 . | . cores should be sufficient for most setups. Defaults to | 1 . | 2 . | . | . ",
-    "url": "/docs/reference/configuration.html#2-terraform-variables-terraformtfvars",
+    "url": "/homelabeazy/docs/reference/configuration.html#2-terraform-variables-terraformtfvars",
     
     "relUrl": "/docs/reference/configuration.html#2-terraform-variables-terraformtfvars"
   },"16": {
     "doc": "Configuration",
     "title": "3. Ansible Inventory",
     "content": "The Ansible inventory file ( | 1 . | ansible/inventory/inventory.auto.yml . | . ) is generated automatically when you run the interactive setup. The script uses the output of | 1 . | terraform output -json . | . to create the inventory file. You should not need to edit this file manually. This file tells Ansible which hosts to connect to and how to connect to them. It is a crucial part of the automation process, as it allows Ansible to configure your virtual machines and deploy your applications. ",
-    "url": "/docs/reference/configuration.html#3-ansible-inventory",
+    "url": "/homelabeazy/docs/reference/configuration.html#3-ansible-inventory",
     
     "relUrl": "/docs/reference/configuration.html#3-ansible-inventory"
   },"17": {
     "doc": "Customization",
     "title": "Customization",
     "content": "One of the core design principles of Homelabeazy is modularity. This means that you can easily customize the project to meet your specific needs. This guide will walk you through some of the most common customization tasks. ",
-    "url": "/docs/guides/customization.html",
+    "url": "/homelabeazy/docs/guides/customization.html",
     
     "relUrl": "/docs/guides/customization.html"
   },"18": {
     "doc": "Customization",
     "title": "Adding New Applications",
     "content": "The heart of your homelab is the applications you run on it. Homelabeazy uses a GitOps workflow with ArgoCD to manage applications, which makes it easy to add new ones. Here’s the general process: . | Find or create a Helm chart: Most popular applications have official or community-maintained Helm charts. If not, you can create your own. | Create a | 1 . | values.yaml . | . file: In your private configuration repository, create a | 1 . | values.yaml . | . file in | 1 . | apps/&lt;app-name&gt;/ . | . to store the configuration for the application. This file will override the default values in the Helm chart. | Create an ArgoCD Application manifest: In the main | 1 . | homelabeazy . | . repository, create a new YAML file in the | 1 . | apps/ . | . directory (e.g., | 1 . | apps/&lt;app-name&gt;.yml . | . ). This file will define an ArgoCD | 1 . | Application . | . resource that points to the Helm chart and your | 1 . | values.yaml . | . file. | Add the new application to the “app of apps”: Add a new entry for your application in the | 1 . | apps/app-of-apps.yml . | . file. This will tell ArgoCD to start managing your new application. | Commit and push your changes: Once you commit and push your changes to your Git repository, ArgoCD will automatically detect the new application and deploy it to your cluster. | . For a more detailed walkthrough of this process, please see the Adding New Applications guide. ",
-    "url": "/docs/guides/customization.html#adding-new-applications",
+    "url": "/homelabeazy/docs/guides/customization.html#adding-new-applications",
     
     "relUrl": "/docs/guides/customization.html#adding-new-applications"
   },"19": {
     "doc": "Customization",
     "title": "Managing Secrets",
     "content": "This project uses HashiCorp Vault to manage secrets. This provides a secure and centralized way to store and access sensitive information like API keys, passwords, and certificates. The | 1 . | secure_gen . | . Ansible role will automatically generate any secrets defined in the | 1 . | secrets_to_generate . | . section of your | 1 . | config.yml . | . file and store them in Vault. You can also manually add secrets to Vault using the Vault UI or CLI. ",
-    "url": "/docs/guides/customization.html#managing-secrets",
+    "url": "/homelabeazy/docs/guides/customization.html#managing-secrets",
     
     "relUrl": "/docs/guides/customization.html#managing-secrets"
   },"20": {
     "doc": "Customization",
     "title": "Configuring Network Settings",
     "content": "All of the network settings for your homelab can be configured in your private | 1 . | config.yml . | . file. This includes things like your domain name, the IP address of your load balancer, and the VLANs for your different network segments. ",
-    "url": "/docs/guides/customization.html#configuring-network-settings",
+    "url": "/homelabeazy/docs/guides/customization.html#configuring-network-settings",
     
     "relUrl": "/docs/guides/customization.html#configuring-network-settings"
   },"21": {
     "doc": "Customization",
     "title": "Using a Different Cloud-Init Template",
     "content": "This project uses a cloud-init template to configure the virtual machines when they are first created. You can use a different cloud-init template by modifying the | 1 . | proxmox_template . | . variable in your | 1 . | terraform.tfvars . | . file. Your custom cloud-init template should be based on a minimal Linux distribution (e.g., Ubuntu Server) and should have the | 1 . | qemu-guest-agent . | . installed. ",
-    "url": "/docs/guides/customization.html#using-a-different-cloud-init-template",
+    "url": "/homelabeazy/docs/guides/customization.html#using-a-different-cloud-init-template",
     
     "relUrl": "/docs/guides/customization.html#using-a-different-cloud-init-template"
   },"22": {
     "doc": "Deployment",
     "title": "Deployment",
     "content": "This document provides an overview of the deployment process for the Homelabeazy documentation site. ",
-    "url": "/docs/reference/deployment.html",
+    "url": "/homelabeazy/docs/reference/deployment.html",
     
     "relUrl": "/docs/reference/deployment.html"
   },"23": {
     "doc": "Deployment",
     "title": "Documentation Site",
     "content": "The documentation site is a Jekyll-based site that is hosted on GitHub Pages. The site is automatically built and deployed by a GitHub Actions workflow whenever a change is pushed to the | 1 . | main . | . branch. The workflow is defined in the | 1 . | .github/workflows/deploy-docs.yml . | . file. It performs the following steps: . | Checkout: The workflow checks out the code from the repository. | Setup Ruby: It sets up the Ruby environment and installs the necessary gems, using a cache to speed up the process. | Build: It builds the Jekyll site. | Test: It runs | 1 . | html-proofer . | . to check for broken links and other issues. | Deploy: It deploys the built site to the | 1 . | gh-pages . | . branch, which is then served by GitHub Pages. | . ",
-    "url": "/docs/reference/deployment.html#documentation-site",
+    "url": "/homelabeazy/docs/reference/deployment.html#documentation-site",
     
     "relUrl": "/docs/reference/deployment.html#documentation-site"
   },"24": {
     "doc": "Deployment",
     "title": "Homelab Deployment",
     "content": "The deployment of your homelab is handled by a combination of Terraform, Ansible, and ArgoCD. Infrastructure . The infrastructure for your homelab is provisioned using Terraform. You can apply the Terraform configuration by running the following command: . | 1 . | make terraform-apply . | . This will create the virtual machines on your Proxmox server. Configuration . After the virtual machines have been provisioned, you’ll need to configure them using Ansible. | 1 . | make ansible-playbook-setup . | . This will install K3s on the virtual machines and configure them to form a Kubernetes cluster. Applications . Applications are deployed to your cluster using a GitOps workflow with ArgoCD. To deploy a new application, you’ll need to create a new YAML file in the | 1 . | apps/ . | . directory of your private configuration repository. For more information on how to add new applications, please see the Customization guide. ",
-    "url": "/docs/reference/deployment.html#homelab-deployment",
+    "url": "/homelabeazy/docs/reference/deployment.html#homelab-deployment",
     
     "relUrl": "/docs/reference/deployment.html#homelab-deployment"
   },"25": {
     "doc": "Folder Structure",
     "title": "Folder Structure",
     "content": "This document provides an overview of the folder structure of the Homelabeazy project. | 1 . | .github/ . | . : This directory contains the GitHub Actions workflows for continuous integration and deployment. | | 1 . | ansible/ . | . : This directory holds the Ansible playbooks, roles, and inventory for configuring your homelab. | 1 . | inventory/ . | . : The Ansible inventory, which defines the hosts that Ansible will manage. | | 1 . | playbooks/ . | . : The Ansible playbooks, which define the tasks that will be executed on the hosts. | | 1 . | roles/ . | . : The Ansible roles, which are reusable units of automation that can be shared between playbooks. | . | | 1 . | apps/ . | . : This directory contains the ArgoCD application manifests for the applications that will be deployed to your cluster. | | 1 . | charts/ . | . : This directory contains the Helm charts for the applications that are not available in a public chart repository. | | 1 . | config.example/ . | . : This directory contains example configuration files to help you set up your own private configuration repository. | | 1 . | docs/ . | . : This directory contains the documentation for the project. | | 1 . | infrastructure/ . | . : This directory contains the Terraform code for provisioning the infrastructure for your homelab. | | 1 . | scripts/ . | . : This directory contains a collection of utility scripts for managing your homelab. | | 1 . | tools/ . | . : This directory contains various tools and utilities, such as the | 1 . | homelab-importer . | . | . ",
-    "url": "/docs/reference/folder-structure.html",
+    "url": "/homelabeazy/docs/reference/folder-structure.html",
     
     "relUrl": "/docs/reference/folder-structure.html"
   },"26": {
     "doc": "Getting Started",
     "title": "Getting Started with Homelabeazy",
     "content": "Welcome to Homelabeazy! This guide will walk you through the process of setting up your very own homelab using this project. We’ll cover everything from the initial setup to deploying your first application. ",
-    "url": "/docs/guides/getting-started.html#getting-started-with-homelabeazy",
+    "url": "/homelabeazy/docs/guides/getting-started.html#getting-started-with-homelabeazy",
     
     "relUrl": "/docs/guides/getting-started.html#getting-started-with-homelabeazy"
   },"27": {
     "doc": "Getting Started",
     "title": "Prerequisites",
     "content": "Before you begin, you’ll need to have the following: . | A server with Proxmox VE installed: This will be the foundation of your homelab. | A Git repository: This will be used to store your configuration. We recommend using a private repository on GitHub or a similar service. | A basic understanding of the command line: You’ll need to be comfortable running commands in a terminal. | A cup of coffee or tea: This is optional, but highly recommended! | . ",
-    "url": "/docs/guides/getting-started.html#prerequisites",
+    "url": "/homelabeazy/docs/guides/getting-started.html#prerequisites",
     
     "relUrl": "/docs/guides/getting-started.html#prerequisites"
   },"28": {
     "doc": "Getting Started",
     "title": "Step 1: Clone the Repository",
     "content": "The first step is to clone the Homelabeazy repository to your local machine. | 1 2 . | git clone https://github.com/homelabeazy/homelabeazy.git cd homelabeazy . | . ",
-    "url": "/docs/guides/getting-started.html#step-1-clone-the-repository",
+    "url": "/homelabeazy/docs/guides/getting-started.html#step-1-clone-the-repository",
     
     "relUrl": "/docs/guides/getting-started.html#step-1-clone-the-repository"
   },"29": {
     "doc": "Getting Started",
     "title": "Step 2: Interactive Setup",
     "content": "Next, you’ll run the interactive setup script. This script will ask you a series of questions about your environment and then generate the necessary configuration files for you. | 1 . | make setup-interactive . | . The script will guide you through the process of configuring your homelab. You’ll be asked to provide information such as your Proxmox API credentials, your desired domain name, and the specifications for your virtual machines. ",
-    "url": "/docs/guides/getting-started.html#step-2-interactive-setup",
+    "url": "/homelabeazy/docs/guides/getting-started.html#step-2-interactive-setup",
     
     "relUrl": "/docs/guides/getting-started.html#step-2-interactive-setup"
   },"30": {
     "doc": "Getting Started",
     "title": "Step 3: Provision the Infrastructure",
     "content": "Once the configuration files have been generated, you can provision the infrastructure using Terraform. | 1 . | make terraform-apply . | . This command will create the virtual machines on your Proxmox server. This may take a few minutes to complete. ",
-    "url": "/docs/guides/getting-started.html#step-3-provision-the-infrastructure",
+    "url": "/homelabeazy/docs/guides/getting-started.html#step-3-provision-the-infrastructure",
     
     "relUrl": "/docs/guides/getting-started.html#step-3-provision-the-infrastructure"
   },"31": {
     "doc": "Getting Started",
     "title": "Step 4: Configure the Cluster",
     "content": "After the virtual machines have been provisioned, you’ll need to configure them using Ansible. | 1 . | make ansible-playbook-setup . | . This command will install K3s on the virtual machines and configure them to form a Kubernetes cluster. ",
-    "url": "/docs/guides/getting-started.html#step-4-configure-the-cluster",
+    "url": "/homelabeazy/docs/guides/getting-started.html#step-4-configure-the-cluster",
     
     "relUrl": "/docs/guides/getting-started.html#step-4-configure-the-cluster"
   },"32": {
     "doc": "Getting Started",
     "title": "Step 5: Post-Installation",
     "content": "After the setup is complete, you will need to perform the following steps to access your new homelab environment: . 5.1. Configure DNS . You will need to configure DNS for your applications to be accessible at their respective domain names. This can be done by adding DNS records to your DNS provider or by using a local DNS server such as Pi-hole. Example: Using Pi-hole for Local DNS . | Log in to your Pi-hole admin interface. | Navigate to “Local DNS” -&gt; “DNS Records”. | Add a new A record for your domain, pointing to the IP address of your Traefik load balancer. For example: | . | Domain | IP Address | . | | 1 . | *.example.com . | . | | 1 . | 192.168.1.100 . | . | . This will resolve all subdomains of | 1 . | example.com . | . to the IP address of your Traefik load balancer. 5.2. Access Applications . Once DNS is configured, you can access the applications by navigating to their respective domain names in your web browser. Example: Accessing Grafana . | Open your web browser and navigate to | 1 . | https://grafana.example.com . | . | You will be redirected to the Authelia login page. | Log in with your credentials. | You will then be redirected to the Grafana dashboard. | . ",
-    "url": "/docs/guides/getting-started.html#step-5-post-installation",
+    "url": "/homelabeazy/docs/guides/getting-started.html#step-5-post-installation",
     
     "relUrl": "/docs/guides/getting-started.html#step-5-post-installation"
   },"33": {
     "doc": "Getting Started",
     "title": "Step 6: Deploy Your First Application",
     "content": "Congratulations, you now have a fully functional Kubernetes cluster! Now it’s time to deploy your first application. The Homelabeazy project uses ArgoCD for GitOps-based application deployment. To deploy a new application, you’ll need to create a new YAML file in the | 1 . | apps/ . | . directory of your private configuration repository. For example, to deploy a simple “Hello, World!” application, you could create a file named | 1 . | hello-world.yml . | . with the following content: . | 1 2 3 4 5 6 7 8 9 10 11 12 13 14 . | apiVersion: argoproj.io/v1alpha1 kind: Application metadata: name: hello-world namespace: argocd spec: project: default source: repoURL: 'https://github.com/your-username/your-private-repo.git' path: 'apps/hello-world' targetRevision: HEAD destination: server: 'https://kubernetes.default.svc' namespace: default . | . Once you commit and push this file to your repository, ArgoCD will automatically detect the change and deploy the application to your cluster. ",
-    "url": "/docs/guides/getting-started.html#step-6-deploy-your-first-application",
+    "url": "/homelabeazy/docs/guides/getting-started.html#step-6-deploy-your-first-application",
     
     "relUrl": "/docs/guides/getting-started.html#step-6-deploy-your-first-application"
   },"34": {
     "doc": "Getting Started",
     "title": "What’s Next?",
     "content": "You’ve now successfully set up your homelab and deployed your first application. Here are a few things you can do next: . | Explore the available applications: The Homelabeazy project comes with a number of pre-configured applications that you can deploy to your cluster. Check out the | 1 . | apps/ . | . directory in the repository. | Add your own applications: You can easily add your own applications to your homelab by creating new Helm charts or by using existing ones. | Customize your setup: The Homelabeazy project is highly customizable. You can change the network configuration, add new services, and integrate with other systems. | Contribute to the project: If you’ve found a bug or have an idea for a new feature, we’d love to hear from you! Check out our Contributing Guide for more information. | . ",
-    "url": "/docs/guides/getting-started.html#whats-next",
+    "url": "/homelabeazy/docs/guides/getting-started.html#whats-next",
     
     "relUrl": "/docs/guides/getting-started.html#whats-next"
   },"35": {
     "doc": "Getting Started",
     "title": "Getting Started",
     "content": " ",
-    "url": "/docs/guides/getting-started.html",
+    "url": "/homelabeazy/docs/guides/getting-started.html",
     
     "relUrl": "/docs/guides/getting-started.html"
   },"36": {
     "doc": "Reference",
     "title": "Reference",
     "content": " ",
-    "url": "/docs/reference/",
+    "url": "/homelabeazy/docs/reference/",
     
     "relUrl": "/docs/reference/"
   },"37": {
     "doc": "Guides",
     "title": "Guides",
     "content": " ",
-    "url": "/docs/guides/",
+    "url": "/homelabeazy/docs/guides/",
     
     "relUrl": "/docs/guides/"
   },"38": {
     "doc": "Welcome to Homelabeazy",
     "title": "Welcome to Homelabeazy",
     "content": "Homelabeazy is a project that aims to make it easy to set up and manage your own homelab. It provides a set of Ansible playbooks, Terraform scripts, and Kubernetes manifests to automate the process of provisioning and configuring your homelab. ",
-    "url": "/",
+    "url": "/homelabeazy/",
     
     "relUrl": "/"
   },"39": {
     "doc": "Welcome to Homelabeazy",
     "title": "Getting Started",
     "content": "If you are new to Homelabeazy, we recommend starting with the Getting Started guide. This guide will walk you through the process of setting up your homelab from scratch. ",
-    "url": "/#getting-started",
+    "url": "/homelabeazy/#getting-started",
     
     "relUrl": "/#getting-started"
   },"40": {
     "doc": "Welcome to Homelabeazy",
     "title": "Documentation",
     "content": "The documentation is divided into the following sections: . | Guides: Step-by-step guides to help you set up and configure your homelab. | Reference: Detailed information about the various components of Homelabeazy. | Community: Information about how to get involved in the Homelabeazy community. | Troubleshooting: Solutions to common problems you may encounter. | . ",
-    "url": "/#documentation",
+    "url": "/homelabeazy/#documentation",
     
     "relUrl": "/#documentation"
   },"41": {
     "doc": "Services",
     "title": "Services",
     "content": "This document provides an overview of the services that are included in the Homelabeazy project. ",
-    "url": "/docs/reference/services.html",
+    "url": "/homelabeazy/docs/reference/services.html",
     
     "relUrl": "/docs/reference/services.html"
   },"42": {
     "doc": "Services",
     "title": "Core Infrastructure",
     "content": "These services are essential for the operation of your homelab. They provide core functionality such as routing, authentication, and secrets management. | Service | Description | . | Traefik | A modern reverse proxy and load balancer that makes deploying microservices easy. | . | Authelia | An open-source authentication and authorization server providing two-factor authentication and single sign-on. | . | OpenLDAP | A lightweight directory access protocol for user authentication. | . | Vault | A tool for securely accessing secrets. | . | Velero | A tool for backing up and restoring your Kubernetes cluster resources and persistent volumes. | . | EFK Stack | A centralized logging solution consisting of Elasticsearch, Fluentd, and Kibana. | . ",
-    "url": "/docs/reference/services.html#core-infrastructure",
+    "url": "/homelabeazy/docs/reference/services.html#core-infrastructure",
     
     "relUrl": "/docs/reference/services.html#core-infrastructure"
   },"43": {
     "doc": "Services",
     "title": "Applications",
     "content": "These are some of the applications that you can deploy to your homelab. You can find the ArgoCD application manifests for these applications in the | 1 . | apps/ . | . directory. | Service | Description | . | AppFlowy | An open-source alternative to Notion. | . | Bitwarden | A self-hosted password manager. | . | Coder | A remote development environment that runs on your own infrastructure. | . | Gitea | A self-hosted Git service. | . | Grafana | A monitoring and observability platform. | . | Guacamole | A clientless remote desktop gateway. | . | Home Assistant | An open-source home automation platform. | . | Homebox | A simple, a static homepage for your homelab. | . | Jackett | A proxy server for torrent trackers. | . | Jellyfin | A self-hosted media server. | . | Jellyseerr | A request management and media discovery tool for Jellyfin. | . | Kasm | A container streaming platform for running desktops and applications in a browser. | . | Kiwix | An offline reader for online content like Wikipedia. | . | Langflow | A UI for experimenting with and prototyping language models. | . | Lidarr | A music collection manager for Usenet and BitTorrent users. | . | Linkwarden | A self-hosted, open-source collaborative bookmark manager. | . | MariaDB | A popular open-source relational database. | . | Meilisearch | A fast, open-source, and powerful search engine. | . | Metube | A web UI for youtube-dl. | . | Open WebUI | A user-friendly web interface for large language models. | . | Overseerr | A request management and media discovery tool for Plex. | . | Perplexica | An open-source AI search engine. | . | pfSense | A powerful open-source firewall and router. | . | Pi-hole | A network-wide ad blocker. | . | Plex | A self-hosted media server. | . | Portainer | A lightweight management UI for Docker, Swarm, Kubernetes, and ACI. | . | Postgres | A powerful, open-source object-relational database system. | . | Puter | A self-hosted cloud desktop. | . | qBittorrent | A lightweight BitTorrent client. | . | Radarr | A movie collection manager for Usenet and BitTorrent users. | . | Redis | An in-memory data structure store. | . | Sabnzbd | A binary newsreader for downloading from Usenet. | . | SearXNG | A privacy-respecting, hackable metasearch engine. | . | Sonarr | A PVR for Usenet and BitTorrent users. | . | Supabase | An open-source Firebase alternative. | . | Tailscale | A zero-config VPN for building secure networks. | . | WireGuard | A fast, modern, and secure VPN tunnel. | . ",
-    "url": "/docs/reference/services.html#applications",
+    "url": "/homelabeazy/docs/reference/services.html#applications",
     
     "relUrl": "/docs/reference/services.html#applications"
   },"44": {
     "doc": "Technical Design",
     "title": "Technical Design Document",
     "content": " ",
-    "url": "/docs/reference/technical-design.html#technical-design-document",
+    "url": "/homelabeazy/docs/reference/technical-design.html#technical-design-document",
     
     "relUrl": "/docs/reference/technical-design.html#technical-design-document"
   },"45": {
     "doc": "Technical Design",
     "title": "1. Introduction",
     "content": "Welcome to the Technical Design Document for Homelabeazy. This document provides a detailed technical overview of the project, from its high-level architecture down to the individual components. Whether you’re a user who wants to understand the inner workings of your homelab, or a contributor who wants to help improve the project, this document will serve as your guide. Who is this for? . This document is intended for users who have a basic understanding of the core technologies used in this project, such as Proxmox, Terraform, Ansible, and Kubernetes. If you’re new to these technologies, we recommend that you start with our Getting Started guide and then come back to this document for a deeper dive. Design Philosophy . The design of Homelabeazy is guided by a set of core principles that are common in modern DevOps and Site Reliability Engineering (SRE) practices: . | Infrastructure as Code (IaC): All infrastructure is defined as code, which allows for automation, versioning, and reproducibility. | GitOps: Git is the single source of truth for both infrastructure and applications. All changes are made through pull requests, which provides a clear audit trail and enables collaboration. | Modularity: The project is designed to be modular, so that you can easily add or remove components to suit your needs. | Security by Design: Security is a primary consideration in all aspects of the project, from network segmentation to secrets management. | . ",
-    "url": "/docs/reference/technical-design.html#1-introduction",
+    "url": "/homelabeazy/docs/reference/technical-design.html#1-introduction",
     
     "relUrl": "/docs/reference/technical-design.html#1-introduction"
   },"46": {
     "doc": "Technical Design",
     "title": "2. Goals and Non-Goals",
     "content": "2.1. Goals . The primary goals of this project are to: . | Provide a complete blueprint for a modern homelab: This project aims to be a comprehensive guide for building a powerful and flexible homelab environment. | Automate everything: From the provisioning of virtual machines to the deployment of applications, every aspect of the homelab should be automated. | Ensure reproducibility: You should be able to tear down and rebuild your entire homelab from scratch in a consistent and predictable manner. | Promote best practices: This project aims to demonstrate and encourage the use of enterprise-grade best practices for infrastructure management, such as IaC, GitOps, and security by design. | Be highly customizable: You should be able to easily customize the project to meet your specific needs, whether you want to add new applications, change the network configuration, or integrate with other systems. | . 2.2. Non-Goals . This project does not aim to: . | Be a one-size-fits-all solution: While the project is highly customizable, it is not intended to be a universal solution for every homelab. It is designed for a specific set of technologies and use cases. | Support other virtualization platforms: The project is tightly coupled with Proxmox and does not support other hypervisors like ESXi or Hyper-V out of the box. However, the modular design of the project would allow for the addition of other providers in the future. | Be a beginner-friendly project: While we strive to make the documentation as clear as possible, a certain level of technical understanding of the core components (Terraform, Ansible, Kubernetes) is expected. | Be a production-ready enterprise solution: While this project uses enterprise-grade practices, it is intended for personal homelab use and is not recommended for production enterprise workloads without significant additional hardening and testing. | . ",
-    "url": "/docs/reference/technical-design.html#2-goals-and-non-goals",
+    "url": "/homelabeazy/docs/reference/technical-design.html#2-goals-and-non-goals",
     
     "relUrl": "/docs/reference/technical-design.html#2-goals-and-non-goals"
   },"47": {
     "doc": "Technical Design",
     "title": "3. System Architecture",
     "content": "The architecture of Homelabeazy is a multi-layered system that builds upon a foundation of virtualization. It uses a combination of IaC and GitOps tools to automate the provisioning and configuration of a Kubernetes cluster and the applications that run on it. graph TD subgraph \"Hardware\" A[Physical Server] end subgraph \"Virtualization\" B(Proxmox VE) end subgraph \"Automation\" C(Terraform) -- Provisions VMs on --&gt; B D(Ansible) -- Configures Nodes --&gt; E end subgraph \"Container Orchestration &amp; GitOps\" E(K3s Kubernetes Cluster) K(ArgoCD) -- Deploys Apps to --&gt; E L(Git Repository) -- Syncs with --&gt; K end subgraph \"Applications\" F[Core Services] G[User Applications] end subgraph \"Supporting Services\" H(Traefik Ingress) I(Authelia SSO) J(Vault Secrets) end A --&gt; B B --&gt; E E -- Runs --&gt; F E -- Runs --&gt; G F -- Exposed by --&gt; H G -- Exposed by --&gt; H G -- Authenticated by --&gt; I E -- Uses --&gt; J . System Architecture Walkthrough . The system architecture is designed to be a robust, scalable, and automated homelab environment. Here’s a step-by-step walkthrough of the diagram, explaining the role and value of each component: . | Hardware (Physical Server): . | Component: | 1 . | Physical Server . | . | Role: This is the foundation of the entire homelab, providing the necessary compute, memory, and storage resources. | Value: A dedicated physical server ensures that all virtualized components have direct access to high-performance hardware, leading to better overall performance and stability. | . | Virtualization (Proxmox VE): . | Component: | 1 . | Proxmox VE . | . | Role: Proxmox is an open-source virtualization platform that runs on the physical server. It allows for the creation and management of virtual machines (VMs) and containers. | Value: Proxmox enables efficient hardware utilization by allowing multiple isolated environments to run on a single physical machine. This is crucial for creating a flexible and scalable infrastructure. | . | Automation (Terraform &amp; Ansible): . | Component: | 1 . | Terraform . | . &amp; | 1 . | Ansible . | . | Role: . | 1 . | Terraform . | . is used to provision the virtual machines on Proxmox. It defines the infrastructure as code, making it easy to create, modify, and destroy VMs in a repeatable manner. | | 1 . | Ansible . | . is used for configuration management. Once the VMs are provisioned, Ansible configures them and installs the necessary software like K3s. | . | Value: This combination of tools automates the entire setup process, reducing manual effort and ensuring consistency. It allows you to rebuild the entire homelab from scratch with minimal intervention. | . | Container Orchestration &amp; GitOps (K3s &amp; ArgoCD): . | Component: | 1 . | K3s Kubernetes Cluster . | . &amp; | 1 . | ArgoCD . | . | Role: . | 1 . | K3s . | . is a lightweight, certified Kubernetes distribution that runs on the VMs. It orchestrates the deployment, scaling, and management of containerized applications. | | 1 . | ArgoCD . | . provides a GitOps workflow. It continuously monitors a Git repository and automatically deploys any changes to the K3s cluster, ensuring that the cluster state always matches the state defined in Git. | . | Value: Kubernetes provides a powerful and standardized platform for running applications. ArgoCD automates application deployment and management, making it easy to track changes, roll back to previous versions, and maintain a consistent environment. | . | Applications (Core Services &amp; User Applications): . | Component: | 1 . | Core Services . | . &amp; | 1 . | User Applications . | . | Role: The K3s cluster runs two types of applications: . | 1 . | Core Services . | . : These are essential infrastructure components like monitoring, logging, and security services. | | 1 . | User Applications . | . : These are the end-user applications that you want to run in your homelab, such as a password manager, Git service, or home automation platform. | . | Value: This separation allows you to manage the core infrastructure independently of the applications, making it easier to update and maintain both. | . | Supporting Services (Traefik, Authelia, Vault): . | Component: | 1 . | Traefik Ingress . | . , | 1 . | Authelia SSO . | . , | 1 . | Vault Secrets . | . | Role: . | 1 . | Traefik Ingress . | . : A reverse proxy and load balancer that manages external access to the applications running in the cluster. | | 1 . | Authelia SSO . | . : Provides single sign-on and two-factor authentication for the applications, enhancing security. | | 1 . | Vault Secrets . | . : A secure storage for secrets like API keys, passwords, and certificates. | . | Value: These services provide essential functionality for managing and securing the applications. Traefik simplifies routing, Authelia centralizes authentication, and Vault protects sensitive information. | . | . General Flow of the System . | Provisioning: | 1 . | Terraform . | . provisions the virtual machines on | 1 . | Proxmox . | . | Configuration: | 1 . | Ansible . | . configures the VMs and installs the | 1 . | K3s Kubernetes Cluster . | . | Deployment: | 1 . | ArgoCD . | . monitors the Git repository and deploys the | 1 . | Core Services . | . and | 1 . | User Applications . | . to the | 1 . | K3s . | . cluster. | Access: . | Users access the applications through the | 1 . | Traefik Ingress . | . | | 1 . | Authelia SSO . | . intercepts the requests to handle authentication. | . | Secrets Management: The applications and the cluster use | 1 . | Vault . | . to securely retrieve their secrets. | . ",
-    "url": "/docs/reference/technical-design.html#3-system-architecture",
+    "url": "/homelabeazy/docs/reference/technical-design.html#3-system-architecture",
     
     "relUrl": "/docs/reference/technical-design.html#3-system-architecture"
   },"48": {
     "doc": "Technical Design",
     "title": "4. Detailed Component Design",
     "content": "4.1. Proxmox . | Why Proxmox? Proxmox was chosen for its rich feature set, its open-source nature, and its excellent API support, which is crucial for automation. | Prerequisites: A working Proxmox installation is required. | VM Templates: The project relies on a cloud-init compatible VM template to be present on the Proxmox server. This template is used by Terraform to clone new VMs. The template should be a minimal installation of a supported OS (e.g., Ubuntu Server). | . 4.2. Terraform . | Why Terraform? Terraform is a popular and powerful IaC tool that allows you to define your infrastructure in a declarative way. It has excellent support for Proxmox and a wide range of other providers. | Configuration: The main configuration file is | 1 . | main.tf . | . , which defines the Proxmox provider and the VM resources. | Variables: User-specific variables, such as Proxmox API credentials and VM specifications (CPU, memory, disk), are defined in | 1 . | variables.tf . | . and should be set in a | 1 . | terraform.tfvars . | . file. | . 4.3. Ansible . | Why Ansible? Ansible is a simple and powerful configuration management tool that is agentless, which means that you don’t need to install any special software on the managed nodes. | Inventory: Ansible’s inventory is located in | 1 . | ansible/inventory/ . | . A static inventory file is provided for the user to fill in with the IP addresses of the newly created VMs. | Playbooks and Roles: The project uses a combination of playbooks and roles to organize the Ansible code. This modular structure allows for easy extension and customization. | . 4.4. K3s Cluster . | Why K3s? K3s is designed to be a single binary that is easy to install, manage, and scale. It is a great choice for homelab environments where resources may be limited. | Architecture: The cluster consists of one or more master nodes and one or more worker nodes. | Storage: The project is configured to use the default K3s storage provisioner (local-path-provisioner), which is suitable for single-node clusters or development environments. For multi-node clusters, a more robust storage solution like Longhorn or an NFS provisioner would be recommended. | . 4.5. ArgoCD . | Why ArgoCD? ArgoCD is a popular and powerful GitOps tool that provides a clear and intuitive way to manage your applications. | App of Apps Pattern: The project uses the “app of apps” pattern, which allows for modular management of applications. | . 4.6. Networking . The project uses a VLAN-based network segmentation strategy to isolate traffic and enhance security. | Traefik: Traefik is a modern reverse proxy and load balancer that is used as the Ingress controller for the K3s cluster. | Consul: Consul is used for service discovery within the cluster. | pfSense: pfSense is a powerful open-source firewall and router that is used to manage the network. | . 4.7. Security . | Vault: HashiCorp Vault is used for secrets management. | Authelia: Authelia is an open-source authentication and authorization server providing two-factor authentication and single sign-on (SSO). | OpenLDAP: OpenLDAP is used as the central user directory. | . 4.8. Monitoring and Logging . | EFK Stack: The project uses the EFK stack (Elasticsearch, Fluentd, and Kibana) for centralized logging. | . 4.9. Backup and Recovery . | Velero: Velero is used for backing up and restoring the Kubernetes cluster. | . ",
-    "url": "/docs/reference/technical-design.html#4-detailed-component-design",
+    "url": "/homelabeazy/docs/reference/technical-design.html#4-detailed-component-design",
     
     "relUrl": "/docs/reference/technical-design.html#4-detailed-component-design"
   },"49": {
     "doc": "Technical Design",
     "title": "5. Scalability and Customization",
     "content": "This project is designed to be both scalable and customizable. You can easily scale your cluster by adding more worker nodes, and you can customize the project by adding your own applications, configuring services, and modifying the infrastructure. For detailed instructions, please refer to the Customization Guide. ",
-    "url": "/docs/reference/technical-design.html#5-scalability-and-customization",
+    "url": "/homelabeazy/docs/reference/technical-design.html#5-scalability-and-customization",
     
     "relUrl": "/docs/reference/technical-design.html#5-scalability-and-customization"
   },"50": {
     "doc": "Technical Design",
     "title": "6. Roadmap",
     "content": "This project is continuously evolving. Here are some potential future enhancements: . | Multi-Cloud Support: Adding support for other cloud providers like AWS, GCP, or Azure. | Advanced Networking: Implementing more advanced networking policies using a service mesh like Istio or Linkerd. | High Availability: Setting up a multi-master K3s cluster for high availability of the control plane. | Automated Backups: Creating a more automated backup and restore workflow. | . ",
-    "url": "/docs/reference/technical-design.html#6-roadmap",
+    "url": "/homelabeazy/docs/reference/technical-design.html#6-roadmap",
     
     "relUrl": "/docs/reference/technical-design.html#6-roadmap"
   },"51": {
     "doc": "Technical Design",
     "title": "Technical Design",
     "content": " ",
-    "url": "/docs/reference/technical-design.html",
+    "url": "/homelabeazy/docs/reference/technical-design.html",
     
     "relUrl": "/docs/reference/technical-design.html"
   },"52": {
     "doc": "Troubleshooting",
     "title": "Troubleshooting",
     "content": "This guide provides solutions to common problems you may encounter while using Homelabeazy. If you can’t find a solution to your problem here, please feel free to open an issue on our GitHub repository. ",
-    "url": "/docs/guides/troubleshooting.html",
+    "url": "/homelabeazy/docs/guides/troubleshooting.html",
     
     "relUrl": "/docs/guides/troubleshooting.html"
   },"53": {
     "doc": "Troubleshooting",
     "title": "Setup and Installation Issues",
     "content": "| 1 . | make setup-interactive . | . fails . If the | 1 . | make setup-interactive . | . script fails, it is most likely due to an issue with the | 1 . | homelab-importer . | . tool. To debug the issue, you can run the tool manually and inspect the output. | 1 2 3 4 5 . | # Activate the virtual environment source .venv/bin/activate # Run the importer tool homelab-importer --config-dir /path/to/your/private/config . | . Terraform fails to apply changes . If Terraform fails to apply the changes, it may be due to a problem with your Proxmox environment. Check the following: . | Proxmox API Token: Ensure that your Proxmox API token has the correct permissions. It should have the | 1 . | Datastore.AllocateSpace . | . , | 1 . | Datastore.Audit . | . , | 1 . | Sys.Audit . | . , | 1 . | Sys.Console . | . , | 1 . | Sys.Modify . | . , | 1 . | VM.Allocate . | . , | 1 . | VM.Audit . | . , | 1 . | VM.Clone . | . , | 1 . | VM.Config.CDROM . | . , | 1 . | VM.Config.CPU . | . , | 1 . | VM.Config.Disk . | . , | 1 . | VM.Config.HWType . | . , | 1 . | VM.Config.Memory . | . , | 1 . | VM.Config.Network . | . , | 1 . | VM.Config.Options . | . , | 1 . | VM.Monitor . | . , | 1 . | VM.PowerMgmt . | . permissions on the Proxmox node. | Proxmox Host: Make sure that the Proxmox host is running and accessible from the machine where you are running Terraform. | Cloud-init Template: Verify that the cloud-init template exists and is configured correctly. It should be a minimal installation of a supported OS (e.g., Ubuntu Server) and should have the | 1 . | qemu-guest-agent . | . installed. | . Ansible playbook fails to run . If the Ansible playbook fails to run, it may be due to a problem with your SSH connection. Check the following: . | SSH Key: Make sure that your SSH key is added to your SSH agent ( | 1 . | ssh-add -l . | . ). | SSH Connection: Try to connect to the nodes manually using SSH to verify that the connection is working. | Ansible Inventory: Double-check that the IP addresses in your Ansible inventory ( | 1 . | ansible/inventory/inventory.auto.yml . | . ) are correct. | . ",
-    "url": "/docs/guides/troubleshooting.html#setup-and-installation-issues",
+    "url": "/homelabeazy/docs/guides/troubleshooting.html#setup-and-installation-issues",
     
     "relUrl": "/docs/guides/troubleshooting.html#setup-and-installation-issues"
   },"54": {
     "doc": "Troubleshooting",
     "title": "Application and Networking Issues",
     "content": "Application is not accessible . If an application is not accessible after it has been deployed, it may be due to a problem with the Traefik Ingress controller, the application itself, or your DNS configuration. | Check the Traefik Dashboard: The Traefik dashboard provides a wealth of information about your Ingress routes and can help you diagnose problems. You can access it at | 1 . | http://traefik.your-domain.com . | . | Check the Application Logs: Use | 1 . | kubectl logs . | . to check the logs of the application’s pods. This will often give you a clue as to what is wrong. | 1 . | kubectl logs -l app.kubernetes.io/name=&lt;app-name&gt; -n &lt;namespace&gt; . | . | Check the IngressRoute: Make sure that the | 1 . | IngressRoute . | . for the application is configured correctly. | 1 . | kubectl get ingressroute -n &lt;namespace&gt; . | . | Check DNS: Verify that the DNS record for the application is pointing to the correct IP address (the IP address of your Traefik load balancer). | . Pods are stuck in a | 1 . | Pending . | . state . If you see pods that are stuck in a | 1 . | Pending . | . state, it usually means that there are not enough resources in the cluster to schedule them. You can use | 1 . | kubectl describe pod &lt;pod-name&gt; . | . to get more information about why the pod is not being scheduled. Common causes for this issue include: . | Insufficient CPU or memory: The nodes in your cluster may not have enough CPU or memory to run the pod. | Taints and tolerations: The pod may not have the necessary tolerations to be scheduled on any of the available nodes. | Persistent Volume Claims: If the pod is requesting a Persistent Volume, there may not be a suitable Persistent Volume available to satisfy the claim. | . ",
-    "url": "/docs/guides/troubleshooting.html#application-and-networking-issues",
+    "url": "/homelabeazy/docs/guides/troubleshooting.html#application-and-networking-issues",
     
     "relUrl": "/docs/guides/troubleshooting.html#application-and-networking-issues"
   },"55": {
     "doc": "Troubleshooting",
     "title": "Restarting the Setup Process",
     "content": "If you encounter an issue that you cannot resolve, you can restart the setup process from the beginning. | Destroy the infrastructure: | 1 . | make destroy . | . | Delete the generated configuration files: | 1 2 . | rm infrastructure/proxmox/terraform.tfvars rm ansible/inventory/inventory.auto.yml . | . | Run the setup process again by following the steps in the Getting Started guide. | . ",
-    "url": "/docs/guides/troubleshooting.html#restarting-the-setup-process",
+    "url": "/homelabeazy/docs/guides/troubleshooting.html#restarting-the-setup-process",
     
     "relUrl": "/docs/guides/troubleshooting.html#restarting-the-setup-process"
   }
