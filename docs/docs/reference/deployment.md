@@ -47,4 +47,4 @@ This will install K3s on the virtual machines and configure them to form a Kuber
 
 Applications are deployed to your cluster using a GitOps workflow with ArgoCD. To deploy a new application, you'll need to create a new YAML file in the `apps/` directory of your private configuration repository.
 
-For more information on how to add new applications, please see the [Customization](./customization) guide.
+For more information on how to add new applications, please see the [Customization]({% link docs/guides/customization.md %}) guide.

@@ -1,4 +1,4 @@
-**For full documentation, visit our <a href="https://toxicoder.github.io/homelabeazy" target="_blank">GitHub Pages site</a>.**
+**For full documentation, visit our [GitHub Pages site](https://toxicoder.github.io/homelabeazy).**
 
 # Homelabeazy - Your _Homelab as Code_
 
@@ -20,9 +20,9 @@ This project automates the setup of a homelab environment on a Proxmox server us
 
 It:
 
-1. **provisions a K3s cluster**
-1. **configures the nodes**
-1. **and deploys a suite of applications using a GitOps approach.**
+- **provisions a K3s cluster**
+- **configures the nodes**
+- **and deploys a suite of applications using a GitOps approach.**
 
 The project is designed to be idempotent and modular, allowing you to easily customize your homelab by adding or removing applications to fit your needs.
 

@@ -17,7 +17,6 @@ The heart of your homelab is the applications you run on it. Homelabeazy uses a 
 4.  **Add the new application to the "app of apps":** Add a new entry for your application in the `apps/app-of-apps.yml` file. This will tell ArgoCD to start managing your new application.
 5.  **Commit and push your changes:** Once you commit and push your changes to your Git repository, ArgoCD will automatically detect the new application and deploy it to your cluster.
 
-For a more detailed walkthrough of this process, please see the [Adding New Applications](#adding-new-applications) guide.
 
 ## Managing Secrets
 

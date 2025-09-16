@@ -24,17 +24,16 @@ The `Makefile` at the root of the project provides a number of helpful commands 
 
 If you have an existing homelab that was configured manually, you can use the `homelab-importer` tool to import it into a Terraform-managed setup. This is a great way to migrate your existing homelab to the Infrastructure as Code (IaC) approach used by this project.
 
-For detailed instructions on how to use the importer, please see the [Technical Design](../reference/technical-design.html) guide.
+For detailed instructions on how to use the importer, please see the [Technical Design]({% link docs/reference/technical-design.md %}) guide.
 
 ## OpenLDAP
 
 This project includes an Ansible role for deploying OpenLDAP to your Kubernetes cluster. OpenLDAP is used as the central user directory for your homelab, and it is integrated with Authelia to provide Single Sign-On (SSO) for your applications.
 
-The OpenLDAP passwords are managed by Vault. You will need to add the following secrets to Vault:
+The OpenLDAP passwords are managed by Vault. You will need to add the following secrets to Vault at the path `secrets/data/openldap`:
 
--   `secrets/data/openldap`
-    -   `root-password`
-    -   `admin-password`
+-   `root-password`
+-   `admin-password`
 
 ## Stealth VM
 

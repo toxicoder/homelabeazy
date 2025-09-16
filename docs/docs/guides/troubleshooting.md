@@ -5,7 +5,7 @@ parent: Guides
 
 # Troubleshooting
 
-This guide provides solutions to common problems you may encounter while using Homelabeazy. If you can't find a solution to your problem here, please feel free to [open an issue](https://github.com/homelabeazy/homelabeazy/issues) on our GitHub repository.
+This guide provides solutions to common problems you may encounter while using Homelabeazy. If you can't find a solution to your problem here, please feel free to [open an issue](https://github.com/toxicoder/homelabeazy/issues) on our GitHub repository.
 
 ## Setup and Installation Issues
 
@@ -81,4 +81,4 @@ If you encounter an issue that you cannot resolve, you can restart the setup pro
     rm infrastructure/proxmox/terraform.tfvars
     rm ansible/inventory/inventory.auto.yml
     ```
-3.  **Run the setup process again by following the steps in the [Getting Started](./getting-started) guide.**
+3.  **Run the setup process again by following the steps in the [Getting Started]({% link docs/guides/getting-started.md %}) guide.**
