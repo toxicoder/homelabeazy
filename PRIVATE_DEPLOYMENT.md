@@ -33,6 +33,7 @@ By using the interactive setup, you can avoid the manual steps that were previou
 ## Manual Setup (Advanced)
 
 If you prefer to set up your private deployment manually, you can still do so. The basic steps are:
+
 1. Create a private git repository for your configuration.
 2. Copy the contents of the `config.example/` directory into your private repository.
 3. Customize the configuration files to match your environment.
