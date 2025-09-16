@@ -1,7 +1,9 @@
 ---
 layout: default
 title: Services
+parent: Reference
 nav_order: 5
+permalink: /services
 ---
 
 # Services

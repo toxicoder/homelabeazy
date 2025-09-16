@@ -1,7 +1,9 @@
 ---
 layout: default
 title: Advanced Usage
+parent: Guides
 nav_order: 6
+permalink: /advanced-usage
 ---
 
 # Advanced Usage
@@ -25,7 +27,7 @@ The `Makefile` at the root of the project provides a number of helpful commands 
 
 If you have an existing homelab that was configured manually, you can use the `homelab-importer` tool to import it into a Terraform-managed setup. This is a great way to migrate your existing homelab to the Infrastructure as Code (IaC) approach used by this project.
 
-For detailed instructions on how to use the importer, please see the [Homelab Importer README](../tools/homelab-importer/README.md).
+For detailed instructions on how to use the importer, please see the [Technical Design](./technical-design.md) guide.
 
 ## OpenLDAP
 

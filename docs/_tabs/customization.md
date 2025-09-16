@@ -1,7 +1,9 @@
 ---
 layout: default
 title: Customization
+parent: Guides
 nav_order: 8
+permalink: /customization
 ---
 
 # Customization
