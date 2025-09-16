@@ -1,9 +1,6 @@
 ---
-layout: default
 title: Technical Design
 parent: Reference
-nav_order: 1
-permalink: /technical-design
 ---
 
 # Technical Design Document

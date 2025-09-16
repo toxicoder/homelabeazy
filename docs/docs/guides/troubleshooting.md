@@ -1,9 +1,6 @@
 ---
-layout: default
 title: Troubleshooting
 parent: Guides
-nav_order: 4
-permalink: /troubleshooting
 ---
 
 # Troubleshooting

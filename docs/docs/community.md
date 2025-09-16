@@ -1,8 +1,6 @@
 ---
-layout: default
 title: Community
 nav_order: 3
-permalink: /community
 ---
 
 # Contributing to Homelabeazy

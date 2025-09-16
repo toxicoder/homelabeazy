@@ -1,8 +1,6 @@
 ---
-layout: default
 title: Getting Started
 parent: Guides
-nav_order: 1
 ---
 
 # Getting Started with Homelabeazy
