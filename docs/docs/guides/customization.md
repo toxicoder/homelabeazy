@@ -1,9 +1,6 @@
 ---
-layout: default
 title: Customization
 parent: Guides
-nav_order: 3
-permalink: /customization
 ---
 
 # Customization

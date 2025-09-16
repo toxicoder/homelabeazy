@@ -48,18 +48,11 @@ kramdown:
     line_numbers: true
     start_line: 1
 
-collections:
-  tabs:
-    output: true
-    sort_by: order
-
 defaults:
   - scope:
-      path: ""
-      type: tabs # see `site.collections`
+      path: "docs"
     values:
-      layout: page
-      permalink: /:title/
+      layout: "default"
 
 sass:
   style: compressed

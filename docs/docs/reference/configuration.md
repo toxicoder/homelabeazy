@@ -1,9 +1,6 @@
 ---
-layout: default
 title: Configuration
 parent: Reference
-nav_order: 2
-permalink: /configuration
 has_children: true
 ---
 
