@@ -1,7 +1,9 @@
 ---
 layout: default
 title: Folder Structure
+parent: Reference
 nav_order: 7
+permalink: /folder-structure
 ---
 
 # Folder Structure

@@ -1,8 +1,8 @@
 ---
 layout: default
 title: Community
-nav_order: 10
-has_children: true
+nav_order: 11
+permalink: /community
 ---
 
 # Contributing to Homelabeazy

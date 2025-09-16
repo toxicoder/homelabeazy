@@ -1,7 +1,9 @@
 ---
 layout: default
 title: Deployment
+parent: Reference
 nav_order: 4
+permalink: /deployment
 ---
 
 # Deployment

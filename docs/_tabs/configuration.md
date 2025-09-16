@@ -1,7 +1,10 @@
 ---
 layout: default
 title: Configuration
+parent: Reference
 nav_order: 3
+permalink: /configuration
+has_children: true
 ---
 
 # Configuration
