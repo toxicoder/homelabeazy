@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Community
-nav_order: 11
+nav_order: 3
 permalink: /community
 ---
 
