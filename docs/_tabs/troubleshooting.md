@@ -84,4 +84,4 @@ If you encounter an issue that you cannot resolve, you can restart the setup pro
     rm infrastructure/proxmox/terraform.tfvars
     rm ansible/inventory/inventory.auto.yml
     ```
-3.  **Run the setup process again by following the steps in the [Getting Started](./getting-started.md) guide.**
+3.  **Run the setup process again by following the steps in the [Getting Started](./getting-started) guide.**
