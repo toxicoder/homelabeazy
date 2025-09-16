@@ -211,7 +211,7 @@ The project uses a VLAN-based network segmentation strategy to isolate traffic a
 
 ## 5. Scalability and Customization
 
-This project is designed to be both scalable and customizable. You can easily scale your cluster by adding more worker nodes, and you can customize the project by adding your own applications, configuring services, and modifying the infrastructure. For detailed instructions, please refer to the [Customization Guide](../guides/customization.md).
+This project is designed to be both scalable and customizable. You can easily scale your cluster by adding more worker nodes, and you can customize the project by adding your own applications, configuring services, and modifying the infrastructure. For detailed instructions, please refer to the [Customization Guide](../guides/customization.html).
 
 ---
 
