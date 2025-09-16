@@ -84,16 +84,27 @@ nav_sort: case_sensitive
 nav_external_links:
   - title: Homelabeazy on GitHub
     url: https://github.com/toxicoder/homelabeazy
+
+# Set the base color scheme to dark (will be overridden by custom SCSS)
+color_scheme: dark
+
+# Define custom callouts for different alert types
+callouts_level: quiet # or loud
 callouts:
+  highlight:
+    color: yellow
+  important:
+    title: Important
+    color: blue
+  new:
+    title: New
+    color: green
+  note:
+    title: Note
+    color: purple
   warning:
     title: Warning
     color: red
-  info:
-    title: Info
-    color: blue
-  success:
-    title: Success
-    color: green
 aux_links:
   "Homelabeazy on GitHub":
     - "https://github.com/toxicoder/homelabeazy"
