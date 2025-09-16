@@ -1,7 +1,7 @@
 ---
-layout: single
+layout: default
 title: Advanced Usage
-category: "Guides"
+nav_order: 6
 ---
 
 # Advanced Usage

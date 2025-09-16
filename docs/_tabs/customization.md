@@ -1,7 +1,7 @@
 ---
-layout: single
+layout: default
 title: Customization
-category: "Guides"
+nav_order: 8
 ---
 
 # Customization

@@ -1,7 +1,8 @@
 ---
-layout: single
-title: Getting Started
-category: "Guides"
+layout: default
+title: Guides
+nav_order: 2
+has_children: true
 ---
 
 # Getting Started with Homelabeazy

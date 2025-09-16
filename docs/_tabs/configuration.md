@@ -1,7 +1,7 @@
 ---
-layout: single
+layout: default
 title: Configuration
-category: documentation
+nav_order: 3
 ---
 
 # Configuration

@@ -1,7 +1,7 @@
 ---
-layout: single
+layout: default
 title: Folder Structure
-category: "Reference"
+nav_order: 7
 ---
 
 # Folder Structure

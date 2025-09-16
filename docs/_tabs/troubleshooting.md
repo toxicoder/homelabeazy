@@ -1,7 +1,7 @@
 ---
-layout: single
+layout: default
 title: Troubleshooting
-category: documentation
+nav_order: 11
 ---
 
 # Troubleshooting
