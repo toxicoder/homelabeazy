@@ -66,7 +66,7 @@ You will need to configure DNS for your applications to be accessible at their r
 **Example: Using Pi-hole for Local DNS**
 
 1.  Log in to your Pi-hole admin interface.
-2.  Navigate to "Local DNS" -> "DNS Records".
+2.  Navigate to `Local DNS` -> `DNS Records`.
 3.  Add a new A record for your domain, pointing to the IP address of your Traefik load balancer. For example:
 
 | Domain      | IP Address      |
