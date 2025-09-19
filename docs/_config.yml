@@ -83,8 +83,8 @@ nav_external_links:
   - title: Homelabeazy on GitHub
     url: https://github.com/toxicoder/homelabeazy
 
-# Set the base color scheme to dark (will be overridden by custom SCSS)
-color_scheme: dark
+# Set the base color scheme to light (will be overridden by custom SCSS)
+color_scheme: light
 
 # Define custom callouts for different alert types
 callouts_level: quiet # or loud
@@ -106,3 +106,9 @@ callouts:
 aux_links:
   "Homelabeazy on GitHub":
     - "https://github.com/toxicoder/homelabeazy"
+
+# Mermaid diagrams
+mermaid:
+  # Version of mermaid library
+  # Pick an available version from https://cdn.jsdelivr.net/npm/mermaid/
+  version: "9.1.3"

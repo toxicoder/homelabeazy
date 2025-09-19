@@ -25,7 +25,24 @@ homelab-importer --config-dir /path/to/your/private/config
 
 If Terraform fails to apply the changes, it may be due to a problem with your Proxmox environment. Check the following:
 
-*   **Proxmox API Token:** Ensure that your Proxmox API token has the correct permissions. It should have the `Datastore.AllocateSpace`, `Datastore.Audit`, `Sys.Audit`, `Sys.Console`, `Sys.Modify`, `VM.Allocate`, `VM.Audit`, `VM.Clone`, `VM.Config.CDROM`, `VM.Config.CPU`, `VM.Config.Disk`, `VM.Config.HWType`, `VM.Config.Memory`, `VM.Config.Network`, `VM.Config.Options`, `VM.Monitor`, `VM.PowerMgmt` permissions on the Proxmox node.
+*   **Proxmox API Token:** Ensure that your Proxmox API token has the correct permissions. It should have the following permissions on the Proxmox node:
+    *   `Datastore.AllocateSpace`
+    *   `Datastore.Audit`
+    *   `Sys.Audit`
+    *   `Sys.Console`
+    *   `Sys.Modify`
+    *   `VM.Allocate`
+    *   `VM.Audit`
+    *   `VM.Clone`
+    *   `VM.Config.CDROM`
+    *   `VM.Config.CPU`
+    *   `VM.Config.Disk`
+    *   `VM.Config.HWType`
+    *   `VM.Config.Memory`
+    *   `VM.Config.Network`
+    *   `VM.Config.Options`
+    *   `VM.Monitor`
+    *   `VM.PowerMgmt`
 *   **Proxmox Host:** Make sure that the Proxmox host is running and accessible from the machine where you are running Terraform.
 *   **Cloud-init Template:** Verify that the cloud-init template exists and is configured correctly. It should be a minimal installation of a supported OS (e.g., Ubuntu Server) and should have the `qemu-guest-agent` installed.
 
@@ -47,10 +64,13 @@ If an application is not accessible after it has been deployed, it may be due to
 
 1.  **Check the Traefik Dashboard:** The Traefik dashboard provides a wealth of information about your Ingress routes and can help you diagnose problems. You can access it at `http://traefik.your-domain.com`.
 2.  **Check the Application Logs:** Use `kubectl logs` to check the logs of the application's pods. This will often give you a clue as to what is wrong.
+
     ```bash
     kubectl logs -l app.kubernetes.io/name=<app-name> -n <namespace>
     ```
+
 3.  **Check the IngressRoute:** Make sure that the `IngressRoute` for the application is configured correctly.
+
     ```bash
     kubectl get ingressroute -n <namespace>
     ```
