@@ -14,41 +14,41 @@
 
 <span class="c"># Run the importer tool</span>
 homelab-importer <span class="nt">--config-dir</span> /path/to/your/private/config
-</pre></div></div><h3 id="terraform-fails-to-apply-changes"> <a href="#terraform-fails-to-apply-changes" class="anchor-heading" aria-labelledby="terraform-fails-to-apply-changes"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Terraform fails to apply changes</h3><p>If Terraform fails to apply the changes, it may be due to a problem with your Proxmox environment. Check the following:</p><ul><li><strong>Proxmox API Token:</strong> Ensure that your Proxmox API token has the correct permissions. It should have the <code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></div></div><h3 id="terraform-fails-to-apply-changes"> <a href="#terraform-fails-to-apply-changes" class="anchor-heading" aria-labelledby="terraform-fails-to-apply-changes"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Terraform fails to apply changes</h3><p>If Terraform fails to apply the changes, it may be due to a problem with your Proxmox environment. Check the following:</p><ul><li><strong>Proxmox API Token:</strong> Ensure that your Proxmox API token has the correct permissions. It should have the following permissions on the Proxmox node:<ul><li><code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre><td class="rouge-code"><pre>Datastore.AllocateSpace
-</pre></table></div></code>, <code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></table></div></code><li><code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre><td class="rouge-code"><pre>Datastore.Audit
-</pre></table></div></code>, <code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></table></div></code><li><code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre><td class="rouge-code"><pre>Sys.Audit
-</pre></table></div></code>, <code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></table></div></code><li><code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre><td class="rouge-code"><pre>Sys.Console
-</pre></table></div></code>, <code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></table></div></code><li><code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre><td class="rouge-code"><pre>Sys.Modify
-</pre></table></div></code>, <code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></table></div></code><li><code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre><td class="rouge-code"><pre>VM.Allocate
-</pre></table></div></code>, <code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></table></div></code><li><code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre><td class="rouge-code"><pre>VM.Audit
-</pre></table></div></code>, <code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></table></div></code><li><code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre><td class="rouge-code"><pre>VM.Clone
-</pre></table></div></code>, <code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></table></div></code><li><code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre><td class="rouge-code"><pre>VM.Config.CDROM
-</pre></table></div></code>, <code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></table></div></code><li><code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre><td class="rouge-code"><pre>VM.Config.CPU
-</pre></table></div></code>, <code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></table></div></code><li><code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre><td class="rouge-code"><pre>VM.Config.Disk
-</pre></table></div></code>, <code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></table></div></code><li><code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre><td class="rouge-code"><pre>VM.Config.HWType
-</pre></table></div></code>, <code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></table></div></code><li><code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre><td class="rouge-code"><pre>VM.Config.Memory
-</pre></table></div></code>, <code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></table></div></code><li><code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre><td class="rouge-code"><pre>VM.Config.Network
-</pre></table></div></code>, <code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></table></div></code><li><code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre><td class="rouge-code"><pre>VM.Config.Options
-</pre></table></div></code>, <code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></table></div></code><li><code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre><td class="rouge-code"><pre>VM.Monitor
-</pre></table></div></code>, <code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></table></div></code><li><code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre><td class="rouge-code"><pre>VM.PowerMgmt
-</pre></table></div></code> permissions on the Proxmox node.<li><strong>Proxmox Host:</strong> Make sure that the Proxmox host is running and accessible from the machine where you are running Terraform.<li><strong>Cloud-init Template:</strong> Verify that the cloud-init template exists and is configured correctly. It should be a minimal installation of a supported OS (e.g., Ubuntu Server) and should have the <code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></table></div></code></ul><li><strong>Proxmox Host:</strong> Make sure that the Proxmox host is running and accessible from the machine where you are running Terraform.<li><strong>Cloud-init Template:</strong> Verify that the cloud-init template exists and is configured correctly. It should be a minimal installation of a supported OS (e.g., Ubuntu Server) and should have the <code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre><td class="rouge-code"><pre>qemu-guest-agent
 </pre></table></div></code> installed.</ul><h3 id="ansible-playbook-fails-to-run"> <a href="#ansible-playbook-fails-to-run" class="anchor-heading" aria-labelledby="ansible-playbook-fails-to-run"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Ansible playbook fails to run</h3><p>If the Ansible playbook fails to run, it may be due to a problem with your SSH connection. Check the following:</p><ul><li><strong>SSH Key:</strong> Make sure that your SSH key is added to your SSH agent (<code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre><td class="rouge-code"><pre>ssh-add -l
@@ -56,13 +56,13 @@ homelab-importer <span class="nt">--config-dir</span> /path/to/your/private/conf
 </pre><td class="rouge-code"><pre>ansible/inventory/inventory.auto.yml
 </pre></table></div></code>) are correct.</ul><hr /><h2 id="application-and-networking-issues"> <a href="#application-and-networking-issues" class="anchor-heading" aria-labelledby="application-and-networking-issues"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Application and Networking Issues</h2><h3 id="application-is-not-accessible"> <a href="#application-is-not-accessible" class="anchor-heading" aria-labelledby="application-is-not-accessible"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Application is not accessible</h3><p>If an application is not accessible after it has been deployed, it may be due to a problem with the Traefik Ingress controller, the application itself, or your DNS configuration.</p><ol><li><strong>Check the Traefik Dashboard:</strong> The Traefik dashboard provides a wealth of information about your Ingress routes and can help you diagnose problems. You can access it at <code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre><td class="rouge-code"><pre>http://traefik.your-domain.com
-</pre></table></div></code>.<li><strong>Check the Application Logs:</strong> Use <code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></table></div></code>.<li><p><strong>Check the Application Logs:</strong> Use <code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre><td class="rouge-code"><pre>kubectl logs
-</pre></table></div></code> to check the logs of the application’s pods. This will often give you a clue as to what is wrong.<div class="language-bash highlighter-rouge"><div class="highlight">class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></table></div></code> to check the logs of the application’s pods. This will often give you a clue as to what is wrong.</p><div class="language-bash highlighter-rouge"><div class="highlight">class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre><td class="rouge-code"><pre>kubectl logs <span class="nt">-l</span> app.kubernetes.io/name<span class="o">=</span>&lt;app-name&gt; <span class="nt">-n</span> &lt;namespace&gt;
-</pre></div></div><li><strong>Check the IngressRoute:</strong> Make sure that the <code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></div></div><li><p><strong>Check the IngressRoute:</strong> Make sure that the <code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre><td class="rouge-code"><pre>IngressRoute
-</pre></table></div></code> for the application is configured correctly.<div class="language-bash highlighter-rouge"><div class="highlight">class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></table></div></code> for the application is configured correctly.</p><div class="language-bash highlighter-rouge"><div class="highlight">class="highlight"><code><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre><td class="rouge-code"><pre>kubectl get ingressroute <span class="nt">-n</span> &lt;namespace&gt;
 </pre></div></div><li><strong>Check DNS:</strong> Verify that the DNS record for the application is pointing to the correct IP address (the IP address of your Traefik load balancer).</ol><h3 id="pods-are-stuck-in-a-pending-state"> <a href="#pods-are-stuck-in-a-pending-state" class="anchor-heading" aria-labelledby="pods-are-stuck-in-a-pending-state"><svg viewBox="0 0 16 16" aria-hidden="true"><use xlink:href="#svg-link"></use></svg></a> Pods are stuck in a <code class="language-plaintext highlighter-rouge"><div class="table-wrapper"><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 </pre><td class="rouge-code"><pre>Pending
@@ -76,4 +76,4 @@ homelab-importer <span class="nt">--config-dir</span> /path/to/your/private/conf
 2
 </pre><td class="rouge-code"><pre><span class="nb">rm </span>infrastructure/proxmox/terraform.tfvars
 <span class="nb">rm </span>ansible/inventory/inventory.auto.yml
-</pre></div></div><li><strong>Run the setup process again by following the steps in the <a href="/homelabeazy/docs/guides/getting-started.html">Getting Started</a> guide.</strong></ol></main></div></div><div class="search-overlay"></div></div>
+</pre></div></div><li><strong>Run the setup process again by following the steps in the <a href="/homelabeazy/docs/guides/getting-started.html">Getting Started</a> guide.</strong></ol></main></div></div><div class="search-overlay"></div></div><script src="https://cdn.jsdelivr.net/npm/mermaid@9.1.3/dist/mermaid.min.js"></script> <script> var config = {} ; mermaid.initialize(config); window.mermaid.init(undefined, document.querySelectorAll('.language-mermaid')); </script>
